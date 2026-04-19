@@ -81,7 +81,7 @@
             order: { bible: ["Бытие"], quran: ["1. Аль-Фатиха"] },
             texts: {
                 bible: { "Бытие": { "1": { "1": "В начале сотворил Бог небо и землю." } } },
-                quran: { "1. Аль-Фатиха": { "1": "Во имя Аллаха, Милостивого, Милосердного!" } }
+                quran: { "1. Аль-Фатиха": { "1": { "1": "Во имя Аллаха, Милостивого, Милосердного!" } } }
             }
         };
 
@@ -119,16 +119,14 @@
                         const quranMap = {};
                         const quranOrder = []; 
                         
-                        // Инициализируем порядок и пустые объекты для всех 114 сур
+                        // Инициализируем порядок и пустые объекты для всех 114 сур с фиктивной "1" главой для унификации структуры
                         SURAH_NAMES_RU.forEach((ruName, index) => {
                             const title = `${index + 1}. ${ruName}`;
                             quranOrder.push(title);
-                            quranMap[title] = {};
+                            quranMap[title] = { "1": {} }; 
                         });
 
-                        // ИСПРАВЛЕНИЕ: Двойная система загрузки Корана (Fallback)
                         try {
-                            // Попытка 1: Загрузка через NPM CDN
                             const quranRes = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/quran-api@1/editions/rus-elmir-kuliev.json');
                             if (!quranRes.ok) throw new Error("Primary Quran CDN failed");
                             const quranRaw = await quranRes.json();
@@ -136,12 +134,11 @@
                             quranRaw.quran.forEach(item => {
                                 const title = quranOrder[item.chapter - 1];
                                 if (title) {
-                                    quranMap[title][String(item.verse)] = item.text;
+                                    quranMap[title]["1"][String(item.verse)] = item.text;
                                 }
                             });
                         } catch (primaryError) {
                             console.warn("Первичный сервер Корана недоступен, используем резервный API...", primaryError);
-                            // Попытка 2: Загрузка через резервный API Alquran Cloud
                             const fallbackRes = await fetch('https://api.alquran.cloud/v1/quran/ru.kuliev');
                             if (!fallbackRes.ok) throw new Error("Fallback Quran API failed");
                             const fallbackRaw = await fallbackRes.json();
@@ -150,7 +147,7 @@
                                 const title = quranOrder[surah.number - 1];
                                 if (title) {
                                     surah.ayahs.forEach(ayah => {
-                                        quranMap[title][String(ayah.numberInSurah)] = ayah.text;
+                                        quranMap[title]["1"][String(ayah.numberInSurah)] = ayah.text;
                                     });
                                 }
                             });
@@ -253,12 +250,12 @@
                         
                         const qSurahs = db.order.quran;
                         const rSurah = qSurahs[Math.floor(Math.random() * qSurahs.length)];
-                        const qAyahs = Object.keys(db.texts.quran[rSurah]);
+                        const qAyahs = Object.keys(db.texts.quran[rSurah]["1"]);
                         const rAyah = qAyahs[Math.floor(Math.random() * qAyahs.length)];
 
                         setRandomQuotes({
                             bible: { book: rBook, chap: rChap, verse: rVerse, text: db.texts.bible[rBook][rChap][rVerse] },
-                            quran: { surah: rSurah, ayah: rAyah, text: db.texts.quran[rSurah][rAyah] }
+                            quran: { surah: rSurah, ayah: rAyah, text: db.texts.quran[rSurah]["1"][rAyah] }
                         });
                     } catch (e) {
                         console.error("Ошибка генерации цитат:", e);
@@ -272,7 +269,7 @@
                         <div className="relative z-10">
                             <h2 className="text-4xl font-serif font-bold mb-4 text-white">Инженерная среда обучения</h2>
                             <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Ошибка загрузки Корана исправлена за счет внедрения двойной системы резервирования (Fallback API). Теперь оба текста загружаются на 100%. Вы можете изучать их параллельно, по шагам или использовать глобальный поиск.
+                                Ошибка вертикального отображения Корана устранена за счет нормализации структуры базы данных. Теперь оба текста загружаются корректно на 100%. Вы можете изучать их параллельно, по шагам или использовать глобальный поиск.
                             </p>
                             <div className="flex flex-wrap gap-4 mb-6">
                                 <button onClick={()=>setView('search')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-amber-900/20 transition-all flex items-center">
@@ -353,7 +350,7 @@
                     });
 
                     db.order.quran.forEach(surah => {
-                        const ayahs = Object.entries(db.texts.quran[surah]);
+                        const ayahs = Object.entries(db.texts.quran[surah]["1"] || {});
                         ayahs.forEach(([aNum, text]) => {
                             if (text.toLowerCase().includes(qLower)) {
                                 qRes.push({ surah, aNum, text });
@@ -536,7 +533,7 @@
                 if (isBible && chapters.length > 0 && !chapters.includes(selectedChapter)) setSelectedChapter(chapters[0]);
             }, [selectedBook, chapters, isBible, selectedChapter]);
 
-            const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook] || {});
+            const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
 
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
@@ -627,7 +624,7 @@
                         </div>
                         <div className="flex-1 p-8 md:p-10 font-serif leading-loose text-lg text-emerald-900 bg-[#f4faf7]">
                             <h3 className="text-emerald-500 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-emerald-200">{qSurah}</h3>
-                            {Object.entries(db.texts.quran[qSurah] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
+                            {Object.entries(db.texts.quran[qSurah]?.["1"] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
                                 <div key={v} className="mb-6 group relative pr-8">
                                     <sup className="text-[10px] font-sans font-bold text-emerald-600 mr-3">{v}</sup>
                                     {t}
