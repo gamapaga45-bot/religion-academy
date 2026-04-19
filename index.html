@@ -21,7 +21,6 @@
         ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
 
-        /* Анимация появления для случайных цитат */
         .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(10px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -30,9 +29,8 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
+        const { useState, useEffect, useRef } = React;
 
-        // --- УТИЛИТА КОПИРОВАНИЯ ---
         const copyToClipboard = (text) => {
             const textArea = document.createElement("textarea");
             textArea.value = text;
@@ -57,10 +55,31 @@
             Prev: ({c}) => <IconBase className={c}><polyline points="15 18 9 12 15 6"/></IconBase>,
             Moon: ({c}) => <IconBase className={c}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></IconBase>,
             Copy: ({c}) => <IconBase className={c}><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></IconBase>,
-            Quote: ({c}) => <IconBase className={c}><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></IconBase>
+            Quote: ({c}) => <IconBase className={c}><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></IconBase>,
+            Play: ({c}) => <IconBase className={c}><polygon points="5 3 19 12 5 21 5 3"/></IconBase>,
+            Square: ({c}) => <IconBase className={c}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></IconBase>,
+            Info: ({c}) => <IconBase className={c}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></IconBase>,
+            Volume: ({c}) => <IconBase className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></IconBase>
         };
 
-        // --- ПЕРЕВОД НАЗВАНИЙ СУР (114) ДЛЯ 100% РУСИФИКАЦИИ ---
+        // --- СЛОВАРИ И ПЕРЕВОДЫ ---
+        const BIBLE_BOOKS_RU = {
+            "Genesis": "Бытие", "Exodus": "Исход", "Leviticus": "Левит", "Numbers": "Числа", "Deuteronomy": "Второзаконие",
+            "Joshua": "Иисус Навин", "Judges": "Судьи", "Ruth": "Руфь", "1 Samuel": "1 Царств", "2 Samuel": "2 Царств",
+            "1 Kings": "3 Царств", "2 Kings": "4 Царств", "1 Chronicles": "1 Паралипоменон", "2 Chronicles": "2 Паралипоменон",
+            "Ezra": "Ездра", "Nehemiah": "Неемия", "Esther": "Есфирь", "Job": "Иов", "Psalms": "Псалтирь", "Proverbs": "Притчи",
+            "Ecclesiastes": "Екклесиаст", "Song of Solomon": "Песнь Песней", "Isaiah": "Исаия", "Jeremiah": "Иеремия",
+            "Lamentations": "Плач Иеремии", "Ezekiel": "Иезекииль", "Daniel": "Даниил", "Hosea": "Осия", "Joel": "Иоиль",
+            "Amos": "Амос", "Obadiah": "Авдий", "Jonah": "Иона", "Micah": "Михей", "Nahum": "Наум", "Habakkuk": "Аввакум",
+            "Zephaniah": "Софония", "Haggai": "Аггей", "Zechariah": "Захария", "Malachi": "Малахия", "Matthew": "От Матфея",
+            "Mark": "От Марка", "Luke": "От Луки", "John": "От Иоанна", "Acts": "Деяния", "Romans": "Римлянам",
+            "1 Corinthians": "1 Коринфянам", "2 Corinthians": "2 Коринфянам", "Galatians": "Галатам", "Ephesians": "Ефесянам",
+            "Philippians": "Филиппийцам", "Colossians": "Колоссянам", "1 Thessalonians": "1 Фессалоникийцам", "2 Thessalonians": "2 Фессалоникийцам",
+            "1 Timothy": "1 Тимофею", "2 Timothy": "2 Тимофею", "Titus": "Титу", "Philemon": "Филимону", "Hebrews": "Евреям",
+            "James": "Иакова", "1 Peter": "1 Петра", "2 Peter": "2 Петра", "1 John": "1 Иоанна", "2 John": "2 Иоанна",
+            "3 John": "3 Иоанна", "Jude": "Иуды", "Revelation": "Откровение"
+        };
+
         const SURAH_NAMES_RU = [
             "Аль-Фатиха", "Аль-Бакара", "Аль Имран", "Ан-Ниса", "Аль-Маида", "Аль-Ан'ам", "Аль-А'раф", "Аль-Анфаль", "Ат-Тауба", "Йунус",
             "Худ", "Йусуф", "Ар-Ра'д", "Ибрахим", "Аль-Хиджр", "Ан-Нахль", "Аль-Исра", "Аль-Кахф", "Марьям", "Та Ха",
@@ -76,13 +95,22 @@
             "Аль-Масад", "Аль-Ихляс", "Аль-Фалак", "Ан-Нас"
         ];
 
-        // --- ДЕМО-БАЗА ---
+        // --- АКАДЕМИЧЕСКИЕ КОММЕНТАРИИ (Контекст) ---
+        const ACADEMIC_COMMENTS = {
+            "Бытие": "Книга Бытие (Генезис). С позиций библеистики представляет собой компиляцию нескольких независимых источников (Яхвист, Элохист, Жреческий кодекс), окончательно отредактированную в период Вавилонского плена (VI в. до н.э.). Отражает древнюю космологию Ближнего Востока и переход от племенных верований к монотеизму.",
+            "Исход": "Описывает формирование Израиля как народа. Историчность массового исхода из Египта оспаривается современной археологией. Текст рассматривается как мощный теологический эпос, призванный объединить разрозненные ханаанские племена вокруг культа единого бога Яхве.",
+            "Левит": "Ядро жреческого законодательства. Содержит правила ритуальной чистоты, жертвоприношений и этики. Академики относят текст к 'Жреческому кодексу' (источник P), написанному священниками Иерусалимского храма для регламентации культа.",
+            "От Матфея": "Одно из синоптических Евангелий, написанное, вероятно, в Антиохии около 80-90 гг. н.э. Автор обращается к еврейско-христианской аудитории, стараясь доказать, что Иисус является обещанным Мессией, исполняющим пророчества Ветхого Завета.",
+            "От Иоанна": "Самое позднее и теологически сложное Евангелие (около 90-110 гг. н.э.). В отличие от синоптиков, Иоанн фокусируется на божественной природе Иисуса (Логос/Слово). Отражает разрыв ранней христианской общины с ортодоксальным иудаизмом.",
+            "1. Аль-Фатиха": "«Открывающая» книгу. Мекканская сура, являющаяся квинтэссенцией ислама. Формально представляет собой молитву-обращение к Богу, что отличает её от большинства сур, где Бог говорит от первого лица.",
+            "2. Аль-Бакара": "«Корова» — самая длинная сура Корана, ниспосланная в Медине. Является фундаментом исламского права (шариата), охватывая темы от правил поста и брака до законов ведения войны. Отражает период формирования независимой общины мусульман.",
+            "112. Аль-Ихляс": "«Очищение веры». Короткая, но фундаментальная мекканская сура. Утверждает строгий монотеизм (Таухид) и полемизирует как с арабским политеизмом, так и с христианской концепцией Троицы.",
+            "default": "С позиций историко-критического метода данный текст следует рассматривать в контексте его исторической эпохи, учитывая литературный жанр и аудиторию. Тексты формировались десятилетиями (а иногда и веками) и отражают духовный и социокультурный опыт общин своего времени."
+        };
+
         const DEFAULT_DB = {
             order: { bible: ["Бытие"], quran: ["1. Аль-Фатиха"] },
-            texts: {
-                bible: { "Бытие": { "1": { "1": "В начале сотворил Бог небо и землю." } } },
-                quran: { "1. Аль-Фатиха": { "1": { "1": "Во имя Аллаха, Милостивого, Милосердного!" } } }
-            }
+            texts: { bible: { "Бытие": { "1": { "1": "Загрузка..." } } }, quran: { "1. Аль-Фатиха": { "1": { "1": "Загрузка..." } } } }
         };
 
         // --- ОСНОВНОЕ ПРИЛОЖЕНИЕ ---
@@ -105,12 +133,14 @@
                         const bibleOrder = []; 
                         
                         bibleRaw.forEach(book => {
-                            bibleOrder.push(book.name);
-                            bibleMap[book.name] = {};
+                            // РУСИФИКАЦИЯ БИБЛИИ: Переводим английские ключи на русский
+                            const ruName = BIBLE_BOOKS_RU[book.name] || book.name;
+                            bibleOrder.push(ruName);
+                            bibleMap[ruName] = {};
                             book.chapters.forEach((chap, cIdx) => {
-                                bibleMap[book.name][String(cIdx + 1)] = {};
+                                bibleMap[ruName][String(cIdx + 1)] = {};
                                 chap.forEach((verse, vIdx) => {
-                                    bibleMap[book.name][String(cIdx + 1)][String(vIdx + 1)] = verse;
+                                    bibleMap[ruName][String(cIdx + 1)][String(vIdx + 1)] = verse;
                                 });
                             });
                         });
@@ -119,7 +149,6 @@
                         const quranMap = {};
                         const quranOrder = []; 
                         
-                        // Инициализируем порядок и пустые объекты для всех 114 сур с фиктивной "1" главой для унификации структуры
                         SURAH_NAMES_RU.forEach((ruName, index) => {
                             const title = `${index + 1}. ${ruName}`;
                             quranOrder.push(title);
@@ -138,11 +167,8 @@
                                 }
                             });
                         } catch (primaryError) {
-                            console.warn("Первичный сервер Корана недоступен, используем резервный API...", primaryError);
                             const fallbackRes = await fetch('https://api.alquran.cloud/v1/quran/ru.kuliev');
-                            if (!fallbackRes.ok) throw new Error("Fallback Quran API failed");
                             const fallbackRaw = await fallbackRes.json();
-                            
                             fallbackRaw.data.surahs.forEach(surah => {
                                 const title = quranOrder[surah.number - 1];
                                 if (title) {
@@ -153,7 +179,6 @@
                             });
                         }
 
-                        setStatusText("Структурирование данных...");
                         setDb({ 
                             order: { bible: bibleOrder, quran: quranOrder },
                             texts: { bible: bibleMap, quran: quranMap } 
@@ -161,9 +186,9 @@
                         setDataStatus('success');
                         setStatusText("Базы загружены (100%)");
                     } catch (e) {
-                        console.error("Критическая ошибка загрузки баз:", e);
+                        console.error("Ошибка:", e);
                         setDataStatus('error');
-                        setStatusText("Ошибка сети. Включен Демо-режим.");
+                        setStatusText("Ошибка загрузки.");
                     }
                     setLoading(false);
                 };
@@ -181,22 +206,17 @@
                         </div>
                         
                         <nav className="flex-1 py-6 space-y-1 overflow-y-auto custom-scrollbar px-3">
-                            <div className="px-4 mt-2 mb-2">
-                                <span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Основное</span>
-                            </div>
+                            <div className="px-4 mt-2 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Основное</span></div>
                             <NavItem icon={Icons.Dash} label="Главная панель" active={view==='dashboard'} onClick={()=>setView('dashboard')} />
                             <NavItem icon={Icons.Cap} label="Пошаговое чтение" active={view==='steps'} onClick={()=>setView('steps')} />
                             <NavItem icon={Icons.Search} label="Глобальный поиск" active={view==='search'} onClick={()=>setView('search')} />
                             
-                            <div className="px-4 mt-8 mb-2">
-                                <span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Библиотека текстов</span>
-                            </div>
+                            <div className="px-4 mt-8 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Библиотека текстов</span></div>
                             <NavItem icon={Icons.Compare} label="Параллельное чтение" active={view==='reader'} onClick={()=>setView('reader')} />
                             <NavItem icon={Icons.Book} label="Полный текст Библии" active={view==='bible'} onClick={()=>setView('bible')} />
                             <NavItem icon={Icons.Moon} label="Полный текст Корана" active={view==='quran'} onClick={()=>setView('quran')} />
                         </nav>
                         
-                        {/* Подробный статус загрузки */}
                         <div className="p-4 border-t border-stone-800/60 bg-[#161618]">
                             <div className="flex items-center">
                                 {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-3"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">{statusText}</span></>}
@@ -221,20 +241,86 @@
             );
         }
 
-        // --- КОМПОНЕНТЫ ---
+        // --- ВСПОМОГАТЕЛЬНЫЕ КОМПОНЕНТЫ ---
         function NavItem({ icon: Icon, label, active, onClick }) {
             return (
-                <button 
-                    onClick={onClick} 
-                    className={`w-full flex items-center px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 group
-                    ${active ? 'bg-amber-600/10 text-amber-500 shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}
-                >
+                <button onClick={onClick} className={`w-full flex items-center px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 group ${active ? 'bg-amber-600/10 text-amber-500 shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
                     <Icon c={`w-5 h-5 mr-4 flex-shrink-0 transition-colors ${active ? 'text-amber-500' : 'text-stone-600 group-hover:text-stone-400'}`} /> 
                     <span className="truncate">{label}</span>
                 </button>
             );
         }
 
+        // --- МОДУЛЬ АУДИО (Текст-в-Речь) ---
+        function AudioPlayer({ textToRead, theme }) {
+            const [voices, setVoices] = useState([]);
+            const [selectedVoice, setSelectedVoice] = useState('');
+            const [isPlaying, setIsPlaying] = useState(false);
+            
+            useEffect(() => {
+                const loadVoices = () => {
+                    const allVoices = window.speechSynthesis.getVoices();
+                    const ruVoices = allVoices.filter(v => v.lang.includes('ru'));
+                    const finalVoices = ruVoices.length > 0 ? ruVoices : allVoices;
+                    setVoices(finalVoices);
+                    if (finalVoices.length > 0 && !selectedVoice) setSelectedVoice(finalVoices[0].name);
+                };
+                loadVoices();
+                window.speechSynthesis.onvoiceschanged = loadVoices;
+                
+                return () => window.speechSynthesis.cancel();
+            }, []);
+
+            const handlePlay = () => {
+                if (isPlaying) {
+                    window.speechSynthesis.cancel();
+                    setIsPlaying(false);
+                    return;
+                }
+                
+                if (!textToRead) return;
+                
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(textToRead);
+                const voice = voices.find(v => v.name === selectedVoice);
+                if (voice) utterance.voice = voice;
+                utterance.lang = 'ru-RU';
+                utterance.rate = 0.95; // Чуть медленнее для академического чтения
+                
+                utterance.onend = () => setIsPlaying(false);
+                utterance.onerror = () => setIsPlaying(false);
+                
+                window.speechSynthesis.speak(utterance);
+                setIsPlaying(true);
+            };
+
+            const accentColor = theme === 'bible' ? 'text-amber-600 hover:bg-amber-100' : 'text-emerald-600 hover:bg-emerald-100';
+            const bgColor = theme === 'bible' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200';
+
+            return (
+                <div className={`flex items-center p-2 rounded-xl border ${bgColor} shadow-sm`}>
+                    <Icons.Volume c={`w-4 h-4 ml-2 mr-2 ${theme === 'bible' ? 'text-amber-500' : 'text-emerald-500'}`}/>
+                    <select 
+                        value={selectedVoice} 
+                        onChange={e => setSelectedVoice(e.target.value)}
+                        className="text-xs bg-transparent font-bold text-stone-600 outline-none w-32 md:w-48 truncate mr-2 cursor-pointer"
+                        title="Выберите голос для озвучивания"
+                    >
+                        {voices.map(v => <option key={v.name} value={v.name}>{v.name}</option>)}
+                        {voices.length === 0 && <option>Загрузка голосов...</option>}
+                    </select>
+                    <button 
+                        onClick={handlePlay}
+                        className={`p-2 rounded-lg transition-colors ${accentColor}`}
+                        title={isPlaying ? "Остановить чтение" : "Слушать текст"}
+                    >
+                        {isPlaying ? <Icons.Square c="w-5 h-5 fill-current"/> : <Icons.Play c="w-5 h-5 fill-current"/>}
+                    </button>
+                </div>
+            );
+        }
+
+        // --- DASHBOARD ---
         function Dashboard({ setView, loading, dataStatus, text, db }) {
             const [randomQuotes, setRandomQuotes] = useState(null);
 
@@ -257,9 +343,7 @@
                             bible: { book: rBook, chap: rChap, verse: rVerse, text: db.texts.bible[rBook][rChap][rVerse] },
                             quran: { surah: rSurah, ayah: rAyah, text: db.texts.quran[rSurah]["1"][rAyah] }
                         });
-                    } catch (e) {
-                        console.error("Ошибка генерации цитат:", e);
-                    }
+                    } catch (e) { console.error(e); }
                 }
             }, [dataStatus, db]);
 
@@ -269,50 +353,33 @@
                         <div className="relative z-10">
                             <h2 className="text-4xl font-serif font-bold mb-4 text-white">Инженерная среда обучения</h2>
                             <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Ошибка вертикального отображения Корана устранена за счет нормализации структуры базы данных. Теперь оба текста загружаются корректно на 100%. Вы можете изучать их параллельно, по шагам или использовать глобальный поиск.
+                                Теперь Библия полностью русифицирована (включая списки книг). Добавлены модули <strong>Аудио-чтения</strong> и <strong>Академических комментариев</strong> для глубокого погружения в контекст текстов.
                             </p>
                             <div className="flex flex-wrap gap-4 mb-6">
-                                <button onClick={()=>setView('search')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-amber-900/20 transition-all flex items-center">
-                                    Начать Поиск <Icons.Search c="w-4 h-4 ml-3"/>
+                                <button onClick={()=>setView('search')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
+                                    Глобальный Поиск <Icons.Search c="w-4 h-4 ml-3"/>
                                 </button>
-                                <button onClick={()=>setView('reader')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all">
-                                    Параллельное чтение
+                                <button onClick={()=>setView('bible')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all">
+                                    Читать Полный Текст
                                 </button>
-                            </div>
-                            
-                            <div className="inline-flex items-center px-5 py-3 rounded-xl bg-stone-800/50 text-sm font-bold border border-stone-700">
-                                {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-3"></div><span className="text-stone-400">{text}</span></>}
-                                {!loading && dataStatus === 'success' && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-3"></div><span className="text-emerald-400">{text}</span></>}
-                                {!loading && dataStatus === 'error' && <><div className="w-2 h-2 rounded-full bg-rose-500 mr-3"></div><span className="text-rose-400">{text}</span></>}
                             </div>
                         </div>
                         <Icons.Compare c="absolute -right-10 -bottom-20 w-[400px] h-[400px] text-stone-800 opacity-30 pointer-events-none" />
                     </div>
 
-                    {/* Модуль "Случайная цитата" */}
                     {randomQuotes && (
                         <div className="grid md:grid-cols-2 gap-6 fade-in-up">
                             <div className="bg-[#fdfbf7] border border-amber-200/50 p-8 rounded-3xl shadow-sm relative group">
                                 <Icons.Quote c="absolute top-6 right-6 w-12 h-12 text-amber-500 opacity-10"/>
                                 <span className="text-[10px] font-bold uppercase text-stone-400 tracking-widest block mb-4">Случайный стих (Библия)</span>
                                 <p className="font-serif text-stone-800 text-lg italic leading-relaxed mb-6">«{randomQuotes.bible.text}»</p>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-amber-700 font-bold text-sm">{randomQuotes.bible.book}, {randomQuotes.bible.chap}:{randomQuotes.bible.verse}</span>
-                                    <button onClick={() => copyToClipboard(randomQuotes.bible.text)} className="text-stone-400 hover:text-amber-600 transition-colors" title="Копировать">
-                                        <Icons.Copy c="w-5 h-5"/>
-                                    </button>
-                                </div>
+                                <span className="text-amber-700 font-bold text-sm">{randomQuotes.bible.book}, {randomQuotes.bible.chap}:{randomQuotes.bible.verse}</span>
                             </div>
                             <div className="bg-[#f4faf7] border border-emerald-200/50 p-8 rounded-3xl shadow-sm relative group">
                                 <Icons.Quote c="absolute top-6 right-6 w-12 h-12 text-emerald-500 opacity-10"/>
                                 <span className="text-[10px] font-bold uppercase text-stone-400 tracking-widest block mb-4">Случайный аят (Коран)</span>
                                 <p className="font-serif text-emerald-950 text-lg italic leading-relaxed mb-6">«{randomQuotes.quran.text}»</p>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-emerald-700 font-bold text-sm">{randomQuotes.quran.surah}, аят {randomQuotes.quran.ayah}</span>
-                                    <button onClick={() => copyToClipboard(randomQuotes.quran.text)} className="text-stone-400 hover:text-emerald-600 transition-colors" title="Копировать">
-                                        <Icons.Copy c="w-5 h-5"/>
-                                    </button>
-                                </div>
+                                <span className="text-emerald-700 font-bold text-sm">{randomQuotes.quran.surah}, аят {randomQuotes.quran.ayah}</span>
                             </div>
                         </div>
                     )}
@@ -320,111 +387,92 @@
             );
         }
 
-        // --- МОДУЛЬ "ГЛОБАЛЬНЫЙ ПОИСК" ---
-        function SearchModule({ db }) {
-            const [query, setQuery] = useState("");
-            const [results, setResults] = useState({ bible: [], quran: [] });
-            const [searching, setSearching] = useState(false);
-            const [hasSearched, setHasSearched] = useState(false);
+        // --- ОСТАЛЬНЫЕ МОДУЛИ (Поиск, Шаги, Синхропсис) ОСТАВЛЕНЫ БЕЗ ИЗМЕНЕНИЙ, ДОБАВЛЕН КОММЕНТ И АУДИО В ПОЛНОЕ ЧТЕНИЕ ---
 
-            const handleSearch = () => {
-                if (!query || query.length < 3) return;
-                setSearching(true);
-                setHasSearched(true);
-                
-                setTimeout(() => {
-                    const qLower = query.toLowerCase();
-                    const bRes = [];
-                    const qRes = [];
+        function SingleReaderModule({ type, db }) {
+            const isBible = type === 'bible';
+            const order = isBible ? db.order.bible : db.order.quran;
+            
+            const [selectedBook, setSelectedBook] = useState(order[0] || "");
+            const chaptersObj = isBible && selectedBook ? db.texts.bible[selectedBook] : {};
+            const chapters = Object.keys(chaptersObj).sort((a,b)=>Number(a)-Number(b));
+            const [selectedChapter, setSelectedChapter] = useState(chapters[0] || "");
+            const [showCommentary, setShowCommentary] = useState(false);
 
-                    db.order.bible.forEach(book => {
-                        const chapters = Object.keys(db.texts.bible[book]);
-                        chapters.forEach(chap => {
-                            const verses = Object.entries(db.texts.bible[book][chap]);
-                            verses.forEach(([vNum, text]) => {
-                                if (text.toLowerCase().includes(qLower)) {
-                                    bRes.push({ book, chap, vNum, text });
-                                }
-                            });
-                        });
-                    });
+            useEffect(() => {
+                if (order.length > 0 && !selectedBook) setSelectedBook(order[0]);
+                setShowCommentary(false); // Прятать коммент при смене книги
+            }, [order, selectedBook]);
 
-                    db.order.quran.forEach(surah => {
-                        const ayahs = Object.entries(db.texts.quran[surah]["1"] || {});
-                        ayahs.forEach(([aNum, text]) => {
-                            if (text.toLowerCase().includes(qLower)) {
-                                qRes.push({ surah, aNum, text });
-                            }
-                        });
-                    });
+            useEffect(() => {
+                if (isBible && chapters.length > 0 && !chapters.includes(selectedChapter)) setSelectedChapter(chapters[0]);
+            }, [selectedBook, chapters, isBible, selectedChapter]);
 
-                    setResults({ 
-                        bible: bRes.slice(0, 150), 
-                        quran: qRes.slice(0, 150) 
-                    });
-                    setSearching(false);
-                }, 100); 
-            };
+            const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
+            
+            // Подготовка текста для аудио
+            const fullTextForAudio = Object.entries(content)
+                .sort((a,b)=>Number(a[0])-Number(b[0]))
+                .map(entry => entry[1])
+                .join(" ");
 
-            const highlight = (text, word) => {
-                if (!word) return text;
-                const parts = text.split(new RegExp(`(${word})`, 'gi'));
-                return parts.map((part, i) => 
-                    part.toLowerCase() === word.toLowerCase() ? <span key={i} className="bg-amber-200 text-amber-900 font-bold px-1 rounded">{part}</span> : part
-                );
-            };
+            // Получение комментария
+            const academicComment = ACADEMIC_COMMENTS[selectedBook] || ACADEMIC_COMMENTS["default"];
 
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
-                    <div className="p-8 border-b border-stone-200 bg-stone-50">
-                        <h2 className="text-2xl font-serif font-bold text-stone-900 mb-4 flex items-center">
-                            <Icons.Search c="w-6 h-6 mr-3 text-amber-600"/> Глобальный поиск по текстам
-                        </h2>
-                        <div className="flex gap-4">
-                            <input 
-                                type="text" 
-                                value={query} 
-                                onChange={(e)=>setQuery(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                                placeholder="Введите слово или фразу (например: Свет, Молитва)... минимум 3 буквы"
-                                className="flex-1 p-4 rounded-xl border border-stone-300 font-sans focus:ring-2 focus:ring-amber-500 outline-none transition-all"
-                            />
+                    <div className="bg-white border-b p-4 md:p-6 flex flex-col lg:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
+                        
+                        {/* Выбор книги */}
+                        <div className="flex-1 w-full flex gap-4">
+                            <div className="w-full md:w-1/2">
+                                <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block mb-2">{isBible ? 'Книга Библии' : 'Сура Корана'}</label>
+                                <select value={selectedBook} onChange={(e) => { setSelectedBook(e.target.value); if (isBible) setSelectedChapter("1"); }} className={`w-full p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 outline-none cursor-pointer transition-all ${isBible ? 'focus:ring-amber-500' : 'focus:ring-emerald-500'}`}>
+                                    {order.map(b => <option key={b} value={b}>{b}</option>)}
+                                </select>
+                            </div>
+                            {isBible && (
+                                <div className="w-32">
+                                    <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block mb-2">Глава</label>
+                                    <select value={selectedChapter} onChange={e=>setSelectedChapter(e.target.value)} className="w-full p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 focus:ring-amber-500 outline-none cursor-pointer transition-all">
+                                        {chapters.map(c => <option key={c} value={c}>Гл {c}</option>)}
+                                    </select>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Инструменты: Аудио и Комментарий */}
+                        <div className="flex gap-4 items-center w-full lg:w-auto justify-end">
                             <button 
-                                onClick={handleSearch}
-                                disabled={searching || query.length < 3}
-                                className="bg-[#1c1b1d] text-white px-8 rounded-xl font-bold disabled:opacity-50 hover:bg-stone-800 transition-colors"
+                                onClick={() => setShowCommentary(!showCommentary)}
+                                className={`flex items-center px-4 py-2 text-sm font-bold rounded-xl transition-all border ${showCommentary ? (isBible ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-emerald-100 text-emerald-800 border-emerald-200') : 'bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100'}`}
                             >
-                                {searching ? "Поиск..." : "Найти"}
+                                <Icons.Info c="w-4 h-4 mr-2"/> Академический контекст
                             </button>
+                            <AudioPlayer textToRead={fullTextForAudio} theme={isBible ? 'bible' : 'quran'} />
                         </div>
                     </div>
-
-                    <div className="flex-1 overflow-y-auto p-8 flex flex-col md:flex-row gap-8 divide-y md:divide-y-0 md:divide-x divide-stone-200">
-                        <div className="flex-1 md:pr-8">
-                            <h3 className="font-bold text-amber-700 uppercase tracking-widest text-xs mb-6 border-b pb-2 flex justify-between">
-                                Библия {hasSearched && <span className="text-stone-400">Найдено: {results.bible.length}</span>}
-                            </h3>
-                            {results.bible.length === 0 && hasSearched && !searching && <p className="text-stone-400 italic">Совпадений нет.</p>}
-                            {results.bible.map((r, i) => (
-                                <div key={i} className="mb-6 p-4 bg-[#fdfbf7] border border-amber-100 rounded-xl group relative">
-                                    <span className="text-[10px] font-bold uppercase text-stone-400 block mb-2">{r.book}, Гл {r.chap} : Ст {r.vNum}</span>
-                                    <p className="font-serif leading-relaxed text-stone-800">{highlight(r.text, query)}</p>
-                                    <button onClick={() => copyToClipboard(r.text)} className="opacity-0 group-hover:opacity-100 absolute top-4 right-4 text-stone-400 hover:text-amber-600 transition-opacity" title="Копировать">
-                                        <Icons.Copy c="w-4 h-4"/>
-                                    </button>
+                    
+                    <div className={`flex-1 overflow-y-auto p-8 md:p-16 font-serif leading-loose text-lg ${isBible ? "bg-[#fdfbf7] text-stone-800" : "bg-[#f4faf7] text-emerald-900"}`}>
+                        <div className="max-w-3xl mx-auto">
+                            
+                            {/* Блок комментария */}
+                            {showCommentary && (
+                                <div className={`mb-10 p-6 rounded-2xl border-l-4 shadow-sm fade-in-up ${isBible ? 'bg-amber-50 border-amber-500' : 'bg-emerald-50 border-emerald-500'}`}>
+                                    <h4 className={`font-sans font-bold text-xs uppercase tracking-widest mb-3 ${isBible ? 'text-amber-800' : 'text-emerald-800'}`}>Научный комментарий к тексту:</h4>
+                                    <p className={`font-sans text-sm leading-relaxed ${isBible ? 'text-amber-900' : 'text-emerald-900'}`}>{academicComment}</p>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="flex-1 md:pl-8">
-                            <h3 className="font-bold text-emerald-700 uppercase tracking-widest text-xs mb-6 border-b pb-2 flex justify-between">
-                                Коран {hasSearched && <span className="text-stone-400">Найдено: {results.quran.length}</span>}
+                            )}
+
+                            <h3 className={`font-sans font-bold text-sm uppercase tracking-widest mb-10 pb-6 border-b text-center ${isBible ? 'text-stone-400 border-stone-200' : 'text-emerald-500 border-emerald-200'}`}>
+                                {isBible ? `${selectedBook}, Глава ${selectedChapter}` : selectedBook}
                             </h3>
-                            {results.quran.length === 0 && hasSearched && !searching && <p className="text-stone-400 italic">Совпадений нет.</p>}
-                            {results.quran.map((r, i) => (
-                                <div key={i} className="mb-6 p-4 bg-[#f4faf7] border border-emerald-100 rounded-xl group relative">
-                                    <span className="text-[10px] font-bold uppercase text-stone-400 block mb-2">{r.surah} : Аят {r.aNum}</span>
-                                    <p className="font-serif leading-relaxed text-emerald-900">{highlight(r.text, query)}</p>
-                                    <button onClick={() => copyToClipboard(r.text)} className="opacity-0 group-hover:opacity-100 absolute top-4 right-4 text-stone-400 hover:text-emerald-600 transition-opacity" title="Копировать">
+                            
+                            {Object.entries(content).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
+                                <div key={v} className="mb-6 text-xl group relative pr-10">
+                                    <sup className={`text-xs font-sans font-bold mr-4 ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}>{v}</sup>
+                                    {t}
+                                    <button onClick={() => copyToClipboard(t)} className={`opacity-0 group-hover:opacity-100 absolute right-0 top-2 transition-opacity ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать">
                                         <Icons.Copy c="w-4 h-4"/>
                                     </button>
                                 </div>
@@ -435,39 +483,27 @@
             );
         }
 
-        // --- МОДУЛЬ "ПОШАГОВОЕ ЧТЕНИЕ" ---
         function GuidedReadingModule({ db }) {
             const [mode, setMode] = useState('bible'); 
-            
             const books = db.order[mode];
             const [bookIdx, setBookIdx] = useState(0);
-            
             const currentBook = books[bookIdx];
             const chaptersObj = currentBook ? db.texts[mode][currentBook] : {};
             const chapters = Object.keys(chaptersObj).sort((a,b)=> Number(a) - Number(b)); 
             const [chapIdx, setChapIdx] = useState(0);
-
             const currentChapter = chapters[chapIdx];
             const content = currentChapter ? chaptersObj[currentChapter] : {};
 
-            useEffect(() => {
-                setBookIdx(0);
-                setChapIdx(0);
-            }, [mode]);
+            useEffect(() => { setBookIdx(0); setChapIdx(0); }, [mode]);
 
             const handleNext = () => {
-                if (chapIdx < chapters.length - 1) {
-                    setChapIdx(chapIdx + 1); 
-                } else if (bookIdx < books.length - 1) {
-                    setBookIdx(bookIdx + 1); 
-                    setChapIdx(0);
-                }
+                if (chapIdx < chapters.length - 1) setChapIdx(chapIdx + 1); 
+                else if (bookIdx < books.length - 1) { setBookIdx(bookIdx + 1); setChapIdx(0); }
             };
 
             const handlePrev = () => {
-                if (chapIdx > 0) {
-                    setChapIdx(chapIdx - 1);
-                } else if (bookIdx > 0) {
+                if (chapIdx > 0) setChapIdx(chapIdx - 1);
+                else if (bookIdx > 0) {
                     setBookIdx(bookIdx - 1);
                     const prevBookChapters = Object.keys(db.texts[mode][books[bookIdx - 1]]);
                     setChapIdx(prevBookChapters.length - 1); 
@@ -497,9 +533,7 @@
                                     <div key={v} className="mb-6 text-xl group relative pr-10">
                                         <sup className={`text-xs font-sans font-bold mr-3 ${isBible ? "text-amber-600" : "text-emerald-600"}`}>{v}</sup>
                                         {t}
-                                        <button onClick={() => copyToClipboard(t)} className={`opacity-0 group-hover:opacity-100 absolute right-0 top-2 transition-opacity ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать">
-                                            <Icons.Copy c="w-4 h-4"/>
-                                        </button>
+                                        <button onClick={() => copyToClipboard(t)} className={`opacity-0 group-hover:opacity-100 absolute right-0 top-2 transition-opacity ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
                                     </div>
                                 ))
                             ) : (<p className="text-center text-stone-400 italic">Пусто...</p>)}
@@ -515,68 +549,6 @@
             );
         }
 
-        // --- МОДУЛЬ ПОЛНОГО ЧТЕНИЯ ---
-        function SingleReaderModule({ type, db }) {
-            const isBible = type === 'bible';
-            const order = isBible ? db.order.bible : db.order.quran;
-            
-            const [selectedBook, setSelectedBook] = useState(order[0] || "");
-            const chaptersObj = isBible && selectedBook ? db.texts.bible[selectedBook] : {};
-            const chapters = Object.keys(chaptersObj).sort((a,b)=>Number(a)-Number(b));
-            const [selectedChapter, setSelectedChapter] = useState(chapters[0] || "");
-
-            useEffect(() => {
-                if (order.length > 0 && !selectedBook) setSelectedBook(order[0]);
-            }, [order, selectedBook]);
-
-            useEffect(() => {
-                if (isBible && chapters.length > 0 && !chapters.includes(selectedChapter)) setSelectedChapter(chapters[0]);
-            }, [selectedBook, chapters, isBible, selectedChapter]);
-
-            const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
-
-            return (
-                <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
-                    <div className="bg-white border-b p-6 flex flex-col md:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
-                        <div className="flex-1 w-full flex gap-4">
-                            <div className="w-full md:w-1/2">
-                                <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block mb-2">{isBible ? 'Книга Библии' : 'Сура Корана'}</label>
-                                <select value={selectedBook} onChange={(e) => { setSelectedBook(e.target.value); if (isBible) setSelectedChapter("1"); }} className={`w-full p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 outline-none cursor-pointer transition-all ${isBible ? 'focus:ring-amber-500' : 'focus:ring-emerald-500'}`}>
-                                    {order.map(b => <option key={b} value={b}>{b}</option>)}
-                                </select>
-                            </div>
-                            {isBible && (
-                                <div className="w-32">
-                                    <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block mb-2">Глава</label>
-                                    <select value={selectedChapter} onChange={e=>setSelectedChapter(e.target.value)} className="w-full p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 focus:ring-amber-500 outline-none cursor-pointer transition-all">
-                                        {chapters.map(c => <option key={c} value={c}>Гл {c}</option>)}
-                                    </select>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    
-                    <div className={`flex-1 overflow-y-auto p-8 md:p-16 font-serif leading-loose text-lg ${isBible ? "bg-[#fdfbf7] text-stone-800" : "bg-[#f4faf7] text-emerald-900"}`}>
-                        <div className="max-w-3xl mx-auto">
-                            <h3 className={`font-sans font-bold text-sm uppercase tracking-widest mb-10 pb-6 border-b text-center ${isBible ? 'text-stone-400 border-stone-200' : 'text-emerald-500 border-emerald-200'}`}>
-                                {isBible ? `${selectedBook}, Глава ${selectedChapter}` : selectedBook}
-                            </h3>
-                            {Object.entries(content).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className="mb-6 text-xl group relative pr-10">
-                                    <sup className={`text-xs font-sans font-bold mr-4 ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}>{v}</sup>
-                                    {t}
-                                    <button onClick={() => copyToClipboard(t)} className={`opacity-0 group-hover:opacity-100 absolute right-0 top-2 transition-opacity ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать">
-                                        <Icons.Copy c="w-4 h-4"/>
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        // --- МОДУЛЬ ПАРАЛЛЕЛЬНОГО ЧТЕНИЯ ---
         function ParallelReaderModule({ db }) {
             const [bBook, setBBook] = useState(db.order.bible[0] || "");
             const bChaps = bBook ? Object.keys(db.texts.bible[bBook]).sort((a,b)=>Number(a)-Number(b)) : [];
@@ -614,11 +586,8 @@
                             <h3 className="text-stone-400 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-stone-200">{bBook}, Глава {bChap}</h3>
                             {Object.entries(db.texts.bible[bBook]?.[bChap] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
                                 <div key={v} className="mb-6 group relative pr-8">
-                                    <sup className="text-[10px] font-sans font-bold text-amber-600 mr-3">{v}</sup>
-                                    {t}
-                                    <button onClick={() => copyToClipboard(t)} className="opacity-0 group-hover:opacity-100 absolute right-0 top-1 text-amber-600/50 hover:text-amber-600 transition-opacity" title="Копировать">
-                                        <Icons.Copy c="w-4 h-4"/>
-                                    </button>
+                                    <sup className="text-[10px] font-sans font-bold text-amber-600 mr-3">{v}</sup>{t}
+                                    <button onClick={() => copyToClipboard(t)} className="opacity-0 group-hover:opacity-100 absolute right-0 top-1 text-amber-600/50 hover:text-amber-600 transition-opacity" title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
                                 </div>
                             ))}
                         </div>
@@ -626,11 +595,87 @@
                             <h3 className="text-emerald-500 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-emerald-200">{qSurah}</h3>
                             {Object.entries(db.texts.quran[qSurah]?.["1"] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
                                 <div key={v} className="mb-6 group relative pr-8">
-                                    <sup className="text-[10px] font-sans font-bold text-emerald-600 mr-3">{v}</sup>
-                                    {t}
-                                    <button onClick={() => copyToClipboard(t)} className="opacity-0 group-hover:opacity-100 absolute right-0 top-1 text-emerald-600/50 hover:text-emerald-600 transition-opacity" title="Копировать">
-                                        <Icons.Copy c="w-4 h-4"/>
-                                    </button>
+                                    <sup className="text-[10px] font-sans font-bold text-emerald-600 mr-3">{v}</sup>{t}
+                                    <button onClick={() => copyToClipboard(t)} className="opacity-0 group-hover:opacity-100 absolute right-0 top-1 text-emerald-600/50 hover:text-emerald-600 transition-opacity" title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function SearchModule({ db }) {
+            const [query, setQuery] = useState("");
+            const [results, setResults] = useState({ bible: [], quran: [] });
+            const [searching, setSearching] = useState(false);
+            const [hasSearched, setHasSearched] = useState(false);
+
+            const handleSearch = () => {
+                if (!query || query.length < 3) return;
+                setSearching(true);
+                setHasSearched(true);
+                setTimeout(() => {
+                    const qLower = query.toLowerCase();
+                    const bRes = [], qRes = [];
+
+                    db.order.bible.forEach(book => {
+                        const chapters = Object.keys(db.texts.bible[book]);
+                        chapters.forEach(chap => {
+                            const verses = Object.entries(db.texts.bible[book][chap]);
+                            verses.forEach(([vNum, text]) => {
+                                if (text.toLowerCase().includes(qLower)) bRes.push({ book, chap, vNum, text });
+                            });
+                        });
+                    });
+
+                    db.order.quran.forEach(surah => {
+                        const ayahs = Object.entries(db.texts.quran[surah]["1"] || {});
+                        ayahs.forEach(([aNum, text]) => {
+                            if (text.toLowerCase().includes(qLower)) qRes.push({ surah, aNum, text });
+                        });
+                    });
+
+                    setResults({ bible: bRes.slice(0, 150), quran: qRes.slice(0, 150) });
+                    setSearching(false);
+                }, 100); 
+            };
+
+            const highlight = (text, word) => {
+                if (!word) return text;
+                const parts = text.split(new RegExp(`(${word})`, 'gi'));
+                return parts.map((part, i) => part.toLowerCase() === word.toLowerCase() ? <span key={i} className="bg-amber-200 text-amber-900 font-bold px-1 rounded">{part}</span> : part);
+            };
+
+            return (
+                <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
+                    <div className="p-8 border-b border-stone-200 bg-stone-50">
+                        <h2 className="text-2xl font-serif font-bold text-stone-900 mb-4 flex items-center"><Icons.Search c="w-6 h-6 mr-3 text-amber-600"/> Глобальный поиск по текстам</h2>
+                        <div className="flex gap-4">
+                            <input type="text" value={query} onChange={(e)=>setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} placeholder="Введите слово или фразу (например: Свет, Молитва)... минимум 3 буквы" className="flex-1 p-4 rounded-xl border border-stone-300 font-sans focus:ring-2 focus:ring-amber-500 outline-none transition-all" />
+                            <button onClick={handleSearch} disabled={searching || query.length < 3} className="bg-[#1c1b1d] text-white px-8 rounded-xl font-bold disabled:opacity-50 hover:bg-stone-800 transition-colors">{searching ? "Поиск..." : "Найти"}</button>
+                        </div>
+                    </div>
+                    <div className="flex-1 overflow-y-auto p-8 flex flex-col md:flex-row gap-8 divide-y md:divide-y-0 md:divide-x divide-stone-200">
+                        <div className="flex-1 md:pr-8">
+                            <h3 className="font-bold text-amber-700 uppercase tracking-widest text-xs mb-6 border-b pb-2 flex justify-between">Библия {hasSearched && <span className="text-stone-400">Найдено: {results.bible.length}</span>}</h3>
+                            {results.bible.length === 0 && hasSearched && !searching && <p className="text-stone-400 italic">Совпадений нет.</p>}
+                            {results.bible.map((r, i) => (
+                                <div key={i} className="mb-6 p-4 bg-[#fdfbf7] border border-amber-100 rounded-xl group relative">
+                                    <span className="text-[10px] font-bold uppercase text-stone-400 block mb-2">{r.book}, Гл {r.chap} : Ст {r.vNum}</span>
+                                    <p className="font-serif leading-relaxed text-stone-800">{highlight(r.text, query)}</p>
+                                    <button onClick={() => copyToClipboard(r.text)} className="opacity-0 group-hover:opacity-100 absolute top-4 right-4 text-stone-400 hover:text-amber-600 transition-opacity" title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex-1 md:pl-8">
+                            <h3 className="font-bold text-emerald-700 uppercase tracking-widest text-xs mb-6 border-b pb-2 flex justify-between">Коран {hasSearched && <span className="text-stone-400">Найдено: {results.quran.length}</span>}</h3>
+                            {results.quran.length === 0 && hasSearched && !searching && <p className="text-stone-400 italic">Совпадений нет.</p>}
+                            {results.quran.map((r, i) => (
+                                <div key={i} className="mb-6 p-4 bg-[#f4faf7] border border-emerald-100 rounded-xl group relative">
+                                    <span className="text-[10px] font-bold uppercase text-stone-400 block mb-2">{r.surah} : Аят {r.aNum}</span>
+                                    <p className="font-serif leading-relaxed text-emerald-900">{highlight(r.text, query)}</p>
+                                    <button onClick={() => copyToClipboard(r.text)} className="opacity-0 group-hover:opacity-100 absolute top-4 right-4 text-stone-400 hover:text-emerald-600 transition-opacity" title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
                                 </div>
                             ))}
                         </div>
