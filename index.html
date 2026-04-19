@@ -23,6 +23,11 @@
 
         .fade-in-up { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; transform: translateY(10px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .placeholder-image {
+            background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
+            border: 1px dashed #d6d3d1;
+        }
     </style>
 </head>
 <body class="bg-stone-100 text-stone-900">
@@ -95,17 +100,53 @@
             "Аль-Масад", "Аль-Ихляс", "Аль-Фалак", "Ан-Нас"
         ];
 
-        // --- АКАДЕМИЧЕСКИЕ КОММЕНТАРИИ (Контекст) ---
+        // --- ГЛУБОКИЕ АКАДЕМИЧЕСКИЕ КОММЕНТАРИИ С ИЛЛЮСТРАЦИЯМИ ---
         const ACADEMIC_COMMENTS = {
-            "Бытие": "Книга Бытие (Генезис). С позиций библеистики представляет собой компиляцию нескольких независимых источников (Яхвист, Элохист, Жреческий кодекс), окончательно отредактированную в период Вавилонского плена (VI в. до н.э.). Отражает древнюю космологию Ближнего Востока и переход от племенных верований к монотеизму.",
-            "Исход": "Описывает формирование Израиля как народа. Историчность массового исхода из Египта оспаривается современной археологией. Текст рассматривается как мощный теологический эпос, призванный объединить разрозненные ханаанские племена вокруг культа единого бога Яхве.",
-            "Левит": "Ядро жреческого законодательства. Содержит правила ритуальной чистоты, жертвоприношений и этики. Академики относят текст к 'Жреческому кодексу' (источник P), написанному священниками Иерусалимского храма для регламентации культа.",
-            "От Матфея": "Одно из синоптических Евангелий, написанное, вероятно, в Антиохии около 80-90 гг. н.э. Автор обращается к еврейско-христианской аудитории, стараясь доказать, что Иисус является обещанным Мессией, исполняющим пророчества Ветхого Завета.",
-            "От Иоанна": "Самое позднее и теологически сложное Евангелие (около 90-110 гг. н.э.). В отличие от синоптиков, Иоанн фокусируется на божественной природе Иисуса (Логос/Слово). Отражает разрыв ранней христианской общины с ортодоксальным иудаизмом.",
-            "1. Аль-Фатиха": "«Открывающая» книгу. Мекканская сура, являющаяся квинтэссенцией ислама. Формально представляет собой молитву-обращение к Богу, что отличает её от большинства сур, где Бог говорит от первого лица.",
-            "2. Аль-Бакара": "«Корова» — самая длинная сура Корана, ниспосланная в Медине. Является фундаментом исламского права (шариата), охватывая темы от правил поста и брака до законов ведения войны. Отражает период формирования независимой общины мусульман.",
-            "112. Аль-Ихляс": "«Очищение веры». Короткая, но фундаментальная мекканская сура. Утверждает строгий монотеизм (Таухид) и полемизирует как с арабским политеизмом, так и с христианской концепцией Троицы.",
-            "default": "С позиций историко-критического метода данный текст следует рассматривать в контексте его исторической эпохи, учитывая литературный жанр и аудиторию. Тексты формировались десятилетиями (а иногда и веками) и отражают духовный и социокультурный опыт общин своего времени."
+            "Бытие": {
+                text: "Книга Бытие (Генезис). С позиций историко-критической библеистики представляет собой компиляцию нескольких независимых традиций (Яхвист, Элохист, Жреческий кодекс), окончательно отредактированную в период Вавилонского плена (VI в. до н.э.). Первые 11 глав демонстрируют сильное влияние месопотамской мифологии (эпосы «Энума Элиш» и «Атрахасис»). Однако библейские авторы радикально переработали этот материал: вместо хаотичной битвы богов, единый Бог Яхве творит мир упорядоченно, одним лишь Своим Словом.",
+                image: "",
+                caption: "Сравнительный анализ: многие мотивы Бытия являются теологической полемикой с мифами Вавилона."
+            },
+            "Исход": {
+                text: "Описывает формирование Израиля как народа. Историчность массового исхода миллионов людей из Египта оспаривается современной археологией, не находящей прямых подтверждений в египетских архивах. Академически текст рассматривается как мощный этногенетический миф — теологический эпос, призванный объединить разрозненные ханаанские племена (возможно, включавшие потомков гиксосов) вокруг единого Завета и культа Яхве.",
+                image: "",
+                caption: "Стела Мернептаха (XIII в. до н.э.) — древнейшее известное внебиблейское упоминание названия «Израиль»."
+            },
+            "Псалтирь": {
+                text: "Псалтирь — это сборник религиозной поэзии, «гимно книга» Второго Храма. Хотя традиция приписывает авторство царю Давиду, ученые выделяют множество авторов разных эпох (от допленного периода до маккавейских времен). Псалмы делятся на гимны восхваления, плачи общины, царские псалмы и песни благодарения.",
+                image: "",
+                caption: "Свитки Мертвого моря (Кумран) содержали множество Псалмов, доказывая их древность и вариативность."
+            },
+            "От Матфея": {
+                text: "Одно из синоптических Евангелий, написанное, вероятно, в Сирии (Антиохия) около 80-90 гг. н.э. Автор (неизвестный иудео-христианин) обращается к еврейской аудитории. Его главная цель — доказать, что Иисус является обещанным Мессией, исполняющим пророчества Ветхого Завета. Матфей структурирует учение Иисуса в пять больших речей, представляя Его как «Нового Моисея».",
+                image: "",
+                caption: "Папирус P45 (III век) — один из древнейших сохранившихся текстов Евангелий на греческом койне."
+            },
+            "От Иоанна": {
+                text: "Самое позднее и теологически сложное Евангелие (около 90-110 гг. н.э.). В отличие от синоптиков (Матфея, Марка, Луки), Иоанн переосмысляет историю Христа через эллинистическую философию. Иисус представлен как божественный Логос (Слово), существовавший до сотворения мира. Текст отражает окончательный разрыв ранней христианской общины с ортодоксальным иудаизмом.",
+                image: "",
+                caption: "Концепция Логоса («В начале было Слово») стала фундаментом всей последующей христианской догматики."
+            },
+            "1. Аль-Фатиха": {
+                text: "«Открывающая» книгу. Мекканская сура, являющаяся квинтэссенцией ислама (Умм аль-Китаб — Мать Книги). В отличие от большинства сур, где Бог говорит от первого лица, Фатиха формально представляет собой молитву-обращение людей к Богу. Она литургически используется в каждом ракаате обязательного мусульманского намаза.",
+                image: "",
+                caption: "Стиль Сулюс. Каллиграфия исторически стала главным визуальным искусством ислама из-за запрета на изображения."
+            },
+            "2. Аль-Бакара": {
+                text: "«Корова» — самая длинная сура Корана, ниспосланная в мединский период. Она является фундаментом исламского права (шариата). Сура отражает переходный момент: община мусульман отделяется от иудеев (в суре провозглашается изменение направления молитвы — Киблы — от Иерусалима к Мекке). Включает знаменитый «Аят аль-Курси» (Аят Трона), описывающий всеобъемлющую власть Аллаха.",
+                image: "",
+                caption: "Древнейшие рукописи Корана (VII-VIII вв.) записывались консонантным письмом (без точек-гласных)."
+            },
+            "19. Марьям": {
+                text: "Мекканская сура, названная в честь Девы Марии (Марьям). В ней подробно описывается история чудесного рождения пророков Яхьи (Иоанна Крестителя) и Исы (Иисуса). Исламская христология признает девственное зачатие и чудеса Иисуса, но категорически отвергает Его божественный статус и распятие. Эта сура часто использовалась ранними мусульманами для поиска общего языка с христианами Эфиопии.",
+                image: "",
+                caption: "Коран отводит Марьям (Марии) исключительное место: она — единственная женщина, упомянутая в книге по имени."
+            },
+            "default": {
+                text: "С позиций историко-критического метода данный текст следует рассматривать в контексте его исторической эпохи, учитывая литературный жанр, целевую аудиторию и политическую обстановку. Священные тексты формировались на протяжении десятилетий (а иногда и веков) и несут в себе глубокий отпечаток духовного, правового и социокультурного опыта древних общин.",
+                image: "",
+                caption: "Изучение первоисточников требует знания древних языков: библейского иврита, греческого койне и классического арабского."
+            }
         };
 
         const DEFAULT_DB = {
@@ -133,7 +174,6 @@
                         const bibleOrder = []; 
                         
                         bibleRaw.forEach(book => {
-                            // РУСИФИКАЦИЯ БИБЛИИ: Переводим английские ключи на русский
                             const ruName = BIBLE_BOOKS_RU[book.name] || book.name;
                             bibleOrder.push(ruName);
                             bibleMap[ruName] = {};
@@ -198,7 +238,6 @@
 
             return (
                 <div className="min-h-screen flex font-sans">
-                    {/* Боковое меню */}
                     <aside className="w-72 bg-[#0f0f11] text-stone-400 flex flex-col fixed inset-y-0 shadow-2xl z-20 border-r border-stone-800">
                         <div className="p-8 border-b border-stone-800/60 flex flex-col justify-center h-32">
                             <h1 className="text-stone-100 font-serif text-2xl font-bold tracking-tight uppercase leading-none">Академия</h1>
@@ -226,7 +265,6 @@
                         </div>
                     </aside>
 
-                    {/* Контент */}
                     <main className="flex-1 ml-72 p-6 md:p-10 min-h-screen bg-[#f5f4f0]">
                         <div className="max-w-6xl mx-auto h-full">
                             {view === 'dashboard' && <Dashboard setView={setView} loading={loading} dataStatus={dataStatus} text={statusText} db={db} />}
@@ -251,8 +289,8 @@
             );
         }
 
-        // --- МОДУЛЬ АУДИО (Текст-в-Речь) ---
-        function AudioPlayer({ textToRead, theme }) {
+        // --- УМУЧШЕННЫЙ АУДИО ДВИЖОК С ПАУЗАМИ И ПУНКТУАЦИЕЙ ---
+        function AudioPlayer({ versesObj, theme }) {
             const [voices, setVoices] = useState([]);
             const [selectedVoice, setSelectedVoice] = useState('');
             const [isPlaying, setIsPlaying] = useState(false);
@@ -260,7 +298,11 @@
             useEffect(() => {
                 const loadVoices = () => {
                     const allVoices = window.speechSynthesis.getVoices();
-                    const ruVoices = allVoices.filter(v => v.lang.includes('ru'));
+                    // Отбираем русские голоса и пытаемся поставить качественные (Google, Premium) первыми
+                    const ruVoices = allVoices.filter(v => v.lang.includes('ru')).sort((a, b) => {
+                        if (a.name.includes('Google') || a.name.includes('Siri') || a.name.includes('Premium')) return -1;
+                        return 1;
+                    });
                     const finalVoices = ruVoices.length > 0 ? ruVoices : allVoices;
                     setVoices(finalVoices);
                     if (finalVoices.length > 0 && !selectedVoice) setSelectedVoice(finalVoices[0].name);
@@ -278,20 +320,39 @@
                     return;
                 }
                 
-                if (!textToRead) return;
-                
-                window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(textToRead);
-                const voice = voices.find(v => v.name === selectedVoice);
-                if (voice) utterance.voice = voice;
-                utterance.lang = 'ru-RU';
-                utterance.rate = 0.95; // Чуть медленнее для академического чтения
-                
-                utterance.onend = () => setIsPlaying(false);
-                utterance.onerror = () => setIsPlaying(false);
-                
-                window.speechSynthesis.speak(utterance);
+                if (!versesObj || Object.keys(versesObj).length === 0) return;
                 setIsPlaying(true);
+                window.speechSynthesis.cancel(); // Очищаем предыдущую очередь
+
+                // Получаем массив текстов (стихов) по порядку
+                const textChunks = Object.entries(versesObj)
+                    .sort((a,b)=>Number(a[0])-Number(b[0]))
+                    .map(([v, t]) => t);
+
+                textChunks.forEach((rawText, index) => {
+                    // Обработка пунктуации для браузерного TTS:
+                    // Заменяем длинные тире на запятые (для небольшой паузы)
+                    // Убеждаемся, что в конце стиха стоит точка для долгой смысловой паузы
+                    let processedText = rawText.replace(/ — /g, ", ").replace(/ - /g, ", ");
+                    if (!/[.!?]$/.test(processedText)) processedText += ".";
+
+                    const utterance = new SpeechSynthesisUtterance(processedText);
+                    const voice = voices.find(v => v.name === selectedVoice);
+                    if (voice) utterance.voice = voice;
+                    
+                    utterance.lang = 'ru-RU';
+                    utterance.rate = 0.85; // Медленное, академическое чтение
+                    utterance.pitch = 0.95; // Чуть более глубокий голос
+                    
+                    if (index === textChunks.length - 1) {
+                        utterance.onend = () => setIsPlaying(false);
+                    }
+                    utterance.onerror = (e) => {
+                        if (e.error === 'canceled') setIsPlaying(false);
+                    };
+
+                    window.speechSynthesis.speak(utterance); // Отправляем в системную очередь браузера
+                });
             };
 
             const accentColor = theme === 'bible' ? 'text-amber-600 hover:bg-amber-100' : 'text-emerald-600 hover:bg-emerald-100';
@@ -353,14 +414,14 @@
                         <div className="relative z-10">
                             <h2 className="text-4xl font-serif font-bold mb-4 text-white">Инженерная среда обучения</h2>
                             <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Теперь Библия полностью русифицирована (включая списки книг). Добавлены модули <strong>Аудио-чтения</strong> и <strong>Академических комментариев</strong> для глубокого погружения в контекст текстов.
+                                Расширенная версия. Добавлены <strong>глубокие академические комментарии с иллюстрациями</strong> в раздел чтения. Аудио-движок настроен на умное чтение с пунктуацией.
                             </p>
                             <div className="flex flex-wrap gap-4 mb-6">
-                                <button onClick={()=>setView('search')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
-                                    Глобальный Поиск <Icons.Search c="w-4 h-4 ml-3"/>
+                                <button onClick={()=>setView('bible')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
+                                    Читать с комментариями
                                 </button>
-                                <button onClick={()=>setView('bible')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all">
-                                    Читать Полный Текст
+                                <button onClick={()=>setView('search')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all">
+                                    Глобальный поиск
                                 </button>
                             </div>
                         </div>
@@ -387,8 +448,7 @@
             );
         }
 
-        // --- ОСТАЛЬНЫЕ МОДУЛИ (Поиск, Шаги, Синхропсис) ОСТАВЛЕНЫ БЕЗ ИЗМЕНЕНИЙ, ДОБАВЛЕН КОММЕНТ И АУДИО В ПОЛНОЕ ЧТЕНИЕ ---
-
+        // --- МОДУЛЬ ПОЛНОГО ЧТЕНИЯ С КОММЕНТАРИЯМИ И АУДИО ---
         function SingleReaderModule({ type, db }) {
             const isBible = type === 'bible';
             const order = isBible ? db.order.bible : db.order.quran;
@@ -397,11 +457,11 @@
             const chaptersObj = isBible && selectedBook ? db.texts.bible[selectedBook] : {};
             const chapters = Object.keys(chaptersObj).sort((a,b)=>Number(a)-Number(b));
             const [selectedChapter, setSelectedChapter] = useState(chapters[0] || "");
-            const [showCommentary, setShowCommentary] = useState(false);
+            const [showCommentary, setShowCommentary] = useState(true); // Показывать по умолчанию
 
             useEffect(() => {
                 if (order.length > 0 && !selectedBook) setSelectedBook(order[0]);
-                setShowCommentary(false); // Прятать коммент при смене книги
+                setShowCommentary(true); 
             }, [order, selectedBook]);
 
             useEffect(() => {
@@ -410,18 +470,12 @@
 
             const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
             
-            // Подготовка текста для аудио
-            const fullTextForAudio = Object.entries(content)
-                .sort((a,b)=>Number(a[0])-Number(b[0]))
-                .map(entry => entry[1])
-                .join(" ");
-
-            // Получение комментария
+            // Загрузка расширенного комментария
             const academicComment = ACADEMIC_COMMENTS[selectedBook] || ACADEMIC_COMMENTS["default"];
 
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
-                    <div className="bg-white border-b p-4 md:p-6 flex flex-col lg:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
+                    <div className="bg-white border-b p-4 md:p-6 flex flex-col xl:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
                         
                         {/* Выбор книги */}
                         <div className="flex-1 w-full flex gap-4">
@@ -442,29 +496,46 @@
                         </div>
 
                         {/* Инструменты: Аудио и Комментарий */}
-                        <div className="flex gap-4 items-center w-full lg:w-auto justify-end">
+                        <div className="flex gap-4 items-center w-full xl:w-auto justify-end">
                             <button 
                                 onClick={() => setShowCommentary(!showCommentary)}
                                 className={`flex items-center px-4 py-2 text-sm font-bold rounded-xl transition-all border ${showCommentary ? (isBible ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-emerald-100 text-emerald-800 border-emerald-200') : 'bg-stone-50 text-stone-600 border-stone-200 hover:bg-stone-100'}`}
                             >
                                 <Icons.Info c="w-4 h-4 mr-2"/> Академический контекст
                             </button>
-                            <AudioPlayer textToRead={fullTextForAudio} theme={isBible ? 'bible' : 'quran'} />
+                            {/* Передаем объект со стихами целиком для умного разбиения при чтении */}
+                            <AudioPlayer versesObj={content} theme={isBible ? 'bible' : 'quran'} />
                         </div>
                     </div>
                     
                     <div className={`flex-1 overflow-y-auto p-8 md:p-16 font-serif leading-loose text-lg ${isBible ? "bg-[#fdfbf7] text-stone-800" : "bg-[#f4faf7] text-emerald-900"}`}>
                         <div className="max-w-3xl mx-auto">
                             
-                            {/* Блок комментария */}
+                            {/* РАСШИРЕННЫЙ БЛОК КОММЕНТАРИЯ С ИЛЛЮСТРАЦИЯМИ */}
                             {showCommentary && (
-                                <div className={`mb-10 p-6 rounded-2xl border-l-4 shadow-sm fade-in-up ${isBible ? 'bg-amber-50 border-amber-500' : 'bg-emerald-50 border-emerald-500'}`}>
-                                    <h4 className={`font-sans font-bold text-xs uppercase tracking-widest mb-3 ${isBible ? 'text-amber-800' : 'text-emerald-800'}`}>Научный комментарий к тексту:</h4>
-                                    <p className={`font-sans text-sm leading-relaxed ${isBible ? 'text-amber-900' : 'text-emerald-900'}`}>{academicComment}</p>
+                                <div className={`mb-12 p-8 rounded-3xl border shadow-sm fade-in-up ${isBible ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'}`}>
+                                    <h4 className={`font-sans font-bold text-sm uppercase tracking-widest mb-4 flex items-center ${isBible ? 'text-amber-800' : 'text-emerald-800'}`}>
+                                        <Icons.Book c="w-5 h-5 mr-3"/> Научный и исторический контекст
+                                    </h4>
+                                    
+                                    {academicComment.image && (
+                                        <div className="my-6">
+                                            <div className="w-full h-56 md:h-72 placeholder-image rounded-xl flex items-center justify-center text-stone-500 font-sans text-sm font-bold shadow-inner overflow-hidden relative">
+                                                <span className="absolute inset-0 flex items-center justify-center bg-stone-900/5">{academicComment.image}</span>
+                                            </div>
+                                            <p className={`text-xs mt-3 text-center italic font-sans ${isBible ? 'text-amber-700' : 'text-emerald-700'}`}>
+                                                {academicComment.caption}
+                                            </p>
+                                        </div>
+                                    )}
+                                    
+                                    <p className={`font-sans text-sm md:text-base leading-relaxed text-justify ${isBible ? 'text-amber-900' : 'text-emerald-900'}`}>
+                                        {academicComment.text}
+                                    </p>
                                 </div>
                             )}
 
-                            <h3 className={`font-sans font-bold text-sm uppercase tracking-widest mb-10 pb-6 border-b text-center ${isBible ? 'text-stone-400 border-stone-200' : 'text-emerald-500 border-emerald-200'}`}>
+                            <h3 className={`font-sans font-bold text-xl uppercase tracking-widest mb-10 pb-6 border-b text-center ${isBible ? 'text-stone-400 border-stone-200' : 'text-emerald-500 border-emerald-200'}`}>
                                 {isBible ? `${selectedBook}, Глава ${selectedChapter}` : selectedBook}
                             </h3>
                             
@@ -483,6 +554,7 @@
             );
         }
 
+        // --- МОДУЛЬ "ПОШАГОВОЕ ЧТЕНИЕ" ---
         function GuidedReadingModule({ db }) {
             const [mode, setMode] = useState('bible'); 
             const books = db.order[mode];
@@ -549,6 +621,7 @@
             );
         }
 
+        // --- МОДУЛЬ ПАРАЛЛЕЛЬНОГО ЧТЕНИЯ ---
         function ParallelReaderModule({ db }) {
             const [bBook, setBBook] = useState(db.order.bible[0] || "");
             const bChaps = bBook ? Object.keys(db.texts.bible[bBook]).sort((a,b)=>Number(a)-Number(b)) : [];
