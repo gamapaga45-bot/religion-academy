@@ -45,20 +45,40 @@
             Moon: ({c}) => <IconBase className={c}><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></IconBase>
         };
 
-        // --- БАЗА ДАННЫХ ПО УМОЛЧАНИЮ ---
+        // --- БАЗА ДАННЫХ ПО УМОЛЧАНИЮ (Расширенная) ---
         const DEFAULT_DB = {
             curriculum: [
-                { id: 1, title: "Исторический контекст", content: "Религии авраамического круга формировались в условиях Ближнего Востока. Понимание географии, торговых путей и племенного устройства необходимо для анализа священных текстов.", nuance: "Академический метод требует дистанцироваться от теологических оценок." },
-                { id: 2, title: "Текстология Библии", content: "Библия — это многовековая библиотека. Канон формировался на церковных соборах, отсекая апокрифическую литературу.", nuance: "Важно знать 'Документальную гипотезу' происхождения Пятикнижия." },
-                { id: 3, title: "Структура Корана", content: "Коран состоит из 114 сур. В отличие от Библии, он имеет единый источник. Суры делятся на Мекканские и Мединские.", nuance: "Принципиально важно понимать 'Асбаб ан-нузуль' — обстоятельства ниспослания." }
+                { id: 1, title: "Исторический контекст Ближнего Востока", content: "Религии авраамического круга формировались в суровых условиях Ближнего Востока. Понимание географии, торговых путей и культуры кочевников необходимо для правильной расшифровки метафор в священных текстах.", nuance: "Академический метод требует дистанцироваться от теологических оценок." },
+                { id: 2, title: "Текстология Библии: Формирование канона", content: "Библия — это многовековая библиотека, писавшаяся более тысячи лет разными авторами. Процесс отбора книг в официальный канон завершился лишь к IV веку н.э., отсекая множество апокрифической литературы.", nuance: "В библеистике применяется 'Документальная гипотеза', выделяющая разные источники (Яхвист, Элохист и др.)." },
+                { id: 3, title: "Структура Корана: Мекка и Медина", content: "Коран состоит из 114 сур. В отличие от Библии, он имеет единый источник. Суры делятся на Мекканские (период проповеди единобожия) и Мединские (период создания общины и законов).", nuance: "Принципиально важно понимать 'Асбаб ан-нузуль' — обстоятельства и причины ниспослания конкретных аятов." },
+                { id: 4, title: "Параллели: Сотворение мира", content: "И в книге Бытие, и в сурах Корана описывается акт божественного творения. Однако акценты различаются: Библия дает подробную хронологию 6 дней, тогда как Коран использует процесс творения как аргумент всемогущества Бога, разбрасывая упоминания по разным сурам.", nuance: "Сравнительное религиоведение изучает не только сходства, но и то, как общий миф адаптируется под нужды разных общин." },
+                { id: 5, title: "Параллели: Фигура Авраама (Ибрахима)", content: "Авраам является праотцом всех трех традиций. В иудаизме он — первый патриарх, заключивший Завет. В христианстве — отец всех верующих. В исламе Ибрахим — 'Ханиф' (истинный монотеист), построивший Каабу вместе с сыном Исмаилом.", nuance: "Именно расхождение в том, кого Авраам должен был принести в жертву (Исаака или Исмаила), формирует важный водораздел." },
+                { id: 6, title: "Заключение: Академический подход", content: "Академическое изучение текстов учит нас видеть историю формирования идей. Тексты живут и развиваются вместе с интерпретирующими их общинами. Следующим шагом мы рекомендуем перейти к самостоятельному параллельному чтению.", nuance: "Текст — это памятник своей эпохи. Его понимание требует знания языков оригинала (древнееврейского, греческого, арабского)." }
             ],
             quiz: [
                 { id: 1, q: "Как расположены суры в Коране в основном?", options: ["Хронологически", "От длинных к коротким", "По алфавиту"], correct: 1 },
-                { id: 2, q: "На каком языке написан оригинал Нового Завета?", options: ["Иврит", "Латынь", "Койне (греческий)"], correct: 2 }
+                { id: 2, q: "На каком языке написан оригинал Нового Завета?", options: ["Иврит", "Латынь", "Койне (греческий)"], correct: 2 },
+                { id: 3, q: "Как называется гипотеза происхождения Пятикнижия?", options: ["Документальная", "Традиционная", "Синтетическая"], correct: 0 }
             ],
             texts: {
-                bible: { "Бытие": { "1": { "1": "В начале сотворил Бог небо и землю." } } },
-                quran: { "1. Аль-Фатиха": { "1": "Во имя Аллаха, Милостивого, Милосердного!" } }
+                bible: { 
+                    "Бытие": { 
+                        "1": { "1": "В начале сотворил Бог небо и землю.", "2": "Земля же была безвидна и пуста, и тьма над бездною, и Дух Божий носился над водою." },
+                        "2": { "1": "Так совершены небо и земля и все воинство их." }
+                    },
+                    "Исход": {
+                        "1": { "1": "Вот имена сынов Израилевых, которые вошли в Египет с Иаковом, вошли каждый со всем домом своим." }
+                    }
+                },
+                quran: { 
+                    "1. Аль-Фатиха": { 
+                        "1": "Во имя Аллаха, Милостивого, Милосердного!",
+                        "2": "Хвала Аллаху, Господу миров."
+                    },
+                    "37. Ас-Саффат": {
+                        "102": "Когда сын достиг того, чтобы разделить с ним усердие, он сказал: «О сын мой! Воистину, я видел во сне, что я приношу тебя в жертву...»"
+                    }
+                }
             }
         };
 
@@ -68,13 +88,15 @@
             const [view, setView] = useState('dashboard');
             const [db, setDb] = useState(DEFAULT_DB);
             const [loading, setLoading] = useState(true);
+            const [dataStatus, setDataStatus] = useState('loading');
 
             useEffect(() => {
                 const loadData = async () => {
                     try {
                         const timestamp = new Date().getTime();
-                        const resB = await fetch(`data/bible.json?v=${timestamp}`);
-                        const resQ = await fetch(`data/quran.json?v=${timestamp}`);
+                        // ЖЕСТКИЕ ССЫЛКИ НА ВАШ GITHUB РЕПОЗИТОРИЙ, ЧТОБЫ ГАРАНТИРОВАТЬ ЗАГРУЗКУ ВАШИХ 50 ГЛАВ
+                        const resB = await fetch(`https://raw.githubusercontent.com/gamapaga45-bot/religion-academy/main/data/bible.json?v=${timestamp}`);
+                        const resQ = await fetch(`https://raw.githubusercontent.com/gamapaga45-bot/religion-academy/main/data/quran.json?v=${timestamp}`);
 
                         if (!resB.ok || !resQ.ok) {
                             throw new Error(`Ошибка сети: Библия ${resB.status}, Коран ${resQ.status}`);
@@ -84,10 +106,13 @@
                         const qData = await resQ.json();
                         setDb(prev => ({
                             ...prev,
+                            // Слияние данных с сохранением уроков и тестов из DEFAULT_DB
                             texts: { bible: bData.content, quran: qData.content }
                         }));
+                        setDataStatus('success');
                     } catch (e) { 
-                        console.warn("Данные не найдены, используем демо-базу. Причина:", e.message); 
+                        console.warn("Данные с GitHub не загружены, используем встроенную демо-базу. Причина:", e.message); 
+                        setDataStatus('error');
                     }
                     setLoading(false);
                 };
@@ -102,7 +127,7 @@
                             <h1 className="text-stone-100 font-serif text-2xl font-bold tracking-tight uppercase leading-none">Академия</h1>
                             <span className="text-amber-600 text-xs font-sans font-bold tracking-[0.25em] mt-2">РЕЛИГИОВЕДЕНИЯ</span>
                         </div>
-                        <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+                        <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto custom-scrollbar">
                             <div className="text-[10px] font-bold text-stone-600 uppercase tracking-widest px-4 mb-3 mt-2">Обучение</div>
                             <NavItem icon={Icons.Dash} label="Главная панель" active={view==='dashboard'} onClick={()=>setView('dashboard')} />
                             <NavItem icon={Icons.Cap} label="Шаги изучения" active={view==='steps'} onClick={()=>setView('steps')} />
@@ -118,7 +143,7 @@
                     {/* Контент */}
                     <main className="flex-1 ml-72 p-6 md:p-10 min-h-screen bg-[#f5f4f0]">
                         <div className="max-w-6xl mx-auto">
-                            {view === 'dashboard' && <Dashboard setView={setView} loading={loading} />}
+                            {view === 'dashboard' && <Dashboard setView={setView} loading={loading} dataStatus={dataStatus} />}
                             {view === 'steps' && <StepsModule lessons={db.curriculum} />}
                             {view === 'reader' && <ReaderModule texts={db.texts} />}
                             {view === 'bible' && <SingleReaderModule type="bible" texts={db.texts.bible} />}
@@ -147,20 +172,24 @@
             );
         }
 
-        function Dashboard({ setView, loading }) {
+        function Dashboard({ setView, loading, dataStatus }) {
             return (
                 <div className="bg-[#1c1b1d] text-stone-100 p-12 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
                     <div className="relative z-10">
                         <h2 className="text-4xl font-serif font-bold mb-4 text-white">Инженерная среда обучения</h2>
                         <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                            Система готова к полномасштабному изучению. Теперь вы можете изучать тексты параллельно (Синхропсис) или читать каждую книгу в индивидуальном режиме.
+                            Система готова к полномасштабному изучению. Вы можете проходить шаги обучения, изучать тексты параллельно или читать каждую книгу в индивидуальном режиме.
                         </p>
-                        <div className="flex gap-4">
+                        <div className="flex flex-wrap gap-4 mb-6">
                             <button onClick={()=>setView('steps')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-amber-900/20 transition-all">Начать шаги</button>
-                            <div className="flex items-center px-6 py-3 rounded-xl bg-stone-800/50 text-sm text-stone-400 font-bold border border-stone-700">
-                                <div className={`w-2 h-2 rounded-full mr-3 ${loading ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`}></div>
-                                {loading ? "Синхронизация баз данных..." : "База данных загружена"}
-                            </div>
+                            <button onClick={()=>setView('reader')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-3 rounded-xl font-bold transition-all">Параллельное чтение</button>
+                        </div>
+                        
+                        {/* Статус загрузки базы данных */}
+                        <div className="inline-flex items-center px-5 py-3 rounded-xl bg-stone-800/50 text-sm font-bold border border-stone-700">
+                            {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-3"></div><span className="text-stone-400">Загрузка текстов с GitHub...</span></>}
+                            {!loading && dataStatus === 'success' && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-3"></div><span className="text-emerald-400">Полные базы текстов успешно загружены!</span></>}
+                            {!loading && dataStatus === 'error' && <><div className="w-2 h-2 rounded-full bg-rose-500 mr-3"></div><span className="text-rose-400">Сервер GitHub недоступен. Включена Демо-версия.</span></>}
                         </div>
                     </div>
                     <Icons.Compare c="absolute -right-10 -bottom-20 w-[400px] h-[400px] text-stone-800 opacity-30 pointer-events-none" />
@@ -171,6 +200,9 @@
         function StepsModule({ lessons }) {
             const [idx, setIdx] = useState(0);
             const lesson = lessons[idx];
+            
+            if (!lesson) return <div>Загрузка шагов...</div>;
+
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 p-10 min-h-[550px] flex flex-col">
                     <div className="flex justify-between items-center mb-10 border-b pb-6">
@@ -200,6 +232,7 @@
             const booksOrSurahs = Object.keys(texts || {});
             const [selectedBook, setSelectedBook] = useState(booksOrSurahs[0] || "");
             
+            // Защита от пустых данных для выпадающих списков
             const chapters = isBible && selectedBook && texts[selectedBook] ? Object.keys(texts[selectedBook]) : [];
             const [selectedChapter, setSelectedChapter] = useState(chapters[0] || "");
 
@@ -225,6 +258,16 @@
                 ? "bg-[#fdfbf7] text-stone-800 ring-amber-500" 
                 : "bg-[#f4faf7] text-emerald-900 ring-emerald-500";
 
+            // Функция обработки смены книги (исправление бага)
+            const handleBookChange = (e) => {
+                const newBook = e.target.value;
+                setSelectedBook(newBook);
+                if (isBible) {
+                    const newChapters = Object.keys(texts[newBook] || {});
+                    setSelectedChapter(newChapters.length > 0 ? newChapters[0] : "");
+                }
+            };
+
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
                     <div className="bg-white border-b p-6 flex flex-col md:flex-row gap-4 items-center justify-between border-stone-200">
@@ -235,7 +278,7 @@
                                 </label>
                                 <select 
                                     value={selectedBook} 
-                                    onChange={e=>setSelectedBook(e.target.value)} 
+                                    onChange={handleBookChange} 
                                     className={`w-full p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 outline-none cursor-pointer ${isBible ? 'focus:ring-amber-500' : 'focus:ring-emerald-500'}`}
                                 >
                                     {booksOrSurahs.map(b => <option key={b} value={b}>{b}</option>)}
@@ -290,13 +333,21 @@
 
             useEffect(() => { if(bBooks.length > 0 && !bBook) setBBook(bBooks[0]); }, [texts.bible]);
 
+            // Обработка смены книги в Библии
+            const handleBibleBookChange = (e) => {
+                const newBook = e.target.value;
+                setBBook(newBook);
+                const newChapters = Object.keys(texts.bible[newBook] || {});
+                setBChap(newChapters.length > 0 ? newChapters[0] : "");
+            };
+
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
                     <div className="bg-white border-b p-4 grid grid-cols-2 divide-x border-stone-200">
                         <div className="pr-4 space-y-2">
                             <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block">Корпус Библии</label>
                             <div className="flex gap-2">
-                                <select value={bBook} onChange={e=>{setBBook(e.target.value); setBChap(Object.keys(texts.bible[e.target.value])[0])}} className="flex-1 p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 ring-amber-500 outline-none cursor-pointer">
+                                <select value={bBook} onChange={handleBibleBookChange} className="flex-1 p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 ring-amber-500 outline-none cursor-pointer">
                                     {bBooks.map(b => <option key={b} value={b}>{b}</option>)}
                                 </select>
                                 <select value={bChap} onChange={e=>setBChap(e.target.value)} className="w-24 p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 focus:ring-2 ring-amber-500 outline-none cursor-pointer">
