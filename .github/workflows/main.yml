@@ -2,9 +2,13 @@ name: Update Religion Data
 
 on:
   push:
-    branches: [ main ] # Скрипт будет запускаться при каждом изменении кода
+    branches: [ main ]
   schedule:
-    - cron: '0 0 * * *' # Также будет запускаться автоматически раз в сутки
+    - cron: '0 0 * * *'
+
+# ВОТ ЭТОТ БЛОК РЕШАЕТ ПРОБЛЕМУ:
+permissions:
+  contents: write
 
 jobs:
   build:
