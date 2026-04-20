@@ -966,12 +966,10 @@
                 {aiModal && ReactDOM.createPortal(
                     <div
                         className="fixed inset-0 flex items-center justify-center p-4"
-                        style={{zIndex:9999, backgroundColor:'rgba(0,0,0,0.65)', backdropFilter:'blur(6px)'}}
-                        onClick={(e) => { if(e.target === e.currentTarget) setAiModal(null); }}>
+                        style={{zIndex:9999, backgroundColor:'rgba(0,0,0,0.65)', backdropFilter:'blur(6px)'}}>
                         <div
                             className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl flex flex-col"
-                            style={{maxHeight:'88vh'}}
-                            onClick={e => e.stopPropagation()}>
+                            style={{maxHeight:'88vh'}}>
                             <div className={`px-6 py-4 flex items-start justify-between flex-shrink-0 border-b rounded-t-3xl ${isBible ? 'border-amber-100 bg-amber-50' : 'border-emerald-100 bg-emerald-50'}`}>
                                 <div className="flex-1 min-w-0 pr-4">
                                     <div className="flex items-center gap-2 mb-2">
@@ -1064,7 +1062,7 @@
                                 <div key={v} className="mb-3 flex items-start gap-3 group hover:bg-stone-50/80 rounded-xl p-2 transition-all">
                                     <sup className={`text-xs font-sans font-bold mt-2.5 flex-shrink-0 w-5 text-right ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}>{v}</sup>
                                     <span className="flex-1 text-xl leading-relaxed">{t}</span>
-                                    <div className="flex-shrink-0 flex gap-1.5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex-shrink-0 flex gap-1.5 ml-1">
                                         <button
                                             onClick={() => copyToClipboard(t)}
                                             className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 border border-stone-200 transition-all"
