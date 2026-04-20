@@ -606,6 +606,7 @@
                             {v:'plain',     icon:'📖', label:'Основы'},
                             {v:'bible',     icon:'📜', label:'Тексты'},
                             {v:'search',    icon:'🔍', label:'Поиск'},
+                            {v:'angels',    icon:'👼', label:'Ангелы'},
                             {v:'deep',      icon:'✨', label:'AI'},
                             {v:'split', icon:'⚖️', label:'Экран'},
                         ].map(({v,icon,label})=>(
@@ -632,6 +633,7 @@
                             {view === 'quran' && <SingleReaderModule type="quran" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             {view === 'religions' && <WorldReligionsModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
                             {view === 'worship' && <WorshipModule apiKey={apiKey} />}
+                            {view === 'angels' && <AngelsDemonsModule apiKey={apiKey} />}
                             {view === 'religion_reader' && <ReligionReaderModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
                             {view === 'split' && <SplitViewModule db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             </div>
@@ -1345,6 +1347,7 @@
                     <NI emoji="✨" label="AI Анализ тем" v="deep" badge="AI"/>
                     <NI emoji="⚡" label="Мифология религий" v="mythology" badge="AI"/>
                     <NI emoji="📜" label="Рукописи и источники" v="manuscripts"/>
+                    <NI emoji="👼" label="Ангелы и Демоны" v="angels" badge="NEW"/>
                     <NI emoji="🏛" label="Энциклопедия" v="simple"/>
 
                     {/* AI КЛЮЧ */}
@@ -1530,6 +1533,7 @@
                     desc:'Используйте AI для глубокого разбора. Этимология, история, богословие, мифология.',
                     items:[
                         {label:'AI Анализ тем',    v:'deep',        hint:'Тематический разбор с нейросетью'},
+                        {label:'Ангелы и Демоны', v:'angels', hint:'Писания, иллюстрации, манускрипты'},
                         {label:'Мифология',         v:'mythology',   hint:'Сравнительная мифология религий'},
                         {label:'Рукописи',          v:'manuscripts', hint:'Оригинальные манускрипты'},
                     ]
@@ -1537,10 +1541,10 @@
             ];
 
             const colors = {
-                amber:  {bg:'bg-amber-950/30',  border:'border-amber-800/40',  badge:'bg-amber-900/40 text-amber-400',  btn:'bg-amber-800/30 hover:bg-amber-700/40 text-amber-300', num:'bg-amber-600'},
-                emerald:{bg:'bg-emerald-950/20', border:'border-emerald-800/40',badge:'bg-emerald-900/40 text-emerald-400',btn:'bg-emerald-800/30 hover:bg-emerald-700/40 text-emerald-300',num:'bg-emerald-600'},
-                blue:   {bg:'bg-blue-950/20',   border:'border-blue-800/40',   badge:'bg-blue-900/40 text-blue-400',   btn:'bg-blue-800/30 hover:bg-blue-700/40 text-blue-300', num:'bg-blue-600'},
-                purple: {bg:'bg-purple-950/20', border:'border-purple-800/40', badge:'bg-purple-900/40 text-purple-400',btn:'bg-purple-800/30 hover:bg-purple-700/40 text-purple-300',num:'bg-purple-600'},
+                amber:  {bg:'bg-amber-50',   border:'border-amber-200',   badge:'bg-amber-100 text-amber-800',   btn:'bg-white hover:bg-amber-100 text-amber-900 border border-amber-200',   num:'bg-amber-500',  title:'text-amber-900', desc:'text-amber-700'},
+                emerald:{bg:'bg-emerald-50', border:'border-emerald-200', badge:'bg-emerald-100 text-emerald-800',btn:'bg-white hover:bg-emerald-100 text-emerald-900 border border-emerald-200',num:'bg-emerald-500',title:'text-emerald-900',desc:'text-emerald-700'},
+                blue:   {bg:'bg-blue-50',    border:'border-blue-200',    badge:'bg-blue-100 text-blue-800',     btn:'bg-white hover:bg-blue-100 text-blue-900 border border-blue-200',     num:'bg-blue-500',   title:'text-blue-900',  desc:'text-blue-700'},
+                purple: {bg:'bg-purple-50',  border:'border-purple-200',  badge:'bg-purple-100 text-purple-800', btn:'bg-white hover:bg-purple-100 text-purple-900 border border-purple-200', num:'bg-purple-500', title:'text-purple-900',desc:'text-purple-700'},
             };
 
             return (
@@ -1586,16 +1590,16 @@
                                         <span className={`w-7 h-7 rounded-full ${c.num} text-white text-xs font-black flex items-center justify-center flex-shrink-0`}>{s.step}</span>
                                         <span className="text-xl">{s.emoji}</span>
                                         <div>
-                                            <h3 className="text-white font-bold text-base leading-tight">{s.title}</h3>
+                                            <h3 className={`font-bold text-base leading-tight ${c.title}`}>{s.title}</h3>
                                         </div>
                                     </div>
-                                    <p className="text-stone-400 text-xs leading-relaxed mb-4">{s.desc}</p>
+                                    <p className={`text-xs leading-relaxed mb-4 ${c.desc}`}>{s.desc}</p>
                                     <div className="space-y-2">
                                         {s.items.map(item => (
                                             <button key={item.v} onClick={()=>setView(item.v)}
                                                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs font-bold transition-all ${c.btn}`}>
                                                 <span>{item.label}</span>
-                                                <span className="text-stone-500 font-normal text-[10px] hidden sm:block">{item.hint}</span>
+                                                <span className="text-stone-400 font-normal text-[10px] hidden sm:block">{item.hint}</span>
                                             </button>
                                         ))}
                                     </div>
@@ -1900,6 +1904,7 @@
         </script>
 
         <script type="text/babel">
+
         // --- МОДУЛЬ ЧТЕНИЯ С ИНТЕГРАЦИЕЙ ZVENO AI ---
         function SingleReaderModule({ type, db, apiKey, setAiModal }) {
             const isBible = type === 'bible';
@@ -1921,6 +1926,29 @@
             }, [selectedBook, chapters, isBible, selectedChapter]);
 
             const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
+
+            // ── Иллюстрации к книгам Библии и сурам Корана ──────────────────
+            const BOOK_ILLUSTRATIONS = {
+                'Бытие':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg', cap:'Рембрандт «Адам и Ева» (1638), Рейксмюзеум'},{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg', cap:'Микеланджело «Сотворение Адама» (1512), Сикстинская капелла'}],
+                'Исход':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg/800px-Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg', cap:'Казни Египетские, иллюстрация XIX в.'},{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg/800px-Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg', cap:'Фредерик Черч «Моисей взирает на Землю Обетованную»'}],
+                'Псалтирь':   [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg/800px-Tickhill_Psalter%2C_David_Playing_the_Harp.jpg', cap:'Давид играет на арфе. Тикхиллская Псалтирь (ок. 1310)'}],
+                'Иов':        [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg/800px-William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg', cap:'Уильям Блейк «Сатана поражает Иова» (1826)'}],
+                'Исайя':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Isaiah_from_the_Sistine_Chapel_ceiling.jpg/800px-Isaiah_from_the_Sistine_Chapel_ceiling.jpg', cap:'Микеланджело «Исайя» (1508–1512), Сикстинская капелла'}],
+                'Откровение': [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Apocalypse_vasnetsov.jpg/800px-Apocalypse_vasnetsov.jpg', cap:'Васнецов «Апокалипсис» (1887)'},{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Durer_Revelation_Four_Riders.jpg/800px-Durer_Revelation_Four_Riders.jpg', cap:'Альбрехт Дюрер «Четыре всадника Апокалипсиса» (1498)'}],
+                'От Иоанна':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg/800px-El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg', cap:'Эль Греко «Крещение Христа»'}],
+                'От Луки':    [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/The_Annunciation%2C_by_Paolo_de_Matteis.jpg/800px-The_Annunciation%2C_by_Paolo_de_Matteis.jpg', cap:'«Благовещение» Паоло де Маттеис (1712)'}],
+                'Иезекииль':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg/800px-Ezekiel%27s_vision_by_Matthaeus_Merian.jpg', cap:'Видение Иезекииля, иллюстрация Маттеуса Мериана (1630)'}],
+                'Даниил':     [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Daniel-in-the-lions-den.jpg/800px-Daniel-in-the-lions-den.jpg', cap:'Питер Пауль Рубенс «Даниил во рву со львами» (1614–1616)'}],
+            };
+            // Суры Корана — иллюстрации
+            const SURAH_ILLUSTRATIONS = {
+                '1. Аль-Фатиха':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg/800px-Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg', cap:'Мечеть аль-Харам — самая святая мечеть ислама, Мекка'}],
+                '2. Аль-Бакара':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Quran_al_Baqara_Ayat_al_Kursi.jpg/800px-Quran_al_Baqara_Ayat_al_Kursi.jpg', cap:'Аят аль-Курси (Коран 2:255) — каллиграфия'}],
+                '12. Йусуф':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg/800px-Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg', cap:'Юсуф и Зулейха, персидская миниатюра (XVII в.)'}],
+                '19. Марьям':     [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gentile_da_Fabriano_-_Madonna_and_Child.jpg/800px-Gentile_da_Fabriano_-_Madonna_and_Child.jpg', cap:'Марьям с младенцем Исой — общая традиция'}],
+                '36. Йа Син':     [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Quran_manuscript_Ilkhanate.jpg/800px-Quran_manuscript_Ilkhanate.jpg', cap:'Страница рукописного Корана, период Ильханата (XIV в.)'}],
+                '55. Ар-Рахман':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Garden_of_Paradise_miniature.jpg/800px-Garden_of_Paradise_miniature.jpg', cap:'Сад Рая — персидская миниатюра из «Хафт Авранг»'}],
+            };
 
             let imgUrl = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=85";
             let imgFallback = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80";
@@ -2016,6 +2044,40 @@
                                     </div>
                                     <p className={`text-[11px] mt-3 text-center uppercase tracking-widest font-bold font-sans ${isBible ? 'text-amber-700' : 'text-emerald-700'}`}>{imgCap}</p>
                                 </div>
+
+                                {/* ── Иллюстрации к книге/суре ──────────────────── */}
+                                {(() => {
+                                    const ills = isBible
+                                        ? (BOOK_ILLUSTRATIONS[selectedBook] || [])
+                                        : (SURAH_ILLUSTRATIONS[selectedBook] || []);
+                                    if (!ills.length) return null;
+                                    return (
+                                        <div className="mt-6">
+                                            <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${isBible?'text-amber-700':'text-emerald-700'}`}>
+                                                🖼 Иллюстрации к {isBible ? selectedBook : selectedBook}
+                                            </p>
+                                            <div className={`grid gap-3 ${ills.length===1?'grid-cols-1':'grid-cols-2'}`}>
+                                                {ills.map((ill,ii)=>(
+                                                    <div key={ii}
+                                                        className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm"
+                                                        onClick={()=>setAiModal&&setAiModal({open:true,label:'Иллюстрация',html:`<img src="${ill.src}" style="max-width:100%;border-radius:8px"/><p style="margin-top:10px;color:#57534e;font-size:13px">${ill.cap}</p>`})||window._openLightbox&&window._openLightbox(ill.src,ill.cap)}>
+                                                        <img src={ill.src} alt={ill.cap}
+                                                            onError={e=>e.target.style.display='none'}
+                                                            className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                            style={{maxHeight:200}}/>
+                                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                                                            <span className="opacity-0 group-hover:opacity-100 text-white text-2xl drop-shadow-lg">🔍</span>
+                                                        </div>
+                                                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1.5">
+                                                            <p className="text-white text-[10px] leading-tight">{ill.cap}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
+
                                 <div className="mt-6 p-4 bg-white/60 rounded-xl border border-stone-200/50">
                                     <p className="font-sans text-sm md:text-base leading-relaxed text-stone-800">
                                         <strong>Новая функция:</strong> Вы можете запросить глубокий историко-теологический анализ любого стиха у нейросети! Наведите курсор на нужный стих и нажмите кнопку <strong>✨ AI Анализ</strong>.
@@ -2261,6 +2323,9 @@
             }
             return { matched: false, term: null };
         }
+        </script>
+
+        <script type="text/babel">
 
         // --- ГЛОБАЛЬНЫЙ ПОИСК ---
         function SearchModule({ db }) {
@@ -3433,7 +3498,9 @@
             const [cat, setCat]           = useState('all');
             const [aiText, setAiText]     = useState('');
             const [aiLoad, setAiLoad]     = useState(false);
-            const [view, setView]         = useState('gallery'); // gallery | detail
+            const [view, setView]         = useState('gallery');
+            // Лайтбокс для увеличения изображения
+            const [lightbox, setLightbox] = useState(null); // {src, alt, caption}
 
             const CATS = [
                 {k:'all',      l:'Все манускрипты'},
@@ -3469,8 +3536,49 @@
 
             const clr = CAT_COLOR[selected.cat] || CAT_COLOR.other;
 
+            // Открыть лайтбокс
+            const openLightbox = (src, alt, caption) => {
+                setLightbox({src, alt: alt||'', caption: caption||''});
+            };
+
             return (
                 <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+
+                    {/* ЛАЙТБОКС — увеличение изображения */}
+                    {lightbox && (
+                        <div
+                            onClick={()=>setLightbox(null)}
+                            style={{position:'fixed', inset:0, zIndex:99999,
+                                    background:'rgba(0,0,0,0.92)', backdropFilter:'blur(8px)',
+                                    display:'flex', flexDirection:'column',
+                                    alignItems:'center', justifyContent:'center', padding:16}}>
+                            <button
+                                onClick={()=>setLightbox(null)}
+                                style={{position:'absolute', top:16, right:16, width:40, height:40,
+                                        borderRadius:20, background:'rgba(255,255,255,0.1)',
+                                        border:'1px solid rgba(255,255,255,0.2)',
+                                        color:'#fff', fontSize:18, fontWeight:700,
+                                        cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                ✕
+                            </button>
+                            <img
+                                src={lightbox.src}
+                                alt={lightbox.alt}
+                                onClick={e=>e.stopPropagation()}
+                                style={{maxWidth:'90vw', maxHeight:'80vh', objectFit:'contain',
+                                        borderRadius:12, boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
+                            {lightbox.caption && (
+                                <p style={{color:'#d6d3d1', fontSize:13, marginTop:12,
+                                           textAlign:'center', maxWidth:600, lineHeight:1.5}}>
+                                    {lightbox.caption}
+                                </p>
+                            )}
+                            <p style={{color:'#78716c', fontSize:11, marginTop:8}}>
+                                Нажмите за пределами фото чтобы закрыть · Scroll для прокрутки
+                            </p>
+                        </div>
+                    )}
+
                     {/* Заголовок */}
                     <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
                         <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">📜 Манускрипты мировых религий</h2>
@@ -3501,16 +3609,22 @@
                         {filtered.map(m => {
                             const c = CAT_COLOR[m.cat] || CAT_COLOR.other;
                             return (
-                                <button key={m.id} onClick={()=>{setSelected(m);setAiText('');setView('detail');}}
-                                    className="text-left rounded-2xl border-2 overflow-hidden hover:shadow-lg hover:scale-[1.02] transition-all duration-200"
+                                <div key={m.id}
+                                    className="text-left rounded-2xl border-2 overflow-hidden hover:shadow-lg transition-all duration-200"
                                     style={{borderColor: selected.id===m.id ? c.dot : '#e7e5e4',
                                             background: selected.id===m.id ? c.bg : '#fff'}}>
-                                    <div className="h-36 overflow-hidden bg-stone-100">
+                                    {/* Изображение — клик открывает лайтбокс */}
+                                    <div className="h-36 overflow-hidden bg-stone-100 relative group cursor-zoom-in"
+                                         onClick={()=>openLightbox(m.imgUrl, m.title, m.title + ' · ' + m.date)}>
                                         <img src={m.imgUrl} alt={m.title}
                                             onError={e=>{if(e.target.src!==m.imgFb)e.target.src=m.imgFb;}}
-                                            className="w-full h-full object-cover"/>
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
+                                            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-2xl drop-shadow-lg">🔍</span>
+                                        </div>
                                     </div>
-                                    <div className="p-3">
+                                    {/* Инфо + кнопка детали */}
+                                    <div className="p-3 cursor-pointer" onClick={()=>{setSelected(m);setAiText('');setView('detail');}}>
                                         <div className="flex items-center gap-1.5 mb-1.5">
                                             <span style={{background:c.badge, color:c.txt}}
                                                 className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">
@@ -3520,8 +3634,9 @@
                                         </div>
                                         <p className="font-serif font-bold text-sm text-stone-900 leading-tight">{m.title}</p>
                                         <p className="text-[10px] text-stone-400 mt-1 font-bold uppercase tracking-wide">{m.lang}</p>
+                                        <p className="text-[10px] text-amber-600 mt-1.5 font-bold">Нажмите для подробностей →</p>
                                     </div>
-                                </button>
+                                </div>
                             );
                         })}
                     </div>
@@ -3529,13 +3644,15 @@
                     {/* Детальный просмотр */}
                     {view === 'detail' && (
                         <div className="bg-white rounded-3xl border border-stone-200 overflow-hidden" style={{borderTop:`4px solid ${clr.dot}`}}>
-                            {/* Фото */}
-                            <div className="relative h-72 md:h-96 bg-stone-900">
+
+                            {/* Главное фото — кликабельное */}
+                            <div className="relative h-72 md:h-96 bg-stone-900 cursor-zoom-in group"
+                                 onClick={()=>openLightbox(selected.imgUrl, selected.title, selected.title + ' · ' + selected.date + ' · ' + selected.location)}>
                                 <img src={selected.imgUrl} alt={selected.title}
                                     onError={e=>{if(e.target.src!==selected.imgFb)e.target.src=selected.imgFb;}}
-                                    className="w-full h-full object-cover opacity-80"/>
+                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-90 transition-opacity"/>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-10">
-                                    <div>
+                                    <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-3 flex-wrap">
                                             <span style={{background:clr.dot}} className="text-white text-xs font-bold px-3 py-1 rounded-full">{selected.lang}</span>
                                             <span style={{background:'rgba(255,255,255,.15)'}} className="text-white text-xs font-bold px-3 py-1 rounded-full">{selected.date}</span>
@@ -3544,12 +3661,42 @@
                                         <h3 className="text-3xl md:text-4xl font-serif font-bold text-white mb-1">{selected.title}</h3>
                                         <p className="text-stone-300 text-sm">{selected.location}</p>
                                     </div>
+                                    <span className="text-white/70 text-sm font-bold ml-4 flex-shrink-0 flex items-center gap-1 mb-1">
+                                        🔍 Нажмите для увеличения
+                                    </span>
                                 </div>
                             </div>
 
                             <div className="p-6 md:p-10 space-y-8">
                                 {/* Описание */}
                                 <p className="text-stone-700 leading-relaxed text-base md:text-lg">{selected.desc}</p>
+
+                                {/* Галерея дополнительных изображений flood (если есть) */}
+                                {selected.flood && selected.flood.length > 0 && (
+                                    <div>
+                                        <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📷 Галерея изображений</p>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                            {selected.flood.map((img, fi) => (
+                                                <div key={fi}
+                                                     className="rounded-xl overflow-hidden cursor-zoom-in relative group"
+                                                     style={{aspectRatio:'4/3', background:'#e7e5e4'}}
+                                                     onClick={()=>openLightbox(img.src, img.cap, img.cap)}>
+                                                    <img src={img.src} alt={img.cap||''}
+                                                        onError={e=>{e.target.style.display='none';}}
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-xl drop-shadow-lg">🔍</span>
+                                                    </div>
+                                                    {img.cap && (
+                                                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1.5">
+                                                            <p className="text-white text-[10px] leading-tight">{img.cap}</p>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* Оригинальный текст + перевод */}
                                 <div className="grid md:grid-cols-2 gap-4">
@@ -3565,12 +3712,6 @@
                                     <div className="p-5 rounded-2xl border-2 border-stone-200 bg-stone-50">
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Перевод на русский</p>
                                         <p className="font-serif text-base leading-relaxed text-stone-700 italic">«{selected.translation}»</p>
-                                        {selected.url && (
-                                            <a href={selected.url} target="_blank" rel="noopener"
-                                                className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-amber-600 hover:text-amber-800">
-                                                🔗 Открыть оцифрованную рукопись →
-                                            </a>
-                                        )}
                                     </div>
                                 </div>
 
@@ -4772,6 +4913,7 @@
         </script>
 
         <script type="text/babel">
+
         // МОДУЛЬ: ПОКЛОНЕНИЕ — Практики богослужения в мировых религиях
         // ════════════════════════════════════════════════════════════════════
         var WORSHIP_DATA = [
@@ -5063,6 +5205,417 @@
                 </div>
             );
         }
+
+
+        <script type="text/babel">
+        </script>
+
+        <script type="text/babel">
+
+        // =====================================================================
+        // МОДУЛЬ: АНГЕЛЫ И ДЕМОНЫ — Священные писания, иллюстрации, манускрипты
+        // =====================================================================
+        function AngelsDemonsModule({ apiKey }) {
+            const [tab, setTab]           = useState('angels'); // angels | demons | compare
+            const [selected, setSelected] = useState(null);
+            const [aiText, setAiText]     = useState('');
+            const [aiLoad, setAiLoad]     = useState(false);
+            const [lightbox, setLightbox] = useState(null);
+
+            const openLightbox = (src, cap) => setLightbox({src, cap});
+
+            // ── Данные: Ангелы ─────────────────────────────────────────────
+            const ANGELS = [
+                {
+                    id:'gabriel', name:'Гавриил / Джибриль', emoji:'📯',
+                    traditions:['Христианство','Ислам','Иудаизм'],
+                    role:'Архангел-вестник. Передаёт Слово Бога людям.',
+                    bible:['Дан 8:16 — «Гавриил, объясни ему это видение»','Лк 1:26–38 — Благовещение Деве Марии','Лк 1:19 — «Я Гавриил, предстоящий пред Богом»'],
+                    quran:['2:97 — «Кто враждует с Джибрилем, тот враждует с Аллахом»','2:253 — «Мы помогли Исе Духом Святым»','16:102 — «Его ниспослал Дух Святой»'],
+                    texts:['Енох I 9:1 — Гавриил обратился к Господу за погибших','Тов 12:15 — один из семи ангелов, предстоящих Господу','Пс Соломона 8:14 — ангел света'],
+                    desc:'Гавриил — главный вестник Бога в трёх авраамических традициях. В иудаизме — один из четырёх архангелов. В христианстве явился Марии. В исламе через него передан весь Коран Мухаммеду за 23 года.',
+                    significance:'Именно Джибриль принёс первое откровение Мухаммеду в пещере Хира (610 н.э.). Он же возвестил Марии о рождении Исы. Единственный ангел, названный по имени в Коране.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg/800px-Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', cap:'Фра Анджелико «Благовещение» — Гавриил и Мария (ок. 1440), Музей Сан-Марко, Флоренция'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg/800px-Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg', cap:'Леонардо да Винчи «Благовещение» (1472–1475) — Гавриил с лилией'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg', cap:'Рембрандт «Явление ангела пастухам» (1634)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg/800px-Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg', cap:'Симоне Мартини «Благовещение» (1333), манускрипт-образ, Уффици'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg/800px-Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg', cap:'«Часослов» — иллюминированный манускрипт с Гавриилом (XV в.)'},
+                    ]
+                },
+                {
+                    id:'michael', name:'Михаил / Микаиль', emoji:'⚔️',
+                    traditions:['Христианство','Ислам','Иудаизм'],
+                    role:'Архангел-воитель. Защитник Израиля и предводитель небесного воинства.',
+                    bible:['Дан 10:13 — «Михаил, один из первых князей, пришёл помочь мне»','Дан 12:1 — «Восстанет Михаил, защитник сынов твоего народа»','Откр 12:7 — «Михаил и ангелы его воевали с драконом»','Иуд 1:9 — «Михаил спорил с дьяволом о теле Моисея»'],
+                    quran:['2:98 — «Кто враг Аллаху, Его ангелам, посланникам, Джибрилю и Микаилю»'],
+                    texts:['Енох I 20:5 — надзирает за раем', 'Свитки Мёртвого моря (1QM) — предводитель Сынов Света','Завещание Соломона — Михаил даёт Соломону кольцо власти'],
+                    desc:'Михаил — единственный ангел, названный в Библии «архангелом». Главнокомандующий небесным воинством. В книге Откровения побеждает сатану-дракона. В Свитках Мёртвого моря — полководец Сынов Света против Сынов Тьмы.',
+                    significance:'Особо почитается в исламе как ангел провидения и милости. В православии — «чиноначальник ангелов». День Михаила (Михайлов день) — 21 ноября. Покровитель воинов, полицейских, врачей.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg/800px-Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg', cap:'Гвидо Рени «Архангел Михаил» (1636) — попирает сатану'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg/800px-Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg', cap:'Рафаэль «Святой Михаил, победивший демона» (1518), Лувр'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg/800px-Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg', cap:'Лука Джордано «Падение ангелов» (1666)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Michael_D%C3%BCrer.jpg/800px-Michael_D%C3%BCrer.jpg', cap:'Альбрехт Дюрер «Михаил» из Апокалипсиса (1498) — гравюра на дереве'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Apocalypse_Michael.jpg/800px-Apocalypse_Michael.jpg', cap:'Михаил в Апокалипсисе — иллюминированный манускрипт (XIII в.)'},
+                    ]
+                },
+                {
+                    id:'raphael', name:'Рафаил / Рафаэль', emoji:'🌿',
+                    traditions:['Иудаизм','Христианство'],
+                    role:'Архангел-целитель. «Бог исцелил» — смысл его имени.',
+                    bible:['Тов 12:15 — «Я Рафаил, один из семи ангелов»','Тов 3:17 — послан исцелить Товита и Сарру','Енох I 10:7 — «Исцели землю, исцели язву»'],
+                    quran:['В Коране не назван по имени, но упоминается как один из ближайших ангелов'],
+                    texts:['Книга Еноха I 20 — один из четырёх архангелов','Завещание Соломона — правит духами болезней','Мидраш — сопровождал Авраама после обрезания'],
+                    desc:'Рафаил — архангел исцеления. В Книге Товита он путешествует с Товией в человеческом облике под именем «Азария» и исцеляет Товита от слепоты. Его имя означает «Бог исцелил».',
+                    significance:'Покровитель врачей, фармацевтов и паломников. В эпоху Возрождения — популярнейший образ. Часто изображается с рыбой (из истории Товита) и посохом паломника.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Raffael_-_Tobias_und_der_Engel.jpg/800px-Raffael_-_Tobias_und_der_Engel.jpg', cap:'Рафаэль (школа) «Товия и ангел Рафаил» (ок. 1512)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Titian_Tobias_angel.jpg/800px-Titian_Tobias_angel.jpg', cap:'Тициан «Товия и ангел» (1544), Галерея Академии, Венеция'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg/800px-Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg', cap:'Верроккьо «Товия и ангел» (деталь, 1470–1480), Национальная галерея, Лондон'},
+                    ]
+                },
+                {
+                    id:'seraphim', name:'Серафимы', emoji:'🔥',
+                    traditions:['Иудаизм','Христианство'],
+                    role:'Высший ангельский чин. «Пылающие». Непрерывно славят Бога у Его Престола.',
+                    bible:['Ис 6:1–7 — «Серафимы стояли вокруг Него; у каждого шесть крыл»','Ис 6:6–7 — серафим прикасается горящим углём к устам Исайи','Откр 4:6–8 — четыре «животных», непрестанно взывающих: «Свят, Свят, Свят»'],
+                    quran:['Хамалат аль-Арш — ангелы, несущие Престол Бога (40:7; 69:17)'],
+                    texts:['3 Енох (Сефер Хехалот) — Метатрон описывает серафимов','Псевдо-Дионисий «О небесной иерархии» — высший чин'],
+                    desc:'Серафимы — высший чин в христианской ангельской иерархии. Единственное упоминание — Исайя 6. Шесть крыл: два закрывают лицо (не смеют видеть Бога), два — ноги (смирение), двумя летят. Они кричат: «Кадош, Кадош, Кадош» — Свят, Свят, Свят.',
+                    significance:'Видение Исайи стало основой для христианской литургии (Трисвятое, Санктус). В иконографии изображаются красными — цвет огня и любви.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg/800px-Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg', cap:'Серафимы — «Малый часослов Жана Беррийского» (ок. 1385–1390)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg/800px-Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg', cap:'Джотто «Видение серафима» (ок. 1295–1300)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg/800px-Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg', cap:'Видение Исайи с серафимами — Библия Кенникотта (1476), иллюминированный манускрипт'},
+                    ]
+                },
+                {
+                    id:'cherubim', name:'Херувимы', emoji:'👁️',
+                    traditions:['Иудаизм','Христианство','Ислам'],
+                    role:'Стражи Божественного Присутствия. Носители Его Славы (Кавод).',
+                    bible:['Быт 3:24 — «Херувим с пламенным мечом охраняет путь к дереву жизни»','Иез 10 — видение «колёс» и херувимов (тетраморф)','Исх 25:18–22 — два золотых херувима на крышке Ковчега Завета','Пс 17:11 — «Воссел на херувима и полетел»'],
+                    quran:['Кируввийюн (Коран 40:7) — несут Престол Всевышнего'],
+                    texts:['Иезекииль 1 — Меркава (Колесница): четыре существа с ликами льва, быка, человека, орла','3 Енох — Хайот ха-Кодеш','Дионисий Ареопагит — второй чин ангелов'],
+                    desc:'В Библии херувимы — вовсе не пухлые младенцы. Это грозные четырёхликие существа с четырьмя крыльями, сверкающие как раскалённый металл. Иезекииль описывает их как «Меркаву» — небесную колесницу Бога с огненными колёсами.',
+                    significance:'Образ херувима из Иезекииля — один из самых загадочных в Библии. Иудейский мистицизм (Меркава) строился вокруг созерцания этого видения. В искусстве Ренессанса херувимы превратились в пухлых купидонов — полная противоположность оригиналу.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg/800px-Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg', cap:'Иезекииль видит Меркаву (Колесницу) — иллюстрация к Библии (1670)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Raphael_School_of_Athens_fragment.jpg/800px-Raphael_School_of_Athens_fragment.jpg', cap:'Херувимы Рафаэля из Сикстинской Мадонны (1512) — известнейшее изображение'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg/800px-Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg', cap:'Видение Иезекииля — «Bible Historiale» (1372), манускрипт'},
+                    ]
+                },
+            ];
+
+            // ── Данные: Демоны ─────────────────────────────────────────────
+            const DEMONS = [
+                {
+                    id:'satan', name:'Сатана / Иблис', emoji:'🔥',
+                    traditions:['Христианство','Ислам','Иудаизм'],
+                    role:'Обвинитель, противник Бога. Падший ангел света.',
+                    bible:['Иов 1:6–12 — сатана является в Совете Бога как «обвинитель»','Ис 14:12 — «Как упал ты с неба, денница, сын зари!»','Откр 12:9 — «Дракон, древний змий, называемый дьяволом и сатаной»','Мф 4:1–11 — Искушение Христа в пустыне'],
+                    quran:['2:34 — Иблис отказывается пасть ниц перед Адамом','7:11–18 — диалог Аллаха с Иблисом','15:31–44 — «Я лучше его: Ты создал меня из огня, а его из глины»'],
+                    texts:['Книга Еноха I 6 — Шемхазай, предводитель падших ангелов','Свитки Мёртвого моря — Велиал, князь тьмы','3 Енох — Самаэль, ангел-обвинитель'],
+                    desc:'«Сатана» по-еврейски — «противник, обвинитель». В ранней Библии это должность в Небесном Суде (Иов 1–2), а не злой бог. Только в позднейших текстах он становится олицетворением зла. В исламе Иблис — сотворён из огня, гордыня не позволила поклониться Адаму из глины.',
+                    significance:'Концепция персонифицированного зла революционна. До Библии — нет единого источника зла в большинстве религий. Через зороастрийское влияние (Ангра-Майнью) идея злого духа вошла в иудаизм, оттуда — в христианство и ислам.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Guercino-temptation.jpg/800px-Guercino-temptation.jpg', cap:'Джованни Франческо Барбьери «Искушение Христа» (1620)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg/800px-William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', cap:'Уильям Блейк «Великий Красный Дракон» (1805) — Откр 12'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg/800px-Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg', cap:'Сатана в доспехах — иллюстрация к «Потерянному Раю» Мильтона (1866)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Job_and_Satan_%281825%29_Blake.jpg/800px-Job_and_Satan_%281825%29_Blake.jpg', cap:'Уильям Блейк «Иов и Сатана» (1825) — гравюра из «Книги Иова»'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Devil_codex_Gigas.jpg/800px-Devil_codex_Gigas.jpg', cap:'Дьявол из «Codex Gigas» («Библия Дьявола», XIII в., Стокгольм)'},
+                    ]
+                },
+                {
+                    id:'lilith', name:'Лилит', emoji:'🌙',
+                    traditions:['Иудаизм','Каббала'],
+                    role:'Первая жена Адама (по мидрашу). Демоница ночи и детей.',
+                    bible:['Ис 34:14 — «И lîlît найдёт себе покой» (евр. лилит = «ночное существо»)'],
+                    quran:['Не упоминается напрямую, но в исламской демонологии — джинния'],
+                    texts:['Алфавит Бен-Сиры (IX в.) — полная история Лилит как первой жены Адама','Вавилонский Талмуд — лилин (ночные духи)','Зогар (XIII в.) — Лилит как «Другая Сторона»'],
+                    desc:'В каноне Библии Лилит упомянута лишь раз — Исайя 34:14. Вся её история — в позднейших мидрашах. По «Алфавиту Бен-Сиры»: Адам и Лилит созданы одновременно из земли, но Лилит отказывалась подчиняться. Улетела, стала демоницей, опасной для новорождённых.',
+                    significance:'Лилит — символ непокорности и независимости в иудейской мистике. Оберег «рука Хамса» и амулеты с именами трёх ангелов (Санои, Сансанои, Семангелоф) — защита от Лилит. В современной культуре — феминистский символ.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/John_Collier_Lilith.jpg/800px-John_Collier_Lilith.jpg', cap:'Джон Коллиер «Лилит» (1892) — прерафаэлитская интерпретация'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Burney_Relief_Babylon_-2000-1700.jpg/800px-Burney_Relief_Babylon_-2000-1700.jpg', cap:'«Рельеф Бёрни» — возможно, Лилит или Инанна, Вавилон (~1800 до н.э.)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Lilith_%28John_Collier_painting%29.jpg/800px-Lilith_%28John_Collier_painting%29.jpg', cap:'Средневековый амулет против Лилит с именами охранных ангелов'},
+                    ]
+                },
+                {
+                    id:'azazel', name:'Азазель / Азазел', emoji:'🐐',
+                    traditions:['Иудаизм','Раннее Христианство'],
+                    role:'Падший ангел пустыни. Учитель войны и греха.',
+                    bible:['Лев 16:8–26 — «Козёл для Азазела» — козёл отпущения','Лев 16:21 — первосвященник перекладывает грехи народа на козла'],
+                    quran:['Не упоминается по имени'],
+                    texts:['Книга Еноха I 8 — «Азазел научил людей делать мечи и ножи»','Книга Еноха I 10 — «Всели вину за всё зло на Азазела»','Апокалипсис Авраама — Азазел как противник Бога'],
+                    desc:'В Книге Левит Азазел — таинственная сущность пустыни, которой отсылается козёл с грехами Израиля. В Книге Еноха — один из «Стражей» (Бней ха-Элохим), спустившихся на гору Хермон. Он научил людей войне, магии и блуду.',
+                    significance:'«Козёл отпущения» (scapegoat) вошёл во все языки мира. Современное слово «scapegoat» из перевода Лев 16 — козёл для Азазела. Концепция ритуального очищения через перенос вины — основа многих религий.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/William_Holman_Hunt_-_The_Scapegoat.jpg/800px-William_Holman_Hunt_-_The_Scapegoat.jpg', cap:'Уильям Холман Хант «Козёл отпущения» (1856) — буквальная иллюстрация Лев 16'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Fallen_angel.jpg/800px-Fallen_angel.jpg', cap:'«Падший Ангел» — Алессандро Бонвичино (Моретто да Брешиа, XVI в.)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Fallen_Angels_in_Tartarus.jpg/800px-Fallen_Angels_in_Tartarus.jpg', cap:'Падшие ангелы — иллюстрация к «Потерянному Раю» Мильтона (Джон Мартин, 1825)'},
+                    ]
+                },
+                {
+                    id:'beelzebub', name:'Вельзевул', emoji:'🪰',
+                    traditions:['Христианство','Иудаизм'],
+                    role:'«Повелитель мух» — один из высших демонов, князь бесов.',
+                    bible:['4 Цар 1:2–6 — «Баал-Зебуб», бог Аккарона (филистимский)','Мф 12:24 — «Он изгоняет бесов силою Вельзевула»','Мк 3:22 — «Вельзевул, князь бесов»','Мф 10:25 — Иисус называет его «хозяином дома»'],
+                    quran:['Не упоминается по имени'],
+                    texts:['Завещание Соломона — Вельзевул как второй по рангу после сатаны','Гримуар «Лемегетон» (XVII в.) — один из 72 духов','Мильтон «Потерянный Рай» — заместитель Сатаны'],
+                    desc:'Изначально — Баал-Зебуб («Повелитель Принца», или «Высокий дом») — филистимский бог Аккарона. В еврейской полемике имя намеренно искажено в «Баал-Зевув» — «повелитель мух». В Новом Завете — синоним сатаны или его заместитель.',
+                    significance:'«Вельзевул» — одно из самых используемых имён дьявола в западной литературе. В Средневековье считался повелителем зависти. Мухи — символ разложения и нечистоты.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg/800px-Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg', cap:'Вельзевул — «Словарь Инфернале» Кол. де Планси (1863)'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg/800px-Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg', cap:'«Dictionnaire Infernal» (1863) — энциклопедия демонологии'},
+                    ]
+                },
+                {
+                    id:'nephilim', name:'Нефилим / Стражи', emoji:'⚡',
+                    traditions:['Иудаизм','Христианство'],
+                    role:'«Бней ха-Элохим» — «сыны Бога». Ангелы, взявшие земных жён.',
+                    bible:['Быт 6:1–4 — «сыны Божии увидели дочерей человеческих... и нефилим были на земле»','Числ 13:33 — «мы были в глазах их как кузнечики»','Иуд 1:6 — «ангелы, не сохранившие своего достоинства»'],
+                    quran:['Джинны (некоторые традиции) — параллель'],
+                    texts:['Книга Еноха I 6–16 — 200 Стражей спускаются на Хермон','«Книга Гигантов» (Кумран) — дети Стражей-гиганты','Юбилеев книга — Стражи посланы обучать людей, но пали'],
+                    desc:'Нефилим — загадочнейшее место Библии (Быт 6:1–4). «Бней ха-Элохим» берут в жёны дочерей людских. Книга Еноха развивает эту историю: 200 ангелов под предводительством Шемхазая спустились на гору Хермон, взяли жён и научили людей запретным знаниям. Их дети — великаны-рефаимы.',
+                    significance:'Эта история — объяснение происхождения зла в мире перед Потопом. Книга Еноха была канонической для ранних христиан (цитируется в Послании Иуды). Обнаружена в Кумране (7 рукописей). Мотив «падших ангелов» лёг в основу всей западной демонологии.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg/800px-Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg', cap:'Ари Шеффер «Искушение» (1854)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg/800px-Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg', cap:'Гюстав Моро «Падший Ангел» (XIX в.), Музей Уолтерс'},
+                    ],
+                    manuscripts:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Book_of_Enoch_Ethiopic_MS.jpg/800px-Book_of_Enoch_Ethiopic_MS.jpg', cap:'Книга Еноха — эфиопская рукопись (XVIII в.), основной источник о Стражах'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg/800px-Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg', cap:'Свитки Мёртвого моря — «Книга Гигантов» (фрагменты, Кумран, II в. до н.э.)'},
+                    ]
+                },
+            ];
+
+            // ── JSX рендер ────────────────────────────────────────────────────
+            const data = tab === 'angels' ? ANGELS : DEMONS;
+            const sel  = selected || data[0];
+            const clr  = tab === 'angels'
+                ? {main:'#d97706', bg:'#fffbeb', border:'#fde68a', badge:'#fef3c7', txt:'#92400e', dark:'#78350f'}
+                : {main:'#dc2626', bg:'#fff1f2', border:'#fca5a5', badge:'#fee2e2', txt:'#7f1d1d', dark:'#450a0a'};
+
+            const analyze = async () => {
+                setAiLoad(true); setAiText('');
+                const r = await fetchZvenoAIAnalysis(
+                    `Проведи академический анализ: "${sel.name}" в контексте мировых религий.
+Роль: ${sel.role}
+Описание: ${sel.desc}
+Традиции: ${sel.traditions.join(', ')}
+Значение: ${sel.significance}
+
+Рассмотри: 1) этимологию имени 2) эволюцию образа в разных традициях 3) историческое влияние 4) психологическую и культурную функцию 5) отличия между традициями 6) отражение в искусстве и литературе.`,
+                    `${tab==='angels'?'Ангел':'Демон'}: ${sel.name}`, apiKey
+                );
+                setAiText(r); setAiLoad(false);
+            };
+
+            return (
+                <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+
+                    {/* ЛАЙТБОКС */}
+                    {lightbox && (
+                        <div onClick={()=>setLightbox(null)}
+                            style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.93)',
+                                    backdropFilter:'blur(8px)',display:'flex',flexDirection:'column',
+                                    alignItems:'center',justifyContent:'center',padding:16}}>
+                            <button onClick={()=>setLightbox(null)}
+                                style={{position:'absolute',top:16,right:16,width:40,height:40,borderRadius:20,
+                                        background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.2)',
+                                        color:'#fff',fontSize:18,fontWeight:700,cursor:'pointer',
+                                        display:'flex',alignItems:'center',justifyContent:'center'}}>✕</button>
+                            <img src={lightbox.src} alt={lightbox.cap||''}
+                                onClick={e=>e.stopPropagation()}
+                                style={{maxWidth:'90vw',maxHeight:'78vh',objectFit:'contain',
+                                        borderRadius:12,boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
+                            {lightbox.cap && (
+                                <p style={{color:'#d6d3d1',fontSize:13,marginTop:12,textAlign:'center',
+                                           maxWidth:600,lineHeight:1.5}}>{lightbox.cap}</p>
+                            )}
+                            <p style={{color:'#78716c',fontSize:11,marginTop:8}}>Нажмите за пределами для закрытия</p>
+                        </div>
+                    )}
+
+                    {/* ШАПКА */}
+                    <div style={{background:'linear-gradient(135deg,#1c1b1d 0%,#2d1a0e 40%,#1a0d1c 100%)'}}
+                         className="text-white rounded-3xl p-6 md:p-10">
+                        <div className="flex items-start gap-4">
+                            <div className="flex-1">
+                                <p className="text-amber-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">Шаг 4 · Углублённый анализ</p>
+                                <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">👼 Ангелы и Демоны</h2>
+                                <p className="text-stone-400 text-sm md:text-base max-w-2xl">
+                                    Священные писания о небесных силах — от Библии и Корана до Книги Еноха и Свитков Мёртвого моря.
+                                    Иллюстрации мастеров Возрождения, фото древних рукописей.
+                                </p>
+                            </div>
+                            <span className="text-5xl md:text-6xl hidden sm:block">⚔️</span>
+                        </div>
+                        <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {[['Книг Библии','10+','об ангелах'],['Аятов Корана','50+','о небесных силах'],['Архангелов','7','по Книге Еноха'],['Лет традиции','3000+','иудаизм→ислам']].map(([l,v,n])=>(
+                                <div key={l} className="bg-white/5 rounded-2xl p-3 text-center">
+                                    <div className="text-amber-400 font-bold text-sm">{v}</div>
+                                    <div className="text-white font-bold text-xs mt-1">{n}</div>
+                                    <div className="text-stone-500 text-[10px] uppercase tracking-widest mt-0.5">{l}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ТАБЫ */}
+                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl">
+                        {[['angels','👼 Ангелы','Вестники, стражи, воители'],['demons','👹 Демоны','Падшие, противники, тени']].map(([k,l,s])=>(
+                            <button key={k} onClick={()=>{setTab(k);setSelected(null);setAiText('');}}
+                                className={`flex-1 py-3 px-4 rounded-xl text-left transition-all ${tab===k?'bg-white shadow-sm':'hover:bg-white/50'}`}>
+                                <div className={`font-bold text-sm ${tab===k?'text-stone-900':'text-stone-500'}`}>{l}</div>
+                                <div className="text-[10px] text-stone-400 mt-0.5 hidden sm:block">{s}</div>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* ОСНОВНОЙ КОНТЕНТ */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                        {/* Список */}
+                        <div className="lg:col-span-1 space-y-2">
+                            {data.map(item => (
+                                <button key={item.id} onClick={()=>{setSelected(item);setAiText('');}}
+                                    className={`w-full text-left p-4 rounded-2xl border-2 transition-all hover:shadow-md ${sel.id===item.id?'shadow-md':'bg-white'}`}
+                                    style={{borderColor:sel.id===item.id?clr.main:'#e7e5e4',
+                                            background:sel.id===item.id?clr.bg:'#fff'}}>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-2xl flex-shrink-0">{item.emoji}</span>
+                                        <div className="min-w-0">
+                                            <p className="font-bold text-sm text-stone-900 truncate">{item.name}</p>
+                                            <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wide mt-0.5 truncate">{item.traditions.join(' · ')}</p>
+                                            <p className="text-xs text-stone-600 mt-1 leading-tight line-clamp-2">{item.role}</p>
+                                        </div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Детали */}
+                        <div className="lg:col-span-2 space-y-5">
+                            {/* Шапка */}
+                            <div className="rounded-2xl p-5 border-2" style={{background:clr.bg,borderColor:clr.border}}>
+                                <div className="flex items-start gap-4">
+                                    <span className="text-4xl">{sel.emoji}</span>
+                                    <div>
+                                        <h3 className="font-serif font-bold text-2xl" style={{color:clr.dark}}>{sel.name}</h3>
+                                        <p className="text-xs font-bold uppercase tracking-widest mt-1" style={{color:clr.main}}>{sel.traditions.join(' · ')}</p>
+                                        <p className="text-sm mt-2" style={{color:clr.txt}}>{sel.role}</p>
+                                    </div>
+                                </div>
+                                <p className="mt-4 text-stone-700 leading-relaxed text-sm">{sel.desc}</p>
+                            </div>
+
+                            {/* Иллюстрации */}
+                            {sel.images && sel.images.length > 0 && (
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">🖼 Иллюстрации из мирового искусства</p>
+                                    <div className={`grid gap-3 ${sel.images.length===1?'grid-cols-1':'grid-cols-2 md:grid-cols-3'}`}>
+                                        {sel.images.map((img,ii)=>(
+                                            <div key={ii} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm"
+                                                 style={{aspectRatio:'4/3',background:'#e7e5e4'}}
+                                                 onClick={()=>openLightbox(img.src,img.cap)}>
+                                                <img src={img.src} alt={img.cap||''}
+                                                    onError={e=>e.target.style.display='none'}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                                                    <span className="opacity-0 group-hover:opacity-100 text-white text-2xl drop-shadow-lg">🔍</span>
+                                                </div>
+                                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 py-2">
+                                                    <p className="text-white text-[10px] leading-tight">{img.cap}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Фото рукописей */}
+                            {sel.manuscripts && sel.manuscripts.length > 0 && (
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📜 Древние рукописи и тексты</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {sel.manuscripts.map((ms,mi)=>(
+                                            <div key={mi} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm border border-stone-200"
+                                                 style={{aspectRatio:'4/3',background:'#f5f5f4'}}
+                                                 onClick={()=>openLightbox(ms.src,ms.cap)}>
+                                                <img src={ms.src} alt={ms.cap||''}
+                                                    onError={e=>e.target.style.display='none'}
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                                                    <span className="opacity-0 group-hover:opacity-100 text-white text-2xl drop-shadow-lg">🔍</span>
+                                                </div>
+                                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-2 py-2">
+                                                    <p className="text-white text-[10px] leading-tight">{ms.cap}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Цитаты из Писания */}
+                            <div className="grid md:grid-cols-3 gap-3">
+                                {[['✝️ Библия', sel.bible, '#fffbeb','#92400e','#fde68a'],
+                                  ['☪️ Коран',   sel.quran, '#ecfdf5','#065f46','#6ee7b7'],
+                                  ['📜 Тексты',  sel.texts, '#f0f9ff','#0c4a6e','#bae6fd']
+                                ].map(([title,verses,bg,col,bdr])=>(
+                                    <div key={title} className="rounded-xl p-4 border"
+                                         style={{background:bg,borderColor:bdr}}>
+                                        <p className="text-[10px] font-bold uppercase tracking-widest mb-3" style={{color:col}}>{title}</p>
+                                        <div className="space-y-2">
+                                            {(verses||[]).map((v,vi)=>(
+                                                <p key={vi} className="text-xs leading-relaxed" style={{color:col}}>— {v}</p>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Значение */}
+                            <div className="rounded-xl p-4" style={{background:clr.badge}}>
+                                <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{color:clr.main}}>🎓 Историческое значение</p>
+                                <p className="text-sm font-bold leading-relaxed" style={{color:clr.dark}}>{sel.significance}</p>
+                            </div>
+
+                            {/* AI анализ */}
+                            <div className="border-t border-stone-100 pt-4">
+                                <button onClick={analyze} disabled={aiLoad}
+                                    className="flex items-center gap-2 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50"
+                                    style={{background:aiLoad?'#78716c':clr.main}}>
+                                    {aiLoad?<><Icons.Loader c="w-4 h-4"/>Анализирую...</>:<>✨ Глубокий AI-анализ: {sel.name}</>}
+                                </button>
+                                {aiText && <div className="mt-4 ai-content p-5 bg-stone-50 rounded-2xl border border-stone-200" dangerouslySetInnerHTML={{__html:aiText}}/>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        </script>
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
