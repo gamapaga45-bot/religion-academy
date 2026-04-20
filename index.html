@@ -492,31 +492,42 @@
 
                 if (apiKey && selectedVoice === 'AI_ZVENO') {
                     try {
-                        const fullText = sortedTexts.join(" ");
-                        const response = await fetch('https://api.zveno.ai/v1/audio/speech', {
+                        // Zveno AI не поддерживает /v1/audio/speech (404).
+                        // Запрашиваем очищенный текст через chat completions,
+                        // затем озвучиваем лучшим голосом браузера.
+                        const fullText = sortedTexts.join(" ").substring(0, 3000);
+                        const response = await fetch('https://api.zveno.ai/v1/chat/completions', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-                            body: JSON.stringify({ 
-                                model: "openai/tts-1-hd", 
-                                input: fullText.substring(0, 4000), 
-                                voice: theme === 'bible' ? 'onyx' : 'echo',
-                                response_format: 'mp3'
+                            body: JSON.stringify({
+                                model: "openai/gpt-4o",
+                                models: ["openai/gpt-4o", "anthropic/claude-sonnet-4-20250514"],
+                                messages: [{
+                                    role: "system",
+                                    content: "Ты диктор. Получи текст и верни его точно, убрав только служебные символы. Не добавляй ничего от себя. Только чистый текст."
+                                }, {
+                                    role: "user",
+                                    content: fullText
+                                }],
+                                temperature: 0,
+                                max_tokens: 2000
                             })
                         });
-                        if (!response.ok) {
-                            const errText = await response.text().catch(() => '');
-                            throw new Error(`API ${response.status}: ${errText.substring(0,100)}`);
-                        }
-                        const blob = await response.blob();
-                        const audioUrl = URL.createObjectURL(blob);
-                        const audio = new Audio(audioUrl);
-                        audio.onended = () => setIsPlaying(false);
-                        audio.onerror = () => { setIsPlaying(false); setApiError('Ошибка воспроизведения аудио.'); };
-                        audio.play();
+                        if (!response.ok) throw new Error(`API ${response.status}`);
+                        const data = await response.json();
+                        const cleanText = data.choices?.[0]?.message?.content || fullText;
+                        const ruVoice = voices.find(v => v.lang && v.lang.includes('ru')) || voices[0];
+                        const utterance = new SpeechSynthesisUtterance(cleanText);
+                        if (ruVoice) utterance.voice = ruVoice;
+                        utterance.lang = 'ru-RU';
+                        utterance.rate = 0.85;
+                        utterance.pitch = 0.95;
+                        utterance.onend = () => setIsPlaying(false);
+                        utterance.onerror = () => setIsPlaying(false);
+                        window.speechSynthesis.speak(utterance);
                     } catch (error) {
-                        console.warn("Zveno AI TTS недоступен, переключаемся на встроенный голос:", error);
-                        setApiError('TTS недоступен → встроенный голос.');
-                        setSelectedVoice(voices[0]?.name || '');
+                        console.warn("Zveno AI: переключаемся на встроенный голос:", error);
+                        setApiError('Используется встроенный голос.');
                         playNativeChunked(sortedTexts);
                     }
                 } else {
