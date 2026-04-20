@@ -371,20 +371,10 @@
                             );
                         });
 
-                        // Источник 0: @fawazahmed0/quran-api npm (самый надёжный)
-                        if (!quranLoaded) try {
-                            const r = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/quran-api@1/editions/rus-elmir-kuliev.json');
-                            const d = await r.json();
-                            (d.quran || d).forEach(item => {
-                                const title = quranOrder[(item.chapter||item.surah) - 1];
-                                if (title) quranMap[title]["1"][String(item.verse||item.ayah)] = item.text;
-                            });
-                            if (validateQuran(quranMap)) quranLoaded = true;
-                        } catch(e) { console.warn('Quran CDN0 failed:', e); }
-
-                        // Источник 1: quran-json@3.1.2 (Russian Kuliev)
+                        // Источник 1: quran-json@3.1.2 (Russian Kuliev) — РАБОТАЕТ
                         if (!quranLoaded) try {
                             const r = await fetch('https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_ru.json');
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
                             const d = await r.json();
                             d.forEach((surah, si) => {
                                 const title = quranOrder[si];
@@ -395,16 +385,17 @@
                                 }
                             });
                             if (validateQuran(quranMap)) quranLoaded = true;
-                            else { Object.values(quranMap).forEach(s => s["1"] = {}); }
+                            else Object.values(quranMap).forEach(s => s["1"] = {});
                         } catch(e) { console.warn('Quran CDN1 failed:', e); }
 
-                        // Источник 2: fawazahmed0 (Kuliev) via jsDelivr gh
+                        // Источник 2: fawazahmed0 via jsDelivr gh
                         if (!quranLoaded) try {
                             const r = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/rus-elmir-kuliev.json');
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
                             const d = await r.json();
                             (d.quran || d).forEach(item => {
-                                const title = quranOrder[item.chapter - 1];
-                                if (title) quranMap[title]["1"][String(item.verse)] = item.text;
+                                const title = quranOrder[(item.chapter||item.surah) - 1];
+                                if (title) quranMap[title]["1"][String(item.verse||item.ayah)] = item.text;
                             });
                             if (validateQuran(quranMap)) quranLoaded = true;
                         } catch(e) { console.warn('Quran CDN2 failed:', e); }
@@ -412,6 +403,7 @@
                         // Источник 3: alquran.cloud
                         if (!quranLoaded) try {
                             const r = await fetch('https://api.alquran.cloud/v1/quran/ru.kuliev');
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
                             const d = await r.json();
                             d.data.surahs.forEach(surah => {
                                 const title = quranOrder[surah.number - 1];
@@ -420,9 +412,22 @@
                             if (validateQuran(quranMap)) quranLoaded = true;
                         } catch(e) { console.warn('Quran CDN3 failed:', e); }
 
-                        // Источник 4: raw GitHub (openquran)
+                        // Источник 4: fawazahmed0 npm (другой путь)
+                        if (!quranLoaded) try {
+                            const r = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/quran-api@latest/editions/rus-kuliev.json');
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
+                            const d = await r.json();
+                            (d.quran || d).forEach(item => {
+                                const title = quranOrder[(item.chapter||item.surah) - 1];
+                                if (title) quranMap[title]["1"][String(item.verse||item.ayah)] = item.text;
+                            });
+                            if (validateQuran(quranMap)) quranLoaded = true;
+                        } catch(e) { console.warn('Quran CDN4 failed:', e); }
+
+                        // Источник 5: raw GitHub (openquran)
                         if (!quranLoaded) try {
                             const r = await fetch('https://raw.githubusercontent.com/islamic-network/cdn/master/info/cdn_surah_translation.json');
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
                             const d = await r.json();
                             if (Array.isArray(d)) {
                                 d.filter(x => x.language_name === 'russian' || x.iso_code === 'ru').forEach(item => {
@@ -431,7 +436,13 @@
                                 });
                                 if (validateQuran(quranMap)) quranLoaded = true;
                             }
-                        } catch(e) { console.warn('Quran CDN4 failed:', e); }
+                        } catch(e) { console.warn('Quran CDN5 failed:', e); }
+
+                        if (!quranLoaded) console.warn('All Quran CDNs failed — using embedded fallback only');
+
+                        // Count loaded ayahs for status
+                        const quranAyahCount = Object.values(quranMap).reduce((sum, s) => sum + Object.keys(s['1']||{}).length, 0);
+                        const loadLabel = quranAyahCount > 5000 ? '100%' : quranAyahCount > 100 ? Math.round(quranAyahCount/62) + '%' : 'мин';
 
                         // Применяем встроенные тексты поверх (аят аль-Курси и др.)
                         Object.entries(FALLBACK_QURAN).forEach(([surah, verses]) => {
@@ -450,7 +461,7 @@
                         }
 
                         setDb({ order: { bible: bibleOrder, quran: quranOrder }, texts: { bible: bibleMap, quran: quranMap } });
-                        setDataStatus('success');
+                        setDataStatus('success:' + loadLabel);
                     } catch (e) {
                         console.warn("CDN загрузка не удалась, используем запасные тексты:", e);
                         // Используем локальные JSON + встроенные запасные тексты
@@ -543,7 +554,7 @@
                             <span className="text-amber-500 text-[10px] font-bold tracking-widest">4 ШАГА</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            {dataStatus==='success' && <span className="w-2 h-2 rounded-full bg-emerald-500"/>}
+                            {dataStatus.startsWith('success') && <span className="w-2 h-2 rounded-full bg-emerald-500"/>}
                             {dataStatus==='loading' && <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"/>}
                             <button onClick={()=>{setApiKeyInput(apiKey);setShowSettings(true);}} className="text-stone-400 hover:text-white p-1">
                                 <Icons.Settings c="w-5 h-5"/>
@@ -588,7 +599,7 @@
                         <div className="p-3 border-t border-stone-800/60 bg-[#161618]">
                             <div className="flex items-center">
                                 {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-2"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">Синхронизация...</span></>}
-                                {!loading && dataStatus==='success' && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></div><span className="text-[10px] font-bold tracking-wider text-emerald-500">Базы загружены</span></>}
+                                {!loading && dataStatus.startsWith('success') && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></div><span className="text-[10px] font-bold tracking-wider text-emerald-500">Базы загружены ({dataStatus.split(':')[1] || '100%'})</span></>}
                                 {!loading && dataStatus==='error' && <><div className="w-2 h-2 rounded-full bg-amber-500 mr-2"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">Офлайн режим</span></>}
                             </div>
                             <div className="mt-2 pt-2 border-t border-stone-800/40">
