@@ -202,7 +202,7 @@
                         messages: [
                             {
                                 role: "system",
-                                content: "Ты — профессор-религиовед с учёными степенями в области семитологии и сравнительного богословия. Проведи глубокий, нейтральный академический анализ предоставленного религиозного текста. Обязательно включи: 1) Основной смысл и богословский посыл, 2) Этимологию ключевых слов (иврит/греческий/арабский), 3) Исторический и культурный контекст написания, 4) Связи с другими текстами и традициями. Отвечай на русском языке. Форматируй ответ с помощью Markdown (заголовки ##, жирный, списки)."
+                                content: "Ты — профессор-религиовед с учёными степенями в семитологии и сравнительном богословии. Проведи глубокий академический анализ текста. ОБЯЗАТЕЛЬНО структурируй ответ строго по этим разделам с заголовками ##:\n\n## 📖 Смысл и богословский посыл\n## 🔤 Этимология ключевых слов\n## 🏛 Исторический контекст\n## 🔗 Связи с другими текстами\n## 💡 Практическое значение\n\nКаждый раздел — минимум 2-3 предложения. Используй жирный текст и списки внутри разделов. Отвечай на русском языке."
                             },
                             {
                                 role: "user",
@@ -774,6 +774,81 @@
             );
         }
 
+
+        // --- АККОРДЕОН ДЛЯ AI ОТВЕТА ---
+        function AiAccordion({ html, isBible }) {
+            const [openSections, setOpenSections] = React.useState({});
+
+            // Парсим HTML от marked — разбиваем по тегам h2/h3
+            const sections = React.useMemo(() => {
+                if (!html) return [];
+                const tmp = document.createElement('div');
+                tmp.innerHTML = html;
+                const nodes = Array.from(tmp.childNodes);
+                const result = [];
+                let current = null;
+
+                nodes.forEach(node => {
+                    const tag = node.nodeName.toLowerCase();
+                    if (tag === 'h2' || tag === 'h3') {
+                        if (current) result.push(current);
+                        current = {
+                            title: node.textContent.trim(),
+                            tag,
+                            html: ''
+                        };
+                    } else {
+                        if (!current) {
+                            // Контент до первого заголовка — вводная секция
+                            const text = node.textContent?.trim();
+                            if (text) {
+                                if (!result[0] || result[0].title !== '📋 Общий анализ') {
+                                    result.unshift({ title: '📋 Общий анализ', tag: 'h2', html: '' });
+                                }
+                                result[0].html += node.outerHTML || '';
+                            }
+                        } else {
+                            current.html += node.outerHTML || (node.textContent ? `<p>${node.textContent}</p>` : '');
+                        }
+                    }
+                });
+                if (current) result.push(current);
+                return result;
+            }, [html]);
+
+            // Если нет заголовков — выводим как обычный текст
+            if (sections.length <= 1 && (!sections[0] || !sections[0].title.startsWith('📋'))) {
+                return <div className="ai-content leading-relaxed" dangerouslySetInnerHTML={{ __html: html }}/>;
+            }
+
+            const toggle = (i) => setOpenSections(prev => ({ ...prev, [i]: !prev[i] }));
+            const accent = isBible ? { border: 'border-amber-200', bg: 'bg-amber-50', text: 'text-amber-800', dot: 'bg-amber-500' } 
+                                   : { border: 'border-emerald-200', bg: 'bg-emerald-50', text: 'text-emerald-800', dot: 'bg-emerald-500' };
+
+            return (
+                <div className="space-y-2">
+                    {sections.map((sec, i) => (
+                        <div key={i} className={`rounded-xl border overflow-hidden ${openSections[i] ? accent.border : 'border-stone-200'} transition-all`}>
+                            <button
+                                onClick={() => toggle(i)}
+                                className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all ${openSections[i] ? accent.bg : 'bg-stone-50 hover:bg-stone-100'}`}>
+                                <div className="flex items-center gap-2.5">
+                                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${openSections[i] ? accent.dot : 'bg-stone-300'}`}></span>
+                                    <span className={`font-bold text-sm ${openSections[i] ? accent.text : 'text-stone-600'}`}>{sec.title}</span>
+                                </div>
+                                <span className={`text-lg font-bold transition-transform ${openSections[i] ? 'rotate-45' : ''} ${openSections[i] ? accent.text : 'text-stone-400'}`}>+</span>
+                            </button>
+                            {openSections[i] && sec.html && (
+                                <div className="px-4 py-3 bg-white border-t border-stone-100">
+                                    <div className="ai-content text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: sec.html }}/>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
         // --- МОДУЛЬ ЧТЕНИЯ С ИНТЕГРАЦИЕЙ ZVENO AI ---
         function SingleReaderModule({ type, db, apiKey }) {
             const isBible = type === 'bible';
@@ -967,7 +1042,7 @@
                                                     <span>ZVENO AI анализирует через GPT-4o / Claude...</span>
                                                 </div>
                                             ) : (
-                                                <div className="ai-content leading-relaxed" dangerouslySetInnerHTML={{ __html: aiResponses[v] || '' }}/>
+                                                <AiAccordion html={aiResponses[v] || ''} isBible={isBible} />
                                             )}
                                         </div>
                                     )}
