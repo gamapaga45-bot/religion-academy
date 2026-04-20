@@ -1783,60 +1783,24 @@
             );
         }
 
-        // --- КЭШ ТЕКСТОВ ДЛЯ ПОИСКА (модульный уровень, не зависит от React state) ---
-        var _searchExtCache = null;
-        function _buildExtCache() {
-            if (_searchExtCache) return _searchExtCache;
-            const loaded = {};
-            if (typeof RELIGION_TEXTS !== 'undefined') {
-                Object.keys(RELIGION_TEXTS).forEach(relId => {
-                    const rel = RELIGION_TEXTS[relId];
-                    if (!rel || !rel.sections) return;
-                    loaded[relId] = [];
-                    rel.sections.forEach(sec => {
-                        Object.entries(sec.verses || {}).forEach(([vn, vt]) => {
-                            loaded[relId].push({ ref: `${sec.title}, ст.${vn}`, text: vt });
-                        });
-                    });
-                });
-            }
-            _searchExtCache = loaded;
-            return loaded;
-        }
-
         // --- ГЛОБАЛЬНЫЙ ПОИСК ---
         function SearchModule({ db }) {
             const [query, setQuery] = useState("");
-            // Чекпоинты религий для поиска
             const [scope, setScope] = useState({
                 bible: true, quran: true,
                 buddhism: true, hinduism: true, taoism: true,
                 zoroastrism: true, confucianism: true, sikhism: true, shinto: true
             });
-            // Режим: exact | fuzzy
             const [fuzzy, setFuzzy] = useState(false);
             const [results, setResults] = useState({});
             const [searching, setSearching] = useState(false);
             const [hasSearched, setHasSearched] = useState(false);
-            // Загрузка текстов других религий из open-source CDN
-            const [extTexts, setExtTexts] = useState(null);
-            const [extStatus, setExtStatus] = useState('idle'); // idle|loading|done
-
-            // Загружаем тексты религий из RELIGION_TEXTS (кэш на уровне модуля)
-            const loadExtTexts = async () => {
-                if (extTexts) return extTexts;
-                setExtStatus('loading');
-                const loaded = _buildExtCache();
-                setExtTexts(loaded);
-                setExtStatus('done');
-                return loaded;
-            };
 
             const toggleScope = (key) => setScope(prev => ({ ...prev, [key]: !prev[key] }));
             const toggleAll = (val) => setScope(prev => Object.fromEntries(Object.keys(prev).map(k=>[k,val])));
 
-            // Похожие слова: одинаковый корень (первые 4 символа)
             const matchesFuzzy = (text, q) => {
+                if (!text || !q) return false;
                 const tL = text.toLowerCase(), qL = q.toLowerCase();
                 if (tL.includes(qL)) return true;
                 if (fuzzy && q.length >= 4) {
@@ -1846,16 +1810,15 @@
                 return false;
             };
 
-            const handleSearch = async () => {
+            const handleSearch = () => {
                 if (!query || query.length < 2) return;
                 setSearching(true); setHasSearched(true);
-                const ext = await loadExtTexts();
                 setTimeout(() => {
                     const res = {};
                     // Библия
                     if (scope.bible) {
                         res.bible = [];
-                        db.order.bible.forEach(book => {
+                        (db.order.bible || []).forEach(book => {
                             Object.keys(db.texts.bible[book] || {}).forEach(chap => {
                                 Object.entries(db.texts.bible[book][chap] || {}).forEach(([vNum, text]) => {
                                     if (matchesFuzzy(text, query)) res.bible.push({ book, chap, vNum, text });
@@ -1867,27 +1830,35 @@
                     // Коран
                     if (scope.quran) {
                         res.quran = [];
-                        db.order.quran.forEach(surah => {
+                        (db.order.quran || []).forEach(surah => {
                             Object.entries(db.texts.quran[surah]?.["1"] || {}).forEach(([aNum, text]) => {
                                 if (matchesFuzzy(text, query)) res.quran.push({ surah, aNum, text });
                             });
                         });
                         res.quran = res.quran.slice(0, 200);
                     }
-                    // Остальные религии из RELIGION_TEXTS
+                    // Остальные религии — напрямую из RELIGION_TEXTS
                     const otherRels = ['buddhism','hinduism','taoism','zoroastrism','confucianism','sikhism','shinto'];
                     otherRels.forEach(relId => {
                         if (!scope[relId]) return;
                         res[relId] = [];
-                        const verses = ext?.[relId] || [];
-                        verses.forEach(v => {
-                            if (matchesFuzzy(v.text, query)) res[relId].push(v);
-                        });
+                        try {
+                            const relData = RELIGION_TEXTS[relId];
+                            if (relData && relData.sections) {
+                                relData.sections.forEach(sec => {
+                                    Object.entries(sec.verses || {}).forEach(([vn, vt]) => {
+                                        if (matchesFuzzy(vt, query)) {
+                                            res[relId].push({ ref: sec.title + ', ст.' + vn, text: vt });
+                                        }
+                                    });
+                                });
+                            }
+                        } catch(e) { console.warn('Search error for', relId, e); }
                         res[relId] = res[relId].slice(0, 100);
                     });
                     setResults(res);
                     setSearching(false);
-                }, 50);
+                }, 30);
             };
 
             const highlight = (text, word) => {
@@ -1964,7 +1935,6 @@
                                 {total>0 ? `Найдено ${total} совпадений в ${Object.values(results).filter(r=>r?.length>0).length} источниках` : 'Ничего не найдено. Попробуйте другое слово или включите режим похожих слов.'}
                             </p>
                         )}
-                        {extStatus==='loading' && <p className="text-xs text-amber-600 font-bold animate-pulse">⟳ Загружаю тексты религий...</p>}
                     </div>
 
                     {/* РЕЗУЛЬТАТЫ */}
@@ -3212,9 +3182,196 @@
             );
         }
 
+        // ═══ РАЗДЕЛЁННЫЙ ЭКРАН: вспомогательные компоненты ═══
+        var SPLIT_SOURCES = [
+            { key: 'bible',        label: '📖 Библия',       color: 'amber'   },
+            { key: 'quran',        label: '🌙 Коран',          color: 'emerald' },
+            { key: 'buddhism',     label: '☸️ Дхаммапада',    color: 'yellow'  },
+            { key: 'hinduism',     label: '🕉️ Бхагавад-гита', color: 'orange'  },
+            { key: 'taoism',       label: '☯️ Дао Дэ Цзин',   color: 'stone'   },
+            { key: 'zoroastrism',  label: '🔥 Авеста',         color: 'red'     },
+            { key: 'confucianism', label: '🏮 Лунь Юй',        color: 'rose'    },
+            { key: 'sikhism',      label: '🪯 Гуру Грантх',    color: 'purple'  },
+            { key: 'shinto',       label: '⛩️ Кодзики',        color: 'pink'    },
+        ];
+        var SPLIT_COLORS = {
+            amber:   { bg:'#fffbeb', border:'#fde68a', hdr:'#fef3c7', num:'#d97706', txt:'#44403c' },
+            emerald: { bg:'#ecfdf5', border:'#6ee7b7', hdr:'#d1fae5', num:'#059669', txt:'#064e3b' },
+            yellow:  { bg:'#fefce8', border:'#fde047', hdr:'#fef9c3', num:'#ca8a04', txt:'#422006' },
+            orange:  { bg:'#fff7ed', border:'#fdba74', hdr:'#ffedd5', num:'#ea580c', txt:'#431407' },
+            stone:   { bg:'#f5f5f4', border:'#d6d3d1', hdr:'#e7e5e4', num:'#78716c', txt:'#1c1917' },
+            red:     { bg:'#fff1f2', border:'#fca5a5', hdr:'#fee2e2', num:'#dc2626', txt:'#450a0a' },
+            rose:    { bg:'#fff1f3', border:'#fda4af', hdr:'#ffe4e6', num:'#e11d48', txt:'#4c0519' },
+            purple:  { bg:'#faf5ff', border:'#d8b4fe', hdr:'#ede9fe', num:'#9333ea', txt:'#3b0764' },
+            pink:    { bg:'#fdf2f8', border:'#f0abfc', hdr:'#fae8ff', num:'#c026d3', txt:'#4a044e' },
+        };
+
+        function SplitPanel({ side, db, setAiModal, apiKey }) {
+            const [src, setSrc]       = useState(side === 'left' ? 'bible' : 'quran');
+            const [book, setBook]     = useState('');
+            const [chap, setChap]     = useState('1');
+            const [surah, setSurah]   = useState('');
+            const [secIdx, setSecIdx] = useState(0);
+
+            useEffect(() => {
+                if (!book && db.order.bible.length) setBook(db.order.bible[0]);
+                if (!surah && db.order.quran.length) setSurah(db.order.quran[0]);
+            }, [db.order.bible, db.order.quran]);
+
+            const bChaps = src === 'bible' && book && db.texts.bible[book]
+                ? Object.keys(db.texts.bible[book]).sort((a,b)=>+a-+b) : [];
+
+            const getVerses = () => {
+                if (src === 'bible') return book && chap ? (db.texts.bible[book]?.[chap] || {}) : {};
+                if (src === 'quran') return surah ? (db.texts.quran[surah]?.['1'] || {}) : {};
+                try {
+                    const relData = RELIGION_TEXTS[src];
+                    if (relData && relData.sections && relData.sections[secIdx]) {
+                        return relData.sections[secIdx].verses || {};
+                    }
+                } catch(e) {}
+                return {};
+            };
+
+            const getHeader = () => {
+                if (src === 'bible') return book ? book + (chap ? ', Гл. ' + chap : '') : '—';
+                if (src === 'quran') return surah || '—';
+                try {
+                    const relData = RELIGION_TEXTS[src];
+                    return relData?.sections?.[secIdx]?.title || SPLIT_SOURCES.find(s=>s.key===src)?.label || src;
+                } catch(e) { return src; }
+            };
+
+            const srcMeta  = SPLIT_SOURCES.find(s => s.key === src) || SPLIT_SOURCES[0];
+            const clr      = SPLIT_COLORS[srcMeta.color] || SPLIT_COLORS.stone;
+            const verses   = getVerses();
+            const header   = getHeader();
+            const entries  = Object.entries(verses).sort((a,b) => +a[0]-+b[0]);
+            const relData  = src !== 'bible' && src !== 'quran' ? (() => { try { return RELIGION_TEXTS[src]; } catch(e) { return null; } })() : null;
+
+            return (
+                <div style={{flex:1, display:'flex', flexDirection:'column', overflow:'hidden', minHeight:0,
+                             borderRight: side === 'left' ? '1px solid #e7e5e4' : 'none'}}>
+                    {/* Контролы панели */}
+                    <div style={{flexShrink:0, padding:'10px 12px', borderBottom:'1px solid #e7e5e4',
+                                 background:'#f9f8f6', display:'flex', flexDirection:'column', gap:8}}>
+                        {/* Выбор источника */}
+                        <div style={{display:'flex', flexWrap:'wrap', gap:4}}>
+                            {SPLIT_SOURCES.map(s => (
+                                <button key={s.key} onClick={() => setSrc(s.key)}
+                                    style={{padding:'3px 8px', borderRadius:8, fontSize:11, fontWeight:700,
+                                            border: src === s.key ? '1.5px solid #1c1917' : '1.5px solid #e7e5e4',
+                                            background: src === s.key ? '#1c1917' : '#fff',
+                                            color: src === s.key ? '#fff' : '#78716c',
+                                            cursor:'pointer', transition:'all .15s'}}>
+                                    {s.label}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Библия: книга + глава */}
+                        {src === 'bible' && (
+                            <div style={{display:'flex', gap:6}}>
+                                <select value={book} onChange={e=>{setBook(e.target.value);setChap('1');}}
+                                    style={{flex:1, padding:'5px 8px', border:'1px solid #e7e5e4', borderRadius:8,
+                                            fontSize:12, fontWeight:700, background:'#fff', outline:'none'}}>
+                                    {db.order.bible.map(b => <option key={b} value={b}>{b}</option>)}
+                                </select>
+                                <select value={chap} onChange={e=>setChap(e.target.value)}
+                                    style={{width:72, padding:'5px 8px', border:'1px solid #e7e5e4', borderRadius:8,
+                                            fontSize:12, fontWeight:700, background:'#fff', outline:'none'}}>
+                                    {bChaps.map(c => <option key={c} value={c}>Гл {c}</option>)}
+                                </select>
+                            </div>
+                        )}
+                        {/* Коран: сура */}
+                        {src === 'quran' && (
+                            <select value={surah} onChange={e=>setSurah(e.target.value)}
+                                style={{width:'100%', padding:'5px 8px', border:'1px solid #6ee7b7', borderRadius:8,
+                                        fontSize:12, fontWeight:700, background:'#ecfdf5', outline:'none'}}>
+                                {db.order.quran.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                        )}
+                        {/* Другие религии: раздел */}
+                        {relData && relData.sections && (
+                            <select value={secIdx} onChange={e=>setSecIdx(+e.target.value)}
+                                style={{width:'100%', padding:'5px 8px', border:'1px solid #e7e5e4', borderRadius:8,
+                                        fontSize:12, fontWeight:700, background:'#fff', outline:'none'}}>
+                                {relData.sections.map((sec,i) => <option key={i} value={i}>{sec.title}</option>)}
+                            </select>
+                        )}
+                    </div>
+                    {/* Заголовок раздела */}
+                    <div style={{flexShrink:0, padding:'8px 14px', background:clr.hdr,
+                                 borderBottom:'1px solid ' + clr.border,
+                                 fontFamily:'sans-serif', fontWeight:700, fontSize:11,
+                                 textTransform:'uppercase', letterSpacing:'0.08em', color:clr.num}}>
+                        {header}
+                    </div>
+                    {/* Стихи */}
+                    <div style={{flex:1, overflowY:'auto', background:clr.bg, padding:'16px 14px'}}>
+                        {entries.length === 0 ? (
+                            <div style={{textAlign:'center', color:'#a8a29e', padding:'40px 0', fontSize:13}}>
+                                <div style={{fontSize:28, marginBottom:8}}>📖</div>
+                                Тексты загружаются...
+                            </div>
+                        ) : entries.map(([vn, vt]) => (
+                            <div key={vn} style={{display:'flex', gap:8, marginBottom:14,
+                                                  padding:'4px 6px', borderRadius:10,
+                                                  fontFamily:'Georgia,serif'}}>
+                                <sup style={{fontSize:11, fontWeight:700, color:clr.num, flexShrink:0,
+                                             width:22, textAlign:'right', paddingTop:4, fontFamily:'sans-serif'}}>
+                                    {vn}
+                                </sup>
+                                <span style={{flex:1, fontSize:15, lineHeight:1.75, color:clr.txt}}>{vt}</span>
+                                <button
+                                    onClick={async () => {
+                                        if (!setAiModal) return;
+                                        const lbl = header + ', ст.' + vn;
+                                        setAiModal({verseId:vn, verseText:vt, label:lbl, isBible:src==='bible', html:'', loading:true});
+                                        const r = await fetchZvenoAIAnalysis(vt, lbl, apiKey);
+                                        setAiModal({verseId:vn, verseText:vt, label:lbl, isBible:src==='bible', html:r, loading:false});
+                                    }}
+                                    style={{flexShrink:0, alignSelf:'flex-start', marginTop:2,
+                                            padding:'2px 7px', borderRadius:7, fontSize:11, fontWeight:700,
+                                            background:clr.hdr, border:'1px solid ' + clr.border,
+                                            color:clr.num, cursor:'pointer', opacity:0,
+                                            transition:'opacity .15s'}}
+                                    onMouseEnter={e=>e.currentTarget.style.opacity='1'}
+                                    onMouseLeave={e=>e.currentTarget.style.opacity='0'}
+                                    title="AI анализ">✨</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
         // ═══ МОДУЛЬ: РАЗДЕЛЁННЫЙ ЭКРАН ═══
         function SplitViewModule({ db, apiKey, setAiModal }) {
-            const { useState: useSt, useEffect: useEff } = React;
+            return (
+                <div style={{background:'#fff', borderRadius:24, border:'1px solid #e7e5e4',
+                             boxShadow:'0 1px 4px rgba(0,0,0,.06)',
+                             height:'calc(100vh - 6rem)', display:'flex', flexDirection:'column', overflow:'hidden'}}>
+                    {/* Заголовок */}
+                    <div style={{flexShrink:0, padding:'12px 20px', borderBottom:'1px solid #e7e5e4',
+                                 background:'#f9f8f6', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+                        <h2 style={{fontFamily:'Georgia,serif', fontWeight:700, fontSize:18, color:'#1c1917', margin:0}}>
+                            ⚖️ Разделённый экран
+                        </h2>
+                        <span style={{fontSize:11, color:'#a8a29e', fontWeight:700, textTransform:'uppercase', letterSpacing:'0.08em'}}>
+                            Два текста одновременно
+                        </span>
+                    </div>
+                    {/* Двухпанельный вид */}
+                    <div style={{flex:1, display:'flex', flexDirection:'row', overflow:'hidden', minHeight:0}}>
+                        <SplitPanel side="left"  db={db} setAiModal={setAiModal} apiKey={apiKey} />
+                        <SplitPanel side="right" db={db} setAiModal={setAiModal} apiKey={apiKey} />
+                    </div>
+                </div>
+            );
+        }
+
+        // ═══ МОДУЛЬ: ЧИТАЛКА ДЛЯ ЛЮБОЙ РЕЛИГИИ ═══
 
             const SOURCES = [
                 { key: 'bible', label: '📖 Библия', color: 'amber' },
@@ -3346,40 +3503,6 @@
                     </div>
                 );
             };
-
-            return (
-                <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
-                    {/* Заголовок */}
-                    <div className="flex-shrink-0 px-5 py-3 border-b border-stone-200 bg-stone-50 flex items-center justify-between">
-                        <h2 className="font-serif font-bold text-lg text-stone-900">⚖️ Разделённый экран</h2>
-                        <span className="text-xs text-stone-400 font-bold uppercase tracking-widest">Два текста одновременно</span>
-                    </div>
-                    {/* Двухпанельный вид */}
-                    <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-h-0">
-                        {/* ЛЕВАЯ ПАНЕЛЬ */}
-                        <div className="flex-1 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 overflow-hidden min-h-0">
-                            <PanelControls src={leftSrc} setSrc={setLeftSrc}
-                                book={leftBook} setBook={setLeftBook}
-                                chap={leftChap} setChap={setLeftChap}
-                                surah={leftSurah} setSurah={setLeftSurah}
-                                secIdx={leftRelSec} setSecIdx={setLeftRelSec}
-                                side="left"/>
-                            <PanelContent src={leftSrc} book={leftBook} chap={leftChap} surah={leftSurah} secIdx={leftRelSec}/>
-                        </div>
-                        {/* ПРАВАЯ ПАНЕЛЬ */}
-                        <div className="flex-1 flex flex-col overflow-hidden min-h-0">
-                            <PanelControls src={rightSrc} setSrc={setRightSrc}
-                                book={rightBook} setBook={setRightBook}
-                                chap={rightChap} setChap={setRightChap}
-                                surah={rightSurah} setSurah={setRightSurah}
-                                secIdx={rightRelSec} setSecIdx={setRightRelSec}
-                                side="right"/>
-                            <PanelContent src={rightSrc} book={rightBook} chap={rightChap} surah={rightSurah} secIdx={rightRelSec}/>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
 
         // ═══ МОДУЛЬ: ЧИТАЛКА ДЛЯ ЛЮБОЙ РЕЛИГИИ ═══
         function ReligionReaderModule({ apiKey, setAiModal, setView }) {
