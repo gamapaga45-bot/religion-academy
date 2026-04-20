@@ -560,6 +560,7 @@
                             {v:'step', icon:'📚', label:'Учёба'},
                             {v:'deep', icon:'✨', label:'AI'},
                             {v:'search', icon:'🔍', label:'Поиск'},
+                            {v:'split', icon:'⚖️', label:'Экран'},
                         ].map(({v,icon,label})=>(
                             <button key={v} className={`mobile-nav-item ${view===v?'active':''}`} onClick={()=>setView(v)}>
                                 <span style={{fontSize:20}}>{icon}</span>
@@ -581,8 +582,9 @@
                             {view === 'reader' && <ParallelReaderModule db={db} />}
                             {view === 'bible' && <SingleReaderModule type="bible" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             {view === 'quran' && <SingleReaderModule type="quran" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
-                            {view === 'religions' && <WorldReligionsModule apiKey={apiKey} setAiModal={setAiModal} />}
-                            {view === 'religion_reader' && <ReligionReaderModule apiKey={apiKey} setAiModal={setAiModal} />}
+                            {view === 'religions' && <WorldReligionsModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
+                            {view === 'religion_reader' && <ReligionReaderModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
+                            {view === 'split' && <SplitViewModule db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             </div>
                         </div>
                     </main>
@@ -1186,6 +1188,7 @@
                     <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Мировые религии</span></div>
                     <NI icon={Icons.Book} label="Все религии мира" v="religions"/>
                     <NI icon={Icons.Compare} label="Параллельное чтение" v="reader"/>
+                    <NI icon={Icons.Scroll} label="Разделённый экран" v="split"/>
                     <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Тексты</span></div>
                     <NI icon={Icons.Book} label="Библия (AI)" v="bible"/>
                     <NI icon={Icons.Moon} label="Коран (AI)" v="quran"/>
@@ -1780,6 +1783,27 @@
             );
         }
 
+        // --- КЭШ ТЕКСТОВ ДЛЯ ПОИСКА (модульный уровень, не зависит от React state) ---
+        var _searchExtCache = null;
+        function _buildExtCache() {
+            if (_searchExtCache) return _searchExtCache;
+            const loaded = {};
+            if (typeof RELIGION_TEXTS !== 'undefined') {
+                Object.keys(RELIGION_TEXTS).forEach(relId => {
+                    const rel = RELIGION_TEXTS[relId];
+                    if (!rel || !rel.sections) return;
+                    loaded[relId] = [];
+                    rel.sections.forEach(sec => {
+                        Object.entries(sec.verses || {}).forEach(([vn, vt]) => {
+                            loaded[relId].push({ ref: `${sec.title}, ст.${vn}`, text: vt });
+                        });
+                    });
+                });
+            }
+            _searchExtCache = loaded;
+            return loaded;
+        }
+
         // --- ГЛОБАЛЬНЫЙ ПОИСК ---
         function SearchModule({ db }) {
             const [query, setQuery] = useState("");
@@ -1796,29 +1820,15 @@
             const [hasSearched, setHasSearched] = useState(false);
             // Загрузка текстов других религий из open-source CDN
             const [extTexts, setExtTexts] = useState(null);
-            const [extLoading, setExtLoading] = useState(false);
-            const [extStatus, setExtStatus] = useState('idle'); // idle|loading|done|error
+            const [extStatus, setExtStatus] = useState('idle'); // idle|loading|done
 
-            // Загружаем тексты религий при первом поиске по ним
+            // Загружаем тексты религий из RELIGION_TEXTS (кэш на уровне модуля)
             const loadExtTexts = async () => {
-                if (extTexts || extLoading) return extTexts;
-                setExtLoading(true); setExtStatus('loading');
-                const loaded = {};
-                // Загружаем из RELIGION_TEXTS (уже в памяти)
-                if (typeof RELIGION_TEXTS !== 'undefined') {
-                    Object.keys(RELIGION_TEXTS).forEach(relId => {
-                        const rel = RELIGION_TEXTS[relId];
-                        if (!rel || !rel.sections) return;
-                        loaded[relId] = [];
-                        rel.sections.forEach(sec => {
-                            Object.entries(sec.verses || {}).forEach(([vn, vt]) => {
-                                loaded[relId].push({ ref: `${sec.title}, ст.${vn}`, text: vt });
-                            });
-                        });
-                    });
-                }
+                if (extTexts) return extTexts;
+                setExtStatus('loading');
+                const loaded = _buildExtCache();
                 setExtTexts(loaded);
-                setExtLoading(false); setExtStatus('done');
+                setExtStatus('done');
                 return loaded;
             };
 
@@ -2974,7 +2984,7 @@
 
         <script type="text/babel">
         // ═══ МОДУЛЬ: МИРОВЫЕ РЕЛИГИИ ═══
-        function WorldReligionsModule({ apiKey, setAiModal }) {
+        function WorldReligionsModule({ apiKey, setAiModal, setView }) {
             const [selReligion, setSelReligion] = useState(null);
             const [aiText, setAiText] = useState('');
             const [aiLoad, setAiLoad] = useState(false);
@@ -3116,8 +3126,8 @@
                                     <h3 className="font-serif font-bold text-xl mb-2">{rel.sub} — Полный текст</h3>
                                     <p className="text-stone-500 mb-4">Полный текст доступен в разделе «Библия» или «Коран» с AI-анализом каждого стиха</p>
                                     <div className="flex gap-3 justify-center flex-wrap">
-                                        {rel.id==='bible' && <button onClick={()=>setSelReligion({...rel, _goto:'bible'})} className="px-6 py-3 bg-amber-600 text-white rounded-xl font-bold">Читать Библию →</button>}
-                                        {rel.id==='quran' && <button onClick={()=>setSelReligion({...rel, _goto:'quran'})} className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold">Читать Коран →</button>}
+                                    {rel.id==='bible' && <button onClick={()=>setView && setView('bible')} className="px-6 py-3 bg-amber-600 text-white rounded-xl font-bold">Читать Библию →</button>}
+                                        {rel.id==='quran' && <button onClick={()=>setView && setView('quran')} className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold">Читать Коран →</button>}
                                     </div>
                                 </div>
                             ) : texts ? (
@@ -3132,7 +3142,11 @@
                                                 <div key={vn} className="flex gap-3 group">
                                                     <sup className="text-xs font-sans font-bold mt-1.5 flex-shrink-0 w-5 text-stone-400">{vn}</sup>
                                                     <span className="flex-1 leading-relaxed text-stone-800">{vt}</span>
-                                                    <button onClick={()=>setAiModal({verseId:vn, verseText:vt, label:`${texts.name} ${sec.title} ст.${vn}`, isBible:false, html:'', loading:true})}
+                                                    <button onClick={async()=>{
+                                                            setAiModal({verseId:vn, verseText:vt, label:`${texts.name} ${sec.title} ст.${vn}`, isBible:false, html:'', loading:true});
+                                                            const r = await fetchZvenoAIAnalysis(vt, `${rel.tradition||rel.name}, ${texts.name}, ${sec.title}, стих ${vn}`, apiKey);
+                                                            setAiModal({verseId:vn, verseText:vt, label:`${texts.name} ${sec.title} ст.${vn}`, isBible:false, html:r, loading:false});
+                                                        }}
                                                         className="flex-shrink-0 px-2 py-1 rounded-lg bg-amber-100 hover:bg-amber-300 border border-amber-200 text-amber-700 text-xs font-bold opacity-0 group-hover:opacity-100 transition-all self-start mt-1"
                                                         title="AI Анализ">✨</button>
                                                 </div>
@@ -3185,7 +3199,7 @@
                                         onClick={()=>askAI(`Подробно сравни ${rel.name} (${rel.sub}) и ${r2.name} (${r2.sub}): сходства, различия, отношение к Богу, этика, загробная жизнь, священные тексты`)}
                                         className="p-3 rounded-xl border border-stone-200 hover:border-amber-300 hover:bg-amber-50 text-left transition-all">
                                         <span className="text-xl block">{r2.emoji}</span>
-                                        <span className="text-xs font-bold text-stone-700">{r.emoji} vs {r2.emoji}</span>
+                                        <span className="text-xs font-bold text-stone-700">{rel.emoji} vs {r2.emoji}</span>
                                         <span className="block text-[10px] text-stone-400">{r2.name}</span>
                                     </button>
                                 ))}
@@ -3198,8 +3212,177 @@
             );
         }
 
+        // ═══ МОДУЛЬ: РАЗДЕЛЁННЫЙ ЭКРАН ═══
+        function SplitViewModule({ db, apiKey, setAiModal }) {
+            const { useState: useSt, useEffect: useEff } = React;
+
+            const SOURCES = [
+                { key: 'bible', label: '📖 Библия', color: 'amber' },
+                { key: 'quran', label: '🌙 Коран', color: 'emerald' },
+                { key: 'buddhism', label: '☸️ Дхаммапада', color: 'yellow' },
+                { key: 'hinduism', label: '🕉️ Бхагавад-гита', color: 'orange' },
+                { key: 'taoism', label: '☯️ Дао Дэ Цзин', color: 'stone' },
+                { key: 'zoroastrism', label: '🔥 Авеста', color: 'red' },
+                { key: 'confucianism', label: '🏮 Лунь Юй', color: 'rose' },
+                { key: 'sikhism', label: '🪯 Гуру Грантх', color: 'purple' },
+                { key: 'shinto', label: '⛩️ Кодзики', color: 'pink' },
+            ];
+
+            const COLORS = {
+                amber: { bg: 'bg-amber-50', border: 'border-amber-200', hdr: 'bg-amber-100 text-amber-900', num: 'text-amber-500', btn: 'bg-amber-100 hover:bg-amber-300 border-amber-200 text-amber-700' },
+                emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', hdr: 'bg-emerald-100 text-emerald-900', num: 'text-emerald-500', btn: 'bg-emerald-100 hover:bg-emerald-300 border-emerald-200 text-emerald-700' },
+                yellow: { bg: 'bg-yellow-50', border: 'border-yellow-200', hdr: 'bg-yellow-100 text-yellow-900', num: 'text-yellow-600', btn: 'bg-yellow-100 hover:bg-yellow-300 border-yellow-200 text-yellow-700' },
+                orange: { bg: 'bg-orange-50', border: 'border-orange-200', hdr: 'bg-orange-100 text-orange-900', num: 'text-orange-500', btn: 'bg-orange-100 hover:bg-orange-300 border-orange-200 text-orange-700' },
+                stone: { bg: 'bg-stone-50', border: 'border-stone-300', hdr: 'bg-stone-200 text-stone-900', num: 'text-stone-500', btn: 'bg-stone-200 hover:bg-stone-300 border-stone-300 text-stone-700' },
+                red: { bg: 'bg-red-50', border: 'border-red-200', hdr: 'bg-red-100 text-red-900', num: 'text-red-500', btn: 'bg-red-100 hover:bg-red-300 border-red-200 text-red-700' },
+                rose: { bg: 'bg-rose-50', border: 'border-rose-200', hdr: 'bg-rose-100 text-rose-900', num: 'text-rose-500', btn: 'bg-rose-100 hover:bg-rose-300 border-rose-200 text-rose-700' },
+                purple: { bg: 'bg-purple-50', border: 'border-purple-200', hdr: 'bg-purple-100 text-purple-900', num: 'text-purple-500', btn: 'bg-purple-100 hover:bg-purple-300 border-purple-200 text-purple-700' },
+                pink: { bg: 'bg-pink-50', border: 'border-pink-200', hdr: 'bg-pink-100 text-pink-900', num: 'text-pink-500', btn: 'bg-pink-100 hover:bg-pink-300 border-pink-200 text-pink-700' },
+            };
+
+            // Левая панель
+            const [leftSrc, setLeftSrc] = useSt('bible');
+            const [leftBook, setLeftBook] = useSt(db.order.bible[0] || '');
+            const [leftChap, setLeftChap] = useSt('1');
+            const [leftSurah, setLeftSurah] = useSt(db.order.quran[0] || '');
+            const [leftRelSec, setLeftRelSec] = useSt(0);
+
+            // Правая панель
+            const [rightSrc, setRightSrc] = useSt('quran');
+            const [rightBook, setRightBook] = useSt(db.order.bible[0] || '');
+            const [rightChap, setRightChap] = useSt('1');
+            const [rightSurah, setRightSurah] = useSt(db.order.quran[0] || '');
+            const [rightRelSec, setRightRelSec] = useSt(0);
+
+            const getVerses = (src, book, chap, surah, secIdx) => {
+                if (src === 'bible') return db.texts.bible[book]?.[chap] || {};
+                if (src === 'quran') return db.texts.quran[surah]?.['1'] || {};
+                const relData = typeof RELIGION_TEXTS !== 'undefined' ? RELIGION_TEXTS[src] : null;
+                if (!relData || !relData.sections) return {};
+                const sec = relData.sections[secIdx];
+                return sec ? sec.verses : {};
+            };
+
+            const getHeader = (src, book, chap, surah, secIdx) => {
+                if (src === 'bible') return `${book}, Гл. ${chap}`;
+                if (src === 'quran') return surah;
+                const relData = typeof RELIGION_TEXTS !== 'undefined' ? RELIGION_TEXTS[src] : null;
+                const sec = relData?.sections?.[secIdx];
+                return sec ? sec.title : SOURCES.find(s=>s.key===src)?.label || src;
+            };
+
+            const PanelControls = ({src, setSrc, book, setBook, chap, setChap, surah, setSurah, secIdx, setSecIdx, side}) => {
+                const bChaps = src==='bible' && book && db.texts.bible[book]
+                    ? Object.keys(db.texts.bible[book]).sort((a,b)=>+a-+b) : [];
+                const relData = src!=='bible' && src!=='quran' && typeof RELIGION_TEXTS!=='undefined' ? RELIGION_TEXTS[src] : null;
+                return (
+                    <div className="p-3 border-b border-stone-200 bg-stone-50 space-y-2">
+                        <div className="flex flex-wrap gap-1.5">
+                            {SOURCES.map(s=>(
+                                <button key={s.key} onClick={()=>setSrc(s.key)}
+                                    className={`px-2 py-1 rounded-lg text-[10px] font-bold border transition-all ${src===s.key?'bg-stone-900 text-white border-stone-900':'bg-white border-stone-200 text-stone-600 hover:border-stone-400'}`}>
+                                    {s.label}
+                                </button>
+                            ))}
+                        </div>
+                        {src==='bible' && (
+                            <div className="flex gap-2">
+                                <select value={book} onChange={e=>{setBook(e.target.value);setChap('1');}}
+                                    className="flex-1 p-2 border border-stone-200 rounded-xl text-xs font-bold bg-white outline-none">
+                                    {db.order.bible.map(b=><option key={b} value={b}>{b}</option>)}
+                                </select>
+                                <select value={chap} onChange={e=>setChap(e.target.value)}
+                                    className="w-20 p-2 border border-stone-200 rounded-xl text-xs font-bold bg-white outline-none">
+                                    {bChaps.map(c=><option key={c} value={c}>Гл {c}</option>)}
+                                </select>
+                            </div>
+                        )}
+                        {src==='quran' && (
+                            <select value={surah} onChange={e=>setSurah(e.target.value)}
+                                className="w-full p-2 border border-emerald-200 rounded-xl text-xs font-bold bg-emerald-50 outline-none">
+                                {db.order.quran.map(s=><option key={s} value={s}>{s}</option>)}
+                            </select>
+                        )}
+                        {relData && relData.sections && (
+                            <select value={secIdx} onChange={e=>setSecIdx(+e.target.value)}
+                                className="w-full p-2 border border-stone-200 rounded-xl text-xs font-bold bg-white outline-none">
+                                {relData.sections.map((sec,i)=><option key={i} value={i}>{sec.title}</option>)}
+                            </select>
+                        )}
+                    </div>
+                );
+            };
+
+            const PanelContent = ({src, book, chap, surah, secIdx}) => {
+                const verses = getVerses(src, book, chap, surah, secIdx);
+                const header = getHeader(src, book, chap, surah, secIdx);
+                const srcMeta = SOURCES.find(s=>s.key===src);
+                const clr = COLORS[srcMeta?.color || 'stone'];
+                const entries = Object.entries(verses).sort((a,b)=>+a[0]-+b[0]);
+                return (
+                    <div className={`flex-1 overflow-y-auto font-serif ${clr.bg}`}>
+                        <div className={`sticky top-0 z-10 px-4 py-2.5 border-b ${clr.border} ${clr.hdr} font-sans font-bold text-xs uppercase tracking-widest`}>
+                            {header}
+                        </div>
+                        {entries.length === 0 ? (
+                            <div className="p-8 text-center text-stone-400">
+                                <p className="text-2xl mb-2">📖</p>
+                                <p className="text-sm">Тексты загружаются...</p>
+                            </div>
+                        ) : (
+                            <div className="p-4 md:p-6 space-y-4">
+                                {entries.map(([vn, vt]) => (
+                                    <div key={vn} className="flex gap-3 group">
+                                        <sup className={`text-xs font-sans font-bold mt-1.5 flex-shrink-0 w-6 text-right ${clr.num}`}>{vn}</sup>
+                                        <span className="flex-1 text-base leading-relaxed text-stone-800">{vt}</span>
+                                        <button onClick={()=>setAiModal && setAiModal({verseId:vn, verseText:vt, label:`${header}, ст.${vn}`, isBible:src==='bible', html:'', loading:true})}
+                                            className={`flex-shrink-0 self-start mt-1 px-2 py-1 rounded-lg text-xs font-bold border transition-all opacity-0 group-hover:opacity-100 ${clr.btn}`}>
+                                            ✨
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
+            };
+
+            return (
+                <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
+                    {/* Заголовок */}
+                    <div className="flex-shrink-0 px-5 py-3 border-b border-stone-200 bg-stone-50 flex items-center justify-between">
+                        <h2 className="font-serif font-bold text-lg text-stone-900">⚖️ Разделённый экран</h2>
+                        <span className="text-xs text-stone-400 font-bold uppercase tracking-widest">Два текста одновременно</span>
+                    </div>
+                    {/* Двухпанельный вид */}
+                    <div className="flex-1 flex flex-col md:flex-row overflow-hidden min-h-0">
+                        {/* ЛЕВАЯ ПАНЕЛЬ */}
+                        <div className="flex-1 flex flex-col border-b md:border-b-0 md:border-r border-stone-200 overflow-hidden min-h-0">
+                            <PanelControls src={leftSrc} setSrc={setLeftSrc}
+                                book={leftBook} setBook={setLeftBook}
+                                chap={leftChap} setChap={setLeftChap}
+                                surah={leftSurah} setSurah={setLeftSurah}
+                                secIdx={leftRelSec} setSecIdx={setLeftRelSec}
+                                side="left"/>
+                            <PanelContent src={leftSrc} book={leftBook} chap={leftChap} surah={leftSurah} secIdx={leftRelSec}/>
+                        </div>
+                        {/* ПРАВАЯ ПАНЕЛЬ */}
+                        <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+                            <PanelControls src={rightSrc} setSrc={setRightSrc}
+                                book={rightBook} setBook={setRightBook}
+                                chap={rightChap} setChap={setRightChap}
+                                surah={rightSurah} setSurah={setRightSurah}
+                                secIdx={rightRelSec} setSecIdx={setRightRelSec}
+                                side="right"/>
+                            <PanelContent src={rightSrc} book={rightBook} chap={rightChap} surah={rightSurah} secIdx={rightRelSec}/>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         // ═══ МОДУЛЬ: ЧИТАЛКА ДЛЯ ЛЮБОЙ РЕЛИГИИ ═══
-        function ReligionReaderModule({ apiKey, setAiModal }) {
+        function ReligionReaderModule({ apiKey, setAiModal, setView }) {
             const [selId, setSelId] = useState(WORLD_RELIGIONS[2].id);
             const rel = WORLD_RELIGIONS.find(r=>r.id===selId) || WORLD_RELIGIONS[2];
             const texts = RELIGION_TEXTS[rel.id];
