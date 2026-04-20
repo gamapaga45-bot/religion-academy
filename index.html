@@ -25,6 +25,10 @@
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         
         .modal-overlay { background-color: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
+
+        /* Безопасные градиентные заглушки для картинок, если сеть блокирует Wikimedia */
+        .img-fallback-bible { background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%); }
+        .img-fallback-quran { background: linear-gradient(135deg, #d1fae5 0%, #6ee7b7 100%); }
     </style>
 </head>
 <body class="text-stone-900">
@@ -40,6 +44,13 @@
             textArea.select();
             document.execCommand("copy");
             document.body.removeChild(textArea);
+        };
+
+        // Утилита для картинок с fallback
+        const SafeImage = ({ src, alt, fallbackClass, className }) => {
+            const [hasError, setHasError] = useState(false);
+            if (hasError) return <div className={`${fallbackClass} ${className} flex items-center justify-center p-4 text-center italic text-stone-600 font-bold opacity-50`}>{alt} (Изображение недоступно)</div>;
+            return <img src={src} alt={alt} className={className} onError={() => setHasError(true)} />;
         };
 
         // --- ИКОНКИ ---
@@ -65,7 +76,8 @@
             MessageSquare: ({c}) => <IconBase className={c}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></IconBase>,
             Settings: ({c}) => <IconBase className={c}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></IconBase>,
             Key: ({c}) => <IconBase className={c}><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"/><path d="m21 2-9.6 9.6"/><circle cx="7.5" cy="15.5" r="5.5"/></IconBase>,
-            Scroll: ({c}) => <IconBase className={c}><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/></IconBase>
+            Scroll: ({c}) => <IconBase className={c}><path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/></IconBase>,
+            Alert: ({c}) => <IconBase className={c}><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></IconBase>
         };
 
         const BIBLE_BOOKS_RU = {
@@ -100,70 +112,70 @@
             "Аль-Масад", "Аль-Ихляс", "Аль-Фалак", "Ан-Нас"
         ];
 
-        // --- ДАННЫЕ ОРИГИНАЛЬНЫХ ТЕКСТОВ ---
+        // --- ДАННЫЕ ОРИГИНАЛЬНЫХ ТЕКСТОВ (РАСШИРЕННЫЕ) ---
         const ORIGINALS_DB = {
             bible: [
                 {
                     title: "Ветхий Завет: Древнееврейский язык (Иврит)",
                     subtitle: "Шема Исраэль (Фундамент монотеизма)",
-                    image: "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?auto=format&fit=crop&w=800&q=80",
-                    imageAlt: "",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Torah_scroll_on_display.jpg/800px-Torah_scroll_on_display.jpg",
+                    imageAlt: "Древний свиток Торы",
                     original: "שְׁמַע יִשְׂרָאֵל יְהוָה אֱלֹהֵינוּ יְהוָה אֶחָֽד׃",
                     transliteration: "Шма Йисраэ́ль, Адона́й Элохэ́йну, Адона́й Эха́д",
                     translation: "Слушай, Израиль: Господь, Бог наш, Господь един есть. (Второзаконие 6:4)",
                     analysis: "Этот стих является сердцем иудейского богословия. Слово «Шма» означает не просто «слушай», но и «внимай, повинуйся, осознавай». Имя Бога (Тетраграмматон - YHWH) традиционно не произносится из-за святости и при чтении всегда заменяется на «Адонай» (Господь). Слово «Эхад» подчеркивает абсолютное, неделимое единство Творца."
                 },
                 {
-                    title: "От Иероглифов к Алфавиту",
-                    subtitle: "Эволюция библейского письма",
-                    image: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&w=800&q=80",
-                    imageAlt: "",
-                    original: "𐤀 𐤁 𐤂 𐤃 (Алеф, Бет, Гимел, Далет)",
-                    transliteration: "Палеоеврейское (древнесемитское) письмо",
-                    translation: "Самые ранние библейские тексты",
-                    analysis: "Древнейшие части Библии писались палеоеврейским письмом, которое произошло от финикийского и протосинайского алфавитов. Эти алфавиты, в свою очередь, возникли под влиянием египетских иероглифов. Например, буква «Алеф» (א) изначально рисовалась как голова быка (символ силы), а «Бет» (ב) — как план дома (палатки)."
+                    title: "Язык Иисуса: Арамейский",
+                    subtitle: "Слова на кресте (Элои, Элои)",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Codex_Syriacus.jpg/800px-Codex_Syriacus.jpg",
+                    imageAlt: "Сирийский манускрипт (родственник арамейского)",
+                    original: "אֱלֹהִי אֱלֹהִי לָמָה שְׁבַקְתָּנִי",
+                    transliteration: "Элои́! Элои́! ламма́ савахфани́?",
+                    translation: "Боже Мой! Боже Мой! для чего Ты Меня оставил? (Марк 15:34)",
+                    analysis: "Исторический Иисус проповедовал не на греческом или иврите, а на галилейском диалекте арамейского языка (лингва-франка Ближнего Востока того времени). Евангелисты сохранили несколько фраз в оригинале (например, 'Талифа куми' - девица, встань). Фраза на кресте — это прямая цитата 21-го Псалма Давида."
                 },
                 {
                     title: "Новый Завет: Древнегреческий язык (Койне)",
                     subtitle: "Пролог Евангелия от Иоанна",
-                    image: "https://images.unsplash.com/photo-1447069387366-2a3470621182?auto=format&fit=crop&w=800&q=80",
-                    imageAlt: "",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/P46.jpg/800px-P46.jpg",
+                    imageAlt: "Папирус P46 с посланиями Павла",
                     original: "Ἐν ἀρχῇ ἦν ὁ λόγος, καὶ ὁ λόγος ἦν πρὸς τὸν θεόν, καὶ θεὸς ἦν ὁ λόγος.",
                     transliteration: "Эн архэ́ эн хо ло́гос, кай хо ло́гос эн прос тон тэо́н, кай тэо́с эн хо ло́гос",
                     translation: "В начале было Слово, и Слово было у Бога, и Слово было Бог. (Иоанн 1:1)",
-                    analysis: "Новый Завет написан на «койне» — разговорном греческом языке античного Средиземноморья, что делало его понятным всем народам Римской империи. Понятие «Логос» (Слово/Разум/Смысл) было хорошо знакомо античным философам-стоикам. Апостол Иоанн гениально использует этот философский термин, чтобы объяснить грекам божественную природу Христа."
+                    analysis: "Новый Завет написан на «койне» — разговорном греческом языке античного Средиземноморья. Понятие «Логос» (Слово/Разум/Смысл) было знакомо античным философам. Апостол Иоанн гениально использует этот философский термин, чтобы объяснить грекам божественную природу Христа как Разума, сотворившего Вселенную."
                 }
             ],
             quran: [
                 {
                     title: "Основа Корана: Классический Арабский",
                     subtitle: "Басмала (Открывающая формула)",
-                    image: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80",
-                    imageAlt: "",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Basmala-Islamic_calligraphy.jpg/800px-Basmala-Islamic_calligraphy.jpg",
+                    imageAlt: "Изящная арабская каллиграфия Бисмиллях",
                     original: "بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ",
                     transliteration: "Бисмилля́хир-Рахма́нир-Рахи́м",
                     translation: "Во имя Аллаха, Милостивого, Милосердного!",
                     analysis: "С этой фразы начинаются 113 из 114 сур Корана. Слова «Рахман» и «Рахим» происходят от одного семитского корня R-H-M (ر ح م), который буквально означает «материнская утроба». Это глубоко символично: ислам подчеркивает безусловную, всеобъемлющую, сродни материнской, любовь и милосердие Творца к Своим творениям."
                 },
                 {
-                    title: "Главный теологический стих Ислама",
+                    title: "Древнейшие рукописи: Куфическое письмо",
                     subtitle: "Аят аль-Курси (Аят Трона)",
-                    image: "https://images.unsplash.com/photo-1564399579693-010df04bd0e0?auto=format&fit=crop&w=800&q=80",
-                    imageAlt: "",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Quran_manuscript_on_vellum.jpg/800px-Quran_manuscript_on_vellum.jpg",
+                    imageAlt: "Куфическое письмо Корана на древнем пергаменте",
                     original: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ",
                     transliteration: "Алла́ху ля иля́ха илля хуваль-хайюль-кайю́м",
                     translation: "Аллах — нет божества, кроме Него, Живого, Вседержителя. (Сура 2, аят 255)",
-                    analysis: "Считается величайшим аятом Корана, описывающим абсолютное всемогущество и независимость Бога. Ранние манускрипты Корана (как на фото) записывались строгим стилем «Хиджази» или «Куфи», в которых отсутствовали точки над буквами (диакритика) и огласовки (гласные звуки). Они были добавлены спустя десятилетия для точного чтения текста новообращенными не-арабами."
+                    analysis: "Ранние манускрипты Корана (VII-VIII вв.) записывались строгим стилем «Хиджази» или «Куфи», в которых отсутствовали точки над буквами и огласовки (гласные звуки). Чтение опиралось на феноменальную память хафизов. Знаки огласовок (харакаты) были добавлены десятилетия спустя для предотвращения ошибок при чтении не-арабами."
                 },
                 {
                     title: "Свидетельство веры",
-                    subtitle: "Шахада (Первый столп)",
-                    image: "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80",
-                    imageAlt: "",
+                    subtitle: "Шахада (Первый столп Ислама)",
+                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Kaaba_mirror_edit.jpg/800px-Kaaba_mirror_edit.jpg",
+                    imageAlt: "Священная Кааба в Мекке",
                     original: "لَا إِلٰهَ إِلَّا ٱلله، مُحَمَّدٌ رَسُولُ ٱلله",
                     transliteration: "Ля иля́ха иллялла́х, Мухаммадур-расулюлла́х",
                     translation: "Нет божества, кроме Аллаха, и Мухаммед — посланник Аллаха.",
-                    analysis: "Хотя Шахада в таком полном виде редко встречается в самом тексте Корана как единое предложение, она является первым столпом Ислама. Она идеально объединяет в себе строгий монотеизм (из суры Мухаммад 47:19) и признание финальной пророческой миссии Мухаммеда (из суры Аль-Фатх 48:29)."
+                    analysis: "Хотя Шахада в таком полном виде редко встречается в самом тексте Корана как единое предложение, она является фундаментом веры. Она идеально объединяет в себе строгий монотеизм (из суры Мухаммад 47:19) и признание финальной пророческой миссии Мухаммеда (из суры Аль-Фатх 48:29)."
                 }
             ]
         };
@@ -171,41 +183,41 @@
         const ACADEMIC_COMMENTS = {
             "Бытие": {
                 text: "Книга Бытие (Генезис). С позиций историко-критической библеистики представляет собой компиляцию нескольких независимых традиций (Яхвист, Элохист, Жреческий кодекс), окончательно отредактированную в период Вавилонского плена (VI в. до н.э.).",
-                imageUrl: "https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?auto=format&fit=crop&w=800&q=80",
-                caption: "Свитки Мертвого моря. Анализ текстов показывает теологическую полемику Бытия с мифами Вавилона."
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Dead_sea_scrolls.jpg/800px-Dead_sea_scrolls.jpg",
+                caption: "Кумранские свитки (Свитки Мертвого моря). Древнейшие дошедшие до нас копии библейских текстов."
             },
             "Исход": {
-                text: "Описывает формирование Израиля как народа. Академически текст рассматривается как мощный этногенетический миф — теологический эпос, призванный объединить разрозненные ханаанские племена вокруг единого Завета и культа Яхве.",
-                imageUrl: "https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?auto=format&fit=crop&w=800&q=80",
-                caption: "Пустынный пейзаж Синая. Исход стал фундаментальной парадигмой освобождения в иудео-христианской традиции."
+                text: "Описывает формирование Израиля как народа. Академически текст рассматривается как мощный этногенетический миф — теологический эпос, призванный объединить разрозненные ханаанские племена вокруг единого Завета и культа Яхве на фоне доминирования Египетской империи.",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Judean_Desert_View.jpg/800px-Judean_Desert_View.jpg",
+                caption: "Пустынный пейзаж Иудеи/Синая. Исход стал фундаментальной парадигмой освобождения."
             },
             "От Матфея": {
-                text: "Одно из синоптических Евангелий (Сирия, ~80-90 гг. н.э.). Автор обращается к еврейской аудитории. Его главная цель — доказать, что Иисус является обещанным Мессией, исполняющим пророчества Ветхого Завета.",
-                imageUrl: "https://images.unsplash.com/photo-1447069387366-2a3470621182?auto=format&fit=crop&w=800&q=80",
-                caption: "Древний манускрипт. Евангелие от Матфея содержит наиболее полное изложение Нагорной проповеди."
+                text: "Одно из синоптических Евангелий (Сирия, ~80-90 гг. н.э.). Автор обращается к еврейской аудитории. Его главная цель — доказать, что Иисус является обещанным Мессией, исполняющим пророчества Ветхого Завета. Иисус представлен как «Новый Моисей».",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Gospel_of_Matthew_Papyrus.jpg/800px-Gospel_of_Matthew_Papyrus.jpg",
+                caption: "Древний папирус Евангелия от Матфея, написанный на греческом койне."
             },
             "1. Аль-Фатиха": {
                 text: "«Открывающая» книгу. Мекканская сура, являющаяся квинтэссенцией ислама (Умм аль-Китаб — Мать Книги). В отличие от большинства сур, где Бог говорит от первого лица, Фатиха формально представляет собой молитву-обращение людей к Богу.",
-                imageUrl: "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&q=80",
-                caption: "Арабская каллиграфия. Аль-Фатиха является самой читаемой молитвой в исламском мире."
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Kaaba_mirror_edit.jpg/800px-Kaaba_mirror_edit.jpg",
+                caption: "Кааба в Мекке. Аль-Фатиха является самой читаемой молитвой, звучащей при каждом ракаате."
             },
             "2. Аль-Бакара": {
-                text: "«Корова» — самая длинная сура Корана, ниспосланная в мединский период. Является фундаментом исламского права (шариата). Сура отражает переходный момент: община мусульман отделяется от иудеев и язычников.",
-                imageUrl: "https://images.unsplash.com/photo-1564399579693-010df04bd0e0?auto=format&fit=crop&w=800&q=80",
-                caption: "Исламская архитектура. Сура Бакара содержит Аят аль-Курси (Аят Трона)."
+                text: "«Корова» — самая длинная сура Корана, ниспосланная в мединский период. Является фундаментом исламского права (шариата). Сура отражает исторический момент: община мусульман отделяется от иудеев и язычников, провозглашая Мекку новой Киблой (направлением для молитвы).",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Prophet%27s_Mosque%2C_Medina_-_Saudi_Arabia.jpg/800px-Prophet%27s_Mosque%2C_Medina_-_Saudi_Arabia.jpg",
+                caption: "Мечеть Пророка в Медине. Центр формирования исламского права (Шариата)."
             },
             "default": {
                 text: "С позиций историко-критического метода данный текст следует рассматривать в контексте его исторической эпохи, учитывая литературный жанр, целевую аудиторию и политическую обстановку.",
-                imageUrl: "https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80",
-                caption: "Древние тексты. Изучение первоисточников требует знания языков: иврита, койне и арабского."
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Library_of_Celsus_in_Ephesus.jpg/800px-Library_of_Celsus_in_Ephesus.jpg",
+                caption: "Библиотека Цельса (Эфес). Древние тексты передавались и изучались в таких античных центрах."
             }
         };
 
         const getLineByLineComment = (isBible, book, chap, verse, text) => {
-            if (isBible && book === "Бытие" && chap === "1" && verse === "1") return "В древнееврейском оригинале используется слово 'Бара' (творить из ничего), применяемое исключительно к действиям Бога. 'Элохим' (Бог) стоит во множественном числе — лингвистический реликт ханаанского пантеона, переосмысленный в монотеизм.";
-            if (isBible && book === "От Иоанна" && chap === "1" && verse === "1") return "Концепция 'Логоса' (Слова). Иоанн использует популярный в античной эллинистической философии термин, чтобы объяснить божественную природу Христа как предвечного разума.";
+            if (isBible && book === "Бытие" && chap === "1" && verse === "1") return "В древнееврейском оригинале используется слово 'Бара' (творить из ничего), применяемое исключительно к действиям Бога. 'Элохим' (Бог) стоит во множественном числе — лингвистический реликт, переосмысленный в строгий монотеизм.";
+            if (isBible && book === "От Иоанна" && chap === "1" && verse === "1") return "Концепция 'Логоса' (Слова). Иоанн использует популярный в античной эллинистической философии термин, чтобы объяснить грекам божественную природу Христа как предвечного Разума.";
             if (!isBible && book.includes("Аль-Фатиха") && verse === "1") return "Формула 'Басмала'. Встречается перед каждой сурой Корана (кроме 9-й). Подчеркивает два главных атрибута Аллаха: Ар-Рахман (Милостивый ко всем) и Ар-Рахим (Милосердный к верующим).";
-            return `Академический разбор стиха ${verse}: Данный фрагмент («${text.substring(0, 20)}...») исследуется экзегетами как отражение социально-культурных норм и теологических концепций авторов эпохи написания текста.`;
+            return `Академический комментарий к стиху ${verse}: Текст исследуется экзегетами как отражение социально-культурных норм и теологических концепций своей эпохи. Особое внимание уделяется первоначальному смыслу слов на иврите/арамейском/арабском.`;
         };
 
         const DEFAULT_DB = {
@@ -221,7 +233,6 @@
             const [dataStatus, setDataStatus] = useState('loading');
             const [statusText, setStatusText] = useState('Подготовка...');
             
-            // Настройки API Ключа для ZVENO AI / TTS
             const [apiKey, setApiKey] = useState(localStorage.getItem('zveno_api_key') || '');
             const [showSettings, setShowSettings] = useState(false);
 
@@ -304,15 +315,21 @@
                                     </div>
                                     <h3 className="text-2xl font-bold font-serif text-stone-900">Настройки AI Аудио</h3>
                                 </div>
-                                <p className="text-stone-600 mb-6 text-sm">
-                                    Для использования высококачественных художественных голосов (ZVENO AI, OpenAI и др.) введите ваш API-ключ. Если ключ не указан, будет использован встроенный системный голос.
+                                <p className="text-stone-600 mb-4 text-sm">
+                                    Для использования высококачественных нейросетевых голосов (ZVENO AI, OpenAI) введите ваш API-ключ.
                                 </p>
+                                <div className="bg-amber-50 p-3 rounded-lg flex items-start mb-6">
+                                    <Icons.Alert c="w-4 h-4 text-amber-600 mr-2 flex-shrink-0 mt-0.5"/>
+                                    <p className="text-xs text-amber-800">
+                                        Браузеры блокируют прямые запросы к API (ошибка CORS). Если у вас нет настроенного прокси-сервера, рекомендуем использовать улучшенный встроенный движок.
+                                    </p>
+                                </div>
                                 <input 
                                     type="password" 
                                     placeholder="sk-zveno-..." 
                                     defaultValue={apiKey}
                                     id="api-key-input"
-                                    className="w-full p-4 border border-stone-300 rounded-xl mb-6 focus:ring-2 focus:ring-amber-500 outline-none font-mono"
+                                    className="w-full p-4 border border-stone-300 rounded-xl mb-6 focus:ring-2 focus:ring-amber-500 outline-none font-mono text-sm"
                                 />
                                 <div className="flex gap-4 justify-end">
                                     <button onClick={() => setShowSettings(false)} className="px-6 py-3 rounded-xl font-bold text-stone-500 hover:bg-stone-100">Отмена</button>
@@ -349,13 +366,14 @@
                             <div className="flex items-center">
                                 {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-3"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">{statusText}</span></>}
                                 {!loading && dataStatus === 'success' && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-3"></div><span className="text-[10px] font-bold tracking-wider text-emerald-500">{statusText}</span></>}
+                                {!loading && dataStatus === 'error' && <><div className="w-2 h-2 rounded-full bg-rose-500 mr-3"></div><span className="text-[10px] font-bold tracking-wider text-rose-500">{statusText}</span></>}
                             </div>
                         </div>
                     </aside>
 
                     <main className="flex-1 ml-72 p-6 md:p-10 min-h-screen bg-[#f5f4f0]">
                         <div className="max-w-6xl mx-auto h-full">
-                            {view === 'dashboard' && <Dashboard setView={setView} loading={loading} dataStatus={dataStatus} db={db} />}
+                            {view === 'dashboard' && <Dashboard setView={setView} loading={loading} dataStatus={dataStatus} text={statusText} db={db} />}
                             {view === 'simple' && <SimpleExplanationModule />}
                             {view === 'videos' && <VideoLessonsModule />}
                             {view === 'search' && <SearchModule db={db} />}
@@ -378,17 +396,18 @@
             );
         }
 
-        // --- ПРОДВИНУТЫЙ АУДИО ДВИЖОК ---
+        // --- УЛУЧШЕННЫЙ АУДИО ДВИЖОК С АЛГОРИТМОМ ПУНКТУАЦИИ ---
         function AudioPlayer({ versesObj, theme, apiKey }) {
             const [voices, setVoices] = useState([]);
             const [selectedVoice, setSelectedVoice] = useState('AI_ZVENO_PREMIUM');
             const [isPlaying, setIsPlaying] = useState(false);
+            const [apiError, setApiError] = useState('');
             
             useEffect(() => {
                 const loadVoices = () => {
                     const allVoices = window.speechSynthesis.getVoices();
                     const ruVoices = allVoices.filter(v => v.lang.includes('ru')).sort((a, b) => {
-                        if (a.name.includes('Google') || a.name.includes('Siri')) return -1;
+                        if (a.name.includes('Google') || a.name.includes('Siri') || a.name.includes('Premium')) return -1;
                         return 1;
                     });
                     setVoices(ruVoices.length > 0 ? ruVoices : allVoices);
@@ -398,44 +417,76 @@
                 return () => window.speechSynthesis.cancel();
             }, []);
 
-            const generateTextToRead = () => {
-                return Object.entries(versesObj)
-                    .sort((a,b)=>Number(a[0])-Number(b[0]))
-                    .map(([v, t]) => {
-                        let text = t.replace(/ — /g, ", ").replace(/ - /g, ", ");
-                        if (!/[.!?]$/.test(text)) text += ".";
-                        return text;
-                    })
-                    .join(" ");
-            };
-
-            const playWithNativeTTS = (textChunk) => {
-                window.speechSynthesis.cancel(); 
-                const utterance = new SpeechSynthesisUtterance(textChunk);
-                const voice = voices.find(v => v.name === selectedVoice);
-                if (voice) utterance.voice = voice;
-                utterance.lang = 'ru-RU';
-                utterance.rate = 0.85; 
-                utterance.pitch = 0.95; 
+            // Разбиваем текст на "дыхательные" фразы для художественного звучания (нативного)
+            const playNativeChunked = (textArray) => {
+                let currentIndex = 0;
                 
-                utterance.onend = () => setIsPlaying(false);
-                utterance.onerror = () => setIsPlaying(false);
-                window.speechSynthesis.speak(utterance);
+                // Предобработка: замена тире на запятые для паузы, разделение по знакам препинания
+                const processTextForSpeech = (text) => {
+                    return text.replace(/ — /g, ", ").replace(/ - /g, ", ");
+                };
+
+                // Создаем плоский массив предложений/фраз для всего контента
+                const allPhrases = [];
+                textArray.forEach(rawText => {
+                    const processed = processTextForSpeech(rawText);
+                    // Разбиваем длинные стихи на фразы по знакам препинания для естественных пауз
+                    const fragments = processed.split(/(?<=[.?!;])/g).filter(f => f.trim().length > 0);
+                    fragments.forEach(f => allPhrases.push(f));
+                });
+
+                const speakNext = () => {
+                    if (currentIndex >= allPhrases.length || !isPlaying) {
+                        setIsPlaying(false);
+                        return;
+                    }
+
+                    const phrase = allPhrases[currentIndex];
+                    const utterance = new SpeechSynthesisUtterance(phrase);
+                    
+                    const voice = voices.find(v => v.name === selectedVoice);
+                    if (voice) utterance.voice = voice;
+                    
+                    utterance.lang = 'ru-RU';
+                    // Художественные настройки: чуть медленнее, глубокий тон
+                    utterance.rate = 0.82; 
+                    utterance.pitch = 0.95; 
+                    
+                    utterance.onend = () => {
+                        currentIndex++;
+                        // Искусственная микро-пауза между фразами (50мс - 200мс)
+                        setTimeout(speakNext, 150); 
+                    };
+                    
+                    utterance.onerror = () => setIsPlaying(false);
+                    
+                    window.speechSynthesis.speak(utterance);
+                };
+
+                speakNext();
             };
 
             const handlePlay = async () => {
                 if (isPlaying) {
                     window.speechSynthesis.cancel();
                     setIsPlaying(false);
+                    setApiError('');
                     return;
                 }
                 
                 if (!versesObj || Object.keys(versesObj).length === 0) return;
                 setIsPlaying(true);
-                const fullText = generateTextToRead();
+                setApiError('');
+                window.speechSynthesis.cancel(); 
+
+                const sortedTexts = Object.entries(versesObj)
+                    .sort((a,b)=>Number(a[0])-Number(b[0]))
+                    .map(([v, t]) => t);
 
                 if (apiKey && selectedVoice === 'AI_ZVENO_PREMIUM') {
                     try {
+                        const fullText = sortedTexts.join(" ");
+                        // Запрос к ZVENO AI / OpenAI
                         const response = await fetch('https://api.openai.com/v1/audio/speech', {
                             method: 'POST',
                             headers: {
@@ -456,50 +507,53 @@
                         audio.onended = () => setIsPlaying(false);
                         audio.play();
                     } catch (error) {
-                        console.warn("Ошибка AI API. Переключение на встроенный движок...");
+                        console.warn("CORS/API Ошибка. Включение умного встроенного движка...", error);
+                        setApiError('CORS. Включен встроенный голос');
+                        // Автоматический Fallback на умное нативное чтение
                         setSelectedVoice(voices[0]?.name || '');
-                        playWithNativeTTS(fullText);
+                        playNativeChunked(sortedTexts);
                     }
                 } else {
-                    playWithNativeTTS(fullText);
+                    // Используем умное нативное чтение по умолчанию
+                    playNativeChunked(sortedTexts);
                 }
             };
 
-            const accentColor = theme === 'bible' ? 'text-amber-600 hover:bg-amber-100' : 'text-emerald-600 hover:bg-emerald-100';
-            const bgColor = theme === 'bible' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200';
-
             return (
-                <div className={`flex items-center p-2 rounded-xl border ${bgColor} shadow-sm`}>
-                    <Icons.Volume c={`w-4 h-4 ml-2 mr-2 ${theme === 'bible' ? 'text-amber-500' : 'text-emerald-500'}`}/>
-                    <select value={selectedVoice} onChange={e => setSelectedVoice(e.target.value)} className="text-xs bg-transparent font-bold text-stone-600 outline-none w-32 md:w-48 truncate mr-2 cursor-pointer" title="Выберите голос">
-                        <option value="AI_ZVENO_PREMIUM" className="font-bold">✨ ZVENO AI (Художественный)</option>
-                        <optgroup label="Системные голоса (Fallback)">
-                            {voices.map(v => <option key={v.name} value={v.name}>{v.name}</option>)}
-                        </optgroup>
-                    </select>
-                    <button onClick={handlePlay} className={`p-2 rounded-lg transition-colors ${accentColor}`} title={isPlaying ? "Остановить чтение" : "Слушать текст"}>
-                        {isPlaying ? <Icons.Square c="w-5 h-5 fill-current"/> : <Icons.Play c="w-5 h-5 fill-current"/>}
-                    </button>
+                <div className="flex flex-col items-end">
+                    <div className={`flex items-center p-2 rounded-xl border ${theme === 'bible' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'} shadow-sm`}>
+                        <Icons.Volume c={`w-4 h-4 ml-2 mr-2 ${theme === 'bible' ? 'text-amber-500' : 'text-emerald-500'}`}/>
+                        <select value={selectedVoice} onChange={e => {setSelectedVoice(e.target.value); setApiError('');}} className="text-xs bg-transparent font-bold text-stone-600 outline-none w-32 md:w-48 truncate mr-2 cursor-pointer" title="Выберите голос">
+                            <option value="AI_ZVENO_PREMIUM" className="font-bold">✨ ZVENO AI (Нейросеть)</option>
+                            <optgroup label="Системные голоса (Умные паузы)">
+                                {voices.map(v => <option key={v.name} value={v.name}>{v.name}</option>)}
+                            </optgroup>
+                        </select>
+                        <button onClick={handlePlay} className={`p-2 rounded-lg transition-colors ${theme === 'bible' ? 'text-amber-600 hover:bg-amber-100' : 'text-emerald-600 hover:bg-emerald-100'}`} title={isPlaying ? "Остановить чтение" : "Слушать текст"}>
+                            {isPlaying ? <Icons.Square c="w-5 h-5 fill-current"/> : <Icons.Play c="w-5 h-5 fill-current"/>}
+                        </button>
+                    </div>
+                    {apiError && <span className="text-[9px] text-rose-500 font-bold uppercase mt-1 px-1">{apiError}</span>}
                 </div>
             );
         }
 
         // --- DASHBOARD ---
-        function Dashboard({ setView, loading, dataStatus, db }) {
+        function Dashboard({ setView, loading, dataStatus, text, db }) {
             return (
                 <div className="flex flex-col gap-6 fade-in-up">
                     <div className="bg-[#1c1b1d] text-stone-100 p-12 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
                         <div className="relative z-10">
                             <h2 className="text-4xl font-serif font-bold mb-4 text-white">Академическая среда 4.0</h2>
                             <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Максимальное обновление. Интегрирована новая база <strong>«Языки и манускрипты»</strong> для изучения текстов в оригинале. Добавлена поддержка <strong>ZVENO AI</strong> для художественного аудио-чтения.
+                                Максимальное обновление. Исправлена верстка энциклопедии, заменены иллюстрации (обход блокировок). Аудио-движок переписан: теперь он делает <strong>художественные паузы</strong> и плавно переключается с нейросети на умный браузерный голос при сбоях API.
                             </p>
                             <div className="flex flex-wrap gap-4 mb-6">
-                                <button onClick={()=>setView('originals')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
-                                    Языки и оригиналы <Icons.Scroll c="w-5 h-5 ml-3" />
+                                <button onClick={()=>setView('simple')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
+                                    Просто о сложном <Icons.Smile c="w-5 h-5 ml-3" />
                                 </button>
-                                <button onClick={()=>setView('simple')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all">
-                                    Просто о сложном
+                                <button onClick={()=>setView('originals')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all">
+                                    Языки и манускрипты
                                 </button>
                             </div>
                         </div>
@@ -515,26 +569,26 @@
 
             return (
                 <div className="space-y-8 fade-in-up pb-12">
-                    <div className="flex justify-between items-center mb-8 border-b border-stone-200 pb-4">
+                    <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-stone-200 pb-4 gap-4">
                         <h2 className="text-3xl font-serif font-bold text-stone-900 flex items-center">
                             <Icons.Scroll c="w-8 h-8 mr-3 text-amber-600"/> Языки и манускрипты
                         </h2>
-                        <div className="flex bg-stone-200/50 p-1 rounded-xl">
-                            <button onClick={()=>setMode('bible')} className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${mode==='bible' ? 'bg-white shadow-sm text-amber-700' : 'text-stone-500 hover:text-stone-700'}`}>Иврит и Койне</button>
-                            <button onClick={()=>setMode('quran')} className={`px-6 py-2 rounded-lg font-bold text-sm transition-all ${mode==='quran' ? 'bg-white shadow-sm text-emerald-700' : 'text-stone-500 hover:text-stone-700'}`}>Арабский язык</button>
+                        <div className="flex bg-stone-200/50 p-1 rounded-xl w-full md:w-auto">
+                            <button onClick={()=>setMode('bible')} className={`flex-1 md:flex-none px-6 py-2 rounded-lg font-bold text-sm transition-all ${mode==='bible' ? 'bg-white shadow-sm text-amber-700' : 'text-stone-500 hover:text-stone-700'}`}>Иврит и Койне</button>
+                            <button onClick={()=>setMode('quran')} className={`flex-1 md:flex-none px-6 py-2 rounded-lg font-bold text-sm transition-all ${mode==='quran' ? 'bg-white shadow-sm text-emerald-700' : 'text-stone-500 hover:text-stone-700'}`}>Арабский язык</button>
                         </div>
                     </div>
 
                     <div className="grid gap-8">
                         {ORIGINALS_DB[mode].map((item, idx) => (
-                            <div key={idx} className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col lg:flex-row">
-                                <div className="w-full lg:w-2/5 h-64 lg:h-auto relative bg-stone-100">
-                                    <img src={item.image} alt={item.imageAlt} className="absolute inset-0 w-full h-full object-cover" />
-                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-stone-900/80 p-4 text-xs font-bold uppercase tracking-widest text-stone-200">
+                            <div key={idx} className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col xl:flex-row">
+                                <div className="w-full xl:w-2/5 h-64 xl:h-auto relative bg-stone-100 flex items-center justify-center">
+                                    <SafeImage src={item.image} alt={item.imageAlt} fallbackClass={mode === 'bible' ? 'img-fallback-bible' : 'img-fallback-quran'} className="absolute inset-0 w-full h-full object-cover" />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-stone-900/90 p-4 text-xs font-bold uppercase tracking-widest text-stone-200 z-10">
                                         {item.imageAlt}
                                     </div>
                                 </div>
-                                <div className="w-full lg:w-3/5 p-8 md:p-10 flex flex-col justify-center">
+                                <div className="w-full xl:w-3/5 p-8 md:p-10 flex flex-col justify-center">
                                     <span className={`text-[10px] font-bold uppercase tracking-widest block mb-2 ${mode==='bible'?'text-amber-600':'text-emerald-600'}`}>{item.title}</span>
                                     <h3 className="text-2xl font-bold font-serif text-stone-900 mb-6">{item.subtitle}</h3>
                                     
@@ -556,7 +610,7 @@
             );
         }
 
-        // --- ГЛОБАЛЬНО РАСШИРЕННЫЙ РАЗДЕЛ "ПРОСТО О СЛОЖНОМ" ---
+        // --- ИСПРАВЛЕННЫЙ И РАСШИРЕННЫЙ РАЗДЕЛ "ПРОСТО О СЛОЖНОМ" ---
         function SimpleExplanationModule() {
             return (
                 <div className="space-y-12 fade-in-up pb-12">
@@ -565,80 +619,143 @@
                             <Icons.Smile c="w-10 h-10 mr-4 text-amber-500"/> Энциклопедия для начинающих
                         </h2>
                         <p className="text-stone-600 text-lg leading-relaxed">
-                            Сложные академические и религиозные концепции, изложенные доступным языком. Узнайте, как устроены главные книги человечества, кем они писались и как их правильно читать.
+                            Полное и всеобъемлющее руководство по структуре священных текстов. Исправленная верстка гарантирует комфортное чтение на любых устройствах.
                         </p>
                     </div>
                     
-                    <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col lg:flex-row">
-                        <div className="w-full lg:w-2/5 h-64 lg:h-auto relative">
-                            <img src="https://images.unsplash.com/photo-1544027429-2169fb64e432?auto=format&fit=crop&w=800&q=80" alt="Библия" className="absolute inset-0 w-full h-full object-cover" />
+                    {/* БИБЛИЯ */}
+                    <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
+                        {/* Картинка сверху для гарантии правильной верстки на мобилках */}
+                        <div className="w-full h-64 md:h-80 relative bg-stone-100">
+                             <SafeImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Gutenberg_Bible.jpg/800px-Gutenberg_Bible.jpg" alt="Библия Гутенберга" fallbackClass="img-fallback-bible" className="absolute inset-0 w-full h-full object-cover" />
                         </div>
-                        <div className="w-full lg:w-3/5 p-8 md:p-12">
-                            <div className="flex items-center mb-6">
-                                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-4">
-                                    <Icons.Book c="w-6 h-6 text-amber-600" />
+                        
+                        <div className="p-8 md:p-12 lg:p-16">
+                            <div className="flex items-center mb-8 pb-6 border-b border-stone-200">
+                                <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mr-6 flex-shrink-0">
+                                    <Icons.Book c="w-8 h-8 text-amber-600" />
                                 </div>
-                                <h3 className="text-3xl font-bold text-stone-900">Как устроена Библия?</h3>
+                                <div>
+                                    <h3 className="text-3xl md:text-4xl font-bold font-serif text-stone-900">Анатомия Библии</h3>
+                                    <span className="text-amber-600 font-bold uppercase tracking-widest text-xs">Библиотека Заветов</span>
+                                </div>
                             </div>
-                            <div className="space-y-6 text-stone-600 leading-relaxed">
-                                <p>Слово «Библия» переводится с греческого как «Книги» (во множественном числе). Это не одно произведение, а гигантская <strong>древняя библиотека</strong>, писавшаяся более 1000 лет десятками разных авторов: царями, пастухами, пророками и рыбаками.</p>
+                            
+                            <div className="space-y-8 text-stone-700 leading-loose text-lg">
+                                <p>Слово «Библия» переводится с греческого как «Книги» (во множественном числе). Это не одно монолитное произведение, а гигантская <strong>древняя библиотека</strong>, писавшаяся более 1000 лет десятками разных авторов: царями, пастухами, священниками, пророками и рыбаками.</p>
                                 
-                                <div className="pl-4 border-l-4 border-amber-200">
-                                    <h4 className="font-bold text-stone-900 mb-2">1. Ветхий Завет (Танах)</h4>
-                                    <p className="text-sm mb-2">Написан в основном на древнееврейском языке. Иудеи делят его на три части:</p>
-                                    <ul className="list-disc pl-5 text-sm space-y-1">
-                                        <li><strong>Тора (Закон):</strong> Первые 5 книг (Бытие, Исход и др.). История сотворения мира и законы еврейского народа.</li>
-                                        <li><strong>Невиим (Пророки):</strong> История царей Израиля и предсказания о будущем.</li>
-                                        <li><strong>Ктувим (Писания):</strong> Поэзия, песни (Псалмы) и философские размышления (Екклесиаст).</li>
-                                    </ul>
+                                <div className="bg-stone-50 p-8 rounded-3xl border border-stone-200">
+                                    <h4 className="text-2xl font-bold font-serif text-stone-900 mb-4 text-amber-800">Часть 1: Ветхий Завет (Танах)</h4>
+                                    <p className="mb-6">Написан в основном на древнееврейском языке (иврите) с небольшими фрагментами на арамейском. Иудейская традиция делит этот корпус на три части (Т-Н-Х):</p>
+                                    
+                                    <div className="space-y-4 pl-4 border-l-2 border-amber-300">
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Т — Тора (Пятикнижие Моисея):</strong> 
+                                            Первые 5 книг (Бытие, Исход, Левит, Числа, Второзаконие). Описывают сотворение мира, историю патриархов (Авраама, Исаака, Иакова), исход из египетского рабства и дарование Закона (613 заповедей) на горе Синай.
+                                        </div>
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Н — Невиим (Пророки):</strong> 
+                                            Исторические хроники завоевания Ханаана, эпохи судей, правления царей (Давида, Соломона) и предупреждения пророков о грядущих наказаниях за отступничество от Бога.
+                                        </div>
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Х — Ктувим (Писания):</strong> 
+                                            Сборник мудрости и поэзии. Сюда входят Псалтирь (гимны), Притчи Соломона, философские трактаты Екклесиаста и Иова, а также Песнь Песней (поэма о любви).
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div className="pl-4 border-l-4 border-amber-400">
-                                    <h4 className="font-bold text-stone-900 mb-2">2. Новый Завет</h4>
-                                    <p className="text-sm mb-2">Написан на греческом языке в I веке н.э. Христианская часть Библии.</p>
-                                    <ul className="list-disc pl-5 text-sm space-y-1">
-                                        <li><strong>Евангелия (4 книги):</strong> Биографии Иисуса Христа от разных авторов (Матфей, Марк, Лука, Иоанн).</li>
-                                        <li><strong>Деяния:</strong> История создания первых христианских церквей.</li>
-                                        <li><strong>Послания:</strong> Письма апостолов (в основном Павла), объясняющие смысл веры и правила жизни.</li>
-                                    </ul>
+                                <div className="bg-stone-50 p-8 rounded-3xl border border-stone-200">
+                                    <h4 className="text-2xl font-bold font-serif text-stone-900 mb-4 text-amber-800">Часть 2: Новый Завет</h4>
+                                    <p className="mb-6">Написан на древнегреческом языке (койне) в I веке н.э. Является священным исключительно для христиан и состоит из 27 книг:</p>
+                                    
+                                    <div className="space-y-4 pl-4 border-l-2 border-amber-500">
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Евангелия (Благая весть):</strong> 
+                                            Четыре биографии Иисуса Христа от Матфея, Марка, Луки и Иоанна. Описывают Его рождение, чудеса, учение, распятие и воскресение. Первые три называют "синоптическими" из-за схожести, а Евангелие от Иоанна — более философским.
+                                        </div>
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Деяния Апостолов:</strong> 
+                                            Единственная историческая книга Нового Завета. Рассказывает о сошествии Святого Духа и том, как ученики Иисуса распространили новую веру по всей Римской империи.
+                                        </div>
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Послания (Письма):</strong> 
+                                            21 письмо (большинство написано апостолом Павлом) к ранним христианским общинам (в Рим, Коринф, Эфес). В них объясняется теология: как смерть Христа спасает человечество от греха.
+                                        </div>
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Откровение Иоанна (Апокалипсис):</strong> 
+                                            Пророческая книга, полная мистических символов, описывающая конец света, Страшный суд и создание "Нового Иерусалима".
+                                        </div>
+                                    </div>
                                 </div>
                                 
-                                <div className="p-5 bg-amber-50 rounded-xl text-amber-900 text-sm italic font-serif">
-                                    <strong>Суть:</strong> Вся Библия — это история «Заветов» (договоров) между Богом и человечеством.
+                                <div className="p-6 bg-amber-100/50 rounded-2xl border border-amber-200 text-amber-950 font-serif">
+                                    <strong className="block mb-2 text-amber-700">Главный теологический посыл:</strong> 
+                                    Вся Библия — это история развития «Заветов» (договоров) между Богом и человечеством. Христиане верят, что Ветхий Завет был подготовкой мира к пришествию Мессии, а Новый Завет — это кульминация Божьего плана спасения через жертву Иисуса Христа.
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col lg:flex-row-reverse">
-                        <div className="w-full lg:w-2/5 h-64 lg:h-auto relative">
-                            <img src="https://images.unsplash.com/photo-1603808432320-b40b7952a149?auto=format&fit=crop&w=800&q=80" alt="Коран" className="absolute inset-0 w-full h-full object-cover" />
+                    {/* КОРАН */}
+                    <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
+                        <div className="w-full h-64 md:h-80 relative bg-stone-100">
+                             <SafeImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/A_large_Qur%27an.jpg/800px-A_large_Qur%27an.jpg" alt="Древний Коран" fallbackClass="img-fallback-quran" className="absolute inset-0 w-full h-full object-cover" />
                         </div>
-                        <div className="w-full lg:w-3/5 p-8 md:p-12">
-                            <div className="flex items-center mb-6">
-                                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mr-4">
-                                    <Icons.Moon c="w-6 h-6 text-emerald-600" />
+                        
+                        <div className="p-8 md:p-12 lg:p-16">
+                            <div className="flex items-center mb-8 pb-6 border-b border-stone-200">
+                                <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mr-6 flex-shrink-0">
+                                    <Icons.Moon c="w-8 h-8 text-emerald-600" />
                                 </div>
-                                <h3 className="text-3xl font-bold text-stone-900">Как устроен Коран?</h3>
+                                <div>
+                                    <h3 className="text-3xl md:text-4xl font-bold font-serif text-stone-900">Анатомия Корана</h3>
+                                    <span className="text-emerald-600 font-bold uppercase tracking-widest text-xs">Прямая Речь Творца</span>
+                                </div>
                             </div>
-                            <div className="space-y-6 text-stone-600 leading-relaxed">
-                                <p>Коран (от араб. «Чтение вслух») — это священная книга ислама. В отличие от Библии, мусульмане верят, что Коран — это <strong>прямая, дословная речь Бога (Аллаха)</strong>, переданная пророку Мухаммеду в VII веке.</p>
+                            
+                            <div className="space-y-8 text-stone-700 leading-loose text-lg">
+                                <p>Коран (от араб. <em>al-qurʾān</em> — «Чтение вслух») — это священная книга ислама. В отличие от Библии, которая воспринимается как боговдохновенный труд разных людей, мусульмане верят, что Коран — это <strong>несотворенная, прямая и дословная речь Бога (Аллаха)</strong>, переданная пророку Мухаммеду через ангела Джибриля (Гавриила) в течение 23 лет (610–632 гг. н.э.).</p>
                                 
-                                <div className="pl-4 border-l-4 border-emerald-200">
-                                    <h4 className="font-bold text-stone-900 mb-2">Структура текста</h4>
-                                    <p className="text-sm">Коран состоит из 114 глав, которые называются <strong>сурами</strong>. Каждая сура состоит из <strong>аятов</strong>. Суры расположены не хронологически, а (в основном) от самых длинных в начале к самым коротким в конце.</p>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="bg-emerald-50/50 p-6 rounded-3xl border border-emerald-100">
+                                        <h4 className="text-xl font-bold text-emerald-900 mb-3">Суры (Главы)</h4>
+                                        <p className="text-base text-stone-600">Коран состоит из 114 сур. Уникальная особенность: они расположены не в хронологическом порядке, а (за исключением первой суры Аль-Фатиха) <strong>от самых длинных к самым коротким</strong>. Поэтому в начале книги обсуждаются сложные законы, а в конце — короткие молитвы.</p>
+                                    </div>
+                                    <div className="bg-emerald-50/50 p-6 rounded-3xl border border-emerald-100">
+                                        <h4 className="text-xl font-bold text-emerald-900 mb-3">Аяты (Стихи)</h4>
+                                        <p className="text-base text-stone-600">Каждая сура состоит из аятов. Слово «аят» буквально означает «знамение» или «чудо». Мусульмане верят, что сам по себе арабский текст Корана с его идеальной рифмой и ритмом является главным чудом, которое невозможно повторить человеку.</p>
+                                    </div>
                                 </div>
 
-                                <div className="pl-4 border-l-4 border-emerald-400">
-                                    <h4 className="font-bold text-stone-900 mb-2">Два периода ниспослания</h4>
-                                    <ul className="list-disc pl-5 text-sm space-y-2">
-                                        <li><strong>Мекканские суры:</strong> Короткие, поэтичные. Призыв к монотеизму, описание Рая и Ада.</li>
-                                        <li><strong>Мединские суры:</strong> Длинные и прозаичные. Основы Шариата: законы, молитва, наследство.</li>
+                                <div className="bg-stone-50 p-8 rounded-3xl border border-stone-200 mt-8">
+                                    <h4 className="text-2xl font-bold font-serif text-stone-900 mb-4 text-emerald-800">Два периода ниспослания</h4>
+                                    <p className="mb-6">Жизнь Мухаммеда и текст Корана делятся на два этапа, которые кардинально отличаются по стилю:</p>
+                                    
+                                    <div className="space-y-4 pl-4 border-l-2 border-emerald-400">
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Мекканские суры (86 сур):</strong> 
+                                            Ниспосланы в первые 13 лет в Мекке, когда мусульмане были угнетаемым меньшинством. Эти суры короткие, невероятно поэтичные, с сильным ритмом. Их главная цель — пробудить людей. Темы: Единство Бога (Таухид), критика идолопоклонства, истории древних пророков (Ноя, Авраама, Моисея), живописание Рая и Ада.
+                                        </div>
+                                        <div>
+                                            <strong className="text-stone-900 block mb-1">Мединские суры (28 сур):</strong> 
+                                            Ниспосланы в последние 10 лет после переселения (Хиджры) в город Медина, где Мухаммед стал главой государства. Эти суры длинные, прозаичные. Они содержат <strong>основы Шариата</strong> (исламского права): законы брака, развода, наследства, правила ведения войны, поста в Рамадан и отношения с христианами и иудеями («Людьми Писания»).
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-stone-50 p-8 rounded-3xl border border-stone-200">
+                                    <h4 className="text-xl font-bold text-stone-900 mb-3">Что такое Тафсир и Сунна?</h4>
+                                    <p className="text-base text-stone-600 mb-4">Для правильного понимания Корана исламские ученые используют:</p>
+                                    <ul className="list-disc pl-5 text-base text-stone-600 space-y-2">
+                                        <li><strong>Асбаб ан-Нузуль:</strong> Наука о «причинах ниспослания». Без знания того, в ответ на какое историческое событие был произнесен аят, его легко истолковать неверно.</li>
+                                        <li><strong>Сунна (Хадисы):</strong> Предания о словах и поступках пророка Мухаммеда. Коран дает общие правила (например, "совершайте молитву"), а Сунна объясняет детали (как именно молиться).</li>
+                                        <li><strong>Тафсир:</strong> Фундаментальные многотомные комментарии к Корану от авторитетных ученых (Ибн Касир, Ат-Табари).</li>
                                     </ul>
                                 </div>
                                 
-                                <div className="p-5 bg-emerald-50 rounded-xl text-emerald-900 text-sm italic font-serif">
-                                    <strong>Суть:</strong> Абсолютный монотеизм (Таухид). Слово «Ислам» означает добровольное подчинение человека воле Единого Бога.
+                                <div className="p-6 bg-emerald-100/50 rounded-2xl border border-emerald-200 text-emerald-950 font-serif">
+                                    <strong className="block mb-2 text-emerald-700">Главный теологический посыл:</strong> 
+                                    Абсолютный и бескомпромиссный монотеизм. Бог Один, Он всемогущ, не рождал и не был рожден. Ислам (покорность) — это возвращение к изначальной чистой вере праотца Авраама (Ибрахима).
                                 </div>
                             </div>
                         </div>
@@ -647,7 +764,10 @@
             );
         }
 
+        // --- ВИДЕОУРОКИ (ОЧИЩЕННЫЕ IFRAME) ---
         function VideoLessonsModule() {
+            // Убраны атрибуты autoplay и clipboard-write, чтобы избежать ошибок браузера. 
+            // Добавлен sandbox для безопасной загрузки из сторонних источников.
             const videos = [
                 { title: "Исторический контекст Ветхого Завета", platform: "RuTube", embedUrl: "https://rutube.ru/play/embed/b87e221d91cc3525287b929114f9d0c6", color: "amber" },
                 { title: "Как формировался текст Корана", platform: "RuTube", embedUrl: "https://rutube.ru/play/embed/f2c96c4d7b1b3a6e9a8f1f5e8f5d4c3b", color: "emerald" },
@@ -655,19 +775,26 @@
             ];
 
             return (
-                <div className="space-y-8 fade-in-up">
+                <div className="space-y-8 fade-in-up pb-12">
                     <h2 className="text-3xl font-serif font-bold text-stone-900 border-b border-stone-200 pb-4 mb-8 flex items-center">
                         <Icons.Video c="w-8 h-8 mr-3 text-stone-700"/> Видеоуроки
                     </h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {videos.map((vid, idx) => (
-                            <div key={idx} className="bg-white rounded-3xl overflow-hidden shadow-sm border border-stone-200 flex flex-col">
-                                <div className="aspect-video bg-stone-200 relative">
-                                    <iframe src={vid.embedUrl} frameBorder="0" allow="clipboard-write; autoplay" allowFullScreen className="w-full h-full absolute top-0 left-0" title={vid.title}></iframe>
+                            <div key={idx} className="bg-white rounded-3xl overflow-hidden shadow-sm border border-stone-200 flex flex-col hover:shadow-md transition-shadow">
+                                <div className="aspect-video bg-stone-900 relative flex items-center justify-center">
+                                    <iframe 
+                                        src={vid.embedUrl} 
+                                        frameBorder="0" 
+                                        allowFullScreen 
+                                        sandbox="allow-same-origin allow-scripts allow-popups"
+                                        className="w-full h-full absolute top-0 left-0" 
+                                        title={vid.title}
+                                    ></iframe>
                                 </div>
                                 <div className="p-6">
-                                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-${vid.color}-100 text-${vid.color}-700`}>{vid.platform}</span>
-                                    <h3 className="text-lg font-bold text-stone-800 mt-3">{vid.title}</h3>
+                                    <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-${vid.color}-100 text-${vid.color}-700`}>{vid.platform}</span>
+                                    <h3 className="text-lg font-bold text-stone-800 mt-4 leading-snug">{vid.title}</h3>
                                 </div>
                             </div>
                         ))}
@@ -734,8 +861,8 @@
                                 </h4>
                                 {academicComment.imageUrl && (
                                     <div className="my-6">
-                                        <div className="w-full h-56 md:h-72 rounded-xl overflow-hidden relative shadow-sm border border-stone-200/50 bg-stone-100">
-                                            <img src={academicComment.imageUrl} alt="Иллюстрация" className="object-cover w-full h-full" />
+                                        <div className="w-full h-56 md:h-72 rounded-xl overflow-hidden relative shadow-sm border border-stone-200/50 bg-stone-100 flex items-center justify-center">
+                                            <SafeImage src={academicComment.imageUrl} alt="Иллюстрация" fallbackClass={isBible ? 'img-fallback-bible' : 'img-fallback-quran'} className="object-cover w-full h-full" />
                                         </div>
                                         <p className={`text-[11px] mt-3 text-center uppercase tracking-widest font-bold font-sans ${isBible ? 'text-amber-700' : 'text-emerald-700'}`}>{academicComment.caption}</p>
                                     </div>
@@ -754,8 +881,8 @@
                                         <span className="flex-1 text-xl">{t}</span>
                                     </div>
                                     <div className="opacity-0 group-hover:opacity-100 absolute right-0 top-1 flex flex-col gap-2 transition-opacity">
-                                        <button onClick={() => copyToClipboard(t)} className={`p-2 rounded-lg bg-stone-100/80 hover:bg-white shadow-sm ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
-                                        <button onClick={() => toggleComment(v)} className={`p-2 rounded-lg bg-stone-100/80 hover:bg-white shadow-sm ${isBible ? 'text-amber-600' : 'text-emerald-600'}`} title="Комментарий"><Icons.MessageSquare c="w-4 h-4"/></button>
+                                        <button onClick={() => copyToClipboard(t)} className={`p-2 rounded-lg bg-stone-100/80 hover:bg-white shadow-sm border border-stone-200/50 ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать"><Icons.Copy c="w-4 h-4"/></button>
+                                        <button onClick={() => toggleComment(v)} className={`p-2 rounded-lg bg-stone-100/80 hover:bg-white shadow-sm border border-stone-200/50 ${isBible ? 'text-amber-600' : 'text-emerald-600'}`} title="Комментарий"><Icons.MessageSquare c="w-4 h-4"/></button>
                                     </div>
                                     {openComments[v] && (
                                         <div className={`mt-4 ml-8 p-5 rounded-2xl text-sm font-sans border-l-4 shadow-sm fade-in-up ${isBible ? 'bg-amber-50 border-amber-400 text-amber-900' : 'bg-emerald-50 border-emerald-400 text-emerald-900'}`}>
