@@ -373,15 +373,21 @@
                         </div>
                         
                         <nav className="flex-1 py-6 space-y-1 overflow-y-auto custom-scrollbar px-3">
-                            <div className="px-4 mt-2 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Теория и Анализ</span></div>
-                            <NavItem icon={Icons.Dash} label="Главная панель" active={view==='dashboard'} onClick={()=>setView('dashboard')} />
-                            <NavItem icon={Icons.Smile} label="Просто о сложном (Полная)" active={view==='simple'} onClick={()=>setView('simple')} />
-                            <NavItem icon={Icons.Search} label="Глобальный поиск" active={view==='search'} onClick={()=>setView('search')} />
+                            <div className="px-4 mt-2 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Обучение</span></div>
+                            <NavItem icon={Icons.Dash} label="Главная" active={view==='dashboard'} onClick={()=>setView('dashboard')} />
+                            <NavItem icon={Icons.Compare} label="Пошаговое изучение" active={view==='step'} onClick={()=>setView('step')} />
+                            <NavItem icon={Icons.Smile} label="Просто о сложном" active={view==='plain'} onClick={()=>setView('plain')} />
                             
-                            <div className="px-4 mt-8 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Чтение Текстов</span></div>
+                            <div className="px-4 mt-6 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Анализ</span></div>
+                            <NavItem icon={Icons.Sparkles} label="Глубокий AI анализ" active={view==='deep'} onClick={()=>setView('deep')} />
+                            <NavItem icon={Icons.Scroll} label="Манускрипты" active={view==='manuscripts'} onClick={()=>setView('manuscripts')} />
+                            <NavItem icon={Icons.Search} label="Глобальный поиск" active={view==='search'} onClick={()=>setView('search')} />
+                            <NavItem icon={Icons.Info} label="Энциклопедия" active={view==='simple'} onClick={()=>setView('simple')} />
+
+                            <div className="px-4 mt-6 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Чтение текстов</span></div>
                             <NavItem icon={Icons.Compare} label="Параллельное чтение" active={view==='reader'} onClick={()=>setView('reader')} />
-                            <NavItem icon={Icons.Book} label="Библия (AI Комментарии)" active={view==='bible'} onClick={()=>setView('bible')} />
-                            <NavItem icon={Icons.Moon} label="Коран (AI Комментарии)" active={view==='quran'} onClick={()=>setView('quran')} />
+                            <NavItem icon={Icons.Book} label="Библия (AI)" active={view==='bible'} onClick={()=>setView('bible')} />
+                            <NavItem icon={Icons.Moon} label="Коран (AI)" active={view==='quran'} onClick={()=>setView('quran')} />
                         </nav>
                         
                         <div className="p-4 border-t border-stone-800/60 bg-[#161618]">
@@ -396,6 +402,10 @@
                     <main className="flex-1 ml-72 p-6 md:p-10 min-h-screen bg-[#f5f4f0]">
                         <div className="max-w-6xl mx-auto h-full">
                             {view === 'dashboard' && <Dashboard setView={setView} apiKey={apiKey} setShowSettings={setShowSettings} />}
+                            {view === 'step' && <StepStudyModule db={db} apiKey={apiKey} />}
+                            {view === 'plain' && <PlainLanguageModule apiKey={apiKey} />}
+                            {view === 'deep' && <DeepCommentaryModule apiKey={apiKey} />}
+                            {view === 'manuscripts' && <ManuscriptsModule apiKey={apiKey} />}
                             {view === 'simple' && <DeepExplanationModule />}
                             {view === 'search' && <SearchModule db={db} />}
                             {view === 'reader' && <ParallelReaderModule db={db} />}
@@ -537,27 +547,36 @@
         function Dashboard({ setView, apiKey, setShowSettings }) {
             return (
                 <div className="flex flex-col gap-6 fade-in-up">
-                    <div className="bg-[#1c1b1d] text-stone-100 p-12 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
+                    <div className="bg-[#1c1b1d] text-stone-100 p-10 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
                         <div className="relative z-10">
-                            <h2 className="text-4xl font-serif font-bold mb-4 text-white">Интеграция ZVENO AI 🧠</h2>
+                            <h2 className="text-4xl font-serif font-bold mb-3 text-white">Академия Религиоведения 🧠</h2>
                             <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Приложение работает в связке с <strong className="text-amber-500">ZVENO AI</strong> — российским OpenAI-совместимым шлюзом к 200+ моделям (GPT-4o, Claude, Gemini). Оплата в рублях, без VPN. Запрашивайте у ИИ <strong>глубокий анализ любого стиха</strong>. Иллюстрации загружаются с серверов Wikimedia с автоматическим резервным источником.
+                                Полная платформа сравнительного изучения Библии и Корана с нейросетью <strong className="text-amber-500">ZVENO AI</strong> (GPT-4o / Claude). Оплата в рублях, без VPN.
                             </p>
-                            <div className="flex flex-wrap gap-4 mb-6">
-                                {!apiKey && (
-                                    <button onClick={()=>setShowSettings(true)} className="bg-rose-600 hover:bg-rose-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
-                                        Подключить ZVENO API <Icons.Key c="w-5 h-5 ml-3" />
-                                    </button>
-                                )}
-                                <button onClick={()=>setView('simple')} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg transition-all flex items-center">
-                                    Читать Энциклопедию <Icons.Book c="w-5 h-5 ml-3" />
+                            {!apiKey && (
+                                <button onClick={()=>setShowSettings(true)} className="bg-rose-600 hover:bg-rose-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center mb-6">
+                                    ⚙️ Подключить ZVENO API для AI-анализа <Icons.Key c="w-4 h-4 ml-2" />
                                 </button>
-                                <button onClick={()=>setView('bible')} className="bg-stone-700 hover:bg-stone-600 text-white px-8 py-4 rounded-xl font-bold transition-all flex items-center">
-                                    Перейти к текстам
-                                </button>
-                            </div>
+                            )}
                         </div>
-                        <Icons.Sparkles c="absolute -right-10 -bottom-20 w-[400px] h-[400px] text-stone-800 opacity-30 pointer-events-none" />
+                        <Icons.Sparkles c="absolute -right-10 -bottom-20 w-[350px] h-[350px] text-stone-800 opacity-30 pointer-events-none" />
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4">
+                        {[
+                            {view:'step', icon:'📚', title:'Пошаговое изучение', desc:'5 уроков: сравнение Библии и Корана по темам. Простой язык, ключевые слова, AI-вопросы.', color:'amber'},
+                            {view:'plain', icon:'💬', title:'Просто о сложном', desc:'Сотворение, грех, Иисус/Иса, молитва, заповеди — объяснено понятно и глубоко.', color:'blue'},
+                            {view:'deep', icon:'🔬', title:'Глубокий AI анализ', desc:'8 больших тем: академический разбор нейросетью с цитатами, богословием и историей.', color:'purple'},
+                            {view:'manuscripts', icon:'📜', title:'Манускрипты и оригиналы', desc:'Синайский кодекс, Свитки Мёртвого моря, Коран Топкапы — с фото и оригинальными текстами.', color:'stone'},
+                            {view:'reader', icon:'⚖️', title:'Параллельное чтение', desc:'Библия и Коран рядом. Выберите главу и суру — читайте одновременно.', color:'emerald'},
+                            {view:'search', icon:'🔍', title:'Глобальный поиск', desc:'Найдите любое слово в полных текстах Библии и Корана одновременно.', color:'rose'},
+                        ].map(item => (
+                            <button key={item.view} onClick={()=>setView(item.view)}
+                                className="bg-white border border-stone-200 hover:border-stone-400 hover:shadow-md rounded-2xl p-6 text-left transition-all group">
+                                <span className="text-3xl block mb-3">{item.icon}</span>
+                                <h3 className="font-serif font-bold text-xl text-stone-900 mb-2 group-hover:text-amber-700 transition-colors">{item.title}</h3>
+                                <p className="text-stone-500 text-sm leading-relaxed">{item.desc}</p>
+                            </button>
+                        ))}
                     </div>
                 </div>
             );
@@ -1026,6 +1045,623 @@
                             ))}
                         </div>
                     </div>
+                </div>
+            );
+        }
+
+        // =====================================================================
+        // МОДУЛЬ 1: ПОШАГОВОЕ ИЗУЧЕНИЕ СО СРАВНЕНИЕМ
+        // =====================================================================
+        const LESSONS = [
+            {
+                id: 1, title: "Сотворение мира", icon: "✨",
+                theme: "Как появился мир? Откуда всё началось?",
+                bible: {
+                    ref: "Бытие 1:1-5, 26-27",
+                    text: "В начале сотворил Бог небо и землю. Земля же была безвидна и пуста, и тьма над бездною, и Дух Божий носился над водою. И сказал Бог: да будет свет. И стал свет... И сказал Бог: сотворим человека по образу Нашему и по подобию Нашему... И сотворил Бог человека по образу Своему.",
+                    plain: "Бог создал всё из ничего за 6 дней. Сначала — свет, потом небо, земля, растения, светила, животные. В последний день — человека, как самое особенное творение, похожее на самого Бога. Человек — венец творения.",
+                    keyWord: "בְּרֵאשִׁית (Берешит) — «В начале». Первое слово Библии. На иврите глагол «bara» (сотворил) используется только с Богом как субъектом — только Бог творит из ничего.",
+                    color: "amber"
+                },
+                quran: {
+                    ref: "Аль-Бакара 2:117, Аль-Анбия 21:30",
+                    text: "Он — Творец небес и земли. Когда Он решает что-либо, то лишь говорит этому: «Будь!» — и оно бывает. (2:117) Неужели неверующие не видят, что небеса и земля были единым целым и Мы разделили их? (21:30)",
+                    plain: "Аллах создал всё одним словом «Кун!» (Будь!). Интересно: Коран говорит, что небеса и земля были единым целым — учёные видят в этом намёк на Большой взрыв. Сотворение заняло «шесть периодов» (дней/эпох). Человек создан из глины, в него вдохнули Дух.",
+                    keyWord: "كُنْ فَيَكُونُ (Кун фаякун) — «Будь! — и оно бывает». Абсолютная творящая воля Бога. В исламе нет промежуточных этапов — Бог хочет и происходит немедленно.",
+                    color: "emerald"
+                },
+                compare: "Оба текста утверждают: мир создан Богом целенаправленно, не случайно. Ключевое различие: Библия описывает последовательный 6-дневный процесс с детальным нарративом. Коран указывает на мгновенную творящую волю. Общее: человек — особое существо, в которого вдохнули Божественный Дух/образ. Обе традиции отвергают идею вечной материи."
+            },
+            {
+                id: 2, title: "Единобожие (Монотеизм)", icon: "☝️",
+                theme: "Кто такой Бог? Как понять Его природу?",
+                bible: {
+                    ref: "Второзаконие 6:4-5, Исаия 45:5",
+                    text: "Слушай, Израиль: Господь, Бог наш, Господь един есть; и люби Господа, Бога твоего, всем сердцем твоим... Я Господь, и нет иного; нет Бога кроме Меня.",
+                    plain: "Главная заповедь иудаизма и основа христианства — «Шма Исраэль»: Бог один, Он личность, Он любит и требует любви в ответ. Христиане добавляют учение о Троице: Бог один по существу, но троичен в лицах (Отец, Сын, Дух). Это не три бога, а один Бог в трёх ипостасях.",
+                    keyWord: "אֶחָד (Эхад) — «Един». Интересно: это слово означает составное единство (как «один народ» из многих), а не абсолютную простоту. Именно это слово используется, когда мужчина и женщина становятся «одной плотью».",
+                    color: "amber"
+                },
+                quran: {
+                    ref: "Аль-Ихляс 112:1-4, Аль-Бакара 2:163",
+                    text: "Скажи: «Он — Аллах Единый, Аллах Самодостаточный. Он не родил и не был рождён, и нет никого равного Ему». Ваш Бог — Бог Единый, нет божества, кроме Него, Милостивого, Милосердного.",
+                    plain: "Таухид — абсолютное единобожие — центр ислама. Сура Аль-Ихляс считается равной трети Корана по значению. Аллах не рождал (нет Сына) и не был рождён (не часть природы). Он «Самодостаточный» — الصَّمَد (ас-Самад) — всё нуждается в Нём, Он ни в чём не нуждается.",
+                    keyWord: "الصَّمَد (Ас-Самад) — «Самодостаточный, Вечный». Уникальное слово, встречается в Коране только один раз. Означает: у Него нет пустоты внутри — Он полный, абсолютный, всё в Нём нуждается, но Он — ни в чём.",
+                    color: "emerald"
+                },
+                compare: "Крупнейший теологический спор авраамических религий. Иудаизм и ислам согласны: Бог абсолютно един, неделим. Христианство утверждает Троицу — что для иудеев и мусульман неприемлемо. Ислам прямо полемизирует с этим в Коране. Общее: все три традиции отвергают политеизм и идолопоклонство."
+            },
+            {
+                id: 3, title: "Пророки и Откровение", icon: "📜",
+                theme: "Как Бог говорит с людьми? Кто такие пророки?",
+                bible: {
+                    ref: "Евреям 1:1-2, Исаия 6:1-8",
+                    text: "Бог, многократно и многообразно говоривший издревле отцам в пророках, в последние дни сии говорил нам в Сыне... В год смерти царя Озии видел я Господа, сидящего на престоле высоком... И услышал я голос Господа, говорящего: кого Мне послать? И я сказал: вот я, пошли меня.",
+                    plain: "В Библии пророки — это посланники Бога, которые получали откровение по-разному: через видения, сны, прямой голос, символические действия. Исаия, Иеремия, Иезекииль — великие пророки. Для христиан финальное Слово Бога — не книга, а Личность: Иисус Христос.",
+                    keyWord: "נָבִיא (Наби) — «Пророк» на иврите. Буквально «тот, кто провозглашает». Пророк не предсказатель судьбы — он «уста Бога», говорящий Его слово людям в конкретный исторический момент.",
+                    color: "amber"
+                },
+                quran: {
+                    ref: "Аль-Бакара 2:136, Ан-Ниса 4:163-165",
+                    text: "Скажите: «Мы уверовали в Аллаха и в то, что ниспослано нам, и что ниспослано Ибрахиму, Исмаилу, Исхаку, Йакубу и коленам, и что было даровано Мусе и Исе...» Воистину, Мы внушили тебе откровение, как внушали его Нуху и пророкам после него.",
+                    plain: "В исламе пророков (наби) и посланников (расуль) было 124 000 — ко всем народам. Все они несли одно послание: поклоняйтесь только Аллаху. Мухаммед — «Печать пророков» (Хатам ан-набийин), последний и финальный пророк. Коран — последнее, совершенное и неизменённое слово Бога.",
+                    keyWord: "خَاتَمُ النَّبِيِّينَ (Хатам ан-набийин) — «Печать пророков». Мухаммед закрывает цикл пророчества. После него нет новых пророков — Коран полон и совершен. Это фундаментальный догмат ислама.",
+                    color: "emerald"
+                },
+                compare: "Оба священных текста признают одних и тех же пророков: Адам, Ной, Авраам, Моисей, Давид, Иисус. Ключевое расхождение: статус Иисуса. Для христиан — Сын Бога, Бог во плоти. Для ислама — великий пророк и посланник, рождённый от девы, но не Бог. Коран уважает Библию, но считает её изменённой людьми."
+            },
+            {
+                id: 4, title: "Молитва и Богослужение", icon: "🤲",
+                theme: "Как человек общается с Богом?",
+                bible: {
+                    ref: "Матфея 6:9-13 (Отче наш), Псалом 22",
+                    text: "Отче наш, сущий на небесах! Да святится имя Твоё; да придёт Царствие Твоё; да будет воля Твоя и на земле, как на небе; хлеб наш насущный дай нам на сей день; и прости нам долги наши, как и мы прощаем должникам нашим; и не введи нас в искушение, но избавь нас от лукавого.",
+                    plain: "Иисус дал ученикам «Отче наш» — образец молитвы из 7 прошений. Молитва в христианстве — это разговор с Отцом напрямую, без посредников. Нет обязательного языка, позы, времени. Псалтирь — 150 молитвенных поэм: от ликования до отчаяния. Бог принимает любую искреннюю молитву.",
+                    keyWord: "אַבָּא (Абба) — «Папа/Отец». Иисус обращался к Богу словом «Авва» — доверительным, интимным, как ребёнок к отцу. Это революционно: до него такое обращение к Богу было неслыханным в иудаизме.",
+                    color: "amber"
+                },
+                quran: {
+                    ref: "Аль-Фатиха 1:1-7, Аль-Бакара 2:186",
+                    text: "Во имя Аллаха, Милостивого, Милосердного! Хвала Аллаху, Господу миров, Милостивому, Милосердному, Властелину Дня воздаяния! Тебе одному мы поклоняемся и Тебя одного молим о помощи. Веди нас прямым путём... Когда Мои рабы спрашивают тебя обо Мне, то ведь Я близок. (2:186)",
+                    plain: "Намаз — молитва 5 раз в день — один из 5 столпов ислама. Аль-Фатиха читается 17 раз в день (в каждом ракяте). Молитва совершается на арабском, в определённые часы, в сторону Мекки. Также есть ду'а — свободная личная молитва на любом языке. Аллах «ближе, чем яремная вена» (50:16).",
+                    keyWord: "صَلَاة (Салят) — «Намаз». Буквально: «связь». Молитва — это не просьба, а установление связи с Богом. Пять намазов — пять точек опоры дня. Время молитвы определяется по положению солнца.",
+                    color: "emerald"
+                },
+                compare: "В обоих текстах молитва — основа духовной жизни. Различие в форме: ислам строго регламентирует язык (арабский), позы, время и направление (кибла). Христианство не регламентирует форму — важна искренность сердца. Общее в содержании: прославление Бога, просьба о руководстве, прощение. Аль-Фатиха и «Отче наш» удивительно схожи по структуре."
+            },
+            {
+                id: 5, title: "Жизнь после смерти", icon: "⚡",
+                theme: "Что происходит с душой после смерти?",
+                bible: {
+                    ref: "Иоанна 11:25-26, Откровение 21:1-4, 1 Коринфянам 15:51-54",
+                    text: "Иисус сказал ей: Я есмь воскресение и жизнь; верующий в Меня, если и умрёт, оживёт. И всякий живущий и верующий в Меня не умрёт вовек... И увидел я новое небо и новую землю... И отрёт Бог всякую слезу с очей их, и смерти не будет уже.",
+                    plain: "Христианство учит о воскресении тела — не просто бессмертии души, а восстановлении всего человека. Гарантия — воскресение Христа. Вечная жизнь — это единство с Богом в «Новом Иерусалиме», новом мироздании без боли и смерти. Ад — вечное отделение от Бога.",
+                    keyWord: "ἀνάστασις (Анастасис) — «Воскресение» (греч.). Буквально: «вставание». Не просто переход души в другой мир, а телесное воскресение. Первым воскрес Христос — как «первенец из умерших» (1 Кор 15:20).",
+                    color: "amber"
+                },
+                quran: {
+                    ref: "Аз-Залзала 99:1-8, Ар-Рахман 55:46-61, Аль-Бакара 2:285-286",
+                    text: "Когда земля содрогнётся своим сотрясением... в тот день люди выйдут толпами, чтобы им были показаны их деяния. И тот, кто сделал добро весом с пылинку, увидит его. И тот, кто сделал зло весом с пылинку, увидит его. (99) Для богобоязненных уготованы два сада... (55)",
+                    plain: "Ислам детально описывает: смерть, ожидание в могиле (Барзах), Судный день, взвешивание деяний на весах (Мизан), переход по мосту Сырат. Рай (Джанна) — сады с реками, красота, присутствие Аллаха. Ад (Джаханнам) — огонь. Попасть в рай можно через веру + добрые дела + милость Аллаха.",
+                    keyWord: "الْبَرْزَخ (Барзах) — «Преграда, промежуток». Состояние между смертью и воскресением. Праведники спят мирным сном, грешники — испытывают тягость. Барзах — своеобразная «антикомната» перед Судным днём.",
+                    color: "emerald"
+                },
+                compare: "Обе традиции верят в физическое воскресение, Судный день и вечную жизнь. Детали различаются: Коран очень подробно и образно описывает Рай и Ад (особенно в мекканских сурах), создавая яркие чувственные картины. Библейский Апокалипсис более символичен. Общее: жизнь на земле — это экзамен, каждое действие имеет значение."
+            }
+        ];
+
+        function StepStudyModule({ db, apiKey }) {
+            const [step, setStep] = useState(0);
+            const [tab, setTab] = useState('compare'); // compare | bible | quran | practice
+            const [aiQuestion, setAiQuestion] = useState('');
+            const [aiAnswer, setAiAnswer] = useState('');
+            const [aiLoading, setAiLoading] = useState(false);
+            const lesson = LESSONS[step];
+
+            const askAI = async (q) => {
+                if (!q.trim()) return;
+                setAiLoading(true);
+                setAiAnswer('');
+                const ctx = `Урок по теме "${lesson.title}". Сравнение Библии и Корана.`;
+                const result = await fetchZvenoAIAnalysis(q, ctx, apiKey);
+                setAiAnswer(result);
+                setAiLoading(false);
+            };
+
+            const BCard = ({data}) => (
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-bold uppercase tracking-widest text-amber-700 bg-amber-100 px-3 py-1 rounded-full">📖 Библия · {data.ref}</span>
+                    </div>
+                    <blockquote className="font-serif text-lg leading-relaxed text-stone-800 border-l-4 border-amber-400 pl-4 italic">"{data.text}"</blockquote>
+                    <div className="bg-white rounded-xl p-4 border border-amber-100">
+                        <p className="text-xs font-bold uppercase tracking-widest text-amber-600 mb-2">💡 Простым языком</p>
+                        <p className="text-stone-700 leading-relaxed">{data.plain}</p>
+                    </div>
+                    <div className="bg-amber-100/50 rounded-xl p-4">
+                        <p className="text-xs font-bold uppercase tracking-widest text-amber-800 mb-2">🔤 Ключевое слово</p>
+                        <p className="text-stone-700 text-sm leading-relaxed">{data.keyWord}</p>
+                    </div>
+                </div>
+            );
+
+            const QCard = ({data}) => (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">🌙 Коран · {data.ref}</span>
+                    </div>
+                    <blockquote className="font-serif text-lg leading-relaxed text-emerald-900 border-l-4 border-emerald-400 pl-4 italic">"{data.text}"</blockquote>
+                    <div className="bg-white rounded-xl p-4 border border-emerald-100">
+                        <p className="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">💡 Простым языком</p>
+                        <p className="text-stone-700 leading-relaxed">{data.plain}</p>
+                    </div>
+                    <div className="bg-emerald-100/50 rounded-xl p-4">
+                        <p className="text-xs font-bold uppercase tracking-widest text-emerald-800 mb-2">🔤 Ключевое слово</p>
+                        <p className="text-stone-700 text-sm leading-relaxed">{data.keyWord}</p>
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className="fade-in-up space-y-6">
+                    {/* Прогресс */}
+                    <div className="bg-white rounded-2xl border border-stone-200 p-5 flex items-center gap-4">
+                        <div className="flex-1">
+                            <div className="flex justify-between text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">
+                                <span>Урок {step + 1} из {LESSONS.length}</span>
+                                <span>{Math.round(((step+1)/LESSONS.length)*100)}%</span>
+                            </div>
+                            <div className="w-full bg-stone-100 rounded-full h-2">
+                                <div className="bg-gradient-to-r from-amber-500 to-emerald-500 h-2 rounded-full transition-all duration-500" style={{width:`${((step+1)/LESSONS.length)*100}%`}}></div>
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            {LESSONS.map((l,i) => (
+                                <button key={i} onClick={()=>{setStep(i); setTab('compare'); setAiAnswer('');}}
+                                    className={`w-9 h-9 rounded-xl text-sm font-bold transition-all ${i===step ? 'bg-amber-600 text-white shadow-md scale-110' : i<step ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-400'}`}>
+                                    {l.icon}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Заголовок урока */}
+                    <div className="bg-[#1c1b1d] text-white rounded-3xl p-8">
+                        <div className="flex items-center gap-4 mb-3">
+                            <span className="text-5xl">{lesson.icon}</span>
+                            <div>
+                                <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-1">Урок {step+1}</p>
+                                <h2 className="text-3xl font-serif font-bold">{lesson.title}</h2>
+                            </div>
+                        </div>
+                        <p className="text-stone-300 text-lg">{lesson.theme}</p>
+                    </div>
+
+                    {/* Вкладки */}
+                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl">
+                        {[['compare','⚖️ Сравнение'],['bible','📖 Библия'],['quran','🌙 Коран'],['practice','🤖 Спросить AI']].map(([k,l])=>(
+                            <button key={k} onClick={()=>setTab(k)}
+                                className={`flex-1 py-2.5 px-3 rounded-xl text-sm font-bold transition-all ${tab===k ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500 hover:text-stone-700'}`}>
+                                {l}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Контент */}
+                    {tab === 'compare' && (
+                        <div className="space-y-6">
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <BCard data={lesson.bible} />
+                                <QCard data={lesson.quran} />
+                            </div>
+                            <div className="bg-white border-2 border-stone-900 rounded-2xl p-6">
+                                <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-3">⚖️ Академическое сравнение</p>
+                                <p className="text-stone-800 leading-relaxed text-base">{lesson.compare}</p>
+                            </div>
+                        </div>
+                    )}
+                    {tab === 'bible' && <BCard data={lesson.bible} />}
+                    {tab === 'quran' && <QCard data={lesson.quran} />}
+                    {tab === 'practice' && (
+                        <div className="bg-white border border-stone-200 rounded-2xl p-6 space-y-4">
+                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">🤖 Задайте вопрос нейросети об этой теме</p>
+                            <div className="flex flex-wrap gap-2 mb-4">
+                                {[`Почему Коран и Библия по-разному описывают ${lesson.title.toLowerCase()}?`,
+                                  `Что думают богословы о теме "${lesson.title}"?`,
+                                  `Как эта тема повлияла на историю?`].map(q=>(
+                                    <button key={q} onClick={()=>{setAiQuestion(q); askAI(q);}}
+                                        className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 text-left transition-all">
+                                        {q}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="flex gap-3">
+                                <input value={aiQuestion} onChange={e=>setAiQuestion(e.target.value)}
+                                    onKeyDown={e=>e.key==='Enter' && askAI(aiQuestion)}
+                                    placeholder="Ваш вопрос о теме урока..."
+                                    className="flex-1 p-3 border border-stone-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 text-sm"/>
+                                <button onClick={()=>askAI(aiQuestion)} disabled={aiLoading}
+                                    className="bg-amber-600 hover:bg-amber-500 text-white px-5 py-3 rounded-xl font-bold text-sm disabled:opacity-50 transition-all">
+                                    {aiLoading ? '...' : 'Спросить'}
+                                </button>
+                            </div>
+                            {aiLoading && <div className="flex items-center gap-3 text-stone-500 italic p-4"><Icons.Loader c="w-5 h-5 text-amber-500"/> Нейросеть думает...</div>}
+                            {aiAnswer && <div className="ai-content p-4 bg-stone-50 rounded-xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiAnswer}}/>}
+                        </div>
+                    )}
+
+                    {/* Навигация */}
+                    <div className="flex justify-between pt-2">
+                        <button onClick={()=>{setStep(Math.max(0,step-1)); setTab('compare'); setAiAnswer('');}} disabled={step===0}
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-stone-600 bg-stone-100 hover:bg-stone-200 disabled:opacity-30 transition-all">
+                            ← Предыдущий урок
+                        </button>
+                        <button onClick={()=>{setStep(Math.min(LESSONS.length-1,step+1)); setTab('compare'); setAiAnswer('');}} disabled={step===LESSONS.length-1}
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white bg-amber-600 hover:bg-amber-500 disabled:opacity-30 transition-all">
+                            Следующий урок →
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // =====================================================================
+        // МОДУЛЬ 2: МАНУСКРИПТЫ И ОРИГИНАЛЫ
+        // =====================================================================
+        const MANUSCRIPTS = [
+            {
+                id: 'codex-sinaiticus', title: 'Кодекс Синайский', date: 'IV век н.э.',
+                lang: 'Греческий (койне)', tradition: 'bible',
+                desc: 'Древнейшая почти полная рукопись Библии. Написана на пергаменте из телячьей кожи, содержит весь Новый Завет и большую часть Ветхого. Найдена в монастыре Св. Екатерины на горе Синай Константином Тишендорфом в 1844 году. Хранится в Британском музее.',
+                imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Codex_Sinaiticus_Matthew_6%2C4-32.JPG/800px-Codex_Sinaiticus_Matthew_6%2C4-32.JPG',
+                imgFb: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
+                text: 'ΠΑΤΕΡ ΗΜΩΝ Ο ΕΝ ΤΟΙΣ ΟΥΡΑΝΟΙΣ\nАГИАСΘΗΤΩ ΤΟ ΟΝΟΜΑ ΣΟΥ',
+                textNote: 'Отрывок из Матфея 6 (Отче наш) на древнегреческом',
+                facts: ['Написан 4 писцами на 400 листах', 'Содержит 23 000 поправок разных веков', 'Частично в Лейпциге, Лондоне, Петербурге и Синае', 'Полностью оцифрован и доступен онлайн на codexsinaiticus.org']
+            },
+            {
+                id: 'dead-sea', title: 'Свитки Мёртвого моря', date: 'III в. до н.э. — I в. н.э.',
+                lang: 'Иврит, арамейский, греческий', tradition: 'bible',
+                desc: 'Обнаружены в 1947 году бедуинским пастухом в пещерах Кумрана. 972 рукописи — древнейшие копии библейских текстов. Великий Свиток Исайи (полный!) на 1000 лет старше любой другой известной копии. Доказали: за тысячелетие текст Библии не изменился.',
+                imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Great_Isaiah_Scroll_2.jpg/800px-Great_Isaiah_Scroll_2.jpg',
+                imgFb: 'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=80',
+                text: 'בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ',
+                textNote: 'Бытие 1:1 на иврите: «В начале сотворил Бог небо и землю»',
+                facts: ['Найдены в 11 пещерах около Хирбет-Кумрана', 'Включают все книги ВЗ кроме Есфири', 'Хранятся в Храме Книги в Иерусалиме', 'Возраст определён радиоуглеродным методом']
+            },
+            {
+                id: 'topkapi', title: 'Коран Топкапы', date: 'VIII–IX вв. н.э.',
+                lang: 'Арабский (куфическое письмо)', tradition: 'quran',
+                desc: 'Один из старейших полных Коранов мира, хранящийся во дворце Топкапы в Стамбуле. Написан на коже газели. Ранняя исламская традиция приписывала его третьему халифу Усману ибн Аффану, при котором была стандартизирована каноническая версия Корана (около 650 г. н.э.).',
+                imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Quran_karim.jpg/800px-Quran_karim.jpg',
+                imgFb: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80',
+                text: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+                textNote: 'Аль-Фатиха 1:1-2 — «Во имя Аллаха... Хвала Аллаху, Господу миров»',
+                facts: ['Хранится в Стамбуле, дворец Топкапы', 'Написан куфическим почерком без огласовок', 'Пергамент из кожи газели', 'Одна из 5 копий халифа Усмана']
+            },
+            {
+                id: 'samarkand', title: 'Самаркандский Коран', date: 'VII–VIII вв. н.э.',
+                lang: 'Арабский (хиджазское письмо)', tradition: 'quran',
+                desc: 'Хранится в Ташкенте (Узбекистан) в библиотеке имени Алишера Навои. Один из претендентов на звание оригинального Корана Усмана. Написан хиджазским письмом — ранней формой арабской каллиграфии. Тамерлан вывез его в Самарканд как священную реликвию. Русские забрали в 1869 году, вернули в 1924.',
+                imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Uthman_Quran_2.jpg/800px-Uthman_Quran_2.jpg',
+                imgFb: 'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=80',
+                text: 'الرَّحْمَٰنِ الرَّحِيمِ\nمَالِكِ يَوْمِ الدِّينِ',
+                textNote: 'Аль-Фатиха 1:3-4 — «Милостивому, Милосердному, Властелину Дня воздаяния»',
+                facts: ['Хранится в Ташкенте, Узбекистан', 'Написан на 353 листах пергамента', 'Размер листа 68 × 53 см', 'Доступен для просмотра верующим']
+            },
+            {
+                id: 'leningrad', title: 'Ленинградский кодекс', date: '1008 г. н.э.',
+                lang: 'Иврит (масоретский текст)', tradition: 'bible',
+                desc: 'Старейшая полная рукопись Еврейской Библии (Ветхого Завета). Написана в Каире масоретами — иудейскими книжниками, которые не только переписывали текст, но и разработали систему гласных знаков (огласовок). Именно этот кодекс — основа всех современных переводов Ветхого Завета.',
+                imgUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Leningrad_codex_carpet_page_e.jpg/800px-Leningrad_codex_carpet_page_e.jpg',
+                imgFb: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80',
+                text: 'שְׁמַע יִשְׂרָאֵל יְהוָה אֱלֹהֵינוּ יְהוָה אֶחָד',
+                textNote: 'Второзаконие 6:4 (Шма Исраэль) — «Слушай, Израиль: Господь Бог наш, Господь один»',
+                facts: ['Хранится в Российской национальной библиотеке, СПб', 'Содержит весь Танах (Ветхий Завет)', 'Основа критических изданий Библии (BHS)', 'Оцифрован и доступен онлайн']
+            }
+        ];
+
+        function ManuscriptsModule({ apiKey }) {
+            const [selected, setSelected] = useState(MANUSCRIPTS[0]);
+            const [aiText, setAiText] = useState('');
+            const [aiLoad, setAiLoad] = useState(false);
+
+            const analyze = async () => {
+                setAiLoad(true); setAiText('');
+                const result = await fetchZvenoAIAnalysis(
+                    `Расскажи подробно об этом манускрипте: ${selected.title} (${selected.date}). ${selected.desc}`,
+                    `Манускрипт: ${selected.title}, язык: ${selected.lang}`,
+                    apiKey
+                );
+                setAiText(result); setAiLoad(false);
+            };
+
+            return (
+                <div className="fade-in-up space-y-6">
+                    <div className="text-center mb-8">
+                        <h2 className="text-4xl font-serif font-bold text-stone-900 mb-3">📜 Манускрипты и Оригиналы</h2>
+                        <p className="text-stone-500 text-lg">Древнейшие рукописи Библии и Корана — окно в историю священных текстов</p>
+                    </div>
+
+                    {/* Выбор манускрипта */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                        {MANUSCRIPTS.map(m => (
+                            <button key={m.id} onClick={()=>{setSelected(m); setAiText('');}}
+                                className={`p-3 rounded-2xl border-2 text-left transition-all ${selected.id===m.id
+                                    ? (m.tradition==='bible' ? 'border-amber-500 bg-amber-50' : 'border-emerald-500 bg-emerald-50')
+                                    : 'border-stone-200 bg-white hover:border-stone-300'}`}>
+                                <p className="text-xs font-bold text-stone-500 mb-1">{m.date}</p>
+                                <p className="text-sm font-bold text-stone-900 leading-tight">{m.title}</p>
+                                <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full mt-2 inline-block ${m.tradition==='bible' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
+                                    {m.tradition==='bible' ? 'Библия' : 'Коран'}
+                                </span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Детали */}
+                    <div className="bg-white rounded-3xl border border-stone-200 overflow-hidden">
+                        <div className="relative h-72 bg-stone-100">
+                            <img src={selected.imgUrl} alt={selected.title}
+                                onError={e=>{if(e.target.src!==selected.imgFb) e.target.src=selected.imgFb;}}
+                                className="w-full h-full object-cover"/>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+                                <div>
+                                    <span className={`text-xs font-bold uppercase px-3 py-1 rounded-full mb-2 inline-block ${selected.tradition==='bible' ? 'bg-amber-500 text-white' : 'bg-emerald-500 text-white'}`}>
+                                        {selected.lang} · {selected.date}
+                                    </span>
+                                    <h3 className="text-3xl font-serif font-bold text-white">{selected.title}</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="p-8 space-y-6">
+                            <p className="text-stone-700 leading-relaxed text-lg">{selected.desc}</p>
+
+                            {/* Оригинальный текст */}
+                            <div className={`p-5 rounded-2xl border ${selected.tradition==='bible' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'}`}>
+                                <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-3">Оригинальный текст</p>
+                                <p className={`font-serif text-2xl leading-relaxed mb-2 ${selected.tradition==='bible' ? 'text-amber-900' : 'text-emerald-900'}`}
+                                    style={{fontFamily: 'serif', direction: selected.tradition==='quran' ? 'rtl' : 'ltr'}}>
+                                    {selected.text}
+                                </p>
+                                <p className="text-xs text-stone-500 italic">{selected.textNote}</p>
+                            </div>
+
+                            {/* Факты */}
+                            <div className="grid grid-cols-2 gap-3">
+                                {selected.facts.map((f,i)=>(
+                                    <div key={i} className="bg-stone-50 border border-stone-200 rounded-xl p-3 flex gap-2">
+                                        <span className="text-stone-400 font-bold flex-shrink-0">#{i+1}</span>
+                                        <span className="text-stone-700 text-sm">{f}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* AI анализ */}
+                            <div className="border-t border-stone-100 pt-6">
+                                <button onClick={analyze} disabled={aiLoad}
+                                    className="flex items-center gap-2 bg-stone-900 hover:bg-stone-700 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50">
+                                    {aiLoad ? <><Icons.Loader c="w-4 h-4"/>Анализирую...</> : <>✨ Глубокий AI-анализ манускрипта</>}
+                                </button>
+                                {aiLoad && <div className="mt-4 flex items-center gap-2 text-stone-500 italic"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть изучает историю рукописи...</div>}
+                                {aiText && <div className="mt-4 ai-content p-5 bg-stone-50 rounded-2xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiText}}/>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // =====================================================================
+        // МОДУЛЬ 3: ПРОСТЫМ ЯЗЫКОМ — ПОЛНАЯ РАСШИРЕННАЯ ВЕРСИЯ
+        // =====================================================================
+        const PLAIN_TOPICS = [
+            {
+                id: 'creation', icon: '🌍', title: 'Сотворение мира',
+                bible: { title: 'Библия: Как Бог создал мир за 6 дней', content: `**День 1:** Бог создал свет и отделил его от тьмы — появились день и ночь. Заметь: солнце появится только на 4-й день! «Свет» первого дня — это, возможно, само присутствие Бога.\n\n**День 2:** Бог разделил воды — появилось «небо» (атмосфера), отделившее воды наверху от вод внизу.\n\n**День 3:** Воды собрались — появились суша и моря. Из земли выросли растения, деревья, трава.\n\n**День 4:** Появились солнце, луна и звёзды — для определения времён и сезонов.\n\n**День 5:** Рыбы и птицы заполнили моря и небо.\n\n**День 6:** Животные на суше — и наконец человек. Адам (от иврит. «адама» = земля) создан из «праха земного». Бог вдохнул в него дыхание жизни. Ева создана из ребра Адама — они равны, «одна плоть».\n\n**День 7:** Бог отдыхал — освятил субботу. Отсюда еврейский Шаббат и христианское воскресенье.\n\n**Главная мысль:** Мир не случаен. За каждым творением стоит намерение Бога. Человек — венец творения, образ Бога (imago Dei).` },
+                quran: { title: 'Коран: Сотворение одним словом', content: `Коран не даёт последовательного 6-дневного описания. Вместо этого — ключевые идеи:\n\n**«Кун фаякун»** — «Будь! — и оно бывает» (2:117). Бог творит мгновенно и абсолютно. Никакого усилия или постепенности.\n\n**Шесть «периодов»** (аям — дней/эпох) упоминается в Коране (7:54, 10:3). Слово «йаум» (день) может означать любой период времени — от суток до миллиардов лет.\n\n**Небеса и земля** были «единым целым» (21:30) — мусульманские учёные видят здесь предсказание Большого взрыва.\n\n**Создание человека:** Адам создан из «глины» (32:7), «сухой звонкой глины» (15:26), «воды» (21:30). Разные аяты делают акцент на разных аспектах. Аллах вдохнул в него «от Своего духа» (15:29).\n\n**Главная мысль:** Аллах — единственный Творец. Природа — знамение (аят) Его существования. Изучать природу — значит познавать Аллаха. Поэтому исламская цивилизация стала пионером в астрономии, математике и медицине.` }
+            },
+            {
+                id: 'sin', icon: '🍎', title: 'Грех и падение',
+                bible: { title: 'Библия: Как грех вошёл в мир', content: `**Эдемский сад:** Адам и Ева жили в совершенстве. Единственный запрет — не есть плод с «дерева познания добра и зла».\n\n**Змей** (аллегория сатаны, падшего ангела) убедил Еву: «Нет, не умрёте! Но Бог знает, что в день, когда вы вкусите, откроются глаза ваши, и вы будете как боги».\n\n**Что произошло?** Адам и Ева съели плод. Последствия мгновенны: стыд (увидели наготу), страх (спрятались от Бога), обвинения (Адам обвиняет Еву, Ева — змея).\n\n**Первородный грех:** Этот акт называют «грехопадением». Согласно апостолу Павлу (Рим 5:12), грех и смерть вошли в мир через Адама. Всё человечество наследует греховную природу.\n\n**Изгнание:** Бог изгнал Адама и Еву из рая — чтобы они не вкусили с «дерева жизни» и не жили вечно в состоянии греха.\n\n**Надежда:** Даже в суде — обещание (Быт 3:15): потомок женщины «сотрёт голову» змея. Христиане видят в этом первое пророчество о Христе — «прото-Евангелие».` },
+                quran: { title: 'Коран: Ошибка Адама и прощение', content: `Коран рассказывает похожую историю, но с ключевыми отличиями:\n\n**Адам и Хавва** (Ева) в Коране тоже получили запрет от Аллаха и нарушили его, поддавшись Иблису (Сатане, павшему джинну).\n\n**Ключевое отличие:** В исламе нет понятия «первородного греха». Грех Адама — личная ошибка двух людей, которая не передаётся потомкам. Каждый человек рождается чистым (фитра — врождённая природа, склонная к добру).\n\n**Раскаяние:** Адам и Хавва немедленно раскаялись — «Господь наш! Мы обидели себя. Если Ты не простишь нас... мы окажемся в числе потерпевших убыток» (7:23).\n\n**Прощение:** Аллах принял покаяние Адама (2:37). Адам стал первым пророком! В исламе он — не падший грешник, а избранный Богом посланник.\n\n**Главная мысль:** Человек по природе хорош, но слаб. Ошибки — часть жизни. Путь — покаяние (тауба) и возвращение к Аллаху. Не нужен Спаситель — нужно искреннее раскаяние.` }
+            },
+            {
+                id: 'jesus', icon: '✝️', title: 'Иисус / Иса',
+                bible: { title: 'Библия: Иисус — Бог и человек', content: `**Рождение:** Иисус родился от Девы Марии через действие Святого Духа в Вифлееме. Пришли волхвы, пели ангелы. Ирод пытался убить Его.\n\n**Кто Он?** Христиане верят: Иисус — Бог, ставший человеком (Боговоплощение). «Слово стало плотью» (Ин 1:14). Он имел две природы: полностью Бог и полностью человек.\n\n**Учение:** 3 года служения. Нагорная проповедь — вершина этики. «Блаженны нищие духом», «Любите врагов ваших», «Золотое правило». Притчи о Блудном сыне, Добром Самарянине, Сеятеле.\n\n**Чудеса:** Исцелял больных, воскрешал мёртвых, ходил по воде, умножал хлебы, превращал воду в вино.\n\n**Распятие:** Арестован, осуждён, распят на кресте. По христианской теологии — это искупление грехов всего человечества. «Бог так возлюбил мир, что отдал Сына Своего Единородного» (Ин 3:16).\n\n**Воскресение:** На третий день воскрес. Явился ученикам. Вознёсся на небо. Это центр всего христианства: «Если Христос не воскрес, то вера наша тщетна» (1 Кор 15:17).` },
+                quran: { title: 'Коран: Иса — великий пророк', content: `Иса ибн Марьям (Иисус, сын Марии) — один из величайших пророков ислама.\n\n**Рождение:** Марьям (Мария) — единственная женщина, которой посвящена целая сура (19. Марьям). Иса рождён от девственницы — «Мы вдохнули в неё от Нашего духа» (21:91). Мусульмане верят в девственное рождение!\n\n**Кто Он в Коране?** «Слово Аллаха» (калимат-Аллах), «Дух от Него» (рух-мин-ху). Но — не Сын Бога, не часть Троицы. «Аллах не имеет сына» (19:35).\n\n**Чудеса Исы:** Говорил в колыбели (3:46), лепил птиц из глины и оживлял их, исцелял слепых и прокажённых, воскрешал мёртвых — всё «с дозволения Аллаха».\n\n**Распятие:** Коран отрицает: «Они не убили его и не распяли, но им это лишь показалось» (4:157). Аллах вознёс Ису живым на небо.\n\n**Возвращение:** Иса вернётся перед концом света! Он убьёт Антихриста (Даджаля), установит справедливость, сломает крест, умрёт естественной смертью и будет похоронен в Медине рядом с Мухаммедом.\n\n**Инжиль:** Иса принёс Евангелие (Инжиль) — но мусульмане считают, что нынешние Евангелия искажены людьми.` }
+            },
+            {
+                id: 'prayer-life', icon: '🕌', title: '5 столпов ислама',
+                bible: null,
+                quran: { title: 'Ислам: Практика — как это работает', content: `**1. Шахада — Свидетельство веры:**\n«Ашхаду алля иляха илля-Ллах, ва ашхаду анна Мухаммадан расулю-Ллах»\nПеревод: «Свидетельствую, что нет бога кроме Аллаха, и что Мухаммед — посланник Аллаха».\nПроизнесённая с искренностью — делает человека мусульманином.\n\n**2. Салят — Намаз (5 раз в день):**\n- Фаджр: рассвет\n- Зухр: полдень\n- Аср: послеполудень\n- Магриб: закат\n- Иша: ночь\nКаждый намаз — омовение (вуду), затем 2-4 ракята. Всего 17 ракятов в день.\n\n**3. Закят — Обязательная милостыня:**\n2,5% от накопленного богатства в год. Только для состоятельных. Идёт бедным, должникам, путникам, на путь Аллаха. Исламский налог солидарности.\n\n**4. Саум — Пост в Рамадан:**\nВесь лунный месяц Рамадан — полный отказ от еды, питья, курения, секса с рассвета до заката. Ночью — ифтар (разговение). Цель: духовная концентрация, благодарность, сострадание.\n\n**5. Хадж — Паломничество в Мекку:**\nОбязателен раз в жизни для тех, кто может. Миллионы людей одновременно. Главные ритуалы: таваф (обход Каабы 7 раз), са'й (пробежка между холмами), стояние на Арафате, жертвоприношение.` }
+            },
+            {
+                id: 'commandments', icon: '📋', title: '10 заповедей',
+                quran: null,
+                bible: { title: 'Библия: 10 заповедей — основа морали', content: `Бог дал Моисею 10 заповедей на горе Синай (Исход 20). Они делятся на две части:\n\n**Первая скрижаль — отношения с Богом:**\n\n**1.** «Да не будет у тебя других богов» — Я единственный Бог. Никаких конкурентов.\n\n**2.** «Не делай себе идола» — Бога нельзя изображать и поклоняться образам.\n\n**3.** «Не произноси имени Господа... напрасно» — имя Бога свято, не для ругательств и клятв.\n\n**4.** «Помни день субботний» — один день в неделю — для Бога и отдыха. Труд — хорошо, но не абсолют.\n\n**Вторая скрижаль — отношения с людьми:**\n\n**5.** «Почитай отца твоего и мать» — единственная заповедь с обещанием: «чтобы продлились дни твои».\n\n**6.** «Не убивай» — жизнь священна, Бог её дал.\n\n**7.** «Не прелюбодействуй» — верность в браке — основа общества.\n\n**8.** «Не кради» — уважай чужую собственность.\n\n**9.** «Не лжесвидетельствуй» — правда — основа доверия.\n\n**10.** «Не желай» — грех начинается в сердце, а не только в действии.\n\nИисус суммировал всё в двух: «Возлюби Господа» и «Возлюби ближнего» (Мф 22:37-40).` }
+            }
+        ];
+
+        function PlainLanguageModule({ apiKey }) {
+            const [sel, setSel] = useState(PLAIN_TOPICS[0]);
+            const [side, setSide] = useState('both'); // both | bible | quran
+            const [aiQ, setAiQ] = useState('');
+            const [aiA, setAiA] = useState('');
+            const [aiL, setAiL] = useState(false);
+
+            const ask = async () => {
+                if(!aiQ.trim()) return;
+                setAiL(true); setAiA('');
+                const res = await fetchZvenoAIAnalysis(aiQ, `Тема: ${sel.title}. Раздел: объяснение простым языком.`, apiKey);
+                setAiA(res); setAiL(false);
+            };
+
+            const Block = ({data, color}) => {
+                if (!data) return null;
+                const isA = color === 'amber';
+                return (
+                    <div className={`rounded-2xl border p-6 ${isA ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'}`}>
+                        <h4 className={`font-serif font-bold text-xl mb-4 ${isA ? 'text-amber-900' : 'text-emerald-900'}`}>{data.title}</h4>
+                        <div className={`prose prose-sm max-w-none leading-relaxed text-stone-700 ${isA ? '' : ''}`}
+                            dangerouslySetInnerHTML={{__html: marked.parse(data.content)}}/>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="fade-in-up space-y-6 pb-12">
+                    <div className="text-center mb-6">
+                        <h2 className="text-4xl font-serif font-bold text-stone-900 mb-3">💬 Просто о сложном</h2>
+                        <p className="text-stone-500 text-lg">Библия и Коран — главные темы, объяснённые понятным языком</p>
+                    </div>
+
+                    {/* Темы */}
+                    <div className="flex flex-wrap gap-2">
+                        {PLAIN_TOPICS.map(t=>(
+                            <button key={t.id} onClick={()=>{setSel(t); setAiA('');}}
+                                className={`px-4 py-2 rounded-xl font-bold text-sm transition-all ${sel.id===t.id ? 'bg-stone-900 text-white' : 'bg-white border border-stone-200 text-stone-600 hover:border-stone-400'}`}>
+                                {t.icon} {t.title}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Переключатель сторон */}
+                    {sel.bible && sel.quran && (
+                        <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl w-fit">
+                            {[['both','Оба текста'],['bible','📖 Библия'],['quran','🌙 Коран']].map(([k,l])=>(
+                                <button key={k} onClick={()=>setSide(k)}
+                                    className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${side===k ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500'}`}>
+                                    {l}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Контент */}
+                    <div className={`grid gap-6 ${side==='both' && sel.bible && sel.quran ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
+                        {(side==='both' || side==='bible') && <Block data={sel.bible} color="amber"/>}
+                        {(side==='both' || side==='quran') && <Block data={sel.quran} color="emerald"/>}
+                    </div>
+
+                    {/* Вопрос AI */}
+                    <div className="bg-white border border-stone-200 rounded-2xl p-6">
+                        <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">🤖 Уточнить у нейросети</p>
+                        <div className="flex gap-3">
+                            <input value={aiQ} onChange={e=>setAiQ(e.target.value)} onKeyDown={e=>e.key==='Enter' && ask()}
+                                placeholder={`Спросить о теме "${sel.title}"...`}
+                                className="flex-1 p-3 border border-stone-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 text-sm"/>
+                            <button onClick={ask} disabled={aiL}
+                                className="bg-amber-600 text-white px-5 py-3 rounded-xl font-bold text-sm disabled:opacity-50">
+                                {aiL ? '...' : 'Спросить'}
+                            </button>
+                        </div>
+                        {aiL && <div className="mt-3 flex items-center gap-2 text-stone-400 italic text-sm"><Icons.Loader c="w-4 h-4 text-amber-500"/> Думаю...</div>}
+                        {aiA && <div className="mt-4 ai-content p-4 bg-stone-50 rounded-xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiA}}/>}
+                    </div>
+                </div>
+            );
+        }
+
+        // =====================================================================
+        // МОДУЛЬ 4: ГЛУБОКИЙ AI КОММЕНТАРИЙ — ТЕМАТИЧЕСКИЙ
+        // =====================================================================
+        const DEEP_THEMES = [
+            { id: 'creation-deep', label: 'Сотворение мира', icon: '🌌' },
+            { id: 'prophethood', label: 'Пророчество', icon: '📜' },
+            { id: 'salvation', label: 'Спасение / Искупление', icon: '✝️' },
+            { id: 'ethics', label: 'Этика и нравственность', icon: '⚖️' },
+            { id: 'eschatology', label: 'Конец времён', icon: '⚡' },
+            { id: 'prayer-deep', label: 'Молитва и поклонение', icon: '🤲' },
+            { id: 'women', label: 'Женщина в текстах', icon: '👩' },
+            { id: 'science', label: 'Наука и религия', icon: '🔬' },
+        ];
+
+        function DeepCommentaryModule({ apiKey }) {
+            const [theme, setTheme] = useState(DEEP_THEMES[0]);
+            const [text, setText] = useState(DEEP_THEMES[0].label);
+            const [tradition, setTradition] = useState('both');
+            const [result, setResult] = useState('');
+            const [loading, setLoading] = useState(false);
+            const [customQ, setCustomQ] = useState('');
+
+            const generate = async (question) => {
+                const q = question || text;
+                if (!q.trim()) return;
+                setLoading(true); setResult('');
+                const tradStr = tradition === 'both' ? 'как в Библии, так и в Коране, сравнивая подходы' : tradition === 'bible' ? 'в Библии и христианской традиции' : 'в Коране и исламской традиции';
+                const prompt = `Дай глубокий академический анализ темы "${q}" ${tradStr}. Включи: 1) Ключевые отрывки из священных текстов с разбором, 2) Богословскую интерпретацию, 3) Историко-критический анализ, 4) Взгляды разных школ мысли, 5) Практическое значение для верующих.`;
+                const res = await fetchZvenoAIAnalysis(prompt, `Тематический анализ: ${q}`, apiKey);
+                setResult(res); setLoading(false);
+            };
+
+            return (
+                <div className="fade-in-up space-y-6 pb-12">
+                    <div className="text-center mb-6">
+                        <h2 className="text-4xl font-serif font-bold text-stone-900 mb-3">🔬 Глубокий AI Комментарий</h2>
+                        <p className="text-stone-500 text-lg">Академический анализ тем через призму Библии и Корана с помощью нейросети</p>
+                    </div>
+
+                    {/* Готовые темы */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {DEEP_THEMES.map(t=>(
+                            <button key={t.id} onClick={()=>{setTheme(t); setText(t.label); setResult('');}}
+                                className={`p-3 rounded-2xl border-2 text-left transition-all ${theme.id===t.id ? 'border-stone-900 bg-stone-900 text-white' : 'border-stone-200 bg-white text-stone-700 hover:border-stone-400'}`}>
+                                <span className="text-2xl block mb-1">{t.icon}</span>
+                                <span className="text-sm font-bold">{t.label}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Традиция */}
+                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl w-fit">
+                        {[['both','⚖️ Сравнение'],['bible','📖 Библия'],['quran','🌙 Коран']].map(([k,l])=>(
+                            <button key={k} onClick={()=>setTradition(k)}
+                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${tradition===k ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500'}`}>
+                                {l}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Свой вопрос */}
+                    <div className="bg-white border border-stone-200 rounded-2xl p-5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">Или задайте свой вопрос</p>
+                        <div className="flex gap-3">
+                            <input value={customQ} onChange={e=>setCustomQ(e.target.value)}
+                                onKeyDown={e=>e.key==='Enter' && generate(customQ)}
+                                placeholder="Например: Как Библия и Коран объясняют существование зла?"
+                                className="flex-1 p-3 border border-stone-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 text-sm"/>
+                            <button onClick={()=>generate(customQ || text)} disabled={loading}
+                                className="bg-stone-900 hover:bg-stone-700 text-white px-6 py-3 rounded-xl font-bold text-sm disabled:opacity-50 transition-all flex items-center gap-2">
+                                {loading ? <><Icons.Loader c="w-4 h-4"/>Анализирую</> : <>✨ Анализ</>}
+                            </button>
+                        </div>
+                        <button onClick={()=>generate(text)} disabled={loading}
+                            className="mt-3 w-full py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold text-sm disabled:opacity-50 transition-all">
+                            {loading ? 'Нейросеть думает...' : `✨ Анализировать: «${theme.label}»`}
+                        </button>
+                    </div>
+
+                    {/* Результат */}
+                    {loading && (
+                        <div className="bg-white border border-stone-200 rounded-2xl p-8 flex items-center gap-4 text-stone-500">
+                            <Icons.Loader c="w-6 h-6 text-amber-500"/>
+                            <div>
+                                <p className="font-bold">ZVENO AI анализирует...</p>
+                                <p className="text-sm">GPT-4o / Claude изучают священные тексты</p>
+                            </div>
+                        </div>
+                    )}
+                    {result && (
+                        <div className="bg-white border border-stone-200 rounded-3xl p-8">
+                            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-stone-100">
+                                <Icons.Sparkles c="w-5 h-5 text-amber-500"/>
+                                <span className="text-xs font-bold uppercase tracking-widest text-stone-400">ZVENO AI · Академический анализ · {theme.label}</span>
+                            </div>
+                            <div className="ai-content" dangerouslySetInnerHTML={{__html: result}}/>
+                        </div>
+                    )}
                 </div>
             );
         }
