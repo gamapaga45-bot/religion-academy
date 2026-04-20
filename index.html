@@ -371,6 +371,17 @@
                             );
                         });
 
+                        // Источник 0: @fawazahmed0/quran-api npm (самый надёжный)
+                        if (!quranLoaded) try {
+                            const r = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/quran-api@1/editions/rus-elmir-kuliev.json');
+                            const d = await r.json();
+                            (d.quran || d).forEach(item => {
+                                const title = quranOrder[(item.chapter||item.surah) - 1];
+                                if (title) quranMap[title]["1"][String(item.verse||item.ayah)] = item.text;
+                            });
+                            if (validateQuran(quranMap)) quranLoaded = true;
+                        } catch(e) { console.warn('Quran CDN0 failed:', e); }
+
                         // Источник 1: quran-json@3.1.2 (Russian Kuliev)
                         if (!quranLoaded) try {
                             const r = await fetch('https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_ru.json');
@@ -428,14 +439,12 @@
                             if (quranMap[key]) Object.assign(quranMap[key]["1"], verses);
                         });
 
-                        // Применяем расширенные встроенные тексты EMBEDDED_QURAN
+                        // Применяем расширенные встроенные тексты EMBEDDED_QURAN (всегда)
                         if (typeof EMBEDDED_QURAN !== 'undefined') {
                             Object.entries(EMBEDDED_QURAN).forEach(([idx, verses]) => {
                                 const title = quranOrder[parseInt(idx) - 1];
                                 if (title && quranMap[title]) {
-                                    const existing = quranMap[title]["1"];
-                                    const hasReal = Object.values(existing).some(t => t && t.length > 20 && !t.startsWith('Текст'));
-                                    if (!hasReal) Object.assign(quranMap[title]["1"], verses);
+                                    Object.assign(quranMap[title]["1"], verses);
                                 }
                             });
                         }
@@ -2271,8 +2280,9 @@
 
             const doSearch = () => {
                 if (!query || query.trim().length < 2) return;
-                // Если включены похожие слова — расширяем запрос через expandQuery
-                const terms = fuzzyMode ? expandQuery(query) : [query.toLowerCase().trim()];
+                // Всегда используем expandQuery для синонимов между религиями
+                // fuzzyMode=true также добавляет падежные формы через WORD_FORMS_MAP
+                const terms = expandQuery(query);
                 setExpandedTerms(terms);
                 setSearching(true); setHasSearched(true);
                 setTimeout(() => {
@@ -2449,9 +2459,9 @@
                             <input type="checkbox" checked={fuzzyMode} onChange={e=>setFuzzyMode(e.target.checked)}
                                 style={{width:15, height:15, accentColor:'#d97706', cursor:'pointer'}}/>
                             <span style={{fontFamily:'sans-serif', fontSize:12, color:'#57534e', fontWeight:600}}>
-                                Похожие слова
+                                Расширенный поиск
                                 <span style={{color:'#a8a29e', fontWeight:400, marginLeft:4}}>
-                                    («Иисус» → «Иса», «Бог» → «Аллах», «Господь» и др.)
+                                    (падежные формы: «свет» → «света», «светом», «световой»)
                                 </span>
                             </span>
                         </label>
