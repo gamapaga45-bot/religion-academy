@@ -1783,61 +1783,213 @@
         // --- ГЛОБАЛЬНЫЙ ПОИСК ---
         function SearchModule({ db }) {
             const [query, setQuery] = useState("");
-            const [results, setResults] = useState({ bible: [], quran: [] });
+            // Чекпоинты религий для поиска
+            const [scope, setScope] = useState({
+                bible: true, quran: true,
+                buddhism: true, hinduism: true, taoism: true,
+                zoroastrism: true, confucianism: true, sikhism: true, shinto: true
+            });
+            // Режим: exact | fuzzy
+            const [fuzzy, setFuzzy] = useState(false);
+            const [results, setResults] = useState({});
             const [searching, setSearching] = useState(false);
             const [hasSearched, setHasSearched] = useState(false);
+            // Загрузка текстов других религий из open-source CDN
+            const [extTexts, setExtTexts] = useState(null);
+            const [extLoading, setExtLoading] = useState(false);
+            const [extStatus, setExtStatus] = useState('idle'); // idle|loading|done|error
 
-            const handleSearch = () => {
-                if (!query || query.length < 3) return;
-                setSearching(true); setHasSearched(true);
-                setTimeout(() => {
-                    const qLower = query.toLowerCase();
-                    const bRes = [], qRes = [];
-                    db.order.bible.forEach(book => {
-                        Object.keys(db.texts.bible[book]).forEach(chap => {
-                            Object.entries(db.texts.bible[book][chap]).forEach(([vNum, text]) => {
-                                if (text.toLowerCase().includes(qLower)) bRes.push({ book, chap, vNum, text });
+            // Загружаем тексты религий при первом поиске по ним
+            const loadExtTexts = async () => {
+                if (extTexts || extLoading) return extTexts;
+                setExtLoading(true); setExtStatus('loading');
+                const loaded = {};
+                // Загружаем из RELIGION_TEXTS (уже в памяти)
+                if (typeof RELIGION_TEXTS !== 'undefined') {
+                    Object.keys(RELIGION_TEXTS).forEach(relId => {
+                        const rel = RELIGION_TEXTS[relId];
+                        if (!rel || !rel.sections) return;
+                        loaded[relId] = [];
+                        rel.sections.forEach(sec => {
+                            Object.entries(sec.verses || {}).forEach(([vn, vt]) => {
+                                loaded[relId].push({ ref: `${sec.title}, ст.${vn}`, text: vt });
                             });
                         });
                     });
-                    db.order.quran.forEach(surah => {
-                        Object.entries(db.texts.quran[surah]["1"] || {}).forEach(([aNum, text]) => {
-                            if (text.toLowerCase().includes(qLower)) qRes.push({ surah, aNum, text });
+                }
+                setExtTexts(loaded);
+                setExtLoading(false); setExtStatus('done');
+                return loaded;
+            };
+
+            const toggleScope = (key) => setScope(prev => ({ ...prev, [key]: !prev[key] }));
+            const toggleAll = (val) => setScope(prev => Object.fromEntries(Object.keys(prev).map(k=>[k,val])));
+
+            // Похожие слова: одинаковый корень (первые 4 символа)
+            const matchesFuzzy = (text, q) => {
+                const tL = text.toLowerCase(), qL = q.toLowerCase();
+                if (tL.includes(qL)) return true;
+                if (fuzzy && q.length >= 4) {
+                    const root = qL.slice(0, Math.max(4, Math.floor(qL.length * 0.7)));
+                    return tL.includes(root);
+                }
+                return false;
+            };
+
+            const handleSearch = async () => {
+                if (!query || query.length < 2) return;
+                setSearching(true); setHasSearched(true);
+                const ext = await loadExtTexts();
+                setTimeout(() => {
+                    const res = {};
+                    // Библия
+                    if (scope.bible) {
+                        res.bible = [];
+                        db.order.bible.forEach(book => {
+                            Object.keys(db.texts.bible[book] || {}).forEach(chap => {
+                                Object.entries(db.texts.bible[book][chap] || {}).forEach(([vNum, text]) => {
+                                    if (matchesFuzzy(text, query)) res.bible.push({ book, chap, vNum, text });
+                                });
+                            });
                         });
+                        res.bible = res.bible.slice(0, 200);
+                    }
+                    // Коран
+                    if (scope.quran) {
+                        res.quran = [];
+                        db.order.quran.forEach(surah => {
+                            Object.entries(db.texts.quran[surah]?.["1"] || {}).forEach(([aNum, text]) => {
+                                if (matchesFuzzy(text, query)) res.quran.push({ surah, aNum, text });
+                            });
+                        });
+                        res.quran = res.quran.slice(0, 200);
+                    }
+                    // Остальные религии из RELIGION_TEXTS
+                    const otherRels = ['buddhism','hinduism','taoism','zoroastrism','confucianism','sikhism','shinto'];
+                    otherRels.forEach(relId => {
+                        if (!scope[relId]) return;
+                        res[relId] = [];
+                        const verses = ext?.[relId] || [];
+                        verses.forEach(v => {
+                            if (matchesFuzzy(v.text, query)) res[relId].push(v);
+                        });
+                        res[relId] = res[relId].slice(0, 100);
                     });
-                    setResults({ bible: bRes.slice(0, 150), quran: qRes.slice(0, 150) });
+                    setResults(res);
                     setSearching(false);
-                }, 100); 
+                }, 50);
             };
 
             const highlight = (text, word) => {
                 if (!word) return text;
-                const parts = text.split(new RegExp(`(${word})`, 'gi'));
-                return parts.map((part, i) => part.toLowerCase() === word.toLowerCase() ? <span key={i} className="bg-amber-200 text-amber-900 font-bold px-1 rounded">{part}</span> : part);
+                try {
+                    const parts = text.split(new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi'));
+                    return parts.map((p, i) => p.toLowerCase() === word.toLowerCase()
+                        ? <mark key={i} className="bg-amber-200 text-amber-900 font-bold px-0.5 rounded not-italic">{p}</mark>
+                        : p);
+                } catch { return text; }
+            };
+
+            const total = Object.values(results).reduce((s, arr) => s + (arr?.length||0), 0);
+
+            const REL_META = {
+                bible:        { label: '✝️ Библия',       bg: 'bg-amber-50',   border: 'border-amber-200',   text: 'text-amber-800',   badge: 'bg-amber-100 text-amber-700' },
+                quran:        { label: '☪️ Коран',         bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-800', badge: 'bg-emerald-100 text-emerald-700' },
+                buddhism:     { label: '☸️ Дхаммапада',   bg: 'bg-yellow-50',  border: 'border-yellow-200',  text: 'text-yellow-800',  badge: 'bg-yellow-100 text-yellow-700' },
+                hinduism:     { label: '🕉️ Бхагавад-гита',bg: 'bg-orange-50',  border: 'border-orange-200',  text: 'text-orange-800',  badge: 'bg-orange-100 text-orange-700' },
+                taoism:       { label: '☯️ Дао Дэ Цзин',  bg: 'bg-stone-50',   border: 'border-stone-300',   text: 'text-stone-700',   badge: 'bg-stone-200 text-stone-700' },
+                zoroastrism:  { label: '🔥 Авеста',        bg: 'bg-red-50',     border: 'border-red-200',     text: 'text-red-800',     badge: 'bg-red-100 text-red-700' },
+                confucianism: { label: '🏮 Лунь Юй',       bg: 'bg-rose-50',    border: 'border-rose-200',    text: 'text-rose-800',    badge: 'bg-rose-100 text-rose-700' },
+                sikhism:      { label: '🪯 Гуру Грантх',   bg: 'bg-purple-50',  border: 'border-purple-200',  text: 'text-purple-800',  badge: 'bg-purple-100 text-purple-700' },
+                shinto:       { label: '⛩️ Кодзики',       bg: 'bg-pink-50',    border: 'border-pink-200',    text: 'text-pink-800',    badge: 'bg-pink-100 text-pink-700' },
             };
 
             return (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
-                    <div className="p-8 border-b border-stone-200 bg-stone-50">
-                        <h2 className="text-2xl font-serif font-bold text-stone-900 mb-4 flex items-center"><Icons.Search c="w-6 h-6 mr-3 text-amber-600"/> Глобальный поиск по текстам</h2>
-                        <div className="flex gap-4">
-                            <input type="text" value={query} onChange={(e)=>setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} placeholder="Введите слово (Свет, Молитва)..." className="flex-1 p-4 rounded-xl border border-stone-300 font-sans outline-none" />
-                            <button onClick={handleSearch} disabled={searching || query.length < 3} className="bg-[#1c1b1d] text-white px-8 rounded-xl font-bold disabled:opacity-50">{searching ? "Поиск..." : "Найти"}</button>
+                    {/* ШАПКА ПОИСКА */}
+                    <div className="p-4 md:p-6 border-b border-stone-200 bg-stone-50 flex-shrink-0 space-y-3">
+                        <h2 className="text-xl md:text-2xl font-serif font-bold text-stone-900 flex items-center gap-2">
+                            <Icons.Search c="w-5 h-5 text-amber-600"/> Глобальный поиск по всем религиям мира
+                        </h2>
+                        {/* Строка поиска */}
+                        <div className="flex gap-2">
+                            <input type="text" value={query}
+                                onChange={e=>setQuery(e.target.value)}
+                                onKeyDown={e=>e.key==='Enter'&&handleSearch()}
+                                placeholder="Введите слово (Свет, Любовь, Бог, Душа, Путь)..."
+                                className="flex-1 p-3 rounded-xl border border-stone-300 font-sans outline-none focus:ring-2 focus:ring-amber-500 text-sm"/>
+                            <button onClick={handleSearch} disabled={searching||query.length<2}
+                                className="bg-[#1c1b1d] hover:bg-stone-700 text-white px-5 md:px-8 rounded-xl font-bold disabled:opacity-50 text-sm transition-all">
+                                {searching?"Поиск...":"Найти"}
+                            </button>
                         </div>
+                        {/* ЧЕКПОИНТЫ РЕЛИГИЙ + FUZZY */}
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">Искать в:</span>
+                                <button onClick={()=>toggleAll(true)} className="text-[10px] font-bold text-amber-600 hover:text-amber-800 uppercase tracking-wide px-2 py-0.5 rounded hover:bg-amber-50 transition-all">Все</button>
+                                <button onClick={()=>toggleAll(false)} className="text-[10px] font-bold text-stone-400 hover:text-stone-600 uppercase tracking-wide px-2 py-0.5 rounded hover:bg-stone-100 transition-all">Снять</button>
+                            </div>
+                            <div className="flex flex-wrap gap-1.5">
+                                {Object.entries(REL_META).map(([key, meta])=>(
+                                    <button key={key} onClick={()=>toggleScope(key)}
+                                        className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all ${scope[key] ? meta.badge + ' border-current opacity-100' : 'bg-stone-100 text-stone-400 border-stone-200 opacity-60'}`}>
+                                        {meta.label}
+                                    </button>
+                                ))}
+                            </div>
+                            {/* Чекпоинт похожих слов */}
+                            <label className="flex items-center gap-2 cursor-pointer w-fit group">
+                                <div onClick={()=>setFuzzy(f=>!f)}
+                                    className={`w-10 h-5 rounded-full transition-all flex items-center px-0.5 ${fuzzy?'bg-amber-500':'bg-stone-200'}`}>
+                                    <div className={`w-4 h-4 bg-white rounded-full shadow transition-all ${fuzzy?'translate-x-5':'translate-x-0'}`}/>
+                                </div>
+                                <span className="text-xs font-bold text-stone-600 group-hover:text-stone-900 transition-all">
+                                    Похожие слова <span className="text-stone-400 font-normal">(корень слова, ~70% совпадение)</span>
+                                </span>
+                            </label>
+                        </div>
+                        {hasSearched && !searching && (
+                            <p className="text-xs text-stone-400 font-bold">
+                                {total>0 ? `Найдено ${total} совпадений в ${Object.values(results).filter(r=>r?.length>0).length} источниках` : 'Ничего не найдено. Попробуйте другое слово или включите режим похожих слов.'}
+                            </p>
+                        )}
+                        {extStatus==='loading' && <p className="text-xs text-amber-600 font-bold animate-pulse">⟳ Загружаю тексты религий...</p>}
                     </div>
-                    <div className="flex-1 overflow-y-auto p-8 flex flex-col md:flex-row gap-8 divide-y md:divide-y-0 md:divide-x divide-stone-200">
-                        <div className="flex-1 md:pr-8">
-                            <h3 className="font-bold text-amber-700 uppercase tracking-widest text-xs mb-6 border-b pb-2 flex justify-between">Библия {hasSearched && <span className="text-stone-400">Найдено: {results.bible.length}</span>}</h3>
-                            {results.bible.map((r, i) => (
-                                <div key={i} className="mb-6 p-4 bg-[#fdfbf7] border border-amber-100 rounded-xl"><span className="text-[10px] font-bold uppercase text-stone-400 block mb-2">{r.book}, Гл {r.chap} : Ст {r.vNum}</span><p className="font-serif leading-relaxed text-stone-800">{highlight(r.text, query)}</p></div>
-                            ))}
-                        </div>
-                        <div className="flex-1 md:pl-8">
-                            <h3 className="font-bold text-emerald-700 uppercase tracking-widest text-xs mb-6 border-b pb-2 flex justify-between">Коран {hasSearched && <span className="text-stone-400">Найдено: {results.quran.length}</span>}</h3>
-                            {results.quran.map((r, i) => (
-                                <div key={i} className="mb-6 p-4 bg-[#f4faf7] border border-emerald-100 rounded-xl"><span className="text-[10px] font-bold uppercase text-stone-400 block mb-2">{r.surah} : Аят {r.aNum}</span><p className="font-serif leading-relaxed text-emerald-900">{highlight(r.text, query)}</p></div>
-                            ))}
-                        </div>
+
+                    {/* РЕЗУЛЬТАТЫ */}
+                    <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+                        {!hasSearched && (
+                            <div className="text-center py-16 text-stone-400 space-y-3">
+                                <p className="text-5xl">🌍</p>
+                                <p className="font-serif text-xl text-stone-500">Поиск по священным текстам</p>
+                                <p className="text-sm">Библия · Коран · Дхаммапада · Бхагавад-гита · Дао Дэ Цзин · Авеста · Лунь Юй · Гуру Грантх · Кодзики</p>
+                            </div>
+                        )}
+                        {Object.entries(REL_META).map(([key, meta]) => {
+                            const arr = results[key];
+                            if (!arr || arr.length === 0) return null;
+                            return (
+                                <div key={key}>
+                                    <div className={`flex items-center justify-between mb-3 pb-2 border-b ${meta.border}`}>
+                                        <h3 className={`font-bold uppercase tracking-widest text-xs ${meta.text}`}>{meta.label}</h3>
+                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${meta.badge}`}>Найдено: {arr.length}</span>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {arr.map((r, i) => (
+                                            <div key={i} className={`p-3 md:p-4 ${meta.bg} border ${meta.border} rounded-xl`}>
+                                                <span className="text-[10px] font-bold uppercase text-stone-400 block mb-1.5">
+                                                    {key==='bible' ? `${r.book}, Гл ${r.chap} : Ст ${r.vNum}`
+                                                    : key==='quran' ? `${r.surah} · Аят ${r.aNum}`
+                                                    : r.ref}
+                                                </span>
+                                                <p className={`font-serif leading-relaxed text-sm md:text-base ${meta.text}`}>{highlight(r.text, query)}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             );
