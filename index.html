@@ -2247,6 +2247,7 @@
             const [searching, setSearching] = useState(false);
             const [hasSearched, setHasSearched] = useState(false);
             const [expandedTerms, setExpandedTerms] = useState([]);
+            const [fuzzyMode, setFuzzyMode] = useState(false);
 
             const PAIRS = [
                 ['bible',        'quran'],
@@ -2270,7 +2271,8 @@
 
             const doSearch = () => {
                 if (!query || query.trim().length < 2) return;
-                const terms = expandQuery(query);
+                // Если включены похожие слова — расширяем запрос через expandQuery
+                const terms = fuzzyMode ? expandQuery(query) : [query.toLowerCase().trim()];
                 setExpandedTerms(terms);
                 setSearching(true); setHasSearched(true);
                 setTimeout(() => {
@@ -2441,6 +2443,18 @@
                                 {searching ? '⟳ Поиск...' : 'Найти'}
                             </button>
                         </div>
+
+                        {/* Чекпоинт: Похожие слова */}
+                        <label style={{display:'flex', alignItems:'center', gap:8, cursor:'pointer', userSelect:'none'}}>
+                            <input type="checkbox" checked={fuzzyMode} onChange={e=>setFuzzyMode(e.target.checked)}
+                                style={{width:15, height:15, accentColor:'#d97706', cursor:'pointer'}}/>
+                            <span style={{fontFamily:'sans-serif', fontSize:12, color:'#57534e', fontWeight:600}}>
+                                Похожие слова
+                                <span style={{color:'#a8a29e', fontWeight:400, marginLeft:4}}>
+                                    («Иисус» → «Иса», «Бог» → «Аллах», «Господь» и др.)
+                                </span>
+                            </span>
+                        </label>
 
                         {/* Статус */}
                         {hasSearched && !searching && (
