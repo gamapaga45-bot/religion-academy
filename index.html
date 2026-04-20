@@ -1900,6 +1900,7 @@
         </script>
 
         <script type="text/babel">
+
         // =====================================================================
         // МОДУЛЬ 1: ПОШАГОВОЕ ИЗУЧЕНИЕ СО СРАВНЕНИЕМ
         // =====================================================================
@@ -2002,28 +2003,344 @@
         ];
 
         function StepStudyModule({ db, apiKey }) {
+            // Режимы: 'menu' | 'bible_book' | 'quran_surah' | 'parallel' | 'thematic'
+            const [mode, setMode] = useState('menu');
+
+            // Для режима Bible
+            const [bBook, setBBook] = useState('');
+            const [bChap, setBChap] = useState('1');
+
+            // Для режима Quran
+            const [qSurah, setQSurah] = useState('');
+
+            // Для тематического режима (старые уроки)
             const [step, setStep] = useState(0);
-            const [tab, setTab] = useState('compare'); // compare | bible | quran | practice
+            const [tab, setTab] = useState('compare');
+
+            // AI
             const [aiQuestion, setAiQuestion] = useState('');
             const [aiAnswer, setAiAnswer] = useState('');
             const [aiLoading, setAiLoading] = useState(false);
+            const [verseModal, setVerseModal] = useState(null); // {text, ref}
+
             const lesson = LESSONS[step];
+
+            const bibleBooks = db.order.bible || [];
+            const quranSurahs = db.order.quran || [];
+            const bChaps = bBook && db.texts.bible[bBook] ? Object.keys(db.texts.bible[bBook]).sort((a,b)=>+a-+b) : [];
+            const bVerses = bBook && bChap && db.texts.bible[bBook]?.[bChap] ? db.texts.bible[bBook][bChap] : {};
+            const qVerses = qSurah && db.texts.quran[qSurah]?.['1'] ? db.texts.quran[qSurah]['1'] : {};
 
             const askAI = async (q) => {
                 if (!q.trim()) return;
-                setAiLoading(true);
-                setAiAnswer('');
-                const ctx = `Урок по теме "${lesson.title}". Сравнение Библии и Корана.`;
-                const result = await fetchZvenoAIAnalysis(q, ctx, apiKey);
-                setAiAnswer(result);
-                setAiLoading(false);
+                setAiLoading(true); setAiAnswer('');
+                const ctx = mode === 'thematic'
+                    ? `Урок: "${lesson.title}". Сравнение Библии и Корана.`
+                    : mode === 'bible_book'
+                        ? `Библия, книга ${bBook}, глава ${bChap}`
+                        : `Коран, сура ${qSurah}`;
+                const r = await fetchZvenoAIAnalysis(q, ctx, apiKey);
+                setAiAnswer(r); setAiLoading(false);
             };
 
+            const analyzeVerse = async (text, ref) => {
+                setVerseModal({text, ref, loading: true, html: ''});
+                const r = await fetchZvenoAIAnalysis(text, ref, apiKey);
+                setVerseModal({text, ref, loading: false, html: r});
+            };
+
+            // ── МЕНЮ ВЫБОРА РЕЖИМА ──────────────────────────────────────
+            if (mode === 'menu') return (
+                <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+                    <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
+                        <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">📚 Пошаговое изучение</h2>
+                        <p className="text-stone-400 text-sm md:text-lg">Читайте полный текст Библии и Корана пошагово — по книгам, главам и сурам. Каждый стих можно разобрать с AI.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Библия */}
+                        <div className="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 space-y-3">
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-3xl">📖</span>
+                                <div><h3 className="font-serif font-bold text-xl text-amber-900">Библия</h3>
+                                <p className="text-xs text-amber-700 font-bold uppercase tracking-widest">Синодальный перевод · {bibleBooks.length} книг</p></div>
+                            </div>
+                            <select value={bBook} onChange={e=>setBBook(e.target.value)}
+                                className="w-full p-3 border border-amber-300 rounded-xl text-sm font-bold bg-white outline-none focus:ring-2 focus:ring-amber-500">
+                                <option value="">— Выберите книгу —</option>
+                                {bibleBooks.map(b=><option key={b} value={b}>{b}</option>)}
+                            </select>
+                            {bBook && bChaps.length > 0 && (
+                                <select value={bChap} onChange={e=>setBChap(e.target.value)}
+                                    className="w-full p-3 border border-amber-300 rounded-xl text-sm font-bold bg-white outline-none focus:ring-2 focus:ring-amber-500">
+                                    {bChaps.map(c=><option key={c} value={c}>Глава {c}</option>)}
+                                </select>
+                            )}
+                            <button disabled={!bBook} onClick={()=>setMode('bible_book')}
+                                className="w-full py-3 bg-amber-600 hover:bg-amber-500 disabled:opacity-40 text-white rounded-xl font-bold text-sm transition-all">
+                                Читать Библию →
+                            </button>
+                        </div>
+                        {/* Коран */}
+                        <div className="bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-5 space-y-3">
+                            <div className="flex items-center gap-3 mb-2">
+                                <span className="text-3xl">🌙</span>
+                                <div><h3 className="font-serif font-bold text-xl text-emerald-900">Коран</h3>
+                                <p className="text-xs text-emerald-700 font-bold uppercase tracking-widest">Перевод Кулиева · {quranSurahs.length} сур</p></div>
+                            </div>
+                            <select value={qSurah} onChange={e=>setQSurah(e.target.value)}
+                                className="w-full p-3 border border-emerald-300 rounded-xl text-sm font-bold bg-white outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="">— Выберите суру —</option>
+                                {quranSurahs.map(s=><option key={s} value={s}>{s}</option>)}
+                            </select>
+                            <button disabled={!qSurah} onClick={()=>setMode('quran_surah')}
+                                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white rounded-xl font-bold text-sm transition-all">
+                                Читать Коран →
+                            </button>
+                        </div>
+                    </div>
+                    {/* Параллельное изучение */}
+                    <div className="bg-white border-2 border-stone-200 rounded-2xl p-5">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="text-2xl">⚖️</span>
+                            <div><h3 className="font-serif font-bold text-lg">Параллельное изучение + AI</h3>
+                            <p className="text-xs text-stone-400 uppercase tracking-widest font-bold">Библия и Коран рядом с разбором</p></div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <select value={bBook} onChange={e=>setBBook(e.target.value)}
+                                className="p-2.5 border border-stone-200 rounded-xl text-xs font-bold bg-stone-50 outline-none">
+                                <option value="">Книга Библии</option>
+                                {bibleBooks.map(b=><option key={b} value={b}>{b}</option>)}
+                            </select>
+                            <select value={qSurah} onChange={e=>setQSurah(e.target.value)}
+                                className="p-2.5 border border-stone-200 rounded-xl text-xs font-bold bg-stone-50 outline-none">
+                                <option value="">Сура Корана</option>
+                                {quranSurahs.map(s=><option key={s} value={s}>{s}</option>)}
+                            </select>
+                        </div>
+                        <button disabled={!bBook || !qSurah} onClick={()=>setMode('parallel')}
+                            className="mt-3 w-full py-3 bg-stone-900 hover:bg-stone-700 disabled:opacity-40 text-white rounded-xl font-bold text-sm transition-all">
+                            Читать параллельно →
+                        </button>
+                    </div>
+                    {/* Тематические уроки */}
+                    <div className="bg-white border border-stone-200 rounded-2xl p-5">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="text-2xl">🎓</span>
+                            <div><h3 className="font-serif font-bold text-lg">Тематические уроки</h3>
+                            <p className="text-xs text-stone-400 uppercase tracking-widest font-bold">5 тем: Сотворение, Монотеизм, Пророки, Молитва, Вечная жизнь</p></div>
+                        </div>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                            {LESSONS.map((l,i)=>(
+                                <button key={i} onClick={()=>{setStep(i);setMode('thematic');setTab('compare');setAiAnswer('');}}
+                                    className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all ${step===i&&mode==='thematic'?'bg-stone-900 text-white border-stone-900':'bg-stone-50 border-stone-200 text-stone-600 hover:border-stone-400'}`}>
+                                    {l.icon} {l.title}
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={()=>{setMode('thematic');setTab('compare');setAiAnswer('');}}
+                            className="w-full py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold text-sm transition-all">
+                            К тематическим урокам →
+                        </button>
+                    </div>
+                </div>
+            );
+
+            // ── МОДАЛЬНОЕ ОКНО AI АНАЛИЗА СТИХА (локальное) ─────────────
+            const VerseModal = () => !verseModal ? null : (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                    style={{backgroundColor:'rgba(0,0,0,0.65)',backdropFilter:'blur(6px)'}}>
+                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl flex flex-col" style={{maxHeight:'88vh'}}>
+                        <div className="px-6 py-4 flex items-start justify-between border-b border-amber-100 bg-amber-50 rounded-t-3xl flex-shrink-0">
+                            <div className="flex-1 pr-4">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1">✨ ZVENO AI · {verseModal.ref}</p>
+                                <p className="font-serif text-sm text-stone-700 leading-snug">{verseModal.text.slice(0,120)}{verseModal.text.length>120?'…':''}</p>
+                            </div>
+                            <button onClick={()=>setVerseModal(null)} className="flex-shrink-0 w-8 h-8 rounded-full bg-white border border-stone-200 flex items-center justify-center text-stone-400 hover:text-red-500 font-bold text-sm ml-2">✕</button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto p-6" style={{minHeight:0}}>
+                            {verseModal.loading ? (
+                                <div className="flex flex-col items-center justify-center py-12 gap-3">
+                                    <Icons.Loader c="w-8 h-8 text-amber-500"/>
+                                    <p className="font-bold text-stone-600">Анализирую стих...</p>
+                                    <p className="text-sm text-stone-400">GPT-4o / Claude</p>
+                                </div>
+                            ) : <div className="ai-content" dangerouslySetInnerHTML={{__html: verseModal.html}}/>}
+                        </div>
+                        <div className="px-6 py-3 border-t border-stone-100 bg-stone-50 flex justify-between items-center rounded-b-3xl flex-shrink-0">
+                            <span className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">Nikolai Rogozin</span>
+                            <button onClick={()=>setVerseModal(null)} className="px-5 py-2 bg-stone-900 hover:bg-stone-700 text-white rounded-xl text-xs font-bold transition-all">Закрыть</button>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            // ── ОБЩИЙ ЗАГОЛОВОК С КНОПКОЙ НАЗАД ─────────────────────────
+            const Header = ({title, sub, color='amber'}) => (
+                <div className="flex items-center gap-3 mb-4">
+                    <button onClick={()=>{setMode('menu');setAiAnswer('');setVerseModal(null);}}
+                        className="p-2 rounded-xl bg-white border border-stone-200 hover:bg-stone-100 transition-all">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                    </button>
+                    <div>
+                        <h2 className={`font-serif font-bold text-xl ${color==='amber'?'text-amber-900':color==='emerald'?'text-emerald-900':'text-stone-900'}`}>{title}</h2>
+                        <p className="text-xs text-stone-400 font-bold uppercase tracking-widest">{sub}</p>
+                    </div>
+                </div>
+            );
+
+            // ── AI ВОПРОС БЛОК ────────────────────────────────────────────
+            const AIBlock = ({placeholder}) => (
+                <div className="bg-white border border-stone-200 rounded-2xl p-5 space-y-3">
+                    <p className="text-xs font-bold uppercase tracking-widest text-stone-400">🤖 Спросить AI о этом тексте</p>
+                    <div className="flex gap-2">
+                        <input value={aiQuestion} onChange={e=>setAiQuestion(e.target.value)}
+                            onKeyDown={e=>e.key==='Enter'&&askAI(aiQuestion)}
+                            placeholder={placeholder||'Ваш вопрос...'}
+                            className="flex-1 p-3 border border-stone-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-amber-500"/>
+                        <button onClick={()=>askAI(aiQuestion)} disabled={aiLoading}
+                            className="px-4 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold text-sm disabled:opacity-50">
+                            {aiLoading?<Icons.Loader c="w-4 h-4"/>:'✨'}
+                        </button>
+                    </div>
+                    {aiLoading && <div className="flex items-center gap-2 text-stone-400 italic text-sm"><Icons.Loader c="w-4 h-4 text-amber-500"/>Анализирую...</div>}
+                    {aiAnswer && <div className="ai-content p-4 bg-stone-50 rounded-xl border border-stone-200 text-sm" dangerouslySetInnerHTML={{__html:aiAnswer}}/>}
+                </div>
+            );
+
+            // ── ОБЩИЙ РЕНДЕР СТИХОВ С КНОПКОЙ AI ─────────────────────────
+            const VerseList = ({verses, color, chapLabel}) => {
+                const isAmber = color==='amber';
+                const entries = Object.entries(verses).sort((a,b)=>+a[0]-+b[0]);
+                if (!entries.length) return <div className="text-center text-stone-400 py-12 font-serif">Тексты загружаются... Проверьте подключение к интернету.</div>;
+                return (
+                    <div className={`rounded-2xl border ${isAmber?'border-amber-100 bg-amber-50/30':'border-emerald-100 bg-emerald-50/30'} overflow-hidden`}>
+                        {chapLabel && <div className={`px-5 py-3 border-b font-sans font-bold text-xs uppercase tracking-widest ${isAmber?'border-amber-200 text-amber-700 bg-amber-50':'border-emerald-200 text-emerald-700 bg-emerald-50'}`}>{chapLabel}</div>}
+                        <div className="p-4 md:p-6 font-serif space-y-4">
+                            {entries.map(([vn, vt])=>(
+                                <div key={vn} className={`flex gap-3 group p-2 -mx-2 rounded-xl hover:${isAmber?'bg-amber-50':'bg-emerald-50'} transition-all`}>
+                                    <sup className={`text-xs font-sans font-bold mt-1.5 flex-shrink-0 w-6 text-right ${isAmber?'text-amber-500':'text-emerald-500'}`}>{vn}</sup>
+                                    <span className="flex-1 text-lg leading-relaxed text-stone-800">{vt}</span>
+                                    <button onClick={()=>analyzeVerse(vt, `${chapLabel||''}, стих ${vn}`)}
+                                        className={`flex-shrink-0 self-start mt-1 px-2 py-1 rounded-lg text-xs font-bold transition-all opacity-0 group-hover:opacity-100 ${isAmber?'bg-amber-100 hover:bg-amber-300 border border-amber-200 text-amber-700':'bg-emerald-100 hover:bg-emerald-300 border border-emerald-200 text-emerald-700'}`}>
+                                        ✨ AI
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            };
+
+            // ── РЕЖИМ: ЧИТАЕМ БИБЛИЮ ──────────────────────────────────────
+            if (mode === 'bible_book') return (
+                <div className="fade-in-up space-y-4 pb-20 md:pb-6">
+                    <VerseModal/>
+                    <Header title={`${bBook}`} sub={`Библия · Синодальный перевод`} color="amber"/>
+                    {/* Навигация по главам */}
+                    <div className="bg-white border border-stone-200 rounded-2xl p-4 flex flex-wrap gap-2 items-center">
+                        <span className="text-xs font-bold text-stone-400 uppercase tracking-widest mr-2">Глава:</span>
+                        <div className="flex flex-wrap gap-1.5 flex-1">
+                            {bChaps.map(c=>(
+                                <button key={c} onClick={()=>setBChap(c)}
+                                    className={`w-9 h-9 rounded-xl text-xs font-bold transition-all ${bChap===c?'bg-amber-600 text-white shadow-sm':'bg-stone-100 hover:bg-amber-100 text-stone-600'}`}>
+                                    {c}
+                                </button>
+                            ))}
+                        </div>
+                        <select value={bBook} onChange={e=>{setBBook(e.target.value);setBChap('1');}}
+                            className="ml-auto p-2 border border-stone-200 rounded-xl text-xs font-bold bg-stone-50 outline-none">
+                            {bibleBooks.map(b=><option key={b} value={b}>{b}</option>)}
+                        </select>
+                    </div>
+                    {/* Стихи */}
+                    <VerseList verses={bVerses} color="amber" chapLabel={`${bBook}, глава ${bChap}`}/>
+                    {/* Навигация назад/вперёд по главам */}
+                    <div className="flex justify-between gap-3">
+                        <button disabled={bChap==='1'} onClick={()=>setBChap(String(+bChap-1))}
+                            className="flex-1 py-3 bg-white border border-stone-200 rounded-xl font-bold text-sm text-stone-600 hover:bg-stone-50 disabled:opacity-30 transition-all">
+                            ← Глава {+bChap-1}
+                        </button>
+                        <button disabled={!bChaps.length||bChap===bChaps[bChaps.length-1]} onClick={()=>setBChap(String(+bChap+1))}
+                            className="flex-1 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-xl font-bold text-sm disabled:opacity-30 transition-all">
+                            Глава {+bChap+1} →
+                        </button>
+                    </div>
+                    <AIBlock placeholder={`Что означает ${bBook} ${bChap}? Контекст, история...`}/>
+                </div>
+            );
+
+            // ── РЕЖИМ: ЧИТАЕМ КОРАН ───────────────────────────────────────
+            if (mode === 'quran_surah') return (
+                <div className="fade-in-up space-y-4 pb-20 md:pb-6">
+                    <VerseModal/>
+                    <Header title={qSurah} sub="Коран · Перевод Кулиева" color="emerald"/>
+                    {/* Выбор суры */}
+                    <div className="bg-white border border-stone-200 rounded-2xl p-4 flex gap-3 items-center">
+                        <span className="text-xs font-bold text-stone-400 uppercase tracking-widest">Сура:</span>
+                        <select value={qSurah} onChange={e=>setQSurah(e.target.value)}
+                            className="flex-1 p-2.5 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 outline-none focus:ring-2 focus:ring-emerald-500">
+                            {quranSurahs.map(s=><option key={s} value={s}>{s}</option>)}
+                        </select>
+                    </div>
+                    {/* Стихи */}
+                    <VerseList verses={qVerses} color="emerald" chapLabel={qSurah}/>
+                    {/* Навигация по сурам */}
+                    <div className="flex justify-between gap-3">
+                        {(() => {
+                            const idx = quranSurahs.indexOf(qSurah);
+                            return (<>
+                                <button disabled={idx<=0} onClick={()=>setQSurah(quranSurahs[idx-1])}
+                                    className="flex-1 py-3 bg-white border border-stone-200 rounded-xl font-bold text-sm text-stone-600 hover:bg-stone-50 disabled:opacity-30 transition-all">
+                                    ← Предыдущая
+                                </button>
+                                <button disabled={idx>=quranSurahs.length-1} onClick={()=>setQSurah(quranSurahs[idx+1])}
+                                    className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm disabled:opacity-30 transition-all">
+                                    Следующая →
+                                </button>
+                            </>);
+                        })()}
+                    </div>
+                    <AIBlock placeholder={`Что означает ${qSurah}? Причина ниспослания...`}/>
+                </div>
+            );
+
+            // ── РЕЖИМ: ПАРАЛЛЕЛЬНОЕ ЧТЕНИЕ С AI ─────────────────────────
+            if (mode === 'parallel') return (
+                <div className="fade-in-up space-y-4 pb-20 md:pb-6">
+                    <VerseModal/>
+                    <Header title="Параллельное чтение" sub="Библия и Коран рядом" color="stone"/>
+                    {/* Выбор текстов */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2">
+                            <select value={bBook} onChange={e=>{setBBook(e.target.value);setBChap('1');}}
+                                className="w-full p-2.5 border border-amber-300 rounded-xl text-xs font-bold bg-amber-50 outline-none">
+                                {bibleBooks.map(b=><option key={b} value={b}>{b}</option>)}
+                            </select>
+                            <select value={bChap} onChange={e=>setBChap(e.target.value)}
+                                className="w-full p-2.5 border border-amber-300 rounded-xl text-xs font-bold bg-amber-50 outline-none">
+                                {bChaps.map(c=><option key={c} value={c}>Гл. {c}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <select value={qSurah} onChange={e=>setQSurah(e.target.value)}
+                                className="w-full p-2.5 border border-emerald-300 rounded-xl text-xs font-bold bg-emerald-50 outline-none">
+                                {quranSurahs.map(s=><option key={s} value={s}>{s}</option>)}
+                            </select>
+                        </div>
+                    </div>
+                    {/* Параллельный текст */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <VerseList verses={bVerses} color="amber" chapLabel={`${bBook} ${bChap}`}/>
+                        <VerseList verses={qVerses} color="emerald" chapLabel={qSurah}/>
+                    </div>
+                    <AIBlock placeholder={`Сравни ${bBook} ${bChap} с ${qSurah} — общие темы, различия...`}/>
+                </div>
+            );
+
+            // ── РЕЖИМ: ТЕМАТИЧЕСКИЕ УРОКИ (оригинальный функционал) ─────
             const BCard = ({data}) => (
                 <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 space-y-4">
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs font-bold uppercase tracking-widest text-amber-700 bg-amber-100 px-3 py-1 rounded-full">📖 Библия · {data.ref}</span>
-                    </div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-amber-700 bg-amber-100 px-3 py-1 rounded-full">📖 Библия · {data.ref}</span>
                     <blockquote className="font-serif text-lg leading-relaxed text-stone-800 border-l-4 border-amber-400 pl-4 italic">"{data.text}"</blockquote>
                     <div className="bg-white rounded-xl p-4 border border-amber-100">
                         <p className="text-xs font-bold uppercase tracking-widest text-amber-600 mb-2">💡 Простым языком</p>
@@ -2035,12 +2352,9 @@
                     </div>
                 </div>
             );
-
             const QCard = ({data}) => (
                 <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 space-y-4">
-                    <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">🌙 Коран · {data.ref}</span>
-                    </div>
+                    <span className="text-xs font-bold uppercase tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">🌙 Коран · {data.ref}</span>
                     <blockquote className="font-serif text-lg leading-relaxed text-emerald-900 border-l-4 border-emerald-400 pl-4 italic">"{data.text}"</blockquote>
                     <div className="bg-white rounded-xl p-4 border border-emerald-100">
                         <p className="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">💡 Простым языком</p>
@@ -2054,73 +2368,60 @@
             );
 
             return (
-                <div className="fade-in-up space-y-6">
+                <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+                    <VerseModal/>
+                    <Header title={`${lesson.icon} ${lesson.title}`} sub={lesson.theme} color="stone"/>
                     {/* Прогресс */}
-                    <div className="bg-white rounded-2xl border border-stone-200 p-5 flex items-center gap-4">
+                    <div className="bg-white rounded-2xl border border-stone-200 p-4 flex items-center gap-4">
                         <div className="flex-1">
                             <div className="flex justify-between text-xs font-bold text-stone-400 uppercase tracking-widest mb-2">
-                                <span>Урок {step + 1} из {LESSONS.length}</span>
+                                <span>Урок {step+1} из {LESSONS.length}</span>
                                 <span>{Math.round(((step+1)/LESSONS.length)*100)}%</span>
                             </div>
                             <div className="w-full bg-stone-100 rounded-full h-2">
-                                <div className="bg-gradient-to-r from-amber-500 to-emerald-500 h-2 rounded-full transition-all duration-500" style={{width:`${((step+1)/LESSONS.length)*100}%`}}></div>
+                                <div className="bg-gradient-to-r from-amber-500 to-emerald-500 h-2 rounded-full transition-all" style={{width:`${((step+1)/LESSONS.length)*100}%`}}/>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            {LESSONS.map((l,i) => (
-                                <button key={i} onClick={()=>{setStep(i); setTab('compare'); setAiAnswer('');}}
-                                    className={`w-9 h-9 rounded-xl text-sm font-bold transition-all ${i===step ? 'bg-amber-600 text-white shadow-md scale-110' : i<step ? 'bg-emerald-100 text-emerald-700' : 'bg-stone-100 text-stone-400'}`}>
+                        <div className="flex gap-1.5">
+                            {LESSONS.map((l,i)=>(
+                                <button key={i} onClick={()=>{setStep(i);setTab('compare');setAiAnswer('');}}
+                                    className={`w-8 h-8 rounded-xl text-xs font-bold transition-all ${i===step?'bg-amber-600 text-white shadow-md scale-110':i<step?'bg-emerald-100 text-emerald-700':'bg-stone-100 text-stone-400'}`}>
                                     {l.icon}
                                 </button>
                             ))}
                         </div>
                     </div>
-
-                    {/* Заголовок урока */}
-                    <div className="bg-[#1c1b1d] text-white rounded-3xl p-8">
-                        <div className="flex items-center gap-4 mb-3">
-                            <span className="text-5xl">{lesson.icon}</span>
-                            <div>
-                                <p className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-1">Урок {step+1}</p>
-                                <h2 className="text-3xl font-serif font-bold">{lesson.title}</h2>
-                            </div>
-                        </div>
-                        <p className="text-stone-300 text-lg">{lesson.theme}</p>
-                    </div>
-
                     {/* Вкладки */}
-                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl">
-                        {[['compare','⚖️ Сравнение'],['bible','📖 Библия'],['quran','🌙 Коран'],['practice','🤖 Спросить AI']].map(([k,l])=>(
+                    <div className="flex gap-1.5 bg-stone-100 p-1.5 rounded-2xl">
+                        {[['compare','⚖️ Сравнение'],['bible','📖 Библия'],['quran','🌙 Коран'],['practice','🤖 AI']].map(([k,l])=>(
                             <button key={k} onClick={()=>setTab(k)}
-                                className={`flex-1 py-2.5 px-3 rounded-xl text-sm font-bold transition-all ${tab===k ? 'bg-white shadow-sm text-stone-900' : 'text-stone-500 hover:text-stone-700'}`}>
+                                className={`flex-1 py-2.5 px-2 rounded-xl text-xs md:text-sm font-bold transition-all ${tab===k?'bg-white shadow-sm text-stone-900':'text-stone-500 hover:text-stone-700'}`}>
                                 {l}
                             </button>
                         ))}
                     </div>
-
                     {/* Контент */}
-                    {tab === 'compare' && (
+                    {tab==='compare' && (
                         <div className="space-y-6">
                             <div className="grid md:grid-cols-2 gap-6">
-                                <BCard data={lesson.bible} />
-                                <QCard data={lesson.quran} />
+                                <BCard data={lesson.bible}/><QCard data={lesson.quran}/>
                             </div>
                             <div className="bg-white border-2 border-stone-900 rounded-2xl p-6">
                                 <p className="text-xs font-bold uppercase tracking-widest text-stone-500 mb-3">⚖️ Академическое сравнение</p>
-                                <p className="text-stone-800 leading-relaxed text-base">{lesson.compare}</p>
+                                <p className="text-stone-800 leading-relaxed">{lesson.compare}</p>
                             </div>
                         </div>
                     )}
-                    {tab === 'bible' && <BCard data={lesson.bible} />}
-                    {tab === 'quran' && <QCard data={lesson.quran} />}
-                    {tab === 'practice' && (
+                    {tab==='bible' && <BCard data={lesson.bible}/>}
+                    {tab==='quran' && <QCard data={lesson.quran}/>}
+                    {tab==='practice' && (
                         <div className="bg-white border border-stone-200 rounded-2xl p-6 space-y-4">
-                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">🤖 Задайте вопрос нейросети об этой теме</p>
-                            <div className="flex flex-wrap gap-2 mb-4">
+                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400">🤖 Спросить AI об этой теме</p>
+                            <div className="flex flex-wrap gap-2 mb-2">
                                 {[`Почему Коран и Библия по-разному описывают ${lesson.title.toLowerCase()}?`,
                                   `Что думают богословы о теме "${lesson.title}"?`,
                                   `Как эта тема повлияла на историю?`].map(q=>(
-                                    <button key={q} onClick={()=>{setAiQuestion(q); askAI(q);}}
+                                    <button key={q} onClick={()=>{setAiQuestion(q);askAI(q);}}
                                         className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 text-left transition-all">
                                         {q}
                                     </button>
@@ -2128,34 +2429,34 @@
                             </div>
                             <div className="flex gap-3">
                                 <input value={aiQuestion} onChange={e=>setAiQuestion(e.target.value)}
-                                    onKeyDown={e=>e.key==='Enter' && askAI(aiQuestion)}
+                                    onKeyDown={e=>e.key==='Enter'&&askAI(aiQuestion)}
                                     placeholder="Ваш вопрос о теме урока..."
                                     className="flex-1 p-3 border border-stone-200 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 text-sm"/>
                                 <button onClick={()=>askAI(aiQuestion)} disabled={aiLoading}
-                                    className="bg-amber-600 hover:bg-amber-500 text-white px-5 py-3 rounded-xl font-bold text-sm disabled:opacity-50 transition-all">
-                                    {aiLoading ? '...' : 'Спросить'}
+                                    className="bg-amber-600 hover:bg-amber-500 text-white px-5 py-3 rounded-xl font-bold text-sm disabled:opacity-50">
+                                    {aiLoading?'...':'Спросить'}
                                 </button>
                             </div>
-                            {aiLoading && <div className="flex items-center gap-3 text-stone-500 italic p-4"><Icons.Loader c="w-5 h-5 text-amber-500"/> Нейросеть думает...</div>}
-                            {aiAnswer && <div className="ai-content p-4 bg-stone-50 rounded-xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiAnswer}}/>}
+                            {aiLoading && <div className="flex items-center gap-3 text-stone-500 italic p-4"><Icons.Loader c="w-5 h-5 text-amber-500"/>Нейросеть думает...</div>}
+                            {aiAnswer && <div className="ai-content p-4 bg-stone-50 rounded-xl border border-stone-200" dangerouslySetInnerHTML={{__html:aiAnswer}}/>}
                         </div>
                     )}
-
-                    {/* Навигация */}
-                    <div className="flex justify-between pt-2">
-                        <button onClick={()=>{setStep(Math.max(0,step-1)); setTab('compare'); setAiAnswer('');}} disabled={step===0}
-                            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-stone-600 bg-stone-100 hover:bg-stone-200 disabled:opacity-30 transition-all">
-                            ← Предыдущий урок
+                    <div className="flex justify-between pt-2 gap-3">
+                        <button onClick={()=>{setStep(Math.max(0,step-1));setTab('compare');setAiAnswer('');}} disabled={step===0}
+                            className="flex-1 py-3 rounded-xl font-bold text-stone-600 bg-stone-100 hover:bg-stone-200 disabled:opacity-30 transition-all text-sm">
+                            ← Предыдущий
                         </button>
-                        <button onClick={()=>{setStep(Math.min(LESSONS.length-1,step+1)); setTab('compare'); setAiAnswer('');}} disabled={step===LESSONS.length-1}
-                            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white bg-amber-600 hover:bg-amber-500 disabled:opacity-30 transition-all">
-                            Следующий урок →
+                        <button onClick={()=>{setStep(Math.min(LESSONS.length-1,step+1));setTab('compare');setAiAnswer('');}} disabled={step===LESSONS.length-1}
+                            className="flex-1 py-3 rounded-xl font-bold text-white bg-amber-600 hover:bg-amber-500 disabled:opacity-30 transition-all text-sm">
+                            Следующий →
                         </button>
                     </div>
                 </div>
             );
         }
+        </script>
 
+        <script type="text/babel">
         // =====================================================================
         // МОДУЛЬ 2: МАНУСКРИПТЫ И ОРИГИНАЛЫ
         // =====================================================================
@@ -2516,6 +2817,7 @@
                 </div>
             );
         }
+        
         </script>
 
         <script type="text/babel">
