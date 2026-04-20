@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Академия Религиоведения — Nikolai Rogozin</title>
+    <title>Академия Религиоведения — Учебный курс по мировым религиям | Nikolai Rogozin</title>
     <meta name="author" content="Nikolai Rogozin">
-    <meta name="description" content="Академия мировых религий: Библия, Коран, Буддизм, Индуизм, Даосизм и др. AI-анализ ZVENO AI. Разработано Nikolai Rogozin">
+    <meta name="description" content="Обучающий курс по мировым религиям: Библия, Коран, Буддизм, Индуизм, Даосизм и др. Полные тексты + AI-анализ. Разработано Nikolai Rogozin · 8-950-827-22-27">
     
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -223,7 +223,7 @@
         // --- ZVENO AI API ИНТЕГРАЦИЯ (OpenAI-совместимый шлюз) ---
         // ZVENO AI — академический анализ. Разработано Nikolai Rogozin.
         async function fetchZvenoAIAnalysis(textToAnalyze, context, apiKey) {
-            if (!apiKey) return marked.parse("⚙️ **Для AI-анализа укажите API ключ ZVENO AI в настройках** (иконка шестерёнки ⚙️ в левом боковом меню).\n\nZveno AI — российский OpenAI-совместимый шлюз к 200+ моделям. Ключ получите на [zveno.ai](https://zveno.ai).");
+            if (!apiKey) return marked.parse("⚙️ **Для AI-анализа укажите API ключ в настройках** (иконка шестерёнки ⚙️ в левом боковом меню).\n\nДля получения ключа свяжитесь с разработчиком: **8-950-827-22-27** (Nikolai Rogozin).");
 
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 60000); // 60 сек тайм-аут
@@ -259,10 +259,10 @@
                     let errMsg = '';
                     try { const e = await response.json(); errMsg = e.error?.message || e.message || ''; } catch(_) {}
                     if (response.status === 401) return marked.parse("❌ **Ошибка 401 — Неверный API ключ.** Проверьте ключ в настройках (⚙️).");
-                    if (response.status === 402) return marked.parse("💳 **Ошибка 402 — Недостаточно средств.** Пополните баланс на [zveno.ai](https://zveno.ai).");
+                    if (response.status === 402) return marked.parse("💳 **Ошибка 402 — Недостаточно средств.** Обратитесь к разработчику: **8-950-827-22-27**.");
                     if (response.status === 429) return marked.parse("⏳ **Ошибка 429 — Лимит запросов.** Подождите 10–20 секунд и повторите.");
                     if (response.status === 503) return marked.parse("🔧 **Ошибка 503 — Сервис временно недоступен.** Попробуйте через минуту.");
-                    return marked.parse(`❌ **Ошибка API ${response.status}:** ${errMsg || 'Неизвестная ошибка'}. Проверьте ключ и баланс на [zveno.ai](https://zveno.ai).`);
+                    return marked.parse(`❌ **Ошибка API ${response.status}:** ${errMsg || 'Неизвестная ошибка'}. Проверьте ключ или обратитесь: **8-950-827-22-27**.`);
                 }
 
                 const data = await response.json();
@@ -274,7 +274,7 @@
                 clearTimeout(timeout);
                 console.error("Zveno AI error:", err);
                 if (err.name === 'AbortError') return marked.parse("⏱️ **Превышено время ожидания (60 сек).** Сервер не ответил. Проверьте интернет и попробуйте снова.");
-                return marked.parse(`❌ **Ошибка соединения с ZVENO AI.**\n\nВозможные причины:\n- Неверный или просроченный API ключ\n- Нет соединения с интернетом\n- Временная недоступность сервера\n\n*Детали: ${err.message}*\n\nПроверьте настройки на [zveno.ai](https://zveno.ai).`);
+                return marked.parse(`❌ **Ошибка соединения с AI сервисом.**\n\nВозможные причины:\n- Неверный или просроченный API ключ\n- Нет соединения с интернетом\n\n*Детали: ${err.message}*\n\nПо вопросам ключа: **8-950-827-22-27** (Nikolai Rogozin).`);
             }
         }
 
@@ -503,19 +503,19 @@
                             <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 fade-in-up">
                                 <div className="flex items-center mb-6">
                                     <div className="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mr-4"><Icons.Key c="w-6 h-6" /></div>
-                                    <h3 className="text-2xl font-bold font-serif text-stone-900">Настройки ZVENO AI</h3>
+                                    <h3 className="text-2xl font-bold font-serif text-stone-900">Настройки AI анализа</h3>
                                 </div>
                                 <div className="bg-amber-50 p-4 rounded-xl mb-6">
-                                    <p className="text-stone-700 text-sm mb-3 font-bold">Zveno AI — OpenAI-совместимый шлюз к 200+ моделям. Оплата в рублях, без VPN.</p>
+                                    <p className="text-stone-700 text-sm mb-3 font-bold">Нейросеть использует 200+ AI моделей для академического анализа текстов.</p>
                                     <p className="text-stone-600 text-sm mb-2">С API ключом вы получите:</p>
                                     <ul className="text-sm text-stone-600 list-disc pl-5 space-y-1">
                                         <li>✨ Глубокий AI-анализ любого стиха (200+ моделей)</li>
                                         <li>🔊 Высококачественное аудио TTS (HD-голоса)</li>
                                         <li>⚡ Автоматический failover между моделями</li>
                                     </ul>
-                                    <a href="https://zveno.ai" target="_blank" rel="noopener" className="inline-block mt-3 text-xs text-amber-700 font-bold underline">Получить ключ на zveno.ai →</a>
+                                    <span className="text-xs text-amber-700 font-bold">Получить ключ: <a href="tel:+79508272227" className="underline">8-950-827-22-27</a> (Nikolai Rogozin)</span>
                                 </div>
-                                <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">API Ключ ZVENO AI</label>
+                                <label className="block text-xs font-bold text-stone-500 uppercase tracking-widest mb-2">API Ключ</label>
                                 <input type="password" placeholder="sk-zveno-..." value={apiKeyInput} onChange={e => setApiKeyInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveApiSettings()} className="w-full p-4 border border-stone-300 rounded-xl mb-6 focus:ring-2 focus:ring-amber-500 outline-none font-mono text-sm" />
                                 
                                 {apiKey && (
@@ -540,7 +540,7 @@
                                 <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                             </button>
                             <span className="text-white font-serif font-bold text-lg uppercase tracking-tight">Академия</span>
-                            <span className="text-amber-500 text-[10px] font-bold tracking-widest">РЕЛИГИЙ</span>
+                            <span className="text-amber-500 text-[10px] font-bold tracking-widest">4 ШАГА</span>
                         </div>
                         <div className="flex items-center gap-2">
                             {dataStatus==='success' && <span className="w-2 h-2 rounded-full bg-emerald-500"/>}
@@ -568,6 +568,7 @@
                                 </nav>
                                 <div className="p-4 border-t border-stone-800 text-center">
                                     <p className="text-[9px] text-stone-600 font-bold uppercase">© Nikolai Rogozin</p>
+                                    <a href="tel:+79508272227" className="text-[9px] text-stone-500 mt-0.5 block">8-950-827-22-27</a>
                                 </div>
                             </div>
                         </div>
@@ -577,7 +578,8 @@
                     <aside className="sidebar-desktop w-64 lg:w-72 bg-[#0f0f11] text-stone-400 flex flex-col fixed inset-y-0 shadow-2xl z-20 border-r border-stone-800">
                         <div className="p-6 border-b border-stone-800/60 flex flex-col justify-center relative" style={{minHeight:'88px'}}>
                             <h1 className="text-stone-100 font-serif text-xl lg:text-2xl font-bold tracking-tight uppercase leading-none">Академия</h1>
-                            <span className="text-amber-600 text-[10px] font-sans font-bold tracking-[0.2em] mt-1.5">РЕЛИГИОВЕДЕНИЯ</span>
+                            <span className="text-amber-600 text-[10px] font-sans font-bold tracking-[0.2em] mt-1">РЕЛИГИОВЕДЕНИЯ</span>
+                            <span className="text-stone-600 text-[9px] font-sans font-bold tracking-widest mt-0.5 uppercase">Учебный курс · 4 шага</span>
                             <button onClick={() => { setApiKeyInput(apiKey); setShowSettings(true); }} className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-600 hover:text-white transition-colors" title="Настройки API"><Icons.Settings c="w-5 h-5"/></button>
                         </div>
                         <nav className="flex-1 py-4 space-y-0.5 overflow-y-auto px-2">
@@ -592,6 +594,7 @@
                             <div className="mt-2 pt-2 border-t border-stone-800/40">
                                 <p className="text-[9px] text-stone-600 font-bold uppercase tracking-widest">© Разработано</p>
                                 <p className="text-[10px] text-amber-600/70 font-bold mt-0.5">Nikolai Rogozin</p>
+                                <a href="tel:+79508272227" className="text-[9px] text-stone-500 hover:text-amber-500 transition-colors mt-0.5 block">8-950-827-22-27</a>
                             </div>
                         </div>
                     </aside>
@@ -599,11 +602,11 @@
                     {/* МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ */}
                     <nav className="mobile-nav">
                         {[
-                            {v:'dashboard', icon:'🏠', label:'Главная'},
-                            {v:'religions', icon:'🌍', label:'Религии'},
-                            {v:'step', icon:'📚', label:'Учёба'},
-                            {v:'deep', icon:'✨', label:'AI'},
-                            {v:'search', icon:'🔍', label:'Поиск'},
+                            {v:'dashboard', icon:'🏠', label:'Старт'},
+                            {v:'plain',     icon:'📖', label:'Основы'},
+                            {v:'bible',     icon:'📜', label:'Тексты'},
+                            {v:'search',    icon:'🔍', label:'Поиск'},
+                            {v:'deep',      icon:'✨', label:'AI'},
                             {v:'split', icon:'⚖️', label:'Экран'},
                         ].map(({v,icon,label})=>(
                             <button key={v} className={`mobile-nav-item ${view===v?'active':''}`} onClick={()=>setView(v)}>
@@ -656,7 +659,7 @@
                                             <span style={{fontSize:14}}>✨</span>
                                             <span style={{fontSize:10, fontWeight:700, textTransform:'uppercase',
                                                           letterSpacing:'0.1em', color: aiModal.isBible ? '#92400e' : '#065f46'}}>
-                                                ZVENO AI · {aiModal.label}
+                                                ✨ AI Анализ · {aiModal.label}
                                             </span>
                                         </div>
                                         <p style={{fontFamily:'Merriweather,serif', fontSize:14, lineHeight:1.5,
@@ -684,7 +687,7 @@
                                         <div style={{display:'flex', flexDirection:'column', alignItems:'center',
                                                      justifyContent:'center', padding:'64px 0', gap:16}}>
                                             <Icons.Loader c={`w-8 h-8 ${aiModal.isBible ? 'text-amber-500' : 'text-emerald-500'}`}/>
-                                            <p style={{fontWeight:700, color:'#374151', margin:0}}>ZVENO AI анализирует...</p>
+                                            <p style={{fontWeight:700, color:'#374151', margin:0}}>Нейросеть анализирует...</p>
                                             <p style={{fontSize:13, color:'#9ca3af', margin:0}}>200+ моделей изучают текст</p>
                                         </div>
                                     ) : (
@@ -697,7 +700,7 @@
                                              justifyContent:'space-between', flexShrink:0}}>
                                     <span style={{fontSize:10, color:'#9ca3af', fontWeight:700,
                                                   textTransform:'uppercase', letterSpacing:'0.1em'}}>
-                                        Академический анализ · Nikolai Rogozin
+                                        Nikolai Rogozin · 8-950-827-22-27
                                     </span>
                                     <button
                                         onClick={() => setAiModal(null)}
@@ -1295,36 +1298,66 @@
         <script type="text/babel">
         // Компонент: Навигация сайдбара (общий для desktop и mobile)
         function SidebarNav({ view, setView, apiKey, setApiKeyInput, setShowSettings }) {
-            const NI = ({icon: Icon, label, v}) => (
-                <button onClick={()=>setView(v)} className={`w-full flex items-center px-3 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 group ${view===v ? 'bg-amber-600/10 text-amber-500' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
-                    <Icon c={`w-4 h-4 mr-3 flex-shrink-0 ${view===v?'text-amber-500':'text-stone-600 group-hover:text-stone-400'}`}/>
-                    <span className="truncate text-xs lg:text-sm">{label}</span>
+            const NI = ({emoji, label, v, badge}) => (
+                <button onClick={()=>setView(v)}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-bold text-sm transition-all duration-200
+                        ${view===v ? 'bg-amber-600/15 text-amber-400' : 'text-stone-400 hover:bg-stone-800/60 hover:text-stone-200'}`}>
+                    <span className="text-base flex-shrink-0">{emoji}</span>
+                    <span className="truncate text-xs lg:text-sm flex-1 text-left">{label}</span>
+                    {badge && <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full flex-shrink-0
+                        ${view===v ? 'bg-amber-600/30 text-amber-400' : 'bg-stone-700 text-stone-500'}`}>{badge}</span>}
                 </button>
             );
+
+            const Sep = ({label, step}) => (
+                <div className="px-3 pt-5 pb-1.5 flex items-center gap-2">
+                    {step && <span className="w-5 h-5 rounded-full bg-stone-700 text-stone-400 text-[10px] font-black flex items-center justify-center flex-shrink-0">{step}</span>}
+                    <span className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">{label}</span>
+                </div>
+            );
+
             return (
-                <div className="space-y-0.5">
-                    <div className="px-3 pt-2 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Обучение</span></div>
-                    <NI icon={Icons.Dash} label="Главная" v="dashboard"/>
-                    <NI icon={Icons.Compare} label="Пошаговое изучение" v="step"/>
-                    <NI icon={Icons.Smile} label="Просто о сложном" v="plain"/>
-                    <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Анализ</span></div>
-                    <NI icon={Icons.Sparkles} label="Глубокий AI анализ" v="deep"/>
-                    <NI icon={Icons.Scroll} label="Манускрипты" v="manuscripts"/>
-                    <NI icon={Icons.Search} label="Глобальный поиск" v="search"/>
-                    <NI icon={Icons.Info} label="Энциклопедия" v="simple"/>
-                    <NI icon={Icons.Sparkles} label="⚡ Мифология" v="mythology"/>
-                    <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Мировые религии</span></div>
-                    <NI icon={Icons.Book} label="Все религии мира" v="religions"/>
-                    <NI icon={Icons.Compare} label="Параллельное чтение" v="reader"/>
-                    <NI icon={Icons.Scroll} label="Разделённый экран" v="split"/>
-                    <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Тексты</span></div>
-                    <NI icon={Icons.Book} label="Библия (AI)" v="bible"/>
-                    <NI icon={Icons.Moon} label="Коран (AI)" v="quran"/>
-                    <NI icon={Icons.Heart} label="🙏 Поклонение" v="worship"/>
-                    {!apiKey && (
-                        <button onClick={()=>setShowSettings(true)} className="w-full mt-4 mx-auto flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-amber-500 text-xs font-bold transition-all hover:bg-amber-600/20">
-                            <Icons.Key c="w-3.5 h-3.5"/> Подключить AI
+                <div className="space-y-0.5 pb-4">
+
+                    {/* СТАРТ */}
+                    <NI emoji="🏠" label="Главная" v="dashboard"/>
+
+                    {/* УРОВЕНЬ 1 — ОСНОВЫ */}
+                    <Sep label="Шаг 1 — Основы" step="1"/>
+                    <NI emoji="📖" label="Просто о сложном" v="plain" badge="Начало"/>
+                    <NI emoji="🌍" label="Религии мира" v="religions"/>
+                    <NI emoji="🙏" label="Практики и поклонение" v="worship"/>
+
+                    {/* УРОВЕНЬ 2 — ТЕКСТЫ */}
+                    <Sep label="Шаг 2 — Священные тексты" step="2"/>
+                    <NI emoji="✝️" label="Библия — читать" v="bible"/>
+                    <NI emoji="☪️" label="Коран — читать" v="quran"/>
+                    <NI emoji="📚" label="Пошаговое изучение" v="step"/>
+
+                    {/* УРОВЕНЬ 3 — СРАВНЕНИЕ */}
+                    <Sep label="Шаг 3 — Сравнение" step="3"/>
+                    <NI emoji="⚖️" label="Параллельное чтение" v="reader"/>
+                    <NI emoji="🔲" label="Разделённый экран" v="split"/>
+                    <NI emoji="🔍" label="Глобальный поиск" v="search"/>
+
+                    {/* УРОВЕНЬ 4 — УГЛУБЛЁННЫЙ АНАЛИЗ */}
+                    <Sep label="Шаг 4 — Анализ" step="4"/>
+                    <NI emoji="✨" label="AI Анализ тем" v="deep" badge="AI"/>
+                    <NI emoji="⚡" label="Мифология религий" v="mythology" badge="AI"/>
+                    <NI emoji="📜" label="Рукописи и источники" v="manuscripts"/>
+                    <NI emoji="🏛" label="Энциклопедия" v="simple"/>
+
+                    {/* AI КЛЮЧ */}
+                    {!apiKey ? (
+                        <button onClick={()=>setShowSettings(true)}
+                            className="w-full mt-4 flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-amber-500 text-xs font-bold hover:bg-amber-600/20 transition-all">
+                            🔑 Подключить AI
                         </button>
+                    ) : (
+                        <div className="mt-4 px-3 py-2 rounded-xl bg-emerald-900/20 border border-emerald-800/30 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"/>
+                            <span className="text-[10px] text-emerald-500 font-bold uppercase tracking-wide">AI активен</span>
+                        </div>
                     )}
                 </div>
             );
@@ -1444,7 +1477,7 @@
                     <div className={`flex items-center p-2 rounded-xl border ${theme === 'bible' ? 'bg-amber-50 border-amber-200' : 'bg-emerald-50 border-emerald-200'} shadow-sm`}>
                         <Icons.Volume c={`w-4 h-4 ml-2 mr-2 ${theme === 'bible' ? 'text-amber-500' : 'text-emerald-500'}`}/>
                         <select value={selectedVoice} onChange={e => {setSelectedVoice(e.target.value); setApiError('');}} className="text-xs bg-transparent font-bold text-stone-600 outline-none w-32 md:w-48 truncate mr-2 cursor-pointer" title="Выберите голос">
-                            <option value="AI_ZVENO" className="font-bold">✨ ZVENO AI (Нейросеть)</option>
+                            <option value="AI_ZVENO" className="font-bold">✨ AI Нейросеть</option>
                             <optgroup label="Системные голоса (Встроенные)">
                                 {voices.map(v => <option key={v.name} value={v.name}>{v.name}</option>)}
                             </optgroup>
@@ -1460,175 +1493,155 @@
 
         // --- DASHBOARD ---
         function Dashboard({ setView, apiKey, setShowSettings }) {
-            const TREE = [
+            const steps = [
                 {
-                    id:'proto', label:'Первобытные верования', period:'~300 000 до н.э.', emoji:'🌿', color:'#78716c',
-                    desc:'Анимизм, тотемизм, шаманизм. Дух в каждом природном объекте.',
-                    children:['mesopotamia','vedic','egypt','proto-semitic'],
+                    step:'1', emoji:'📖', color:'amber',
+                    title:'Основы религий',
+                    desc:'Начните здесь. Узнайте главное о каждой мировой религии простым языком — без сложных терминов.',
+                    items:[
+                        {label:'Просто о сложном', v:'plain', hint:'Ключевые концепции простыми словами'},
+                        {label:'Религии мира',     v:'religions', hint:'10 традиций — обзор, тексты, сравнение'},
+                        {label:'Практики и обряды',v:'worship', hint:'Как молятся в разных традициях'},
+                    ]
                 },
-                {id:'egypt', label:'Египетская религия', period:'~3100 до н.э.', emoji:'𓂀', color:'#d97706', desc:'Осирис, Ра, Исида. Загробный суд.', children:['greco-roman']},
-                {id:'mesopotamia', label:'Шумер/Вавилон', period:'~3500 до н.э.', emoji:'𒀭', color:'#b45309', desc:'Мардук, Инанна, Энлиль. Энума Элиш.', children:['zoroastrism','proto-semitic']},
-                {id:'proto-semitic', label:'Прасемитская религия', period:'~2000 до н.э.', emoji:'⭐', color:'#0369a1', desc:'Авраам. Монотеистический импульс.', children:['judaism']},
-                {id:'vedic', label:'Ведическая религия', period:'~1500 до н.э.', emoji:'🕉️', color:'#ea580c', desc:'Агни, Индра, Варуна. Веды.', children:['hinduism','buddhism']},
-                {id:'zoroastrism', label:'Зороастризм', period:'~1200 до н.э.', emoji:'🔥', color:'#dc2626', desc:'Заратустра. Ахура Мазда vs Ариман. Добро vs Зло.', children:['judaism']},
-                {id:'judaism', label:'Иудаизм', period:'~600 до н.э.', emoji:'✡️', color:'#1d4ed8', desc:'Моисей, Тора, Тальмуд, синагога.', children:['christianity','islam']},
-                {id:'hinduism', label:'Индуизм', period:'~500 до н.э.', emoji:'🕉️', color:'#ea580c', desc:'Брахман/Атман, Тримурти, мокша.', children:['sikhism']},
-                {id:'buddhism', label:'Буддизм', period:'~500 до н.э.', emoji:'☸️', color:'#ca8a04', desc:'Будда. 4 истины. Нирвана.', children:['zen']},
-                {id:'greco-roman', label:'Греко-римская', period:'~700 до н.э.', emoji:'🏛️', color:'#7c3aed', desc:'Олимп. Зевс, Гера, Аполлон. Философия.', children:['christianity']},
-                {id:'christianity', label:'Христианство', period:'~30 н.э.', emoji:'✝️', color:'#92400e', desc:'Иисус Христос. Библия. Троица.', children:['islam']},
-                {id:'islam', label:'Ислам', period:'~610 н.э.', emoji:'☪️', color:'#065f46', desc:'Мухаммад ﷺ. Коран. 5 столпов.', children:[]},
-                {id:'sikhism', label:'Сикхизм', period:'~1500 н.э.', emoji:'🪯', color:'#6d28d9', desc:'Гуру Нанак. Эк Онкар.', children:[]},
-                {id:'zen', label:'Дзен-буддизм', period:'~500 н.э.', emoji:'🧘', color:'#065f46', desc:'Медитация. Коаны. Сатори.', children:[]},
-                {id:'shinto', label:'Синтоизм', period:'~300 до н.э.', emoji:'⛩️', color:'#be185d', desc:'Ками. Природа священна.', children:[]},
-                {id:'confucianism', label:'Конфуцианство', period:'~500 до н.э.', emoji:'🏮', color:'#9f1239', desc:'Конфуций. Жэнь. Ли.', children:[]},
-                {id:'taoism', label:'Даосизм', period:'~400 до н.э.', emoji:'☯️', color:'#374151', desc:'Лао-цзы. Дао. У-вэй.', children:[]},
+                {
+                    step:'2', emoji:'📜', color:'emerald',
+                    title:'Священные тексты',
+                    desc:'Читайте первоисточники. Полные тексты с AI-анализом каждого стиха — нажмите ✨ на любом стихе.',
+                    items:[
+                        {label:'Библия (AI)',        v:'bible',  hint:'66 книг, Синодальный перевод'},
+                        {label:'Коран (AI)',          v:'quran',  hint:'114 сур, перевод Кулиева'},
+                        {label:'Пошаговое изучение', v:'step',   hint:'По темам: сотворение, пророки, молитва...'},
+                    ]
+                },
+                {
+                    step:'3', emoji:'⚖️', color:'blue',
+                    title:'Сравнение традиций',
+                    desc:'Читайте разные тексты рядом. Найдите общее и различное между традициями.',
+                    items:[
+                        {label:'Параллельное чтение', v:'reader', hint:'Библия и Коран рядом'},
+                        {label:'Разделённый экран',   v:'split',  hint:'Любые два текста рядом'},
+                        {label:'Глобальный поиск',    v:'search', hint:'Одно слово во всех 9 религиях'},
+                    ]
+                },
+                {
+                    step:'4', emoji:'✨', color:'purple',
+                    title:'Углублённый анализ',
+                    desc:'Используйте AI для глубокого разбора. Этимология, история, богословие, мифология.',
+                    items:[
+                        {label:'AI Анализ тем',    v:'deep',        hint:'Тематический разбор с нейросетью'},
+                        {label:'Мифология',         v:'mythology',   hint:'Сравнительная мифология религий'},
+                        {label:'Рукописи',          v:'manuscripts', hint:'Оригинальные манускрипты'},
+                    ]
+                },
             ];
-            const treeById = Object.fromEntries(TREE.map(n => [n.id, n]));
-            const CONNECTIONS = [
-                {from:'proto', to:'mesopotamia', label:'Натурализм'},
-                {from:'proto', to:'vedic', label:'Арийские миграции'},
-                {from:'proto', to:'egypt', label:'Нильская культура'},
-                {from:'proto', to:'shinto', label:'Японские острова'},
-                {from:'proto', to:'confucianism', label:'Китайская традиция'},
-                {from:'proto', to:'taoism', label:'Даосский путь'},
-                {from:'mesopotamia', to:'zoroastrism', label:'Иранское плато'},
-                {from:'mesopotamia', to:'proto-semitic', label:'Семитский контакт'},
-                {from:'egypt', to:'greco-roman', label:'Эллинизм'},
-                {from:'proto-semitic', to:'judaism', label:'Завет Авраама'},
-                {from:'zoroastrism', to:'judaism', label:'Рай/ад/воскресение'},
-                {from:'greco-roman', to:'christianity', label:'Философия Логоса'},
-                {from:'vedic', to:'hinduism', label:'Упанишады'},
-                {from:'vedic', to:'buddhism', label:'Реакция на брахманизм'},
-                {from:'judaism', to:'christianity', label:'Мессия из Торы'},
-                {from:'judaism', to:'islam', label:'Авраамический монотеизм'},
-                {from:'christianity', to:'islam', label:'Иса — пророк'},
-                {from:'hinduism', to:'sikhism', label:'Пенджаб XV в.'},
-                {from:'buddhism', to:'zen', label:'Чань → Дзен'},
-            ];
+
+            const colors = {
+                amber:  {bg:'bg-amber-950/30',  border:'border-amber-800/40',  badge:'bg-amber-900/40 text-amber-400',  btn:'bg-amber-800/30 hover:bg-amber-700/40 text-amber-300', num:'bg-amber-600'},
+                emerald:{bg:'bg-emerald-950/20', border:'border-emerald-800/40',badge:'bg-emerald-900/40 text-emerald-400',btn:'bg-emerald-800/30 hover:bg-emerald-700/40 text-emerald-300',num:'bg-emerald-600'},
+                blue:   {bg:'bg-blue-950/20',   border:'border-blue-800/40',   badge:'bg-blue-900/40 text-blue-400',   btn:'bg-blue-800/30 hover:bg-blue-700/40 text-blue-300', num:'bg-blue-600'},
+                purple: {bg:'bg-purple-950/20', border:'border-purple-800/40', badge:'bg-purple-900/40 text-purple-400',btn:'bg-purple-800/30 hover:bg-purple-700/40 text-purple-300',num:'bg-purple-600'},
+            };
 
             return (
-                <div className="flex flex-col gap-6 fade-in-up pb-12">
-                    {/* Шапка */}
-                    <div className="bg-[#1c1b1d] text-stone-100 p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
-                        <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-white">Академия Религиоведения 🧠</h2>
-                            <p className="text-stone-400 text-base md:text-lg mb-6 max-w-2xl leading-relaxed">
-                                Сравнительное изучение 10 мировых религий · Библия · Коран · Священные тексты · AI-анализ <strong className="text-amber-500">ZVENO AI</strong>
-                            </p>
+                <div className="space-y-6 pb-20 md:pb-6 fade-in-up">
+                    {/* Приветствие */}
+                    <div className="rounded-3xl overflow-hidden" style={{background:'linear-gradient(135deg,#1c1b1d 0%,#2d1f0e 50%,#0d1f17 100%)'}}>
+                        <div className="p-6 md:p-10">
+                            <div className="flex items-start justify-between gap-4">
+                                <div>
+                                    <p className="text-amber-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">Академия Религиоведения</p>
+                                    <h1 className="text-white font-serif text-2xl md:text-4xl font-bold leading-tight mb-3">
+                                        Изучайте мировые<br/>религии шаг за шагом
+                                    </h1>
+                                    <p className="text-stone-400 text-sm md:text-base max-w-lg">
+                                        Полные священные тексты 10 традиций с AI-анализом каждого стиха.
+                                        Следуйте учебному пути — от основ к глубокому анализу.
+                                    </p>
+                                </div>
+                                <span className="text-5xl md:text-7xl flex-shrink-0 hidden sm:block">🌍</span>
+                            </div>
                             {!apiKey && (
-                                <button onClick={()=>setShowSettings(true)} className="bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 mb-4 text-sm">
-                                    ⚙️ Подключить ZVENO AI <Icons.Key c="w-4 h-4"/>
+                                <button onClick={()=>setShowSettings(true)}
+                                    className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm transition-all">
+                                    🔑 Подключить AI для полного доступа →
                                 </button>
                             )}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
-                                {[['10','Религий'],['19','Манускриптов'],['6236','Аятов Корана'],['66','Книг Библии']].map(([v,l])=>(
-                                    <div key={l} className="bg-white/5 rounded-xl p-3 text-center border border-stone-800">
-                                        <div className="text-amber-400 font-bold text-xl">{v}</div>
-                                        <div className="text-stone-400 text-xs uppercase tracking-widest">{l}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <Icons.Sparkles c="absolute -right-10 -bottom-20 w-72 h-72 text-stone-800 opacity-20 pointer-events-none"/>
-                    </div>
-
-                    {/* ДРЕВО РЕЛИГИЙ */}
-                    <div className="bg-white border border-stone-200 rounded-3xl p-6 md:p-8">
-                        <div className="flex items-center gap-3 mb-2">
-                            <span className="text-3xl">🌳</span>
-                            <h3 className="font-serif font-bold text-2xl text-stone-900">Древо мировых религий</h3>
-                        </div>
-                        <p className="text-stone-500 text-sm mb-6">Генеалогия и связи — от первобытных верований до современных традиций</p>
-
-                        {/* Временная ось */}
-                        <div className="overflow-x-auto pb-4">
-                            <div className="min-w-[700px]">
-                                {/* Горизонтальные уровни по времени */}
-                                {[
-                                    {era:'Праистория', period:'300 000–3500 до н.э.', nodes:['proto'], bg:'#fef9c3'},
-                                    {era:'Древний мир', period:'3500–500 до н.э.', nodes:['egypt','mesopotamia','vedic','proto-semitic','zoroastrism'], bg:'#fff7ed'},
-                                    {era:'Осевое время', period:'600–300 до н.э.', nodes:['judaism','hinduism','buddhism','greco-roman','confucianism','taoism'], bg:'#f0fdf4'},
-                                    {era:'Ранняя эра н.э.', period:'1–700 н.э.', nodes:['christianity','islam','shinto','zen'], bg:'#eff6ff'},
-                                    {era:'Средние века', period:'700–1700 н.э.', nodes:['sikhism'], bg:'#faf5ff'},
-                                ].map(row => (
-                                    <div key={row.era} className="flex items-stretch mb-3 rounded-2xl overflow-hidden border border-stone-100">
-                                        <div className="flex-shrink-0 w-36 flex flex-col justify-center px-3 py-3 bg-stone-50 border-r border-stone-100">
-                                            <p className="font-bold text-xs text-stone-800">{row.era}</p>
-                                            <p className="text-[10px] text-stone-400 mt-0.5">{row.period}</p>
-                                        </div>
-                                        <div className="flex-1 flex flex-wrap gap-2 p-3 items-center" style={{background:row.bg}}>
-                                            {row.nodes.map(nid => {
-                                                const n = treeById[nid];
-                                                if (!n) return null;
-                                                const VIEW_MAP = {
-                                                    judaism:'religions', christianity:'bible', islam:'quran',
-                                                    hinduism:'religions', buddhism:'religions', taoism:'religions',
-                                                    confucianism:'religions', sikhism:'religions', shinto:'religions',
-                                                    zoroastrism:'religions',
-                                                };
-                                                return (
-                                                    <button key={nid}
-                                                        onClick={() => VIEW_MAP[nid] && setView(VIEW_MAP[nid])}
-                                                        style={{borderColor: n.color, background: n.color + '18'}}
-                                                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl border-2 text-left hover:shadow-md transition-all group">
-                                                        <span className="text-xl">{n.emoji}</span>
-                                                        <div>
-                                                            <p className="font-bold text-xs" style={{color: n.color}}>{n.label}</p>
-                                                            <p className="text-[9px] text-stone-400">{n.period}</p>
-                                                        </div>
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Ключевые связи */}
-                        <div className="mt-4">
-                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">🔗 Ключевые исторические связи</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                                {[
-                                    {from:'Шумер → Библия', desc:'«Энума Элиш» → Бытие 1. Потоп Утнапиштима → Ной', color:'#b45309'},
-                                    {from:'Зороастризм → Иудаизм', desc:'Концепции рая/ада, дьявола, воскресения (VI в. до н.э.)', color:'#dc2626'},
-                                    {from:'Греция → Христианство', desc:'Логос (Ин 1:1), бессмертие души, платонизм', color:'#7c3aed'},
-                                    {from:'Иудаизм → Христианство', desc:'Мессия из Торы, заповеди, завет, пророки', color:'#1d4ed8'},
-                                    {from:'Иудаизм+Христ. → Ислам', desc:'Авраам, Муса=Моисей, Иса=Иисус, Тора→Коран', color:'#065f46'},
-                                    {from:'Индуизм → Сикхизм', desc:'Карма, сансара, медитация + исламский монотеизм', color:'#6d28d9'},
-                                ].map(c => (
-                                    <div key={c.from} className="p-3 rounded-xl border border-stone-200 bg-stone-50">
-                                        <p className="font-bold text-xs mb-1" style={{color:c.color}}>{c.from}</p>
-                                        <p className="text-[11px] text-stone-500">{c.desc}</p>
-                                    </div>
-                                ))}
-                            </div>
+                            {apiKey && (
+                                <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-900/30 border border-emerald-700/40">
+                                    <span className="w-2 h-2 rounded-full bg-emerald-400"/>
+                                    <span className="text-emerald-400 text-xs font-bold">AI активен — нажмите ✨ на любом стихе для анализа</span>
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    {/* Быстрый доступ */}
-                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {/* 4 шага */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {steps.map(s => {
+                            const c = colors[s.color];
+                            return (
+                                <div key={s.step} className={`rounded-2xl border p-5 ${c.bg} ${c.border}`}>
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <span className={`w-7 h-7 rounded-full ${c.num} text-white text-xs font-black flex items-center justify-center flex-shrink-0`}>{s.step}</span>
+                                        <span className="text-xl">{s.emoji}</span>
+                                        <div>
+                                            <h3 className="text-white font-bold text-base leading-tight">{s.title}</h3>
+                                        </div>
+                                    </div>
+                                    <p className="text-stone-400 text-xs leading-relaxed mb-4">{s.desc}</p>
+                                    <div className="space-y-2">
+                                        {s.items.map(item => (
+                                            <button key={item.v} onClick={()=>setView(item.v)}
+                                                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs font-bold transition-all ${c.btn}`}>
+                                                <span>{item.label}</span>
+                                                <span className="text-stone-500 font-normal text-[10px] hidden sm:block">{item.hint}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Быстрый старт */}
+                    <div className="bg-white rounded-2xl border border-stone-200 p-5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">⚡ Быстрый старт</p>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            {[
+                                {emoji:'📖', label:'Бытие 1', hint:'Сотворение мира', action:()=>setView('bible')},
+                                {emoji:'☪️', label:'Аль-Фатиха', hint:'Открывающая', action:()=>setView('quran')},
+                                {emoji:'☸️', label:'Дхаммапада', hint:'Путь Будды', action:()=>setView('religions')},
+                                {emoji:'🔍', label:'Найти: Бог', hint:'Во всех текстах', action:()=>setView('search')},
+                            ].map((q,i) => (
+                                <button key={i} onClick={q.action}
+                                    className="flex flex-col items-center gap-1.5 p-4 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 text-center transition-all group">
+                                    <span className="text-2xl group-hover:scale-110 transition-transform">{q.emoji}</span>
+                                    <span className="text-xs font-bold text-stone-700">{q.label}</span>
+                                    <span className="text-[10px] text-stone-400">{q.hint}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Статистика */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         {[
-                            {view:'step',        icon:'📚', title:'Пошаговое изучение',    desc:'Библия и Коран по темам с AI',           color:'amber'},
-                            {view:'plain',       icon:'💬', title:'Просто о сложном',       desc:'10 религий понятным языком',             color:'blue'},
-                            {view:'worship',     icon:'🙏', title:'Поклонение',             desc:'Как молятся в мечети, церкви, храме',    color:'rose'},
-                            {view:'manuscripts', icon:'📜', title:'Манускрипты',            desc:'19 древних рукописей мира',              color:'stone'},
-                            {view:'mythology',   icon:'⚡', title:'Мифология',              desc:'Сравнение с мировой мифологией',         color:'purple'},
-                            {view:'search',      icon:'🔍', title:'Глобальный поиск',       desc:'По всем 9 священным текстам',            color:'rose'},
-                        ].map(item => (
-                            <button key={item.view} onClick={()=>setView(item.view)}
-                                className="bg-white border border-stone-200 hover:border-stone-400 hover:shadow-md rounded-2xl p-5 text-left transition-all group">
-                                <span className="text-3xl block mb-2">{item.icon}</span>
-                                <h3 className="font-serif font-bold text-lg text-stone-900 mb-1 group-hover:text-amber-700 transition-colors">{item.title}</h3>
-                                <p className="text-stone-400 text-xs leading-relaxed">{item.desc}</p>
-                            </button>
+                            {n:'10', label:'Религий мира', emoji:'🌍'},
+                            {n:'31 000+', label:'Стихов Библии', emoji:'✝️'},
+                            {n:'6 236', label:'Аятов Корана', emoji:'☪️'},
+                            {n:'200+', label:'AI моделей', emoji:'✨'},
+                        ].map((stat,i) => (
+                            <div key={i} className="bg-white rounded-2xl border border-stone-200 p-4 text-center">
+                                <p className="text-2xl mb-1">{stat.emoji}</p>
+                                <p className="text-lg font-serif font-bold text-stone-900">{stat.n}</p>
+                                <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wide">{stat.label}</p>
+                            </div>
                         ))}
                     </div>
                 </div>
             );
         }
-
-        // --- ПОЛНАЯ ЭНЦИКЛОПЕДИЯ (ВОССТАНОВЛЕНА И ЖЕСТКО ВШИТА) ---
         function DeepExplanationModule() {
             return (
                 <div className="space-y-12 fade-in-up pb-12">
@@ -1949,7 +1962,7 @@
                     : `Коран, сура «${selectedBook}», аят ${verseId}`;
 
                 if (!apiKey) {
-                    const hint = marked.parse("⚙️ **Укажите API ключ ZVENO AI** в настройках (иконка ⚙️ в левом меню).\n\nПолучите ключ на [zveno.ai](https://zveno.ai) — оплата в рублях, без VPN.");
+                    const hint = marked.parse("⚙️ **Укажите API ключ в настройках** (иконка ⚙️ в левом меню).\n\nДля получения ключа: **8-950-827-22-27** (Nikolai Rogozin).");
                     setAiModal({ verseId, verseText, label, isBible, html: hint, loading: false });
                     return;
                 }
@@ -2029,7 +2042,7 @@
                                         <button
                                             onClick={() => handleAiRequest(v, t)}
                                             className="px-2.5 py-1.5 rounded-lg border font-bold flex items-center gap-1 text-xs transition-all bg-amber-100 hover:bg-amber-400 hover:text-white border-amber-300 text-amber-700"
-                                            title="AI Анализ (ZVENO)">
+                                            title="AI Анализ">
                                             <><span>✨</span><span>AI</span></>
                                         </button>
                                     </div>
@@ -2827,7 +2840,7 @@
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl flex flex-col" style={{maxHeight:'88vh'}}>
                         <div className="px-6 py-4 flex items-start justify-between border-b border-amber-100 bg-amber-50 rounded-t-3xl flex-shrink-0">
                             <div className="flex-1 pr-4">
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1">✨ ZVENO AI · {verseModal.ref}</p>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1">✨ AI Анализ · {verseModal.ref}</p>
                                 <p className="font-serif text-sm text-stone-700 leading-snug">{verseModal.text.slice(0,120)}{verseModal.text.length>120?'…':''}</p>
                             </div>
                             <button onClick={()=>setVerseModal(null)} className="flex-shrink-0 w-8 h-8 rounded-full bg-white border border-stone-200 flex items-center justify-center text-stone-400 hover:text-red-500 font-bold text-sm ml-2">✕</button>
@@ -3878,7 +3891,7 @@
                         <div className="bg-white border border-stone-200 rounded-2xl p-8 flex items-center gap-4 text-stone-500">
                             <Icons.Loader c="w-6 h-6 text-amber-500"/>
                             <div>
-                                <p className="font-bold">ZVENO AI анализирует...</p>
+                                <p className="font-bold">Нейросеть анализирует...</p>
                                 <p className="text-sm">200+ моделей изучают священные тексты</p>
                             </div>
                         </div>
@@ -3887,7 +3900,7 @@
                         <div className="bg-white border border-stone-200 rounded-3xl p-8">
                             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-stone-100">
                                 <Icons.Sparkles c="w-5 h-5 text-amber-500"/>
-                                <span className="text-xs font-bold uppercase tracking-widest text-stone-400">ZVENO AI · Академический анализ · {theme.label}</span>
+                                <span className="text-xs font-bold uppercase tracking-widest text-stone-400">AI Анализ · {theme.label}</span>
                             </div>
                             <div className="ai-content" dangerouslySetInnerHTML={{__html: result}}/>
                         </div>
