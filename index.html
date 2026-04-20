@@ -180,6 +180,103 @@
             }
         };
 
+        // ══════════════════════════════════════════════════════════════════════
+        // EMBEDDED_QURAN — Встроенные тексты ключевых сур (Кулиев, общественное достояние)
+        // Гарантированный офлайн-фолбэк для поиска по всем важным темам
+        // Структура: { surahIndex: { ayahNum: text } }
+        // ══════════════════════════════════════════════════════════════════════
+        var EMBEDDED_QURAN = {
+            // 3. Аль Имран — Иса, Марьям, вера
+            3: {
+                "45":"Вот сказали ангелы: «О Марьям! Воистину, Аллах радует тебя вестью о слове от Него, имя которому — Мессия Иса, сын Марьям. Он будет почитаем в этом мире и в Последней жизни и будет одним из приближённых.»",
+                "46":"Он будет говорить с людьми в колыбели и взрослым и станет одним из праведников.",
+                "47":"Она сказала: «Господи! Как у меня будет сын, если меня не касался ни один мужчина?» Он сказал: «Так Аллах творит, что пожелает. Когда Он принимает решение, то стоит Ему сказать: „Будь!" — как это сбывается.»",
+                "48":"Он обучит его Писанию, мудрости, Таурату и Инджилу.",
+                "49":"Он станет посланником к сынам Исраила: «Я пришёл к вам со знамением от вашего Господа. Я сотворю вам из глины нечто подобное птице, подую на него, и оно станет птицей с дозволения Аллаха. Я исцелю слепого и прокажённого и оживлю мёртвых с дозволения Аллаха. Я поведаю вам о том, что вы едите и что припасаете в своих домах. Воистину, в этом есть знамение для вас, если вы являетесь верующими.»",
+                "52":"Когда Иса почувствовал их неверие, он сказал: «Кто будет моим помощником на пути к Аллаху?» Апостолы ответили: «Мы — помощники Аллаха. Мы уверовали в Аллаха, и засвидетельствуй, что мы являемся мусульманами.»",
+                "55":"Вот сказал Аллах: «О Иса! Я упокою тебя и вознесу тебя к Себе. Я очищу тебя от тех, кто не уверовал, и сделаю тех, кто последовал за тобой, превосходящими неверующих вплоть до Дня воскресения.",
+                "84":"Скажи: «Мы уверовали в Аллаха и в то, что было ниспослано нам, и в то, что было ниспослано Ибрахиму, Исмаилу, Исхаку, Йакубу и коленам (двенадцати сыновьям Йакуба), и в то, что было дано Мусе, Исе и пророкам от их Господа.",
+                "185":"Каждая душа вкусит смерть. Вам сполна воздадут вашу плату лишь в День воскресения. Тот, кто будет удалён от Огня и введён в Рай, обретёт успех. Мирская жизнь — всего лишь искушение."
+            },
+            // 4. Ан-Ниса — Иса, пророки
+            4: {
+                "157":"и за слова их: «Воистину, мы убили Мессию Ису, сына Марьям, посланника Аллаха». Однако они не убили его и не распяли, а лишь померещилось им это. Те, которые расходятся во мнениях относительно него, пребывают в сомнении и не ведают ничего достоверного, а лишь следуют предположениям. Они действительно не убивали его.",
+                "158":"Нет! Аллах вознёс его к Себе. Аллах — Могущественный, Мудрый.",
+                "163":"Воистину, Мы внушили тебе откровение, как внушили его Нуху и пророкам после него. Мы внушили откровение Ибрахиму, Исмаилу, Исхаку, Йакубу, коленам, Исе, Айюбу, Йунусу, Харуну и Сулейману. Мы даровали Давуду Забур.",
+                "171":"О люди Писания! Не проявляйте чрезмерности в вашей религии и говорите об Аллахе только правду. Мессия Иса, сын Марьям, является посланником Аллаха, Его словом, которое Он послал Марьям, и духом от Него. Веруйте же в Аллаха и Его посланников и не говорите: «Троица». Прекратите, ведь так будет лучше для вас. Аллах является лишь единственным Богом."
+            },
+            // 5. Аль-Маида — Иса
+            5: {
+                "110":"Вот скажет Аллах: «О Иса, сын Марьям! Вспомни Мою милость к тебе и твоей матери. Вот Я укрепил тебя Святым Духом, и ты говорил с людьми в колыбели и взрослым. Вот Я обучил тебя Писанию, мудрости, Таурату и Инджилу.",
+                "116":"Вот скажет Аллах: «О Иса, сын Марьям! Говорил ли ты людям: «Примите меня и мою мать двумя богами наряду с Аллахом»?» Он скажет: «Пречист Ты! Мне не подобает говорить то, на что я не имею права."
+            },
+            // 19. Марьям — Иса, Мусе
+            19: {
+                "1":"Каф. Ха. Йа. Айн. Сад.",
+                "16":"Упомяни в Писании Марьям. Вот она удалилась от своей семьи в восточное место.",
+                "17":"Она оградила себя от них завесой. Мы же послали к ней Нашего духа, и он принял облик совершенного человека.",
+                "18":"Она сказала: «Я ищу защиты от тебя у Милостивого, если ты богобоязнен».",
+                "19":"Он сказал: «Я всего лишь посланник твоего Господа, чтобы даровать тебе чистого мальчика».",
+                "20":"Она сказала: «Как у меня может быть мальчик, если меня не касался ни один мужчина, и я не была распутницей?»",
+                "21":"Он сказал: «Вот как сказал Господь твой: «Это для Меня легко. Мы сделаем его знамением для людей и милостью от Нас». Это дело уже решено».",
+                "22":"Она забеременела им и удалилась с ним в далёкое место.",
+                "27":"Она пришла к своему народу, неся его. Они сказали: «О Марьям! Ты совершила ужасный поступок!»",
+                "29":"Она указала на него. Они сказали: «Как мы можем говорить с тем, кто ещё в колыбели и является ребёнком?»",
+                "30":"Он (Иса) сказал: «Воистину, я — раб Аллаха. Он даровал мне Писание и сделал меня пророком.",
+                "31":"Он сделал меня благословенным, где бы я ни был, и заповедал мне совершать намаз и давать закят, пока я буду жив.",
+                "32":"Он сделал меня почтительным к моей матери, и Он не сделал меня надменным и несчастным.",
+                "33":"Мир мне в тот день, когда я родился, в тот день, когда я умру, и в тот день, когда я буду воскрешён живым».",
+                "34":"Таков Иса, сын Марьям. Таково истинное слово, в котором они сомневаются.",
+                "35":"Не подобает Аллаху брать Себе сына. Преславен Он! Когда Он принимает решение, то стоит Ему сказать: «Будь!» — как это сбывается."
+            },
+            // 21. Аль-Анбия — пророки
+            21: {
+                "25":"Мы не посылали до тебя ни одного посланника, которому не было бы внушено: «Нет божества, кроме Меня. Поклоняйтесь же Мне!»",
+                "26":"Они сказали: «Милостивый взял Себе сына». Пречист Он! Нет, они — почитаемые рабы.",
+                "30":"Неужели неверующие не видят, что небеса и земля были единым целым и Мы разделили их? Мы сотворили из воды всё живое. Неужели они не уверуют?",
+                "107":"Мы направили тебя только в качестве милости к мирам."
+            },
+            // 36. Йа Син — Воскресение
+            36: {
+                "1":"Йа Син.",
+                "2":"Клянусь мудрым Кораном,",
+                "3":"что ты являешься одним из посланников",
+                "12":"Воистину, Мы оживляем мёртвых и записываем то, что они совершили, и то, что они оставили после себя. Каждую вещь Мы сочли в ясном образце.",
+                "58":"Мир! — слово Господа Милосердного.",
+                "78":"Он привёл Нам притчу и забыл о своём сотворении. Он сказал: «Кто оживит кости, которые истлели?»",
+                "79":"Скажи: «Оживит их Тот, Кто создал их в первый раз. Он знает о всяком творении.",
+                "82":"Когда Он желает чего-либо, то стоит Ему сказать: «Будь!» — как это сбывается.",
+                "83":"Пречист Тот, в Чьей Руке власть над всякой вещью! К Нему вы будете возвращены."
+            },
+            // 55. Ар-Рахман — Милость
+            55: {
+                "1":"Милостивый",
+                "2":"обучил Корану.",
+                "3":"Он сотворил человека,",
+                "4":"научил его ясно выражаться.",
+                "13":"Какое же из благ вашего Господа вы считаете ложью?",
+                "26":"Все, кто на ней (земле), смертны.",
+                "27":"Вечен лишь Лик твоего Господа, обладателя величия и щедрости."
+            },
+            // 67. Аль-Мульк — Власть
+            67: {
+                "1":"Благословен Тот, в Чьей Руке власть! Он способен на всякую вещь.",
+                "2":"Он создал смерть и жизнь, чтобы испытать вас и выявить, чьи деяния окажутся лучше. Он — Могущественный, Прощающий.",
+                "12":"Воистину, тех, кто боится своего Господа в тайне, ждут прощение и великая награда."
+            },
+            // 96. Аль-Аляк — первая сура откровения
+            96: {
+                "1":"Читай во имя твоего Господа, Который сотворил всё сущее.",
+                "2":"Он сотворил человека из сгустка крови.",
+                "3":"Читай, ведь твой Господь — самый Великодушный.",
+                "4":"Он научил человека письму при помощи калама.",
+                "5":"Он научил человека тому, чего тот не знал."
+            },
+            // 113-114
+            113: {"1":"Скажи: «Прибегаю к защите Господа рассвета","2":"от зла того, что Он сотворил,","3":"от зла мрака, когда он наступает,","4":"от зла тех, кто дует на узлы,","5":"и от зла завистника, когда он завидует.»"},
+            114: {"1":"Скажи: «Прибегаю к защите Господа людей,","2":"Царя людей,","3":"Бога людей,","4":"от зла искусителя отступающего,","5":"который наущает груди людей,","6":"будь то джинны или люди.»"}
+        };
+
         var FALLBACK_BIBLE = {
             "Бытие": {
                 "1": {
@@ -351,7 +448,7 @@
                             });
                         });
 
-                        // 2. Коран — 3 источника с автоматическим переключением
+                        // 2. Коран — 4 источника с автоматическим переключением
                         const quranMap = {};
                         const quranOrder = []; 
                         SURAH_NAMES_RU.forEach((ruName, index) => {
@@ -362,6 +459,14 @@
 
                         let quranLoaded = false;
 
+                        // Валидация данных: текст должен быть реальным, не заглушкой
+                        const validateQuran = (map) => Object.values(map).some(s => {
+                            const ayahs = s['1'];
+                            return ayahs && Object.values(ayahs).some(t =>
+                                t && typeof t === 'string' && t.length > 20 && !t.startsWith('Текст Корана:')
+                            );
+                        });
+
                         // Источник 1: quran-json@3.1.2 (Russian Kuliev)
                         if (!quranLoaded) try {
                             const r = await fetch('https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_ru.json');
@@ -370,22 +475,23 @@
                                 const title = quranOrder[si];
                                 if (title && surah.verses) {
                                     surah.verses.forEach((v, vi) => {
-                                        quranMap[title]["1"][String(vi+1)] = v.text || v;
+                                        quranMap[title]["1"][String(vi+1)] = v.text || (typeof v === 'string' ? v : '');
                                     });
                                 }
                             });
-                            quranLoaded = true;
+                            if (validateQuran(quranMap)) quranLoaded = true;
+                            else { Object.values(quranMap).forEach(s => s["1"] = {}); }
                         } catch(e) { console.warn('Quran CDN1 failed:', e); }
 
-                        // Источник 2: fawazahmed0 (Kuliev)
+                        // Источник 2: fawazahmed0 (Kuliev) via jsDelivr gh
                         if (!quranLoaded) try {
-                            const r = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/quran-api@1/editions/rus-elmir-kuliev.json');
+                            const r = await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/rus-elmir-kuliev.json');
                             const d = await r.json();
-                            d.quran.forEach(item => {
+                            (d.quran || d).forEach(item => {
                                 const title = quranOrder[item.chapter - 1];
                                 if (title) quranMap[title]["1"][String(item.verse)] = item.text;
                             });
-                            quranLoaded = true;
+                            if (validateQuran(quranMap)) quranLoaded = true;
                         } catch(e) { console.warn('Quran CDN2 failed:', e); }
 
                         // Источник 3: alquran.cloud
@@ -396,14 +502,39 @@
                                 const title = quranOrder[surah.number - 1];
                                 if (title) surah.ayahs.forEach(a => { quranMap[title]["1"][String(a.numberInSurah)] = a.text; });
                             });
-                            quranLoaded = true;
+                            if (validateQuran(quranMap)) quranLoaded = true;
                         } catch(e) { console.warn('Quran CDN3 failed:', e); }
+
+                        // Источник 4: raw GitHub (openquran)
+                        if (!quranLoaded) try {
+                            const r = await fetch('https://raw.githubusercontent.com/islamic-network/cdn/master/info/cdn_surah_translation.json');
+                            const d = await r.json();
+                            if (Array.isArray(d)) {
+                                d.filter(x => x.language_name === 'russian' || x.iso_code === 'ru').forEach(item => {
+                                    const title = quranOrder[item.surah_number - 1];
+                                    if (title) quranMap[title]["1"][String(item.verse_number)] = item.text;
+                                });
+                                if (validateQuran(quranMap)) quranLoaded = true;
+                            }
+                        } catch(e) { console.warn('Quran CDN4 failed:', e); }
 
                         // Применяем встроенные тексты поверх (аят аль-Курси и др.)
                         Object.entries(FALLBACK_QURAN).forEach(([surah, verses]) => {
                             const key = quranOrder.find(k => k.includes(surah.split('.')[1]?.trim())) || surah;
                             if (quranMap[key]) Object.assign(quranMap[key]["1"], verses);
                         });
+
+                        // Применяем расширенные встроенные тексты EMBEDDED_QURAN
+                        if (typeof EMBEDDED_QURAN !== 'undefined') {
+                            Object.entries(EMBEDDED_QURAN).forEach(([idx, verses]) => {
+                                const title = quranOrder[parseInt(idx) - 1];
+                                if (title && quranMap[title]) {
+                                    const existing = quranMap[title]["1"];
+                                    const hasReal = Object.values(existing).some(t => t && t.length > 20 && !t.startsWith('Текст'));
+                                    if (!hasReal) Object.assign(quranMap[title]["1"], verses);
+                                }
+                            });
+                        }
 
                         setDb({ order: { bible: bibleOrder, quran: quranOrder }, texts: { bible: bibleMap, quran: quranMap } });
                         setDataStatus('success');
@@ -584,6 +715,7 @@
                             {view === 'bible' && <SingleReaderModule type="bible" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             {view === 'quran' && <SingleReaderModule type="quran" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             {view === 'religions' && <WorldReligionsModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
+                            {view === 'worship' && <WorshipModule apiKey={apiKey} />}
                             {view === 'religion_reader' && <ReligionReaderModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
                             {view === 'split' && <SplitViewModule db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             </div>
@@ -1194,7 +1326,7 @@
                     <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Тексты</span></div>
                     <NI icon={Icons.Book} label="Библия (AI)" v="bible"/>
                     <NI icon={Icons.Moon} label="Коран (AI)" v="quran"/>
-                    <NI icon={Icons.Heart} label="Читать религию..." v="religion_reader"/>
+                    <NI icon={Icons.Heart} label="🙏 Поклонение" v="worship"/>
                     {!apiKey && (
                         <button onClick={()=>setShowSettings(true)} className="w-full mt-4 mx-auto flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-amber-500 text-xs font-bold transition-all hover:bg-amber-600/20">
                             <Icons.Key c="w-3.5 h-3.5"/> Подключить AI
@@ -1334,37 +1466,167 @@
 
         // --- DASHBOARD ---
         function Dashboard({ setView, apiKey, setShowSettings }) {
+            const TREE = [
+                {
+                    id:'proto', label:'Первобытные верования', period:'~300 000 до н.э.', emoji:'🌿', color:'#78716c',
+                    desc:'Анимизм, тотемизм, шаманизм. Дух в каждом природном объекте.',
+                    children:['mesopotamia','vedic','egypt','proto-semitic'],
+                },
+                {id:'egypt', label:'Египетская религия', period:'~3100 до н.э.', emoji:'𓂀', color:'#d97706', desc:'Осирис, Ра, Исида. Загробный суд.', children:['greco-roman']},
+                {id:'mesopotamia', label:'Шумер/Вавилон', period:'~3500 до н.э.', emoji:'𒀭', color:'#b45309', desc:'Мардук, Инанна, Энлиль. Энума Элиш.', children:['zoroastrism','proto-semitic']},
+                {id:'proto-semitic', label:'Прасемитская религия', period:'~2000 до н.э.', emoji:'⭐', color:'#0369a1', desc:'Авраам. Монотеистический импульс.', children:['judaism']},
+                {id:'vedic', label:'Ведическая религия', period:'~1500 до н.э.', emoji:'🕉️', color:'#ea580c', desc:'Агни, Индра, Варуна. Веды.', children:['hinduism','buddhism']},
+                {id:'zoroastrism', label:'Зороастризм', period:'~1200 до н.э.', emoji:'🔥', color:'#dc2626', desc:'Заратустра. Ахура Мазда vs Ариман. Добро vs Зло.', children:['judaism']},
+                {id:'judaism', label:'Иудаизм', period:'~600 до н.э.', emoji:'✡️', color:'#1d4ed8', desc:'Моисей, Тора, Тальмуд, синагога.', children:['christianity','islam']},
+                {id:'hinduism', label:'Индуизм', period:'~500 до н.э.', emoji:'🕉️', color:'#ea580c', desc:'Брахман/Атман, Тримурти, мокша.', children:['sikhism']},
+                {id:'buddhism', label:'Буддизм', period:'~500 до н.э.', emoji:'☸️', color:'#ca8a04', desc:'Будда. 4 истины. Нирвана.', children:['zen']},
+                {id:'greco-roman', label:'Греко-римская', period:'~700 до н.э.', emoji:'🏛️', color:'#7c3aed', desc:'Олимп. Зевс, Гера, Аполлон. Философия.', children:['christianity']},
+                {id:'christianity', label:'Христианство', period:'~30 н.э.', emoji:'✝️', color:'#92400e', desc:'Иисус Христос. Библия. Троица.', children:['islam']},
+                {id:'islam', label:'Ислам', period:'~610 н.э.', emoji:'☪️', color:'#065f46', desc:'Мухаммад ﷺ. Коран. 5 столпов.', children:[]},
+                {id:'sikhism', label:'Сикхизм', period:'~1500 н.э.', emoji:'🪯', color:'#6d28d9', desc:'Гуру Нанак. Эк Онкар.', children:[]},
+                {id:'zen', label:'Дзен-буддизм', period:'~500 н.э.', emoji:'🧘', color:'#065f46', desc:'Медитация. Коаны. Сатори.', children:[]},
+                {id:'shinto', label:'Синтоизм', period:'~300 до н.э.', emoji:'⛩️', color:'#be185d', desc:'Ками. Природа священна.', children:[]},
+                {id:'confucianism', label:'Конфуцианство', period:'~500 до н.э.', emoji:'🏮', color:'#9f1239', desc:'Конфуций. Жэнь. Ли.', children:[]},
+                {id:'taoism', label:'Даосизм', period:'~400 до н.э.', emoji:'☯️', color:'#374151', desc:'Лао-цзы. Дао. У-вэй.', children:[]},
+            ];
+            const treeById = Object.fromEntries(TREE.map(n => [n.id, n]));
+            const CONNECTIONS = [
+                {from:'proto', to:'mesopotamia', label:'Натурализм'},
+                {from:'proto', to:'vedic', label:'Арийские миграции'},
+                {from:'proto', to:'egypt', label:'Нильская культура'},
+                {from:'proto', to:'shinto', label:'Японские острова'},
+                {from:'proto', to:'confucianism', label:'Китайская традиция'},
+                {from:'proto', to:'taoism', label:'Даосский путь'},
+                {from:'mesopotamia', to:'zoroastrism', label:'Иранское плато'},
+                {from:'mesopotamia', to:'proto-semitic', label:'Семитский контакт'},
+                {from:'egypt', to:'greco-roman', label:'Эллинизм'},
+                {from:'proto-semitic', to:'judaism', label:'Завет Авраама'},
+                {from:'zoroastrism', to:'judaism', label:'Рай/ад/воскресение'},
+                {from:'greco-roman', to:'christianity', label:'Философия Логоса'},
+                {from:'vedic', to:'hinduism', label:'Упанишады'},
+                {from:'vedic', to:'buddhism', label:'Реакция на брахманизм'},
+                {from:'judaism', to:'christianity', label:'Мессия из Торы'},
+                {from:'judaism', to:'islam', label:'Авраамический монотеизм'},
+                {from:'christianity', to:'islam', label:'Иса — пророк'},
+                {from:'hinduism', to:'sikhism', label:'Пенджаб XV в.'},
+                {from:'buddhism', to:'zen', label:'Чань → Дзен'},
+            ];
+
             return (
-                <div className="flex flex-col gap-6 fade-in-up">
-                    <div className="bg-[#1c1b1d] text-stone-100 p-10 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
+                <div className="flex flex-col gap-6 fade-in-up pb-12">
+                    {/* Шапка */}
+                    <div className="bg-[#1c1b1d] text-stone-100 p-8 md:p-12 rounded-3xl shadow-xl relative overflow-hidden border border-stone-800">
                         <div className="relative z-10">
-                            <h2 className="text-4xl font-serif font-bold mb-3 text-white">Академия Религиоведения 🧠</h2>
-                            <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Полная платформа сравнительного изучения Библии и Корана с нейросетью <strong className="text-amber-500">ZVENO AI</strong> (200+ моделей). Оплата в рублях, без VPN.
+                            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-white">Академия Религиоведения 🧠</h2>
+                            <p className="text-stone-400 text-base md:text-lg mb-6 max-w-2xl leading-relaxed">
+                                Сравнительное изучение 10 мировых религий · Библия · Коран · Священные тексты · AI-анализ <strong className="text-amber-500">ZVENO AI</strong>
                             </p>
                             {!apiKey && (
-                                <button onClick={()=>setShowSettings(true)} className="bg-rose-600 hover:bg-rose-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center mb-6">
-                                    ⚙️ Подключить ZVENO API для AI-анализа <Icons.Key c="w-4 h-4 ml-2" />
+                                <button onClick={()=>setShowSettings(true)} className="bg-rose-600 hover:bg-rose-500 text-white px-5 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 mb-4 text-sm">
+                                    ⚙️ Подключить ZVENO AI <Icons.Key c="w-4 h-4"/>
                                 </button>
                             )}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+                                {[['10','Религий'],['19','Манускриптов'],['6236','Аятов Корана'],['66','Книг Библии']].map(([v,l])=>(
+                                    <div key={l} className="bg-white/5 rounded-xl p-3 text-center border border-stone-800">
+                                        <div className="text-amber-400 font-bold text-xl">{v}</div>
+                                        <div className="text-stone-400 text-xs uppercase tracking-widest">{l}</div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <Icons.Sparkles c="absolute -right-10 -bottom-20 w-[350px] h-[350px] text-stone-800 opacity-30 pointer-events-none" />
+                        <Icons.Sparkles c="absolute -right-10 -bottom-20 w-72 h-72 text-stone-800 opacity-20 pointer-events-none"/>
                     </div>
-                    <div className="grid md:grid-cols-2 gap-4">
+
+                    {/* ДРЕВО РЕЛИГИЙ */}
+                    <div className="bg-white border border-stone-200 rounded-3xl p-6 md:p-8">
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className="text-3xl">🌳</span>
+                            <h3 className="font-serif font-bold text-2xl text-stone-900">Древо мировых религий</h3>
+                        </div>
+                        <p className="text-stone-500 text-sm mb-6">Генеалогия и связи — от первобытных верований до современных традиций</p>
+
+                        {/* Временная ось */}
+                        <div className="overflow-x-auto pb-4">
+                            <div className="min-w-[700px]">
+                                {/* Горизонтальные уровни по времени */}
+                                {[
+                                    {era:'Праистория', period:'300 000–3500 до н.э.', nodes:['proto'], bg:'#fef9c3'},
+                                    {era:'Древний мир', period:'3500–500 до н.э.', nodes:['egypt','mesopotamia','vedic','proto-semitic','zoroastrism'], bg:'#fff7ed'},
+                                    {era:'Осевое время', period:'600–300 до н.э.', nodes:['judaism','hinduism','buddhism','greco-roman','confucianism','taoism'], bg:'#f0fdf4'},
+                                    {era:'Ранняя эра н.э.', period:'1–700 н.э.', nodes:['christianity','islam','shinto','zen'], bg:'#eff6ff'},
+                                    {era:'Средние века', period:'700–1700 н.э.', nodes:['sikhism'], bg:'#faf5ff'},
+                                ].map(row => (
+                                    <div key={row.era} className="flex items-stretch mb-3 rounded-2xl overflow-hidden border border-stone-100">
+                                        <div className="flex-shrink-0 w-36 flex flex-col justify-center px-3 py-3 bg-stone-50 border-r border-stone-100">
+                                            <p className="font-bold text-xs text-stone-800">{row.era}</p>
+                                            <p className="text-[10px] text-stone-400 mt-0.5">{row.period}</p>
+                                        </div>
+                                        <div className="flex-1 flex flex-wrap gap-2 p-3 items-center" style={{background:row.bg}}>
+                                            {row.nodes.map(nid => {
+                                                const n = treeById[nid];
+                                                if (!n) return null;
+                                                const VIEW_MAP = {
+                                                    judaism:'religions', christianity:'bible', islam:'quran',
+                                                    hinduism:'religions', buddhism:'religions', taoism:'religions',
+                                                    confucianism:'religions', sikhism:'religions', shinto:'religions',
+                                                    zoroastrism:'religions',
+                                                };
+                                                return (
+                                                    <button key={nid}
+                                                        onClick={() => VIEW_MAP[nid] && setView(VIEW_MAP[nid])}
+                                                        style={{borderColor: n.color, background: n.color + '18'}}
+                                                        className="flex items-center gap-1.5 px-3 py-2 rounded-xl border-2 text-left hover:shadow-md transition-all group">
+                                                        <span className="text-xl">{n.emoji}</span>
+                                                        <div>
+                                                            <p className="font-bold text-xs" style={{color: n.color}}>{n.label}</p>
+                                                            <p className="text-[9px] text-stone-400">{n.period}</p>
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Ключевые связи */}
+                        <div className="mt-4">
+                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">🔗 Ключевые исторические связи</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                                {[
+                                    {from:'Шумер → Библия', desc:'«Энума Элиш» → Бытие 1. Потоп Утнапиштима → Ной', color:'#b45309'},
+                                    {from:'Зороастризм → Иудаизм', desc:'Концепции рая/ада, дьявола, воскресения (VI в. до н.э.)', color:'#dc2626'},
+                                    {from:'Греция → Христианство', desc:'Логос (Ин 1:1), бессмертие души, платонизм', color:'#7c3aed'},
+                                    {from:'Иудаизм → Христианство', desc:'Мессия из Торы, заповеди, завет, пророки', color:'#1d4ed8'},
+                                    {from:'Иудаизм+Христ. → Ислам', desc:'Авраам, Муса=Моисей, Иса=Иисус, Тора→Коран', color:'#065f46'},
+                                    {from:'Индуизм → Сикхизм', desc:'Карма, сансара, медитация + исламский монотеизм', color:'#6d28d9'},
+                                ].map(c => (
+                                    <div key={c.from} className="p-3 rounded-xl border border-stone-200 bg-stone-50">
+                                        <p className="font-bold text-xs mb-1" style={{color:c.color}}>{c.from}</p>
+                                        <p className="text-[11px] text-stone-500">{c.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Быстрый доступ */}
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {[
-                            {view:'step', icon:'📚', title:'Пошаговое изучение', desc:'5 уроков: сравнение Библии и Корана по темам. Простой язык, ключевые слова, AI-вопросы.', color:'amber'},
-                            {view:'plain', icon:'💬', title:'Просто о сложном', desc:'Сотворение, грех, Иисус/Иса, молитва, заповеди — объяснено понятно и глубоко.', color:'blue'},
-                            {view:'deep', icon:'🔬', title:'Глубокий AI анализ', desc:'8 больших тем: академический разбор нейросетью с цитатами, богословием и историей.', color:'purple'},
-                            {view:'manuscripts', icon:'📜', title:'Манускрипты и оригиналы', desc:'Синайский кодекс, Свитки Мёртвого моря, Коран Топкапы — с фото и оригинальными текстами.', color:'stone'},
-                            {view:'religions', icon:'🌍', title:'Мировые религии', desc:'10 традиций: Буддизм, Индуизм, Даосизм, Зороастризм, Конфуцианство, Сикхизм, Синто и другие с полными текстами.', color:'purple'},
-                            {view:'reader', icon:'⚖️', title:'Параллельное чтение', desc:'Библия и Коран рядом. Выберите главу и суру — читайте одновременно.', color:'emerald'},
-                            {view:'search', icon:'🔍', title:'Глобальный поиск', desc:'Найдите любое слово в полных текстах Библии и Корана одновременно.', color:'rose'},
+                            {view:'step',        icon:'📚', title:'Пошаговое изучение',    desc:'Библия и Коран по темам с AI',           color:'amber'},
+                            {view:'plain',       icon:'💬', title:'Просто о сложном',       desc:'10 религий понятным языком',             color:'blue'},
+                            {view:'worship',     icon:'🙏', title:'Поклонение',             desc:'Как молятся в мечети, церкви, храме',    color:'rose'},
+                            {view:'manuscripts', icon:'📜', title:'Манускрипты',            desc:'19 древних рукописей мира',              color:'stone'},
+                            {view:'mythology',   icon:'⚡', title:'Мифология',              desc:'Сравнение с мировой мифологией',         color:'purple'},
+                            {view:'search',      icon:'🔍', title:'Глобальный поиск',       desc:'По всем 9 священным текстам',            color:'rose'},
                         ].map(item => (
                             <button key={item.view} onClick={()=>setView(item.view)}
-                                className="bg-white border border-stone-200 hover:border-stone-400 hover:shadow-md rounded-2xl p-6 text-left transition-all group">
-                                <span className="text-3xl block mb-3">{item.icon}</span>
-                                <h3 className="font-serif font-bold text-xl text-stone-900 mb-2 group-hover:text-amber-700 transition-colors">{item.title}</h3>
-                                <p className="text-stone-500 text-sm leading-relaxed">{item.desc}</p>
+                                className="bg-white border border-stone-200 hover:border-stone-400 hover:shadow-md rounded-2xl p-5 text-left transition-all group">
+                                <span className="text-3xl block mb-2">{item.icon}</span>
+                                <h3 className="font-serif font-bold text-lg text-stone-900 mb-1 group-hover:text-amber-700 transition-colors">{item.title}</h3>
+                                <p className="text-stone-400 text-xs leading-relaxed">{item.desc}</p>
                             </button>
                         ))}
                     </div>
@@ -4468,6 +4730,299 @@
                                 </div>
                             </div>
                             {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic p-4"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть анализирует мифологию...</div>}
+                            {aiText && <div className="ai-content p-6 bg-white border border-stone-200 rounded-2xl shadow-sm" dangerouslySetInnerHTML={{__html:aiText}}/>}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // ════════════════════════════════════════════════════════════════════
+        // МОДУЛЬ: ПОКЛОНЕНИЕ — Практики богослужения в мировых религиях
+        // ════════════════════════════════════════════════════════════════════
+        var WORSHIP_DATA = [
+            {
+                id:'islam', emoji:'☪️', name:'Ислам', place:'Мечеть (Масджид)', color:'#065f46', bg:'#ecfdf5', border:'#6ee7b7',
+                img:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=900&q=85',
+                imgCap:'Намаз в мечети. Верующие выстраиваются рядами, обратившись в сторону Мекки.',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Sultan_Ahmed_Mosque_interior.jpg/800px-Sultan_Ahmed_Mosque_interior.jpg',
+                histCap:'Интерьер Голубой мечети (Стамбул, XVII в.). Михраб (ниша Киблы), минбар (кафедра).',
+                keyPrinciple:'Таухид — абсолютное единство Бога. Поклонение только Аллаху, без посредников.',
+                steps:[
+                    {title:'Омовение (Вуду)', icon:'💧', text:'Перед молитвой обязательно ритуальное омовение: руки, рот, нос, лицо, руки до локтей, голова, уши, ноги. Если нет воды — очищение землёй (таяммум).'},
+                    {title:'Направление Киблы', icon:'🧭', text:'Все мусульмане мира молятся в сторону Священной Каабы в Мекке (Кибла). Это символизирует единство уммы — всего исламского сообщества.'},
+                    {title:'Азан — призыв к молитве', icon:'📢', text:'Муэдзин с минарета возглашает: «Аллаху Акбар! Аллаху Акбар! Ашхаду алля иляха илляллах!» — 5 раз в день. Призыв звучит с VII века н.э.'},
+                    {title:'Ракаат — единица молитвы', icon:'🤲', text:'Каждый намаз состоит из ракаатов: стоять (Кийам) → поклон (Руку) → выпрямиться → земной поклон (Суджуд) → сесть. Коран читается в каждом ракаате.'},
+                    {title:'Пятница — Джума', icon:'🕌', text:'Пятничная молитва (Джума-намаз) — главная за неделю. Обязательна для мужчин. Имам произносит две хутбы (проповеди). Происходит в полдень.'},
+                    {title:'Запреты в мечети', icon:'🚫', text:'Снять обувь при входе. Женщины — отдельный зал или секция. Нельзя разговаривать во время молитвы. Нельзя изображать людей или животных в убранстве.'},
+                ],
+                history:'Мечеть появилась в Медине в 622 н.э. — первая мечеть Пророка (Масджид ан-Набави). Архитектура: молитвенный зал, михраб (ниша Киблы), минбар (кафедра), минарет. Абсолютный запрет иконографии — арабская каллиграфия и геометрические орнаменты как форма богопочитания.',
+                changes:'VII в.: простые земляные мечети. X–XV вв.: купола и минареты (Константинополь). XVI в.: Голубая мечеть — 6 минаретов. XX в.: микрофоны вместо живого муэдзина. XXI в.: приложения для определения Киблы и времени намаза.',
+            },
+            {
+                id:'christianity', emoji:'✝️', name:'Христианство', place:'Церковь (Храм)', color:'#92400e', bg:'#fffbeb', border:'#fde68a',
+                img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85',
+                imgCap:'Литургия в православном храме. Хор, свечи, иконы — многовековая традиция богослужения.',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Hagia_Sophia_Mars_2013.jpg/800px-Hagia_Sophia_Mars_2013.jpg',
+                histCap:'Собор Святой Софии (Константинополь, 537 н.э.) — величайший христианский храм древности.',
+                keyPrinciple:'Поклонение Богу через Иисуса Христа. Триединый Бог: Отец, Сын, Святой Дух.',
+                steps:[
+                    {title:'Крещение', icon:'💧', text:'Таинство вхождения в Церковь. Трёхкратное погружение (православие) или окропление (католицизм/протестантизм) с формулой: «Во имя Отца, и Сына, и Святого Духа».'},
+                    {title:'Литургия / Месса', icon:'🍞', text:'Центральное богослужение. Включает чтение Писания, проповедь, исповедание веры (Символ Веры) и Евхаристию — причастие хлебом и вином в память о Тайной Вечере.'},
+                    {title:'Молитва', icon:'🙏', text:'«Отче наш» — молитва, которую дал Иисус (Мф 6:9-13). Индивидуальная и общественная молитва. Православие: Иисусова молитва («Господи Иисусе Христе, Сыне Божий, помилуй мя»).'},
+                    {title:'Иконы и символы', icon:'🎨', text:'Православие и католицизм: иконы, статуи, крест. Протестантизм: строгий запрет образов. Крест — главный символ. Венчает каждый храм.'},
+                    {title:'Пост и праздники', icon:'📅', text:'Великий пост (40 дней перед Пасхой). Рождество Христово. Пасха — Воскресение Христово — главный праздник. Праздники по церковному календарю.'},
+                    {title:'Поведение в храме', icon:'🕯️', text:'Одежда скромная (православие — голова покрыта у женщин). Нельзя фотографировать во время службы. Тишина. Свечи как символ молитвы. Крестное знамение при входе.'},
+                ],
+                history:'I в.: домашние церкви. 313 н.э.: Константин легализует христианство. 537 н.э.: Собор Святой Софии. 1054: Раскол на православных и католиков. 1517: Реформация Лютера, протестантизм. Архитектура: алтарь на востоке (к Иерусалиму), неф, купол — образ Небесного Иерусалима.',
+                changes:'I в.: простые комнаты. IV–VI вв.: базилики. XI в.: романский стиль. XIII в.: готические соборы. XVI в.: протестантизм убирает алтарь и иконы. XIX–XX вв.: церковные хоры. XXI в.: онлайн-трансляции литургий.',
+            },
+            {
+                id:'judaism', emoji:'✡️', name:'Иудаизм', place:'Синагога (Бейт Кнессет)', color:'#1d4ed8', bg:'#eff6ff', border:'#bfdbfe',
+                img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
+                imgCap:'Молитва у Стены Плача (Иерусалим). Мужчины слева, женщины справа, разделены.',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Synagogue_Erfurt_Innen.jpg/800px-Synagogue_Erfurt_Innen.jpg',
+                histCap:'Ростовская синагога (XIV в.). Бима в центре, арон ха-кодеш у восточной стены.',
+                keyPrinciple:'Служение единому Богу через соблюдение Торы — 613 заповедей (мицвот).',
+                steps:[
+                    {title:'Шаббат — Суббота', icon:'🕯️', text:'Самый важный ритуал. В пятницу вечером зажигают субботние свечи, читают Кидуш над вином. До субботы 39 видов работы запрещены. Молитва в синагоге.'},
+                    {title:'Молитва — Давенинг', icon:'📖', text:'Три молитвы в день: Шахарит (утро), Минха (день), Маарив (вечер). Молятся на иврите. Молитвенник — Сидур. Мужчины надевают талит (молитвенное покрывало) и тфилин (коробочки с текстом Торы).'},
+                    {title:'Чтение Торы', icon:'📜', text:'По понедельникам, четвергам и субботам Тору читают вслух из свитка. Читают специальным мелодическим речитативом. Свиток выносят к биме и к нему вызывают мужчин.'},
+                    {title:'Бар- и Бат-мицва', icon:'🎉', text:'В 13 лет (мальчик) и 12 лет (девочка) ребёнок становится религиозно ответственным. Впервые читает Тору вслух перед общиной. Переход во взрослость.'},
+                    {title:'Кашрут — пищевые законы', icon:'🍽️', text:'Кошерное питание: нельзя смешивать мясо и молоко, запрещена свинина и морепродукты. Животных убивают по шхите (специальным методом). Отдельная посуда для мяса и молока.'},
+                    {title:'Поведение в синагоге', icon:'🤫', text:'Мужчины покрывают голову кипой (ермолкой). В традиционных синагогах мужчины и женщины разделены. Тора — священна: свиток нельзя трогать руками, только специальной указкой (ядом).'},
+                ],
+                history:'До 70 н.э.: Храм в Иерусалиме — центр поклонения (жертвоприношения). После разрушения Храма: синагога — место учёбы и молитвы. «Молитва вместо жертвы» (рав Иоханан). Иерусалим всегда в центре — синагоги строят лицом к востоку.',
+                changes:'VI–V вв. до н.э.: первые синагоги в изгнании. 70 н.э.: разрушение Храма — поворотный момент. Средневековье: закрытые гетто-синагоги. XIX в.: реформистский иудаизм (смешанные места, орган). XX в.: Государство Израиль восстановлено. XXI в.: онлайн-служба в пандемию.',
+            },
+            {
+                id:'buddhism', emoji:'☸️', name:'Буддизм', place:'Храм / Вихара / Дзэнский сад', color:'#ca8a04', bg:'#fefce8', border:'#fde047',
+                img:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=900&q=85',
+                imgCap:'Медитация монахов в буддийском храме. Благовония, статуя Будды, лотосовые позиции.',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Borobudur-Nothwest-view.jpg/800px-Borobudur-Nothwest-view.jpg',
+                histCap:'Боробудур (Индонезия, IX в.) — крупнейший буддийский храм мира. 2700 рельефов.',
+                keyPrinciple:'Нет Бога-Творца. Практика направлена на освобождение от страдания и достижение Нирваны.',
+                steps:[
+                    {title:'Медитация (Бхавана)', icon:'🧘', text:'Сердце практики. Саматха — успокоение ума. Випассана — наблюдение за реальностью. Цель: прекратить движение мыслей, увидеть непостоянство (аниччу) всего.'},
+                    {title:'Простирание перед Буддой', icon:'🙇', text:'Три простирания перед статуей Будды — не молитва Богу, а символ уважения к Просветлённому и его Учению. «Я принимаю прибежище в Будде, Дхамме, Сангхе».'},
+                    {title:'Нёнгдро — подготовительные практики', icon:'📿', text:'100 000 простираний, 100 000 мантр, 100 000 подношений. Тибетский буддизм. Мантры (Ом Мани Падме Хум) и молитвенные колёса — накопление заслуг (мерита).'},
+                    {title:'Подношения', icon:'🌺', text:'Перед статуей Будды ставят: воду, цветы, благовония, свечи, фрукты. Это символ отречения от привязанностей, а не жертвоприношение.'},
+                    {title:'Дни Упосатха', icon:'🌕', text:'Дни новолуния и полнолуния — особо благоприятны для практики. Миряне соблюдают дополнительные заповеди (8 правил). Монахи проводят специальные церемонии.'},
+                    {title:'Поведение в храме', icon:'🚶', text:'Снять обувь. Не касаться статуй. Не поворачиваться спиной к Будде. Тишина в медитационном зале. В тибетском буддизме: ходить вокруг ступы по часовой стрелке.'},
+                ],
+                history:'V в. до н.э.: Будда в Сарнатхе произносит первую проповедь. III в. до н.э.: Ашока распространяет буддизм по Азии. I в.: буддизм в Китай. VI в.: Бодхидхарма, Дзен. IX в.: Боробудур. XIV в.: тибетский буддизм (Далай-Лама).',
+                changes:'Тхеравада (Юго-Восточная Азия) — строгий монашеский путь. Махаяна (Китай/Япония) — путь Бодхисатвы для всех. Ваджраяна (Тибет) — тантрические практики. XXI в.: светская медитация (mindfulness) в корпорациях.',
+            },
+            {
+                id:'hinduism', emoji:'🕉️', name:'Индуизм', place:'Мандир (Храм)', color:'#ea580c', bg:'#fff7ed', border:'#fdba74',
+                img:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Puja_of_God.jpg/800px-Puja_of_God.jpg',
+                imgCap:'Пуджа — ритуальное подношение. Статуя Ганеши, цветы, благовония, огонь.',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Angkor_Wat%2C_January_2009_%28crop%29.jpg/800px-Angkor_Wat%2C_January_2009_%28crop%29.jpg',
+                histCap:'Ангкор-Ват (Камбоджа, XII в.) — крупнейший религиозный комплекс мира. Посвящён Вишну.',
+                keyPrinciple:'Поклонение Брахману через мириады его форм. «Истина одна, мудрецы называют её по-разному».',
+                steps:[
+                    {title:'Пуджа — ритуальное поклонение', icon:'🌺', text:'Ежедневный ритуал дома и в храме. 16 шагов (упачаров): пригласить, омыть, украсить, накормить, развлечь, отпустить бога. Предметы: цветы, рис, благовония, огонь (арати), колокольчик.'},
+                    {title:'Арати — огненный обряд', icon:'🔥', text:'Вращение горящей лампады (дипы) перед образом бога. Символ Атмана (огонь) перед Брахманом (образ). Сопровождается пением бхаджанов и ударами гонга.'},
+                    {title:'Мантры', icon:'🎵', text:'«Ом» — священный звук, основа мироздания. «Гаятри-мантра» — самая важная (Ригведа). «Ом намах Шивайя», «Харе Кришна». Повторение мантры (джапа) 108 раз на чётках (рудракше).'},
+                    {title:'Паломничество (Тиртха-ятра)', icon:'🚶', text:'Варанаси (Бенарес) — священнейший город. Купание в Ганге смывает карму. Чар-Дхам — четыре священных места. Умереть в Варанаси — прямая мокша по традиции.'},
+                    {title:'Прасад', icon:'🍚', text:'Пища, освящённая перед богом. После пуджи раздаётся всем присутствующим. Принять прасад — получить благословение бога. Нельзя отказываться.'},
+                    {title:'Поведение в мандире', icon:'🛕', text:'Снять обувь. Не показывать ноги статуям богов. Сделать намасте. Не трогать статуи. Мужчины нередко с голым торсом. Женщины с покрытыми плечами. Колокольчик при входе.'},
+                ],
+                history:'~1500 до н.э.: Ведические жертвоприношения (яджны) — огонь как посредник. ~600 до н.э.: переход от жертвоприношений к медитации (Упанишады). ~200 н.э.: бхакти-движение (личная любовь к Богу). IX в.: Шанкарачарья, реформа. XII в.: Рамануджа. XIX в.: Рамакришна и Вивекананда.',
+                changes:'Ведический период: жертвоприношения животных. Классика: пуджа вместо яджны. Бхакти: эмоциональная молитва-пение. XX в.: распространение йоги на Западе. XXI в.: онлайн-пуджа через трансляции.',
+            },
+            {
+                id:'shinto', emoji:'⛩️', name:'Синтоизм', place:'Дзиндзя (Святилище)', color:'#be185d', bg:'#fdf2f8', border:'#f0abfc',
+                img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
+                imgCap:'Тории (красные ворота) храма Фусими Инари, Киото. 10 000 тории образуют туннель.',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Itsukushima_torii_angle.jpg/800px-Itsukushima_torii_angle.jpg',
+                histCap:'Святилище Ицукусима (XII в.). Тории стоит в море — символ соединения миров.',
+                keyPrinciple:'Уважение и контакт с ками — духами, населяющими природу. Чистота как путь к священному.',
+                steps:[
+                    {title:'Очищение (Темидзуя)', icon:'💧', text:'При входе в святилище — ковш воды. Порядок: левая рука → правая рука → рот → рукоятка ковша. Очищение от кегаре (нечистоты) перед встречей с ками.'},
+                    {title:'Хайдэн — зал поклонения', icon:'🏯', text:'Подойти к хайдэну, бросить монету в ящик (осайсэн-баку). Поклон 90° два раза. Два хлопка. Молчаливая молитва (собственные слова). Один поклон. Всё — в мире, без суеты.'},
+                    {title:'Молитва Норито', icon:'📜', text:'Традиционные молитвы-заклинания на классическом японском. Произносятся жрецами (кансями). Адресованы конкретным ками данного святилища.'},
+                    {title:'Омамори и Омикудзи', icon:'🎫', text:'Омамори — амулеты-обереги (здоровье, экзамены, дорога). Омикудзи — бумажка с предсказанием судьбы. Плохое предсказание привязывают к дереву — оставляют в святилище.'},
+                    {title:'Мацури — праздники', icon:'🎊', text:'Торжественные шествия с микоси (переносное святилище с ками). Музыка, танцы, уличная еда. Обон — летний праздник предков. Хацумоудэ — первый визит в Новый год.'},
+                    {title:'Поведение в святилище', icon:'🌿', text:'Спокойное, уважительное поведение. Не кричать. Фотографировать снаружи — можно, внутри — спросить разрешения. Тории — граница: проходить по центру, уступая kami-дорожку середины.'},
+                ],
+                history:'Синтоизм существовал без письменного оформления. 712 н.э.: Кодзики — первое письменное изложение мифов. 768 н.э.: святилище Касуга (Нара). Период Мэйдзи (1868): государственный синтоизм, обожествление императора. 1945: отделён от государства.',
+                changes:'До 1868: смешение с буддизмом (синбуцу сюго). 1868–1945: государственный синто — культ императора. 1945: отказ от государственного синтоизма. Сегодня: личная духовность, праздники, прагматическое отношение.',
+            },
+        ];
+
+        function WorshipModule({ apiKey }) {
+            const [sel, setSel]   = useState(WORSHIP_DATA[0]);
+            const [tab, setTab]   = useState('practice'); // practice | history | ai
+            const [aiText, setAiText] = useState('');
+            const [aiLoad, setAiLoad] = useState(false);
+
+            const askAI = async (q) => {
+                setAiLoad(true); setAiText('');
+                const r = await fetchZvenoAIAnalysis(q, `Богослужение: ${sel.name}`, apiKey);
+                setAiText(r); setAiLoad(false);
+            };
+
+            return (
+                <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+                    {/* Шапка */}
+                    <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
+                        <h2 className="text-2xl md:text-4xl font-serif font-bold mb-2">🙏 Поклонение в мировых религиях</h2>
+                        <p className="text-stone-400 text-sm md:text-lg">Как молятся в мечети, церкви, синагоге, храме — подробно, с историей изменений</p>
+                    </div>
+
+                    {/* Выбор религии */}
+                    <div className="flex flex-wrap gap-2">
+                        {WORSHIP_DATA.map(r=>(
+                            <button key={r.id} onClick={()=>{setSel(r);setAiText('');setTab('practice');}}
+                                style={sel.id===r.id?{background:r.bg,borderColor:r.border,color:r.color,borderWidth:2}:{}}
+                                className={`px-4 py-2 rounded-xl text-sm font-bold border-2 transition-all ${sel.id===r.id?'':'border-stone-200 bg-white text-stone-600 hover:border-stone-400'}`}>
+                                {r.emoji} {r.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Изображение + название */}
+                    <div className="bg-white rounded-3xl border-2 overflow-hidden" style={{borderColor:sel.border}}>
+                        <div className="relative h-56 md:h-72">
+                            <img src={sel.img} alt={sel.name} className="w-full h-full object-cover"
+                                onError={e=>{e.target.style.display='none';}}/>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+                                <div>
+                                    <span className="text-4xl">{sel.emoji}</span>
+                                    <h3 className="text-2xl md:text-3xl font-serif font-bold text-white mt-2">{sel.name}</h3>
+                                    <p className="text-stone-300 text-sm">{sel.place}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Ключевой принцип */}
+                        <div className="px-6 py-4 border-b" style={{background:sel.bg, borderColor:sel.border}}>
+                            <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:sel.color}}>⭐ Ключевой принцип</p>
+                            <p className="font-serif font-bold" style={{color:sel.color}}>{sel.keyPrinciple}</p>
+                        </div>
+                    </div>
+
+                    {/* Вкладки */}
+                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl">
+                        {[['practice','🕌 Практика и правила'],['history','📜 История изменений'],['ai','🤖 AI Анализ']].map(([k,l])=>(
+                            <button key={k} onClick={()=>setTab(k)}
+                                className={`flex-1 py-2.5 px-2 rounded-xl text-xs md:text-sm font-bold transition-all ${tab===k?'bg-white shadow text-stone-900':'text-stone-500 hover:text-stone-700'}`}>
+                                {l}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* ПРАКТИКА */}
+                    {tab==='practice' && (
+                        <div className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {sel.steps.map((step,i)=>(
+                                    <div key={i} className="bg-white rounded-2xl border p-5" style={{borderColor:sel.border}}>
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <span className="text-2xl">{step.icon}</span>
+                                            <div>
+                                                <span className="text-[10px] font-bold uppercase tracking-widest" style={{color:sel.color}}>Шаг {i+1}</span>
+                                                <h4 className="font-serif font-bold text-stone-900">{step.title}</h4>
+                                            </div>
+                                        </div>
+                                        <p className="text-stone-700 text-sm leading-relaxed">{step.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ИСТОРИЯ */}
+                    {tab==='history' && (
+                        <div className="space-y-4">
+                            {/* Историческое изображение */}
+                            <div className="bg-white rounded-2xl border overflow-hidden" style={{borderColor:sel.border}}>
+                                <div className="h-52 bg-stone-100 overflow-hidden">
+                                    <img src={sel.histImg} alt="Исторический вид" className="w-full h-full object-cover"
+                                        onError={e=>{e.target.parentNode.style.background='#f5f5f4';}}/>
+                                </div>
+                                <div className="p-4" style={{background:sel.bg}}>
+                                    <p className="text-sm font-serif text-stone-700 italic">📸 {sel.histCap}</p>
+                                </div>
+                            </div>
+                            {/* История */}
+                            <div className="bg-white rounded-2xl border p-6" style={{borderColor:sel.border}}>
+                                <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:sel.color}}>📅 Краткая история богослужения</p>
+                                <p className="text-stone-700 leading-relaxed">{sel.history}</p>
+                            </div>
+                            {/* Изменения */}
+                            <div className="bg-white rounded-2xl border p-6" style={{borderColor:sel.border}}>
+                                <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:sel.color}}>🔄 Что менялось со временем</p>
+                                <p className="text-stone-700 leading-relaxed">{sel.changes}</p>
+                            </div>
+                            {/* Сравнительная таблица */}
+                            <div className="bg-white rounded-2xl border overflow-hidden" style={{borderColor:sel.border}}>
+                                <div className="px-5 py-3 border-b" style={{background:sel.bg, borderColor:sel.border}}>
+                                    <p className="font-bold text-sm" style={{color:sel.color}}>⚖️ Сравнение с другими традициями</p>
+                                </div>
+                                <div className="p-4 overflow-x-auto">
+                                    <table className="w-full text-xs min-w-[500px]">
+                                        <thead>
+                                            <tr className="border-b border-stone-100">
+                                                <th className="text-left py-2 px-3 text-stone-400 font-bold uppercase tracking-wide">Аспект</th>
+                                                {WORSHIP_DATA.map(r=>(
+                                                    <th key={r.id} className="text-center py-2 px-2" style={{color:r.color}}>{r.emoji}</th>
+                                                ))}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {[
+                                                ['Направление молитвы', ['Мекка','Восток/Иерусалим','Иерусалим','Алтарь Будды','Статуя бога','Любое','Ками-до']],
+                                                ['Покрытие головы', ['Тюбетейка (у)', 'Платок (ж/пр)', 'Кипа (м)', 'Нет', 'Нет', 'Нет', 'Нет']],
+                                                ['Обувь', ['Снять','Нет','Нет','Снять','Снять','Снять','Снять']],
+                                                ['Изображения', ['Запрещены','Иконы/крест','Нет','Статуи','Множество','Нет','Ками-предметы']],
+                                                ['Общая молитва', ['5 раз/день','1 раз/нед','3 раза/день','Ретриты','Праздники','Периодично','Мацури']],
+                                            ].map(([aspect, vals])=>(
+                                                <tr key={aspect} className="border-b border-stone-50">
+                                                    <td className="py-2 px-3 font-bold text-stone-600 text-xs">{aspect}</td>
+                                                    {vals.map((v,i)=>(
+                                                        <td key={i} className="text-center py-2 px-2 text-stone-500 text-[10px]">{v}</td>
+                                                    ))}
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* AI */}
+                    {tab==='ai' && (
+                        <div className="space-y-4">
+                            <div className="bg-white border border-stone-200 rounded-2xl p-5 space-y-3">
+                                <p className="text-xs font-bold uppercase tracking-widest text-stone-400">🤖 Углублённый анализ</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {[
+                                        `Как изменилось богослужение в ${sel.name} за последние 500 лет?`,
+                                        `Что общего между молитвой в ${sel.name} и других религиях?`,
+                                        `Роль тела в поклонении: поклоны, простирания, позы в ${sel.name}`,
+                                        `Как современность изменила практику богослужения в ${sel.name}?`,
+                                        `Сравни концепцию «священного места» в ${sel.name} и других традициях`,
+                                        `Музыка и пение в ${sel.name} — история и значение`,
+                                    ].map(q=>(
+                                        <button key={q} onClick={()=>askAI(q)}
+                                            className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 transition-all text-left">
+                                            {q}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="flex gap-2">
+                                    <input id="wrsh-q" placeholder={`Вопрос о поклонении в ${sel.name}...`}
+                                        className="flex-1 p-3 border border-stone-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-amber-500"
+                                        onKeyDown={e=>e.key==='Enter'&&askAI(document.getElementById('wrsh-q').value)}/>
+                                    <button onClick={()=>askAI(document.getElementById('wrsh-q').value)} disabled={aiLoad}
+                                        className="px-4 py-3 bg-amber-600 text-white rounded-xl font-bold disabled:opacity-50">
+                                        {aiLoad?'...':'✨'}
+                                    </button>
+                                </div>
+                            </div>
+                            {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic p-4"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть анализирует практику поклонения...</div>}
                             {aiText && <div className="ai-content p-6 bg-white border border-stone-200 rounded-2xl shadow-sm" dangerouslySetInnerHTML={{__html:aiText}}/>}
                         </div>
                     )}
