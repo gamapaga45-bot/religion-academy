@@ -465,7 +465,7 @@
                                     <p className="text-stone-700 text-sm mb-3 font-bold">Zveno AI — OpenAI-совместимый шлюз к 200+ моделям. Оплата в рублях, без VPN.</p>
                                     <p className="text-stone-600 text-sm mb-2">С API ключом вы получите:</p>
                                     <ul className="text-sm text-stone-600 list-disc pl-5 space-y-1">
-                                        <li>✨ Глубокий AI-анализ любого стиха (GPT-4o / Claude)</li>
+                                        <li>✨ Глубокий AI-анализ любого стиха (200+ моделей)</li>
                                         <li>🔊 Высококачественное аудио TTS (HD-голоса)</li>
                                         <li>⚡ Автоматический failover между моделями</li>
                                     </ul>
@@ -637,7 +637,7 @@
                                                      justifyContent:'center', padding:'64px 0', gap:16}}>
                                             <Icons.Loader c={`w-8 h-8 ${aiModal.isBible ? 'text-amber-500' : 'text-emerald-500'}`}/>
                                             <p style={{fontWeight:700, color:'#374151', margin:0}}>ZVENO AI анализирует...</p>
-                                            <p style={{fontSize:13, color:'#9ca3af', margin:0}}>GPT-4o / Claude изучают текст</p>
+                                            <p style={{fontSize:13, color:'#9ca3af', margin:0}}>200+ моделей изучают текст</p>
                                         </div>
                                     ) : (
                                         <AiAccordion html={aiModal.html} isBible={aiModal.isBible} />
@@ -1335,7 +1335,7 @@
                         <div className="relative z-10">
                             <h2 className="text-4xl font-serif font-bold mb-3 text-white">Академия Религиоведения 🧠</h2>
                             <p className="text-stone-400 text-lg mb-8 max-w-2xl leading-relaxed">
-                                Полная платформа сравнительного изучения Библии и Корана с нейросетью <strong className="text-amber-500">ZVENO AI</strong> (GPT-4o / Claude). Оплата в рублях, без VPN.
+                                Полная платформа сравнительного изучения Библии и Корана с нейросетью <strong className="text-amber-500">ZVENO AI</strong> (200+ моделей). Оплата в рублях, без VPN.
                             </p>
                             {!apiKey && (
                                 <button onClick={()=>setShowSettings(true)} className="bg-rose-600 hover:bg-rose-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition-all flex items-center mb-6">
@@ -2162,7 +2162,7 @@
                                 <div className="flex flex-col items-center justify-center py-12 gap-3">
                                     <Icons.Loader c="w-8 h-8 text-amber-500"/>
                                     <p className="font-bold text-stone-600">Анализирую стих...</p>
-                                    <p className="text-sm text-stone-400">GPT-4o / Claude</p>
+                                    <p className="text-sm text-stone-400">200+ моделей</p>
                                 </div>
                             ) : <div className="ai-content" dangerouslySetInnerHTML={{__html: verseModal.html}}/>}
                         </div>
@@ -2801,7 +2801,7 @@
                             <Icons.Loader c="w-6 h-6 text-amber-500"/>
                             <div>
                                 <p className="font-bold">ZVENO AI анализирует...</p>
-                                <p className="text-sm">GPT-4o / Claude изучают священные тексты</p>
+                                <p className="text-sm">200+ моделей изучают священные тексты</p>
                             </div>
                         </div>
                     )}
