@@ -1838,26 +1838,60 @@
             'сулейман': ['соломон', 'мудрец', 'царь'],
         };
 
+        // Допустимые падежные окончания русских слов (чтобы не ловить "иса" в "Исаак")
+        var RU_CASE_ENDINGS = new Set([
+            '', 'а', 'е', 'ё', 'и', 'й', 'о', 'у', 'ы', 'ю', 'я',
+            'ов', 'ев', 'ей', 'ой', 'ою', 'ам', 'ах', 'ею', 'ью', 'ию',
+            'ого', 'ому', 'ому', 'ами', 'ях', 'ием', 'ий', 'ию',
+            'ый', 'ые', 'ым', 'ом', 'ую', 'яя', 'не', 'ни', 'ну',
+        ]);
+
         function expandQuery(q) {
             const terms = new Set();
             const qL = q.toLowerCase().trim();
             terms.add(qL);
-            if (SEARCH_SYNONYMS[qL]) SEARCH_SYNONYMS[qL].forEach(s => terms.add(s));
-            // частичное совпадение — ищем если запрос входит в ключ синонима
-            Object.keys(SEARCH_SYNONYMS).forEach(key => {
-                if (key.includes(qL) || qL.includes(key)) {
-                    terms.add(key);
-                    SEARCH_SYNONYMS[key].forEach(s => terms.add(s));
-                }
-            });
+            // Прямые синонимы из таблицы
+            if (SEARCH_SYNONYMS[qL]) {
+                SEARCH_SYNONYMS[qL].forEach(s => terms.add(s));
+            }
+            // Только если запрос ТОЧНО совпадает с ключом (убираем нечёткое "includes")
+            // чтобы "иса" не добавлялось при поиске "исаия"
             return Array.from(terms);
         }
 
         function matchesAny(text, terms) {
             if (!text || typeof text !== 'string') return { matched: false, term: null };
             const tL = text.toLowerCase();
-            for (const t of terms) {
-                if (tL.includes(t)) return { matched: true, term: t };
+
+            for (const term of terms) {
+                let pos = 0;
+                while (pos <= tL.length - term.length) {
+                    const idx = tL.indexOf(term, pos);
+                    if (idx === -1) break;
+
+                    // 1. Предыдущий символ не должен быть кириллической буквой
+                    //    (термин должен начинать слово)
+                    const prevChar = idx > 0 ? tL[idx - 1] : '';
+                    if (/[\u0400-\u04FF]/.test(prevChar)) {
+                        pos = idx + 1;
+                        continue;
+                    }
+
+                    // 2. После термина находим всё слово до первого не-кириллического символа
+                    const afterStart = idx + term.length;
+                    let wordEnd = afterStart;
+                    while (wordEnd < tL.length && /[\u0400-\u04FF]/.test(tL[wordEnd])) {
+                        wordEnd++;
+                    }
+                    const suffix = tL.substring(afterStart, wordEnd);
+
+                    // 3. Суффикс должен быть допустимым падежным окончанием
+                    if (RU_CASE_ENDINGS.has(suffix)) {
+                        return { matched: true, term };
+                    }
+
+                    pos = idx + 1;
+                }
             }
             return { matched: false, term: null };
         }
@@ -1947,13 +1981,23 @@
             const highlight = (text, terms) => {
                 if (!text || !terms || !terms.length) return text;
                 try {
-                    const pattern = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|');
-                    const parts = text.split(new RegExp('(' + pattern + ')', 'gi'));
-                    return parts.map((p, i) =>
-                        terms.some(t => p.toLowerCase() === t.toLowerCase())
+                    // Строим паттерн с учётом словесных границ (кириллика)
+                    // Каждый термин должен начинаться на границе слова
+                    // и заканчиваться паддежным окончанием (0-3 символа) + граница
+                    const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+                    // Паттерн: начало слова (не кириллица или начало строки) + термин + необязательное окончание
+                    const endings = '(?:[аеёийоуыюяьАЕЁИЙОУЫЮЯЬ][а-яёА-ЯЁ]{0,2})?';
+                    const pattern = '(?<![а-яёА-ЯЁ])(' + escaped.join('|') + endings + ')(?![а-яёА-ЯЁ])';
+                    const parts = text.split(new RegExp(pattern, 'gi'));
+                    const termSet = new Set(terms.map(t => t.toLowerCase()));
+                    return parts.map((p, i) => {
+                        if (!p) return null;
+                        const pL = p.toLowerCase();
+                        const isMatch = terms.some(t => pL.startsWith(t.toLowerCase()) && RU_CASE_ENDINGS.has(pL.slice(t.length)));
+                        return isMatch
                             ? <mark key={i} style={{background:'#fde68a', color:'#92400e', fontWeight:700, padding:'0 2px', borderRadius:3}}>{p}</mark>
-                            : p
-                    );
+                            : p;
+                    }).filter(Boolean);
                 } catch { return text; }
             };
 
