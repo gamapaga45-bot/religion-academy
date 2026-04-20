@@ -835,31 +835,40 @@
 
             // ФУНКЦИЯ ВЫЗОВА ZVENO AI
             const handleAiRequest = async (verseId, text) => {
-                // Если панель открыта и уже есть ответ — просто закрываем
+                // Если уже загружается — игнорируем повторный клик
+                if (isAiLoading[verseId]) return;
+
+                // Если панель открыта и есть ответ — закрываем
                 if (openComments[verseId] && aiResponses[verseId]) {
                     toggleComment(verseId);
                     return;
                 }
 
+                // Без ключа — открываем панель с подсказкой
                 if (!apiKey) {
-                    toggleComment(verseId); // открываем панель с подсказкой
-                    const hint = marked.parse("⚙️ **Укажите API ключ ZVENO AI** в настройках (иконка шестерёнки в левом меню).\n\nПолучите ключ бесплатно на [zveno.ai](https://zveno.ai).");
+                    setOpenComments(prev => ({ ...prev, [verseId]: true }));
+                    const hint = marked.parse("⚙️ **Укажите API ключ ZVENO AI** в настройках (иконка ⚙️ в левом меню).\n\nПолучите ключ на [zveno.ai](https://zveno.ai) — оплата в рублях, без VPN.");
                     setAiResponses(prev => ({ ...prev, [verseId]: hint }));
                     return;
                 }
-                
-                toggleComment(verseId);
-                if (isAiLoading[verseId]) return; // уже загружается
-                
+
+                // Открываем панель и запускаем загрузку
+                setOpenComments(prev => ({ ...prev, [verseId]: true }));
                 setIsAiLoading(prev => ({ ...prev, [verseId]: true }));
                 setAiResponses(prev => ({ ...prev, [verseId]: '' }));
-                
-                const contextInfo = isBible ? `Библия, книга «${selectedBook}», глава ${selectedChapter}, стих ${verseId}` : `Коран, сура «${selectedBook}», аят ${verseId}`;
-                
-                const aiResult = await fetchZvenoAIAnalysis(text, contextInfo, apiKey);
-                
-                setAiResponses(prev => ({ ...prev, [verseId]: aiResult }));
-                setIsAiLoading(prev => ({ ...prev, [verseId]: false }));
+
+                const contextInfo = isBible
+                    ? `Библия, книга «${selectedBook}», глава ${selectedChapter}, стих ${verseId}`
+                    : `Коран, сура «${selectedBook}», аят ${verseId}`;
+
+                try {
+                    const aiResult = await fetchZvenoAIAnalysis(text, contextInfo, apiKey);
+                    setAiResponses(prev => ({ ...prev, [verseId]: aiResult }));
+                } catch(e) {
+                    setAiResponses(prev => ({ ...prev, [verseId]: marked.parse(`❌ **Ошибка:** ${e.message}`) }));
+                } finally {
+                    setIsAiLoading(prev => ({ ...prev, [verseId]: false }));
+                }
             };
 
             return (
@@ -915,39 +924,50 @@
                             </h3>
                             
                             {Object.entries(content).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className="mb-6 group relative pr-12 transition-all">
-                                    <div className="flex items-start">
-                                        <sup className={`text-xs font-sans font-bold mt-2 mr-4 flex-shrink-0 ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}>{v}</sup>
-                                        <span className="flex-1 text-xl">{t}</span>
-                                    </div>
-                                    
-                                    {/* КНОПКИ ДЕЙСТВИЙ */}
-                                    <div className="opacity-0 group-hover:opacity-100 absolute right-0 top-1 flex flex-col gap-2 transition-opacity">
-                                        <button onClick={() => copyToClipboard(t)} className={`p-2 rounded-lg bg-stone-100/80 hover:bg-white shadow-sm border border-stone-200/50 ${isBible ? 'text-amber-600/50 hover:text-amber-600' : 'text-emerald-600/50 hover:text-emerald-600'}`} title="Копировать">
-                                            <Icons.Copy c="w-4 h-4"/>
-                                        </button>
-                                        <button onClick={() => handleAiRequest(v, t)} className={`p-2 rounded-lg bg-amber-100 hover:bg-amber-200 shadow-sm border border-amber-300 text-amber-700 font-bold flex items-center justify-center`} title={openComments[v] && aiResponses[v] ? "Закрыть анализ" : "Запросить AI Анализ (ZVENO)"}>
-                                            {openComments[v] && aiResponses[v] ? "✕" : "✨"}
-                                        </button>
+                                <div key={v} className={`mb-4 rounded-2xl border transition-all ${isAiLoading[v] ? (isBible ? 'border-amber-300 bg-amber-50/60' : 'border-emerald-300 bg-emerald-50/60') : openComments[v] ? (isBible ? 'border-amber-200 bg-amber-50/30' : 'border-emerald-200 bg-emerald-50/30') : 'border-transparent'}`}>
+                                    {/* СТИХ + КНОПКИ */}
+                                    <div className="flex items-start gap-3 p-3">
+                                        <sup className={`text-xs font-sans font-bold mt-2 flex-shrink-0 w-6 text-right ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}>{v}</sup>
+                                        <span className="flex-1 text-xl leading-relaxed">{t}</span>
+                                        <div className="flex-shrink-0 flex flex-col gap-1.5 ml-2">
+                                            <button 
+                                                onClick={() => copyToClipboard(t)} 
+                                                className={`p-2 rounded-lg bg-stone-100 hover:bg-stone-200 border border-stone-200 transition-all`} 
+                                                title="Копировать стих">
+                                                <Icons.Copy c="w-3.5 h-3.5 text-stone-400"/>
+                                            </button>
+                                            <button 
+                                                onClick={() => handleAiRequest(v, t)} 
+                                                disabled={isAiLoading[v]}
+                                                className={`p-2 rounded-lg border font-bold flex items-center justify-center transition-all disabled:cursor-wait
+                                                    ${isAiLoading[v] 
+                                                        ? 'bg-amber-200 border-amber-400 animate-pulse' 
+                                                        : openComments[v] && aiResponses[v] 
+                                                            ? 'bg-stone-200 border-stone-300 text-stone-500 hover:bg-red-50 hover:border-red-200' 
+                                                            : 'bg-amber-100 hover:bg-amber-300 border-amber-300 text-amber-700 hover:shadow-md'}`}
+                                                title={isAiLoading[v] ? 'Загружается...' : openComments[v] && aiResponses[v] ? "Закрыть анализ" : "AI Анализ (ZVENO)"}>
+                                                {isAiLoading[v] ? <Icons.Loader c="w-3.5 h-3.5 text-amber-600"/> : openComments[v] && aiResponses[v] ? <span className="text-xs">✕</span> : <span className="text-sm">✨</span>}
+                                            </button>
+                                        </div>
                                     </div>
 
                                     {/* ПАНЕЛЬ AI КОММЕНТАРИЯ */}
                                     {openComments[v] && (
-                                        <div className={`mt-4 ml-8 p-6 rounded-2xl text-sm font-sans border shadow-sm fade-in-up ${isBible ? 'bg-amber-50/80 border-amber-300 text-stone-800' : 'bg-emerald-50/80 border-emerald-300 text-stone-800'}`}>
-                                            <div className="flex items-center mb-4 pb-3 border-b border-stone-200/50">
-                                                <Icons.Sparkles c={`w-5 h-5 mr-2 ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}/>
-                                                <span className="font-bold uppercase tracking-widest text-[11px] text-stone-500">ZVENO AI: Академический разбор стиха {v}</span>
+                                        <div className={`mx-3 mb-3 p-5 rounded-xl text-sm font-sans border ${isBible ? 'bg-white border-amber-200' : 'bg-white border-emerald-200'}`}>
+                                            <div className="flex items-center justify-between mb-3 pb-2 border-b border-stone-100">
+                                                <div className="flex items-center gap-2">
+                                                    <Icons.Sparkles c={`w-4 h-4 ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}/>
+                                                    <span className="font-bold uppercase tracking-widest text-[10px] text-stone-400">ZVENO AI · Стих {v}</span>
+                                                </div>
+                                                <button onClick={() => toggleComment(v)} className="text-stone-300 hover:text-stone-500 text-xs font-bold px-2 py-0.5 rounded hover:bg-stone-100">✕</button>
                                             </div>
-                                            
                                             {isAiLoading[v] ? (
-                                                <div className="flex items-center text-stone-500 italic py-4">
-                                                    <Icons.Loader c="w-5 h-5 mr-3 text-amber-500" /> ZVENO AI анализирует стих через GPT-4o / Claude...
+                                                <div className="flex items-center gap-3 text-stone-400 italic py-3">
+                                                    <Icons.Loader c="w-4 h-4 text-amber-500"/>
+                                                    <span>ZVENO AI анализирует через GPT-4o / Claude...</span>
                                                 </div>
                                             ) : (
-                                                <div 
-                                                    className="ai-content leading-relaxed" 
-                                                    dangerouslySetInnerHTML={{ __html: aiResponses[v] || '' }} 
-                                                />
+                                                <div className="ai-content leading-relaxed" dangerouslySetInnerHTML={{ __html: aiResponses[v] || '' }}/>
                                             )}
                                         </div>
                                     )}
