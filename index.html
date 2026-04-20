@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Академия Религиоведения — Nikolai Rogozin</title>
     <meta name="author" content="Nikolai Rogozin">
-    <meta name="description" content="Сравнительное изучение Библии и Корана с AI-анализом ZVENO AI">
+    <meta name="description" content="Академия мировых религий: Библия, Коран, Буддизм, Индуизм, Даосизм и др. AI-анализ ZVENO AI. Разработано Nikolai Rogozin">
     
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -43,12 +43,47 @@
         /* Анимация аккордеона */
         .accordion-body { animation: accordionOpen 0.18s ease-out; }
         @keyframes accordionOpen { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+        /* Mobile */
+        @media (max-width: 767px) {
+            .sidebar-desktop { display: none !important; }
+            .main-mobile { margin-left: 0 !important; padding: 0 !important; }
+            .mobile-header { display: flex !important; }
+            .mobile-nav { display: flex !important; }
+            .content-pad { padding: 12px !important; }
+            .hide-mobile { display: none !important; }
+        }
+        @media (min-width: 768px) {
+            .mobile-header { display: none !important; }
+            .mobile-nav { display: none !important; }
+        }
+        .mobile-header { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+            background: #0f0f11; height: 56px; align-items: center; justify-content: space-between;
+            padding: 0 16px; border-bottom: 1px solid #27272a; }
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+            background: #0f0f11; border-top: 1px solid #27272a;
+            justify-content: space-around; padding: 8px 0 max(8px, env(safe-area-inset-bottom)); }
+        .mobile-nav-item { display: flex; flex-direction: column; align-items: center;
+            gap: 2px; padding: 4px 8px; border-radius: 8px; cursor: pointer;
+            color: #78716c; font-size: 9px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.05em; min-width: 52px; transition: color 0.15s; border: none; background: transparent; }
+        .mobile-nav-item.active { color: #f59e0b; }
+        .mobile-nav-item svg { width: 22px; height: 22px; }
+        .mobile-drawer { position: fixed; inset: 0; z-index: 40; display: flex; }
+        .mobile-drawer-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+        .mobile-drawer-panel { position: relative; width: 280px; background: #0f0f11;
+            display: flex; flex-direction: column; overflow-y: auto; }
+        /* Tablet sidebar condensed */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .sidebar-desktop { width: 200px !important; }
+            .main-tablet { margin-left: 200px !important; }
+        }
     </style>
 </head>
 <body class="text-stone-900">
     <div id="root"></div>
 
     <script type="text/babel">
+
         const { useState, useEffect, useRef } = React;
 
         const copyToClipboard = (text) => {
@@ -86,7 +121,7 @@
         };
 
         // --- БАЗОВЫЕ КОНСТАНТЫ ---
-        const BIBLE_BOOKS_RU = {
+        var BIBLE_BOOKS_RU = {
             "Genesis": "Бытие", "Exodus": "Исход", "Leviticus": "Левит", "Numbers": "Числа", "Deuteronomy": "Второзаконие",
             "Joshua": "Иисус Навин", "Judges": "Судьи", "Ruth": "Руфь", "1 Samuel": "1 Царств", "2 Samuel": "2 Царств",
             "1 Kings": "3 Царств", "2 Kings": "4 Царств", "1 Chronicles": "1 Паралипоменон", "2 Chronicles": "2 Паралипоменон",
@@ -103,7 +138,7 @@
             "3 John": "3 Иоанна", "Jude": "Иуды", "Revelation": "Откровение"
         };
 
-        const SURAH_NAMES_RU = [
+        var SURAH_NAMES_RU = [
             "Аль-Фатиха", "Аль-Бакара", "Аль Имран", "Ан-Ниса", "Аль-Маида", "Аль-Ан'ам", "Аль-А'раф", "Аль-Анфаль", "Ат-Тауба", "Йунус",
             "Худ", "Йусуф", "Ар-Ра'д", "Ибрахим", "Аль-Хиджр", "Ан-Нахль", "Аль-Исра", "Аль-Кахф", "Марьям", "Та Ха",
             "Аль-Анбия", "Аль-Хаджж", "Аль-Му'минун", "Ан-Нур", "Аль-Фуркан", "Аш-Шу'ара", "Ан-Намль", "Аль-Касас", "Аль-Анкабут", "Ар-Рум",
@@ -119,7 +154,7 @@
         ];
 
         // Полные тексты ключевых молитв как запасной вариант
-        const FALLBACK_QURAN = {
+        var FALLBACK_QURAN = {
             "1. Аль-Фатиха": {
                 "1": "Во имя Аллаха, Милостивого, Милосердного!",
                 "2": "Хвала Аллаху, Господу миров,",
@@ -145,7 +180,7 @@
             }
         };
 
-        const FALLBACK_BIBLE = {
+        var FALLBACK_BIBLE = {
             "Бытие": {
                 "1": {
                     "1": "В начале сотворил Бог небо и землю.",
@@ -179,7 +214,7 @@
             }
         };
 
-        const DEFAULT_DB = {
+        var DEFAULT_DB = {
             order: { bible: ["Бытие"], quran: ["1. Аль-Фатиха"] },
             texts: { bible: { "Бытие": { "1": { "1": "В начале сотворил Бог небо и землю." } } }, quran: { "1. Аль-Фатиха": { "1": { "1": "Во имя Аллаха, Милостивого, Милосердного!" } } } }
         };
@@ -254,6 +289,8 @@
             const [apiKeyInput, setApiKeyInput] = useState(localStorage.getItem('zveno_api_key') || '');
             // Глобальная модалка AI анализа
             const [aiModal, setAiModal] = useState(null);
+            // Мобильное меню
+            const [mobileOpen, setMobileOpen] = useState(false);
 
             const saveApiSettings = () => {
                 const key = apiKeyInput.trim();
@@ -392,46 +429,88 @@
                         </div>
                     )}
 
-                    <aside className="w-72 bg-[#0f0f11] text-stone-400 flex flex-col fixed inset-y-0 shadow-2xl z-20 border-r border-stone-800">
-                        <div className="p-8 border-b border-stone-800/60 flex flex-col justify-center h-32 relative">
-                            <h1 className="text-stone-100 font-serif text-2xl font-bold tracking-tight uppercase leading-none">Академия</h1>
-                            <span className="text-amber-600 text-xs font-sans font-bold tracking-[0.25em] mt-2">РЕЛИГИОВЕДЕНИЯ</span>
-                            <button onClick={() => { setApiKeyInput(apiKey); setShowSettings(true); }} className="absolute right-6 top-1/2 -translate-y-1/2 text-stone-600 hover:text-white transition-colors" title="Настройки API"><Icons.Settings c="w-5 h-5"/></button>
+                    {/* МОБИЛЬНАЯ ШАПКА */}
+                    <div className="mobile-header">
+                        <div className="flex items-center gap-3">
+                            <button onClick={()=>setMobileOpen(true)} className="text-stone-400 hover:text-white p-1">
+                                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                            </button>
+                            <span className="text-white font-serif font-bold text-lg uppercase tracking-tight">Академия</span>
+                            <span className="text-amber-500 text-[10px] font-bold tracking-widest">РЕЛИГИЙ</span>
                         </div>
-                        
-                        <nav className="flex-1 py-6 space-y-1 overflow-y-auto custom-scrollbar px-3">
-                            <div className="px-4 mt-2 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Обучение</span></div>
-                            <NavItem icon={Icons.Dash} label="Главная" active={view==='dashboard'} onClick={()=>setView('dashboard')} />
-                            <NavItem icon={Icons.Compare} label="Пошаговое изучение" active={view==='step'} onClick={()=>setView('step')} />
-                            <NavItem icon={Icons.Smile} label="Просто о сложном" active={view==='plain'} onClick={()=>setView('plain')} />
-                            
-                            <div className="px-4 mt-6 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Анализ</span></div>
-                            <NavItem icon={Icons.Sparkles} label="Глубокий AI анализ" active={view==='deep'} onClick={()=>setView('deep')} />
-                            <NavItem icon={Icons.Scroll} label="Манускрипты" active={view==='manuscripts'} onClick={()=>setView('manuscripts')} />
-                            <NavItem icon={Icons.Search} label="Глобальный поиск" active={view==='search'} onClick={()=>setView('search')} />
-                            <NavItem icon={Icons.Info} label="Энциклопедия" active={view==='simple'} onClick={()=>setView('simple')} />
+                        <div className="flex items-center gap-2">
+                            {dataStatus==='success' && <span className="w-2 h-2 rounded-full bg-emerald-500"/>}
+                            {dataStatus==='loading' && <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"/>}
+                            <button onClick={()=>{setApiKeyInput(apiKey);setShowSettings(true);}} className="text-stone-400 hover:text-white p-1">
+                                <Icons.Settings c="w-5 h-5"/>
+                            </button>
+                        </div>
+                    </div>
 
-                            <div className="px-4 mt-6 mb-2"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Чтение текстов</span></div>
-                            <NavItem icon={Icons.Compare} label="Параллельное чтение" active={view==='reader'} onClick={()=>setView('reader')} />
-                            <NavItem icon={Icons.Book} label="Библия (AI)" active={view==='bible'} onClick={()=>setView('bible')} />
-                            <NavItem icon={Icons.Moon} label="Коран (AI)" active={view==='quran'} onClick={()=>setView('quran')} />
-                        </nav>
-                        
-                        <div className="p-4 border-t border-stone-800/60 bg-[#161618]">
-                            <div className="flex items-center">
-                                {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-3"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">Синхронизация...</span></>}
-                                {!loading && dataStatus === 'success' && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-3"></div><span className="text-[10px] font-bold tracking-wider text-emerald-500">Базы загружены (100%)</span></>}
-                                {!loading && dataStatus === 'error' && <><div className="w-2 h-2 rounded-full bg-amber-500 mr-3"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">Офлайн режим (локальные данные)</span></>}
+                    {/* МОБИЛЬНОЕ БОКОВОЕ МЕНЮ (drawer) */}
+                    {mobileOpen && (
+                        <div className="mobile-drawer">
+                            <div className="mobile-drawer-bg" onClick={()=>setMobileOpen(false)}/>
+                            <div className="mobile-drawer-panel">
+                                <div className="p-5 border-b border-stone-800 flex items-center justify-between">
+                                    <div>
+                                        <h1 className="text-white font-serif font-bold text-xl uppercase">Академия</h1>
+                                        <span className="text-amber-500 text-[10px] font-bold tracking-widest">РЕЛИГИОВЕДЕНИЯ</span>
+                                    </div>
+                                    <button onClick={()=>setMobileOpen(false)} className="text-stone-500 hover:text-white text-xl font-bold">✕</button>
+                                </div>
+                                <nav className="flex-1 py-4 px-2 overflow-y-auto">
+                                    <SidebarNav view={view} setView={(v)=>{setView(v);setMobileOpen(false);}} loading={loading} dataStatus={dataStatus} apiKey={apiKey} setApiKeyInput={setApiKeyInput} setShowSettings={setShowSettings}/>
+                                </nav>
+                                <div className="p-4 border-t border-stone-800 text-center">
+                                    <p className="text-[9px] text-stone-600 font-bold uppercase">© Nikolai Rogozin</p>
+                                </div>
                             </div>
-                            <div className="mt-3 pt-3 border-t border-stone-800/40">
+                        </div>
+                    )}
+
+                    {/* ДЕСКТОП САЙДБАР */}
+                    <aside className="sidebar-desktop w-64 lg:w-72 bg-[#0f0f11] text-stone-400 flex flex-col fixed inset-y-0 shadow-2xl z-20 border-r border-stone-800">
+                        <div className="p-6 border-b border-stone-800/60 flex flex-col justify-center relative" style={{minHeight:'88px'}}>
+                            <h1 className="text-stone-100 font-serif text-xl lg:text-2xl font-bold tracking-tight uppercase leading-none">Академия</h1>
+                            <span className="text-amber-600 text-[10px] font-sans font-bold tracking-[0.2em] mt-1.5">РЕЛИГИОВЕДЕНИЯ</span>
+                            <button onClick={() => { setApiKeyInput(apiKey); setShowSettings(true); }} className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-600 hover:text-white transition-colors" title="Настройки API"><Icons.Settings c="w-5 h-5"/></button>
+                        </div>
+                        <nav className="flex-1 py-4 space-y-0.5 overflow-y-auto px-2">
+                            <SidebarNav view={view} setView={setView} loading={loading} dataStatus={dataStatus} apiKey={apiKey} setApiKeyInput={setApiKeyInput} setShowSettings={setShowSettings}/>
+                        </nav>
+                        <div className="p-3 border-t border-stone-800/60 bg-[#161618]">
+                            <div className="flex items-center">
+                                {loading && <><div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mr-2"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">Синхронизация...</span></>}
+                                {!loading && dataStatus==='success' && <><div className="w-2 h-2 rounded-full bg-emerald-500 mr-2"></div><span className="text-[10px] font-bold tracking-wider text-emerald-500">Базы загружены</span></>}
+                                {!loading && dataStatus==='error' && <><div className="w-2 h-2 rounded-full bg-amber-500 mr-2"></div><span className="text-[10px] font-bold tracking-wider text-amber-500">Офлайн режим</span></>}
+                            </div>
+                            <div className="mt-2 pt-2 border-t border-stone-800/40">
                                 <p className="text-[9px] text-stone-600 font-bold uppercase tracking-widest">© Разработано</p>
                                 <p className="text-[10px] text-amber-600/70 font-bold mt-0.5">Nikolai Rogozin</p>
                             </div>
                         </div>
                     </aside>
 
-                    <main className="flex-1 ml-72 p-6 md:p-10 min-h-screen bg-[#f5f4f0]">
-                        <div className="max-w-6xl mx-auto h-full">
+                    {/* МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ */}
+                    <nav className="mobile-nav">
+                        {[
+                            {v:'dashboard', icon:'🏠', label:'Главная'},
+                            {v:'religions', icon:'🌍', label:'Религии'},
+                            {v:'step', icon:'📚', label:'Учёба'},
+                            {v:'deep', icon:'✨', label:'AI'},
+                            {v:'search', icon:'🔍', label:'Поиск'},
+                        ].map(({v,icon,label})=>(
+                            <button key={v} className={`mobile-nav-item ${view===v?'active':''}`} onClick={()=>setView(v)}>
+                                <span style={{fontSize:20}}>{icon}</span>
+                                <span>{label}</span>
+                            </button>
+                        ))}
+                    </nav>
+
+                    <main className="main-tablet flex-1 ml-64 lg:ml-72 main-mobile" style={{paddingBottom:'0'}}>
+                        <div className="content-pad p-4 md:p-6 lg:p-10 min-h-screen bg-[#f5f4f0] pt-16 md:pt-6 pb-24 md:pb-6">
+                            <div className="max-w-6xl mx-auto">
                             {view === 'dashboard' && <Dashboard setView={setView} apiKey={apiKey} setShowSettings={setShowSettings} />}
                             {view === 'step' && <StepStudyModule db={db} apiKey={apiKey} />}
                             {view === 'plain' && <PlainLanguageModule apiKey={apiKey} />}
@@ -442,6 +521,9 @@
                             {view === 'reader' && <ParallelReaderModule db={db} />}
                             {view === 'bible' && <SingleReaderModule type="bible" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
                             {view === 'quran' && <SingleReaderModule type="quran" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
+                            {view === 'religions' && <WorldReligionsModule apiKey={apiKey} setAiModal={setAiModal} />}
+                            {view === 'religion_reader' && <ReligionReaderModule apiKey={apiKey} setAiModal={setAiModal} />}
+                            </div>
                         </div>
                     </main>
 
@@ -526,10 +608,241 @@
 
         function NavItem({ icon: Icon, label, active, onClick }) {
             return (
-                <button onClick={onClick} className={`w-full flex items-center px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 group ${active ? 'bg-amber-600/10 text-amber-500 shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
-                    <Icon c={`w-5 h-5 mr-4 flex-shrink-0 transition-colors ${active ? 'text-amber-500' : 'text-stone-600 group-hover:text-stone-400'}`} /> 
-                    <span className="truncate">{label}</span>
+                <button onClick={onClick} className={`w-full flex items-center px-3 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 group ${active ? 'bg-amber-600/10 text-amber-500 shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
+                    <Icon c={`w-4 h-4 mr-3 flex-shrink-0 transition-colors ${active ? 'text-amber-500' : 'text-stone-600 group-hover:text-stone-400'}`} /> 
+                    <span className="truncate text-xs lg:text-sm">{label}</span>
                 </button>
+            );
+        }
+        </script>
+
+        <script>
+        // Список мировых религий
+        var WORLD_RELIGIONS = [
+            { id:'bible', emoji:'✝️', name:'Христианство', sub:'Библия', color:'amber', desc:'Синодальный перевод, полный текст', source:'cdn' },
+            { id:'quran', emoji:'☪️', name:'Ислам', sub:'Коран', color:'emerald', desc:'Перевод Кулиева, 114 сур', source:'cdn' },
+            { id:'buddhism', emoji:'☸️', name:'Буддизм', sub:'Дхаммапада', color:'yellow', desc:'Путь Дхаммы — 423 стиха', source:'embedded' },
+            { id:'hinduism', emoji:'🕉️', name:'Индуизм', sub:'Бхагавад-гита', color:'orange', desc:'Песнь Господа, 18 глав', source:'embedded' },
+            { id:'taoism', emoji:'☯️', name:'Даосизм', sub:'Дао Дэ Цзин', color:'stone', desc:'Книга Пути и Добродетели', source:'embedded' },
+            { id:'judaism', emoji:'✡️', name:'Иудаизм', sub:'Тора', color:'blue', desc:'Пятикнижие Моисея', source:'cdn' },
+            { id:'zoroastrism', emoji:'🔥', name:'Зороастризм', sub:'Авеста', color:'red', desc:'Ясна, Гаты Заратустры', source:'embedded' },
+            { id:'confucianism', emoji:'🏮', name:'Конфуцианство', sub:'Лунь Юй', color:'rose', desc:'Беседы и суждения', source:'embedded' },
+            { id:'sikhism', emoji:'🪯', name:'Сикхизм', sub:'Гуру Грантх Сахиб', color:'purple', desc:'Священное писание сикхов', source:'embedded' },
+            { id:'shinto', emoji:'⛩️', name:'Синтоизм', sub:'Кодзики', color:'pink', desc:'Записи о деяниях древности', source:'embedded' },
+        ];
+
+        // Тексты мировых религий (встроенные)
+        var RELIGION_TEXTS = {
+            buddhism: {
+                name: 'Дхаммапада',
+                tradition: 'Буддизм',
+                language: 'Пали → Русский',
+                sections: [
+                    { title: 'Глава 1. Двоицы (Ямакавагга)', verses: {
+                        '1': 'Ум предшествует всем деяниям, ум — их владыка, ум — их творец. Если человек говорит или делает с нечистым умом, то страдание следует за ним, как колесо — за быком, тянущим повозку.',
+                        '2': 'Ум предшествует всем деяниям, ум — их владыка, ум — их творец. Если человек говорит или делает с чистым умом, то радость следует за ним, как неотступная тень.',
+                        '3': '"Он оскорбил меня, он ударил меня, он одолел меня, он ограбил меня" — у тех, кто вечно затаивает злобу, ненависть не прекращается.',
+                        '4': '"Он оскорбил меня, он ударил меня, он одолел меня, он ограбил меня" — у тех, кто не затаивает злобы, ненависть прекращается.',
+                        '5': 'Ибо никогда в этом мире ненависть не прекращается ненавистью; она прекращается только любовью. Вот вечная дхамма.',
+                        '6': 'Некоторые не знают, что нам суждено здесь погибнуть. У тех же, кто знает это, сразу прекращаются раздоры.',
+                        '7': 'Того, кто живёт в созерцании удовольствий, необузданного в чувствах, знающего меру лишь в еде, ленивого, нерешительного, — именно его сокрушает Мара, как вихрь — слабое дерево.',
+                        '8': 'Того, кто живёт без созерцания удовольствий, обузданного в чувствах, знающего меру в еде, исполненного веры и настойчивости, — именно его не может сокрушить Мара, как вихрь не в силах поколебать скалу.',
+                    }},
+                    { title: 'Глава 2. Бдительность (Аппамадавагга)', verses: {
+                        '21': 'Бдительность — путь к бессмертию. Беспечность — путь к смерти. Бдительные не умирают; беспечные подобны мертвецам.',
+                        '22': 'Мудрецы, ясно понимая это, радуются бдительности, наслаждаются в сфере благородных.',
+                        '23': 'Медитирующие, настойчивые, всегда прилагающие упорные усилия, — мудрые достигают Нирваны — несравненного успокоения.',
+                        '24': 'Чья слава возрастает, кто усерден, кто всегда помнит, чьи деяния чисты, кто поступает обдуманно, кто сдержан и живёт в соответствии с дхаммой, — того слава возрастает.',
+                        '25': 'Пусть мудрый усилием, бдительностью, дисциплиной и самообузданием создаёт себе остров, который не в силах захлестнуть никакой поток.',
+                    }},
+                    { title: 'Глава 8. Тысячи (Сахассавагга)', verses: {
+                        '100': 'Если тысяча слов составлена из бессмысленных слов, то лучше одно слово дхаммы, услышав которое, обретают спокойствие.',
+                        '101': 'Если тысяча стихов составлена из бессмысленных слов, то лучше одна строфа дхаммы, услышав которую, обретают спокойствие.',
+                        '103': 'Если тот, кто победил в бою тысячу тысяч людей, победит только себя — он и есть величайший победитель.',
+                        '104': 'Лучше победить себя, чем победить других. Ни боги, ни гандхарвы, ни Мара с Брахмой — никто не может превратить в поражение победу такого человека.',
+                    }},
+                    { title: 'Глава 20. Путь (Маггавагга)', verses: {
+                        '273': 'Лучший из путей — Восьмеричный путь. Лучшие из истин — Четыре благородные истины. Лучшая из дхамм — бесстрастие. Лучший из двуногих — Видящий.',
+                        '274': 'Этот путь — единственный; нет другого для чистоты видения. Идите по нему, и это введёт Мару в замешательство.',
+                        '275': 'Идя по нему, вы положите конец страданию. Я провозгласил вам путь, узнав, как вырвать стрелы.',
+                        '277': 'Все составное непостоянно — когда понимают это мудростью, тогда устают от страдания. Это — путь к чистоте.',
+                        '278': 'Все составное несчастливо — когда понимают это мудростью, тогда устают от страдания. Это — путь к чистоте.',
+                        '279': 'Все дхаммы безличны — когда понимают это мудростью, тогда устают от страдания. Это — путь к чистоте.',
+                    }},
+                ]
+            },
+            hinduism: {
+                name: 'Бхагавад-гита',
+                tradition: 'Индуизм',
+                language: 'Санскрит → Русский',
+                sections: [
+                    { title: 'Глава 1. Скорбь Арджуны', verses: {
+                        '1': 'Дхритараштра сказал: О Санджая, что делали мои сыновья и сыновья Панду, когда они собрались на священном поле Курукшетра, желая сражаться?',
+                        '20': 'Тогда Арджуна, стоявший между двух армий, поднял свой лук и начал смотреть на воинов Дхритараштры.',
+                        '28': 'Арджуна сказал: О Кришна, видя своих родственников и друзей, жаждущих сражаться, мои члены слабеют, мой рот пересыхает.',
+                    }},
+                    { title: 'Глава 2. Санкхья-йога', verses: {
+                        '11': 'Благословенный сказал: Хотя ты скорбишь о тех, кого не следует оплакивать, ты говоришь слова мудрости. Мудрые не скорбят ни о живых, ни об умерших.',
+                        '19': 'Тот, кто думает, что этот [дух] убивает, и тот, кто думает, что этот [дух] убивается, — оба не ведают [истины]. Этот [дух] ни убивает, ни убивается.',
+                        '20': 'Он не рождается и не умирает. Он не возникал и не возникнет. Нерождённый, постоянный, вечный, изначальный, он не убивается, когда убивается тело.',
+                        '47': 'Ты имеешь право лишь на совершение действия, но не на плоды его. Не считай себя причиной плодов своих действий и не привязывайся к бездействию.',
+                        '48': 'Пребывая в единении с Богом, совершай свои действия, отрешившись от привязанностей, и будь равно спокоен в успехе и неудаче. Равновесие называется йогой.',
+                    }},
+                    { title: 'Глава 9. Царственная тайна', verses: {
+                        '22': 'Тем, кто поклоняется Мне с преданностью, размышляя о Моей трансцендентной форме, кто постоянно занят этим, — Я несу то, чего им не хватает, и сохраняю то, что у них есть.',
+                        '26': 'Если кто с преданностью и любовью предлагает Мне листок, цветок, плод или воду, Я принимаю это подношение от этого человека с чистым сердцем.',
+                        '27': 'Что бы ты ни делал, что бы ни ел, что бы ни жертвовал и ни дарил, что бы ни совершал в виде аскезы — делай это как подношение Мне, о сын Кунти.',
+                    }},
+                    { title: 'Глава 18. Освобождение через отречение', verses: {
+                        '65': 'Думай обо Мне, стань Моим преданным, поклоняйся Мне, склоняйся передо Мной. Так ты придёшь ко Мне. Я обещаю тебе это истинно, потому что ты Мой возлюбленный.',
+                        '66': 'Оставь все разновидности религии и просто предайся Мне. Я освобожу тебя от всех последствий греха. Не бойся.',
+                        '78': 'Где бы ни был Кришна, повелитель всех мистиков, и где бы ни был Арджуна, величайший лучник, — там, несомненно, будут богатство, победа, необычайная сила и нравственность.',
+                    }},
+                ]
+            },
+            taoism: {
+                name: 'Дао Дэ Цзин',
+                tradition: 'Даосизм',
+                language: 'Китайский → Русский',
+                sections: [
+                    { title: 'Часть I. О Пути (Дао)', verses: {
+                        '1': 'Дао, которое может быть выражено словами, не есть вечное Дао. Имя, которое может быть названо, не есть вечное имя. Безымянное есть начало неба и земли.',
+                        '2': 'Когда все в Поднебесной знают, что прекрасное является прекрасным, появляется и безобразие. Когда все знают, что доброе является добрым, возникает и зло.',
+                        '8': 'Высшее добро подобно воде. Вода приносит пользу всем существам и не борется. Она находится там, где люди не хотят быть. Поэтому она похожа на Дао.',
+                        '11': 'Тридцать спиц соединяются в одной ступице колеса — в пустоте этой ступицы и заключается польза колеса. Лепят посуду из глины — в пустоте этой посуды и заключается её польза.',
+                        '16': 'Добейся полной пустоты, храни полный покой. Все вещи совместно возникают — и я смотрю на их возвращение. Вещи расцветают многообразно, но все возвращаются к своему корню.',
+                    }},
+                    { title: 'Часть II. О Силе (Дэ)', verses: {
+                        '33': 'Знающий людей — мудр. Знающий себя — просветлён. Побеждающий людей — силён. Побеждающий самого себя — могуществен.',
+                        '44': 'Что нам ближе — имя или тело? Что нам дороже — тело или богатство? Что тяжелее — обретение или утрата? Чрезмерная любовь порождает большую расточительность.',
+                        '55': 'Кто обладает добродетелью, тот подобен новорождённому младенцу. Ядовитые насекомые его не кусают, хищные звери не задирают, хищные птицы не хватают когтями.',
+                        '64': 'Спокойное легко сохранить. Ещё не проявившееся легко предупредить. Хрупкое легко разрушить. Мелкое легко рассеять. Действуй тогда, когда ещё нет событий.',
+                        '78': 'В мире нет ничего мягче и нежнее воды. Но в преодолении твёрдого и крепкого ничто не может победить воду. Мягкое побеждает твёрдое, слабое побеждает сильное.',
+                        '81': 'Правдивые слова не изящны. Изящные слова не правдивы. Добрые не красноречивы. Красноречивые не добры. Знающие не учёны. Учёные не знают.',
+                    }},
+                ]
+            },
+            zoroastrism: {
+                name: 'Гаты Заратустры (Авеста)',
+                tradition: 'Зороастризм',
+                language: 'Авестийский → Русский',
+                sections: [
+                    { title: 'Ясна 28. Первая Гата — Ахунаваити', verses: {
+                        '1': 'С простёртыми руками молюсь я, о Мазда, прежде всего о добрых делах праведного духа, о, Истина, в котором пребывает Воху Ману; к владыке жизни взываю, чтобы угодить Ахуре.',
+                        '2': 'Приди ко мне с Лучшим умом! Даруй мне, о Мазда и Истина, то, что является лучшей [вещью] существования, — мощь и долговечность, — дабы мог я дать благополучие скоту и людям.',
+                        '5': 'О Мазда, дай мне по своей Истине то, чего жаждет мой ум, — величие Воху Ману через познание Тебя и через Слово.',
+                    }},
+                    { title: 'Ясна 30. Учение о двух духах', verses: {
+                        '3': 'В начале были два духа, два близнеца, известные своей противоположностью в мысли, слове и деле, добрый и злой. И из этих двух добродетельные делают правильный выбор, но не злодеи.',
+                        '4': 'Когда эти два духа встретились впервые, один создал жизнь, другой — небытие. И в конце мира злодеев ждёт худшее существование, а праведников — лучшее.',
+                        '9': 'Тогда, воистину, на злой выбор придёт возмездие, когда к тебе приидет могущество твоего Доброго Царства, о Мазда, — к тем, кому мудрость была дана вместе с Истиной.',
+                    }},
+                    { title: 'Ясна 45. Вторая проповедь', verses: {
+                        '1': 'Итак, возвещу то, чему внимают ищущие. Хвалы и молитвы для Почитаемого Мудрого, красоты блаженного и благого через Истину, пусть достигнут небес — вы, кто хочет слышать.',
+                        '5': 'Ахура создал Корову, он — создатель Истины и Ослепительного Огня. Плодом Благого Ума является благочестие.',
+                        '8': 'Кто угождает Ахуре Мазде, оказывает поддержку Истине, кто благ по своей воле, тому он обещает здоровье тела, долговечность жизни и благожелательность Воху Ману.',
+                    }},
+                ]
+            },
+            confucianism: {
+                name: 'Лунь Юй (Беседы и суждения)',
+                tradition: 'Конфуцианство',
+                language: 'Китайский → Русский',
+                sections: [
+                    { title: 'Глава 1. Учиться', verses: {
+                        '1': 'Учитель сказал: Учиться и постоянно повторять изученное — разве это не приятно? Когда приходят друзья издалека — разве это не радостно? Не сердиться, когда люди не замечают тебя — разве это не благородство?',
+                        '2': 'Юцзы сказал: Редко бывает, чтобы человек, почитающий родителей и старших братьев, был склонен перечить вышестоящим. Никогда не бывало, чтобы нелюбящий перечить создавал беспорядки.',
+                        '4': 'Цзэн-цзы сказал: Каждодневно я испытываю себя в трёх делах: верен ли я людям в своих поступках? Искренен ли с друзьями? Повторил ли то, чему учил учитель?',
+                        '14': 'Учитель сказал: Благородный муж не печётся о сытости, не заботится о покое жилища, деятелен в деле и осторожен в речах; он обращается к имеющим путь, чтобы выправиться. О таком можно говорить, что он любит учёность.',
+                    }},
+                    { title: 'Глава 2. Правление', verses: {
+                        '1': 'Учитель сказал: Управлять с помощью добродетели — всё равно что быть Полярной звездой: она стоит на своём месте, а все остальные звёзды обращаются вокруг неё.',
+                        '4': 'Учитель сказал: В пятнадцать лет я думал только об учёбе. В тридцать лет я стал самостоятельным. В сорок — у меня не было сомнений. В пятьдесят я познал веления Неба. В шестьдесят мой слух воспринимал истину. В семьдесят я мог следовать желаниям сердца, не нарушая меры.',
+                        '11': 'Учитель сказал: Тот, кто, повторяя старое, узнаёт новое, может быть учителем людей.',
+                    }},
+                    { title: 'Глава 12. Гуманность (Жэнь)', verses: {
+                        '1': 'Янь Юань спросил о гуманности. Учитель сказал: Сдерживать себя, чтобы всё соответствовало ритуалу — это и есть гуманность. Если хоть один день сдерживать себя ради ритуала, весь мир обратится к гуманности.',
+                        '2': 'Чжун-гун спросил о гуманности. Учитель сказал: Выходя из дома — держись так, словно принимаешь почётного гостя. Пользуясь услугами людей — держись так, словно совершаешь важный обряд. Не делай другим того, чего себе не желаешь.',
+                        '22': 'Фань Чи спросил о гуманности. Учитель сказал: Любить людей. Он спросил о знании. Учитель сказал: Знать людей.',
+                    }},
+                ]
+            },
+            sikhism: {
+                name: 'Гуру Грантх Сахиб (фрагменты)',
+                tradition: 'Сикхизм',
+                language: 'Гурмукхи → Русский',
+                sections: [
+                    { title: 'Джапджи Сахиб — Утренняя молитва', verses: {
+                        '1': 'Есть один Бог. Его имя — Истина. Он — Творец. Бесстрашный. Без ненависти. Бессмертный. Нерождённый. Самосущный. Велик Его Guru.',
+                        '2': 'Прежде сотворения был Он. В начале был Он. Он есть сейчас, о Нанак, Он и далее будет вечным.',
+                        '3': 'Нельзя постичь Его мышлением, даже если мыслить миллионы раз. Нельзя постичь молчанием умственного созерцания. Нельзя утолить голод мирскими желаниями, даже если накопить огромные богатства.',
+                        '4': 'Как можно стать истинным? Как можно разорвать завесу лжи? Нанак говорит: повинуясь воле Бога — пути, предначертанному Им.',
+                        '5': 'Он создан по Его воле, Его воля несказуема. По Его воле созданы существа, по Его воле — слава. По Его воле одни высоки, другие низки; по Его воле одни страдают, другие наслаждаются милостью. По Его воле одни обретают благодать, другие вечно вращаются в круге рождений и смертей. Всё под Его волей, ничего вне Его воли. Нанак говорит: кто понял Его волю — тот не говорит «я».',
+                    }},
+                    { title: 'Раги (Гимны Гуру Нанака)', verses: {
+                        '10': 'Бог один, но многих имён Он. Он — Создатель всего сущего. Его нет нужды бояться. Он не в ненависти. Он — вечный. Вне рождения. Самосущий. Постигается милостью Гуру.',
+                        '11': 'Загрязнение ума — алчность и гордость. Ложь и лицемерие — грех величайший. Молитва Богу, говорит Нанак, — вот истинное омовение.',
+                        '12': 'Истина выше всего, но выше Истины — жизнь в Истине. Если разум чист, можно увидеть Бога везде.',
+                    }},
+                ]
+            },
+            shinto: {
+                name: 'Кодзики (Записи о деяниях древности)',
+                tradition: 'Синтоизм',
+                language: 'Японский → Русский',
+                sections: [
+                    { title: 'Эпоха богов (Камицуё)', verses: {
+                        '1': 'В начале, когда небо и земля только разделились, имена богов, рождённых в Равнине Высокого Неба, были таковы: первым появился Амэ-но Минакануси-но Ками — Владыка Священного Центра Небес.',
+                        '2': 'Затем — Такамимусуби-но Ками — Бог Высокого Творения. Затем — Камимусуби-но Ками — Бог Божественного Творения. Эти три бога — Единые Боги Незримые.',
+                        '3': 'Изанаги и Изанами, стоя на Плавучем Небесном Мосту, погрузили Небесное Яшмовое Копьё в воды и помешали ими. Когда копьё вынули, капли, упавшие с него, стали первым островом Оногоро.',
+                    }},
+                    { title: 'Учение о ками', verses: {
+                        '10': 'Ками — это природные силы, которые наполняют мир. В горах и реках, в деревьях и камнях, в ветре и море — везде присутствует ками. Всё живое и неживое наделено духом.',
+                        '11': 'Очищение (михарай) и искренность сердца (макото-но кокоро) — основа отношений человека с ками. Чистое сердце привлекает благодать богов, нечистое отталкивает её.',
+                        '12': 'Природа в Японии — священна. Каждый холм, каждое дерево может быть обителью ками. Поэтому японцы издревле не строили постоянных святилищ — ками и так повсюду.',
+                    }},
+                    { title: 'Молитвы норито', verses: {
+                        '20': 'Я произношу слова великого ритуала очищения. Пусть грехи и нечистота, совершённые небесными и земными людьми, будут услышаны и унесены великой богиней Сэоридзимэ.',
+                        '21': 'О Великая богиня Аматэрасу, освещающая небеса! Пусть твой свет осветит всё живое на восьми великих островах. Пусть люди живут в мире и согласии под твоим покровительством.',
+                    }},
+                ]
+            },
+        };
+        </script>
+
+        <script type="text/babel">
+        // Компонент: Навигация сайдбара (общий для desktop и mobile)
+        function SidebarNav({ view, setView, apiKey, setApiKeyInput, setShowSettings }) {
+            const NI = ({icon: Icon, label, v}) => (
+                <button onClick={()=>setView(v)} className={`w-full flex items-center px-3 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 group ${view===v ? 'bg-amber-600/10 text-amber-500' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
+                    <Icon c={`w-4 h-4 mr-3 flex-shrink-0 ${view===v?'text-amber-500':'text-stone-600 group-hover:text-stone-400'}`}/>
+                    <span className="truncate text-xs lg:text-sm">{label}</span>
+                </button>
+            );
+            return (
+                <div className="space-y-0.5">
+                    <div className="px-3 pt-2 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Обучение</span></div>
+                    <NI icon={Icons.Dash} label="Главная" v="dashboard"/>
+                    <NI icon={Icons.Compare} label="Пошаговое изучение" v="step"/>
+                    <NI icon={Icons.Smile} label="Просто о сложном" v="plain"/>
+                    <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Анализ</span></div>
+                    <NI icon={Icons.Sparkles} label="Глубокий AI анализ" v="deep"/>
+                    <NI icon={Icons.Scroll} label="Манускрипты" v="manuscripts"/>
+                    <NI icon={Icons.Search} label="Глобальный поиск" v="search"/>
+                    <NI icon={Icons.Info} label="Энциклопедия" v="simple"/>
+                    <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Мировые религии</span></div>
+                    <NI icon={Icons.Book} label="Все религии мира" v="religions"/>
+                    <NI icon={Icons.Compare} label="Параллельное чтение" v="reader"/>
+                    <div className="px-3 pt-4 pb-1"><span className="text-[10px] font-bold text-stone-600 uppercase tracking-widest">Тексты</span></div>
+                    <NI icon={Icons.Book} label="Библия (AI)" v="bible"/>
+                    <NI icon={Icons.Moon} label="Коран (AI)" v="quran"/>
+                    <NI icon={Icons.Heart} label="Читать религию..." v="religion_reader"/>
+                    {!apiKey && (
+                        <button onClick={()=>setShowSettings(true)} className="w-full mt-4 mx-auto flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-amber-500 text-xs font-bold transition-all hover:bg-amber-600/20">
+                            <Icons.Key c="w-3.5 h-3.5"/> Подключить AI
+                        </button>
+                    )}
+                </div>
             );
         }
 
@@ -685,6 +998,7 @@
                             {view:'plain', icon:'💬', title:'Просто о сложном', desc:'Сотворение, грех, Иисус/Иса, молитва, заповеди — объяснено понятно и глубоко.', color:'blue'},
                             {view:'deep', icon:'🔬', title:'Глубокий AI анализ', desc:'8 больших тем: академический разбор нейросетью с цитатами, богословием и историей.', color:'purple'},
                             {view:'manuscripts', icon:'📜', title:'Манускрипты и оригиналы', desc:'Синайский кодекс, Свитки Мёртвого моря, Коран Топкапы — с фото и оригинальными текстами.', color:'stone'},
+                            {view:'religions', icon:'🌍', title:'Мировые религии', desc:'10 традиций: Буддизм, Индуизм, Даосизм, Зороастризм, Конфуцианство, Сикхизм, Синто и другие с полными текстами.', color:'purple'},
                             {view:'reader', icon:'⚖️', title:'Параллельное чтение', desc:'Библия и Коран рядом. Выберите главу и суру — читайте одновременно.', color:'emerald'},
                             {view:'search', icon:'🔍', title:'Глобальный поиск', desc:'Найдите любое слово в полных текстах Библии и Корана одновременно.', color:'rose'},
                         ].map(item => (
@@ -956,7 +1270,9 @@
                 </div>
             );
         }
+        </script>
 
+        <script type="text/babel">
         // --- МОДУЛЬ ЧТЕНИЯ С ИНТЕГРАЦИЕЙ ZVENO AI ---
         function SingleReaderModule({ type, db, apiKey, setAiModal }) {
             const isBible = type === 'bible';
@@ -1228,7 +1544,9 @@
                 </div>
             );
         }
+        </script>
 
+        <script type="text/babel">
         // =====================================================================
         // МОДУЛЬ 1: ПОШАГОВОЕ ИЗУЧЕНИЕ СО СРАВНЕНИЕМ
         // =====================================================================
@@ -1845,9 +2163,299 @@
                 </div>
             );
         }
+        </script>
+
+        <script type="text/babel">
+        // ═══ МОДУЛЬ: МИРОВЫЕ РЕЛИГИИ ═══
+        function WorldReligionsModule({ apiKey, setAiModal }) {
+            const [selReligion, setSelReligion] = useState(null);
+            const [aiText, setAiText] = useState('');
+            const [aiLoad, setAiLoad] = useState(false);
+            const [tab, setTab] = useState('overview'); // overview | texts | compare
+
+            const colors = {
+                amber:'bg-amber-50 border-amber-200 text-amber-800',
+                emerald:'bg-emerald-50 border-emerald-200 text-emerald-800',
+                yellow:'bg-yellow-50 border-yellow-200 text-yellow-800',
+                orange:'bg-orange-50 border-orange-200 text-orange-800',
+                stone:'bg-stone-100 border-stone-300 text-stone-700',
+                blue:'bg-blue-50 border-blue-200 text-blue-800',
+                red:'bg-red-50 border-red-200 text-red-800',
+                rose:'bg-rose-50 border-rose-200 text-rose-800',
+                purple:'bg-purple-50 border-purple-200 text-purple-800',
+                pink:'bg-pink-50 border-pink-200 text-pink-800',
+            };
+
+            const askAI = async (q) => {
+                setAiLoad(true); setAiText('');
+                const r = await fetchZvenoAIAnalysis(q, `Религия: ${selReligion?.name}`, apiKey);
+                setAiText(r); setAiLoad(false);
+            };
+
+            if (!selReligion) return (
+                <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+                    <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
+                        <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">🌍 Мировые Религии</h2>
+                        <p className="text-stone-400 text-sm md:text-lg">Полные священные тексты, AI-анализ и сравнение 10 великих духовных традиций человечества</p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {WORLD_RELIGIONS.map(r => (
+                            <button key={r.id} onClick={()=>setSelReligion(r)}
+                                className={`p-5 rounded-2xl border-2 text-left transition-all hover:shadow-lg hover:scale-[1.02] bg-white border-stone-200 hover:border-stone-400`}>
+                                <div className="flex items-center gap-3 mb-3">
+                                    <span className="text-4xl">{r.emoji}</span>
+                                    <div>
+                                        <p className="font-serif font-bold text-stone-900 text-lg">{r.name}</p>
+                                        <p className="text-xs font-bold text-stone-400 uppercase tracking-widest">{r.sub}</p>
+                                    </div>
+                                </div>
+                                <p className="text-sm text-stone-500">{r.desc}</p>
+                                <div className="mt-3 flex items-center gap-2">
+                                    <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full ${colors[r.color]}`}>Читать →</span>
+                                    {r.source==='cdn' && <span className="text-[10px] text-emerald-600 font-bold">Полный текст</span>}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                    <div className="bg-white border border-stone-200 rounded-2xl p-6">
+                        <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">🔬 Сравнительный AI-анализ</p>
+                        <div className="flex flex-wrap gap-2 mb-3">
+                            {['Что объединяет все религии?','Как разные религии объясняют смерть?','Бог в разных религиях — сравнение','Этика и нравственность в мировых религиях'].map(q=>(
+                                <button key={q} onClick={()=>{setSelReligion({name:'Все религии',emoji:'🌍'});askAI(q);}}
+                                    className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 transition-all text-left">
+                                    {q}
+                                </button>
+                            ))}
+                        </div>
+                        {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic py-3"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть анализирует...</div>}
+                        {aiText && <div className="ai-content mt-3 p-4 bg-stone-50 rounded-xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiText}}/>}
+                    </div>
+                </div>
+            );
+
+            const rel = selReligion;
+            const texts = RELIGION_TEXTS[rel.id];
+
+            return (
+                <div className="fade-in-up space-y-4 pb-20 md:pb-6">
+                    <div className="flex items-center gap-3">
+                        <button onClick={()=>{setSelReligion(null);setAiText('');}} className="p-2 rounded-xl bg-white border border-stone-200 hover:bg-stone-100 transition-all">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+                        </button>
+                        <div className="flex items-center gap-3">
+                            <span className="text-3xl">{rel.emoji}</span>
+                            <div>
+                                <h2 className="font-serif font-bold text-xl md:text-2xl text-stone-900">{rel.name}</h2>
+                                <p className="text-xs text-stone-400 font-bold uppercase">{rel.sub}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl overflow-x-auto">
+                        {[['overview','📖 Обзор'],['texts','📜 Тексты'],['analysis','🔬 AI Анализ'],['compare','⚖️ Сравнение']].map(([k,l])=>(
+                            <button key={k} onClick={()=>setTab(k)}
+                                className={`flex-shrink-0 py-2 px-3 md:px-4 rounded-xl text-xs md:text-sm font-bold transition-all ${tab===k?'bg-white shadow-sm text-stone-900':'text-stone-500 hover:text-stone-700'}`}>
+                                {l}
+                            </button>
+                        ))}
+                    </div>
+
+                    {tab==='overview' && (
+                        <div className="bg-white rounded-2xl border border-stone-200 p-5 md:p-8 space-y-6">
+                            <div>
+                                <h3 className="font-serif font-bold text-xl mb-3">{rel.emoji} {rel.name}</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    {[
+                                        rel.id==='bible' && ['Последователей','2.4 млрд','✝️'],
+                                        rel.id==='quran' && ['Последователей','1.8 млрд','☪️'],
+                                        rel.id==='buddhism' && ['Последователей','500 млн','☸️'],
+                                        rel.id==='hinduism' && ['Последователей','1.2 млрд','🕉️'],
+                                        rel.id==='taoism' && ['Последователей','12 млн','☯️'],
+                                        rel.id==='zoroastrism' && ['Последователей','150 тыс','🔥'],
+                                        rel.id==='confucianism' && ['Последователей','6 млн','🏮'],
+                                        rel.id==='sikhism' && ['Последователей','30 млн','🪯'],
+                                        rel.id==='shinto' && ['Последователей','4 млн','⛩️'],
+                                        rel.id==='judaism' && ['Последователей','15 млн','✡️'],
+                                    ].filter(Boolean).map(([l,v,e])=>(
+                                        <div key={l} className="bg-stone-50 rounded-xl p-3 text-center border border-stone-100">
+                                            <p className="text-2xl">{e}</p>
+                                            <p className="font-bold text-stone-900 text-sm">{v}</p>
+                                            <p className="text-[10px] text-stone-400 uppercase">{l}</p>
+                                        </div>
+                                    ))}
+                                    <div className="bg-stone-50 rounded-xl p-3 text-center border border-stone-100">
+                                        <p className="text-2xl">📚</p>
+                                        <p className="font-bold text-stone-900 text-sm">{texts ? texts.sections.length + ' разделов' : 'Полная база'}</p>
+                                        <p className="text-[10px] text-stone-400 uppercase">Священный текст</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                                <button onClick={()=>askAI(`Дай подробный обзор религии ${rel.name}: история, основатели, ключевые идеи, священные тексты, практики, сколько последователей`)}
+                                    className="w-full py-3 bg-stone-900 hover:bg-stone-700 text-white rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2">
+                                    <Icons.Sparkles c="w-4 h-4"/> Получить AI-обзор {rel.name}
+                                </button>
+                                {aiLoad && <div className="mt-3 flex items-center gap-2 text-stone-400 italic"><Icons.Loader c="w-4 h-4 text-amber-500"/> Анализирую...</div>}
+                                {aiText && <div className="mt-3 ai-content" dangerouslySetInnerHTML={{__html: aiText}}/>}
+                            </div>
+                        </div>
+                    )}
+
+                    {tab==='texts' && (
+                        <div className="space-y-4">
+                            {(rel.id==='bible' || rel.id==='quran' || rel.id==='judaism') ? (
+                                <div className="bg-white rounded-2xl border border-stone-200 p-6 text-center">
+                                    <p className="text-4xl mb-4">{rel.emoji}</p>
+                                    <h3 className="font-serif font-bold text-xl mb-2">{rel.sub} — Полный текст</h3>
+                                    <p className="text-stone-500 mb-4">Полный текст доступен в разделе «Библия» или «Коран» с AI-анализом каждого стиха</p>
+                                    <div className="flex gap-3 justify-center flex-wrap">
+                                        {rel.id==='bible' && <button onClick={()=>setSelReligion({...rel, _goto:'bible'})} className="px-6 py-3 bg-amber-600 text-white rounded-xl font-bold">Читать Библию →</button>}
+                                        {rel.id==='quran' && <button onClick={()=>setSelReligion({...rel, _goto:'quran'})} className="px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold">Читать Коран →</button>}
+                                    </div>
+                                </div>
+                            ) : texts ? (
+                                texts.sections.map((sec, si) => (
+                                    <div key={si} className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
+                                        <div className={`px-5 py-3 border-b ${colors[rel.color]}`}>
+                                            <h4 className="font-serif font-bold text-sm">{sec.title}</h4>
+                                            <p className="text-[10px] opacity-70 mt-0.5">{texts.language}</p>
+                                        </div>
+                                        <div className="p-5 font-serif space-y-4">
+                                            {Object.entries(sec.verses).map(([vn, vt]) => (
+                                                <div key={vn} className="flex gap-3 group">
+                                                    <sup className="text-xs font-sans font-bold mt-1.5 flex-shrink-0 w-5 text-stone-400">{vn}</sup>
+                                                    <span className="flex-1 leading-relaxed text-stone-800">{vt}</span>
+                                                    <button onClick={()=>setAiModal({verseId:vn, verseText:vt, label:`${texts.name} ${sec.title} ст.${vn}`, isBible:false, html:'', loading:true})}
+                                                        className="flex-shrink-0 px-2 py-1 rounded-lg bg-amber-100 hover:bg-amber-300 border border-amber-200 text-amber-700 text-xs font-bold opacity-0 group-hover:opacity-100 transition-all self-start mt-1"
+                                                        title="AI Анализ">✨</button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))
+                            ) : <div className="bg-white rounded-2xl p-8 text-center text-stone-400">Тексты загружаются...</div>}
+                        </div>
+                    )}
+
+                    {tab==='analysis' && (
+                        <div className="bg-white border border-stone-200 rounded-2xl p-5 md:p-6 space-y-4">
+                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400">🔬 AI-анализ: {rel.name}</p>
+                            <div className="flex flex-wrap gap-2">
+                                {[
+                                    `Ключевые концепции и учения ${rel.name}`,
+                                    `История возникновения ${rel.name}`,
+                                    `Священные практики и ритуалы ${rel.name}`,
+                                    `${rel.name} и современность`,
+                                    `Этика и мораль в ${rel.name}`,
+                                ].map(q=>(
+                                    <button key={q} onClick={()=>askAI(q)}
+                                        className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 transition-all text-left">
+                                        {q}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="flex gap-2">
+                                <input id="rel-q" placeholder={`Спросить об ${rel.name}...`}
+                                    className="flex-1 p-3 border border-stone-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-amber-500"
+                                    onKeyDown={e=>e.key==='Enter'&&askAI(document.getElementById('rel-q').value)}/>
+                                <button onClick={()=>askAI(document.getElementById('rel-q').value)}
+                                    disabled={aiLoad}
+                                    className="px-4 py-3 bg-amber-600 text-white rounded-xl font-bold text-sm disabled:opacity-50">
+                                    {aiLoad?'...':'✨'}
+                                </button>
+                            </div>
+                            {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть анализирует...</div>}
+                            {aiText && <div className="ai-content p-4 bg-stone-50 rounded-xl border border-stone-200" dangerouslySetInnerHTML={{__html:aiText}}/>}
+                        </div>
+                    )}
+
+                    {tab==='compare' && (
+                        <div className="bg-white border border-stone-200 rounded-2xl p-5 md:p-6 space-y-4">
+                            <p className="text-xs font-bold uppercase tracking-widest text-stone-400">⚖️ Сравнение с другими религиями</p>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                {WORLD_RELIGIONS.filter(r=>r.id!==rel.id).map(r2=>(
+                                    <button key={r2.id}
+                                        onClick={()=>askAI(`Подробно сравни ${rel.name} (${rel.sub}) и ${r2.name} (${r2.sub}): сходства, различия, отношение к Богу, этика, загробная жизнь, священные тексты`)}
+                                        className="p-3 rounded-xl border border-stone-200 hover:border-amber-300 hover:bg-amber-50 text-left transition-all">
+                                        <span className="text-xl block">{r2.emoji}</span>
+                                        <span className="text-xs font-bold text-stone-700">{r.emoji} vs {r2.emoji}</span>
+                                        <span className="block text-[10px] text-stone-400">{r2.name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                            {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic"><Icons.Loader c="w-4 h-4 text-amber-500"/> Сравниваю...</div>}
+                            {aiText && <div className="ai-content p-4 bg-stone-50 rounded-xl border border-stone-200 mt-4" dangerouslySetInnerHTML={{__html:aiText}}/>}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // ═══ МОДУЛЬ: ЧИТАЛКА ДЛЯ ЛЮБОЙ РЕЛИГИИ ═══
+        function ReligionReaderModule({ apiKey, setAiModal }) {
+            const [selId, setSelId] = useState(WORLD_RELIGIONS[2].id);
+            const rel = WORLD_RELIGIONS.find(r=>r.id===selId) || WORLD_RELIGIONS[2];
+            const texts = RELIGION_TEXTS[rel.id];
+
+            return (
+                <div className="space-y-4 pb-20 md:pb-6">
+                    <div className="bg-white border border-stone-200 rounded-2xl p-4">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Выберите традицию</p>
+                        <div className="flex flex-wrap gap-2">
+                            {WORLD_RELIGIONS.filter(r=>RELIGION_TEXTS[r.id]).map(r=>(
+                                <button key={r.id} onClick={()=>setSelId(r.id)}
+                                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${selId===r.id?'bg-stone-900 text-white border-stone-900':'bg-white border-stone-200 text-stone-600 hover:border-stone-400'}`}>
+                                    {r.emoji} {r.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
+                        <div className="p-4 border-b border-stone-100 flex items-center gap-3">
+                            <span className="text-2xl">{rel.emoji}</span>
+                            <div>
+                                <h3 className="font-serif font-bold text-lg">{texts?.name}</h3>
+                                <p className="text-xs text-stone-400">{texts?.language} · {rel.tradition}</p>
+                            </div>
+                        </div>
+
+                        {texts ? (
+                            <div className="p-4 md:p-6 font-serif space-y-8">
+                                {texts.sections.map((sec, si) => (
+                                    <div key={si}>
+                                        <h4 className="font-sans font-bold text-xs uppercase tracking-widest text-stone-400 mb-4 pb-2 border-b">{sec.title}</h4>
+                                        {Object.entries(sec.verses).map(([vn, vt]) => (
+                                            <div key={vn} className="mb-4 flex gap-3 group hover:bg-stone-50/80 rounded-xl p-2 -mx-2 transition-all">
+                                                <sup className="text-xs font-sans font-bold mt-1.5 flex-shrink-0 w-5 text-amber-500 text-right">{vn}</sup>
+                                                <span className="flex-1 text-lg leading-relaxed text-stone-800">{vt}</span>
+                                                <button
+                                                    onClick={async()=>{
+                                                        setAiModal({verseId:vn, verseText:vt, label:`${texts.name}, ${sec.title}, ст.${vn}`, isBible:false, html:'', loading:true});
+                                                        const r = await fetchZvenoAIAnalysis(vt, `${rel.tradition}, ${texts.name}, ${sec.title}, стих ${vn}`, apiKey);
+                                                        setAiModal({verseId:vn, verseText:vt, label:`${texts.name}, ${sec.title}, ст.${vn}`, isBible:false, html:r, loading:false});
+                                                    }}
+                                                    className="flex-shrink-0 px-2 py-1 rounded-lg bg-amber-100 hover:bg-amber-300 border border-amber-200 text-amber-700 text-xs font-bold opacity-0 group-hover:opacity-100 transition-all self-start mt-1">
+                                                    ✨ AI
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="p-8 text-center text-stone-400">
+                                <p className="text-4xl mb-3">{rel.emoji}</p>
+                                <p>Полный текст {rel.sub} доступен в разделе «Библия» или «Коран»</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-    </script>
+        </script>
 </body>
 </html>
