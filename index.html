@@ -889,19 +889,17 @@
             const chapters = Object.keys(chaptersObj).sort((a,b)=>Number(a)-Number(b));
             const [selectedChapter, setSelectedChapter] = useState(chapters[0] || "");
             
-            const [openComments, setOpenComments] = useState({});
-            // Стейт для хранения ответов AI
-            const [aiResponses, setAiResponses] = useState({});
-            const [isAiLoading, setIsAiLoading] = useState({});
+            // Модальное окно AI анализа
+            const [aiModal, setAiModal] = useState(null); // { verseId, verseText, html, loading }
 
             useEffect(() => {
                 if (order.length > 0 && !selectedBook) setSelectedBook(order[0]);
-                setOpenComments({}); setAiResponses({});
+                setAiModal(null);
             }, [order, selectedBook]);
 
             useEffect(() => {
                 if (isBible && chapters.length > 0 && !chapters.includes(selectedChapter)) setSelectedChapter(chapters[0]);
-                setOpenComments({}); setAiResponses({});
+                setAiModal(null);
             }, [selectedBook, chapters, isBible, selectedChapter]);
 
             const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
@@ -936,31 +934,20 @@
                 }
             }
 
-            const toggleComment = (verseId) => setOpenComments(prev => ({ ...prev, [verseId]: !prev[verseId] }));
-
-            // ФУНКЦИЯ ВЫЗОВА ZVENO AI
+            // ФУНКЦИЯ ВЫЗОВА ZVENO AI — открывает модальное окно
             const handleAiRequest = async (verseId, text) => {
-                // Если уже загружается — игнорируем повторный клик
-                if (isAiLoading[verseId]) return;
+                // Если уже загружается этот стих — игнорируем
+                if (aiModal && aiModal.verseId === verseId && aiModal.loading) return;
 
-                // Если панель открыта и есть ответ — закрываем
-                if (openComments[verseId] && aiResponses[verseId]) {
-                    toggleComment(verseId);
-                    return;
-                }
-
-                // Без ключа — открываем панель с подсказкой
+                // Без ключа — показываем подсказку в модалке
                 if (!apiKey) {
-                    setOpenComments(prev => ({ ...prev, [verseId]: true }));
                     const hint = marked.parse("⚙️ **Укажите API ключ ZVENO AI** в настройках (иконка ⚙️ в левом меню).\n\nПолучите ключ на [zveno.ai](https://zveno.ai) — оплата в рублях, без VPN.");
-                    setAiResponses(prev => ({ ...prev, [verseId]: hint }));
+                    setAiModal({ verseId, verseText: text, html: hint, loading: false });
                     return;
                 }
 
-                // Открываем панель и запускаем загрузку
-                setOpenComments(prev => ({ ...prev, [verseId]: true }));
-                setIsAiLoading(prev => ({ ...prev, [verseId]: true }));
-                setAiResponses(prev => ({ ...prev, [verseId]: '' }));
+                // Открываем модалку с состоянием загрузки
+                setAiModal({ verseId, verseText: text, html: '', loading: true });
 
                 const contextInfo = isBible
                     ? `Библия, книга «${selectedBook}», глава ${selectedChapter}, стих ${verseId}`
@@ -968,11 +955,9 @@
 
                 try {
                     const aiResult = await fetchZvenoAIAnalysis(text, contextInfo, apiKey);
-                    setAiResponses(prev => ({ ...prev, [verseId]: aiResult }));
+                    setAiModal({ verseId, verseText: text, html: aiResult, loading: false });
                 } catch(e) {
-                    setAiResponses(prev => ({ ...prev, [verseId]: marked.parse(`❌ **Ошибка:** ${e.message}`) }));
-                } finally {
-                    setIsAiLoading(prev => ({ ...prev, [verseId]: false }));
+                    setAiModal({ verseId, verseText: text, html: marked.parse(`❌ **Ошибка:** ${e.message}`), loading: false });
                 }
             };
 
@@ -1028,58 +1013,82 @@
                                 {isBible ? `${selectedBook}, Глава ${selectedChapter}` : selectedBook}
                             </h3>
                             
-                            {Object.entries(content).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className={`mb-4 rounded-2xl border transition-all ${isAiLoading[v] ? (isBible ? 'border-amber-300 bg-amber-50/60' : 'border-emerald-300 bg-emerald-50/60') : openComments[v] ? (isBible ? 'border-amber-200 bg-amber-50/30' : 'border-emerald-200 bg-emerald-50/30') : 'border-transparent'}`}>
-                                    {/* СТИХ + КНОПКИ */}
-                                    <div className="flex items-start gap-3 p-3">
-                                        <sup className={`text-xs font-sans font-bold mt-2 flex-shrink-0 w-6 text-right ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}>{v}</sup>
-                                        <span className="flex-1 text-xl leading-relaxed">{t}</span>
-                                        <div className="flex-shrink-0 flex flex-col gap-1.5 ml-2">
-                                            <button 
-                                                onClick={() => copyToClipboard(t)} 
-                                                className={`p-2 rounded-lg bg-stone-100 hover:bg-stone-200 border border-stone-200 transition-all`} 
-                                                title="Копировать стих">
-                                                <Icons.Copy c="w-3.5 h-3.5 text-stone-400"/>
+                            {/* МОДАЛЬНОЕ ОКНО AI АНАЛИЗА */}
+                            {aiModal && (
+                                <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{backgroundColor:'rgba(0,0,0,0.6)', backdropFilter:'blur(6px)'}}>
+                                    <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+                                        {/* Шапка модалки */}
+                                        <div className={`px-6 py-4 flex items-start justify-between flex-shrink-0 border-b ${isBible ? 'border-amber-100 bg-amber-50' : 'border-emerald-100 bg-emerald-50'}`}>
+                                            <div className="flex-1 min-w-0 pr-4">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <Icons.Sparkles c={`w-4 h-4 flex-shrink-0 ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}/>
+                                                    <span className={`text-[10px] font-bold uppercase tracking-widest ${isBible ? 'text-amber-700' : 'text-emerald-700'}`}>
+                                                        ZVENO AI · {isBible ? `${selectedBook} ${selectedChapter}:${aiModal.verseId}` : `${selectedBook}, аят ${aiModal.verseId}`}
+                                                    </span>
+                                                </div>
+                                                <p className={`font-serif text-base leading-snug ${isBible ? 'text-stone-700' : 'text-emerald-900'} line-clamp-2`}>
+                                                    <sup className={`text-xs font-sans font-bold mr-1 ${isBible ? 'text-amber-600' : 'text-emerald-600'}`}>{aiModal.verseId}</sup>
+                                                    {aiModal.verseText}
+                                                </p>
+                                            </div>
+                                            <button
+                                                onClick={() => setAiModal(null)}
+                                                className="flex-shrink-0 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 font-bold transition-all text-sm">
+                                                ✕
                                             </button>
-                                            <button 
-                                                onClick={() => handleAiRequest(v, t)} 
-                                                disabled={isAiLoading[v]}
-                                                className={`px-2 py-1.5 rounded-lg border font-bold flex items-center gap-1 justify-center transition-all disabled:cursor-wait text-xs
-                                                    ${isAiLoading[v] 
-                                                        ? 'bg-amber-200 border-amber-400 animate-pulse text-amber-700' 
-                                                        : openComments[v] && aiResponses[v] 
-                                                            ? 'bg-stone-100 border-stone-300 text-stone-500 hover:bg-red-50 hover:border-red-200' 
-                                                            : 'bg-amber-100 hover:bg-amber-300 border-amber-300 text-amber-700 hover:shadow-md'}`}
-                                                title={isAiLoading[v] ? 'Загружается...' : openComments[v] && aiResponses[v] ? "Закрыть" : "AI Анализ"}>
-                                                {isAiLoading[v] 
-                                                    ? <><Icons.Loader c="w-3 h-3"/><span>Анализ...</span></>
-                                                    : openComments[v] && aiResponses[v] 
-                                                        ? <span>✕ Закрыть</span> 
-                                                        : <><span>✨</span><span>AI</span></>}
+                                        </div>
+                                        {/* Тело модалки */}
+                                        <div className="flex-1 overflow-y-auto p-6">
+                                            {aiModal.loading ? (
+                                                <div className="flex flex-col items-center justify-center py-16 gap-4">
+                                                    <Icons.Loader c={`w-8 h-8 ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}/>
+                                                    <div className="text-center">
+                                                        <p className="font-bold text-stone-700">ZVENO AI анализирует...</p>
+                                                        <p className="text-sm text-stone-400 mt-1">GPT-4o / Claude изучают текст</p>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <AiAccordion html={aiModal.html} isBible={isBible} />
+                                            )}
+                                        </div>
+                                        {/* Подвал */}
+                                        <div className="px-6 py-3 border-t border-stone-100 flex items-center justify-between flex-shrink-0 bg-stone-50">
+                                            <span className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">Академический анализ · Nikolai Rogozin</span>
+                                            <button
+                                                onClick={() => setAiModal(null)}
+                                                className="px-4 py-2 rounded-xl bg-stone-900 hover:bg-stone-700 text-white text-xs font-bold transition-all">
+                                                Закрыть
                                             </button>
                                         </div>
                                     </div>
+                                </div>
+                            )}
 
-                                    {/* ПАНЕЛЬ AI КОММЕНТАРИЯ */}
-                                    {openComments[v] && (
-                                        <div className={`mx-3 mb-3 p-5 rounded-xl text-sm font-sans border ${isBible ? 'bg-white border-amber-200' : 'bg-white border-emerald-200'}`}>
-                                            <div className="flex items-center justify-between mb-3 pb-2 border-b border-stone-100">
-                                                <div className="flex items-center gap-2">
-                                                    <Icons.Sparkles c={`w-4 h-4 ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}/>
-                                                    <span className="font-bold uppercase tracking-widest text-[10px] text-stone-400">ZVENO AI · Стих {v}</span>
-                                                </div>
-                                                <button onClick={() => toggleComment(v)} className="text-stone-300 hover:text-stone-500 text-xs font-bold px-2 py-0.5 rounded hover:bg-stone-100">✕</button>
-                                            </div>
-                                            {isAiLoading[v] ? (
-                                                <div className="flex items-center gap-3 text-stone-400 italic py-3">
-                                                    <Icons.Loader c="w-4 h-4 text-amber-500"/>
-                                                    <span>ZVENO AI анализирует через GPT-4o / Claude...</span>
-                                                </div>
-                                            ) : (
-                                                <AiAccordion html={aiResponses[v] || ''} isBible={isBible} />
-                                            )}
-                                        </div>
-                                    )}
+                            {/* СТИХИ */}
+                            {Object.entries(content).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
+                                <div key={v} className="mb-3 flex items-start gap-3 group hover:bg-stone-50/80 rounded-xl p-2 transition-all">
+                                    <sup className={`text-xs font-sans font-bold mt-2.5 flex-shrink-0 w-5 text-right ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}>{v}</sup>
+                                    <span className="flex-1 text-xl leading-relaxed">{t}</span>
+                                    <div className="flex-shrink-0 flex gap-1.5 ml-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button
+                                            onClick={() => copyToClipboard(t)}
+                                            className="p-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 border border-stone-200 transition-all"
+                                            title="Копировать">
+                                            <Icons.Copy c="w-3.5 h-3.5 text-stone-400"/>
+                                        </button>
+                                        <button
+                                            onClick={() => handleAiRequest(v, t)}
+                                            disabled={aiModal && aiModal.verseId === v && aiModal.loading}
+                                            className={`px-2.5 py-1.5 rounded-lg border font-bold flex items-center gap-1 text-xs transition-all
+                                                ${aiModal && aiModal.verseId === v && aiModal.loading
+                                                    ? 'bg-amber-200 border-amber-400 animate-pulse text-amber-700 cursor-wait'
+                                                    : 'bg-amber-100 hover:bg-amber-400 hover:text-white border-amber-300 text-amber-700'}`}
+                                            title="AI Анализ (ZVENO)">
+                                            {aiModal && aiModal.verseId === v && aiModal.loading
+                                                ? <><Icons.Loader c="w-3 h-3"/><span>...</span></>
+                                                : <><span>✨</span><span>AI</span></>}
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
