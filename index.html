@@ -84,6 +84,7 @@
 
     <script type="text/babel">
 
+
         const { useState, useEffect, useRef } = React;
 
         const copyToClipboard = (text) => {
@@ -279,6 +280,19 @@
         }
 
         // --- ОСНОВНОЕ ПРИЛОЖЕНИЕ ---
+
+        function NavItem({ icon: Icon, label, active, onClick }) {
+            return (
+                <button onClick={onClick} className={`w-full flex items-center px-3 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 group ${active ? 'bg-amber-600/10 text-amber-500 shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
+                    <Icon c={`w-4 h-4 mr-3 flex-shrink-0 transition-colors ${active ? 'text-amber-500' : 'text-stone-600 group-hover:text-stone-400'}`} /> 
+                    <span className="truncate text-xs lg:text-sm">{label}</span>
+                </button>
+            );
+        }
+        </script>
+
+        <script type="text/babel">
+
         function App() {
             const [view, setView] = useState('dashboard');
             const [db, setDb] = useState(DEFAULT_DB);
@@ -905,15 +919,6 @@
                         </div>
                     )}
                 </div>
-            );
-        }
-
-        function NavItem({ icon: Icon, label, active, onClick }) {
-            return (
-                <button onClick={onClick} className={`w-full flex items-center px-3 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 group ${active ? 'bg-amber-600/10 text-amber-500 shadow-sm' : 'text-stone-400 hover:bg-stone-800 hover:text-stone-200'}`}>
-                    <Icon c={`w-4 h-4 mr-3 flex-shrink-0 transition-colors ${active ? 'text-amber-500' : 'text-stone-600 group-hover:text-stone-400'}`} /> 
-                    <span className="truncate text-xs lg:text-sm">{label}</span>
-                </button>
             );
         }
         </script>
@@ -5954,7 +5959,10 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                         Открываются в новой вкладке — официальные музеи и цифровые библиотеки
                                     </p>
                                 </div>
-                            )}xt-stone-400 mb-3">🖼 Иллюстрации из мирового искусства</p>
+                            )}
+                            {sel.images && sel.images.length > 0 && (
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">🖼 Иллюстрации из мирового искусства</p>
                                     <div className={`grid gap-3 ${sel.images.length===1?'grid-cols-1':'grid-cols-2 md:grid-cols-3'}`}>
                                         {sel.images.map((img,ii)=>(
                                             <div key={ii} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm"
@@ -5976,7 +5984,10 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                             )}
 
 
-                            {/* Цитаты из Писания */}xt-stone-400 mb-3">📜 Древние рукописи и тексты</p>
+                            {/* Рукописи */}
+                            {sel.manuscripts && sel.manuscripts.length > 0 && (
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📜 Древние рукописи и тексты</p>
                                     <div className="grid grid-cols-2 gap-3">
                                         {sel.manuscripts.map((ms,mi)=>(
                                             <div key={mi} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm border border-stone-200"
