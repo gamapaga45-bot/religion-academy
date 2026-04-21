@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════════════════════════
-// NAV.JS — SidebarNav, AudioPlayer, Dashboard, EnzyklopädieModule
-// ═══════════════════════════════════════════════════════════════
         // Компонент: Навигация сайдбара (общий для desktop и mobile)
         function SidebarNav({ view, setView, apiKey, setApiKeyInput, setShowSettings }) {
             const NI = ({emoji, label, v, badge}) => (
@@ -445,8 +442,8 @@
                     {/* БИБЛИЯ */}
                     <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
                         <div className="w-full h-64 md:h-96 relative bg-stone-100">
-                             <img crossOrigin="anonymous" 
-                               src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=85" 
+                             <img loading="lazy" crossOrigin="anonymous" 
+                               src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Bible.gutenberg.jpg/1200px-Bible.gutenberg.jpg" 
                                alt="Библия Гутенберга"
                                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1024&q=80"; }}
                                className="absolute inset-0 w-full h-full object-cover" />
@@ -521,8 +518,8 @@
                     {/* КОРАН */}
                     <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
                         <div className="w-full h-64 md:h-96 relative bg-stone-100">
-                             <img crossOrigin="anonymous" 
-                               src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1200&q=85" 
+                             <img loading="lazy" crossOrigin="anonymous" 
+                               src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Birmingham_Quran_manuscript.jpg/1200px-Birmingham_Quran_manuscript.jpg" 
                                alt="Древний Коран"
                                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1024&q=80"; }}
                                className="absolute inset-0 w-full h-full object-cover" />

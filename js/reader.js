@@ -1,7 +1,3 @@
-// ═══════════════════════════════════════════════════════════════
-// READER.JS — SingleReaderModule, SearchModule, ParallelReader
-//             + WORD_FORMS_MAP, expandQuery, matchesAny
-// ═══════════════════════════════════════════════════════════════
 
         // --- МОДУЛЬ ЧТЕНИЯ С ИНТЕГРАЦИЕЙ ZVENO AI ---
         function SingleReaderModule({ type, db, apiKey, setAiModal }) {
@@ -27,25 +23,25 @@
 
             // ── Иллюстрации к книгам Библии и сурам Корана ──────────────────
             const BOOK_ILLUSTRATIONS = {
-                'Бытие':      [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg&width=800', cap:'Рембрандт «Адам и Ева» (1638), Рейксмюзеум'},{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg&width=800', cap:'Микеланджело «Сотворение Адама» (1512), Сикстинская капелла'}],
-                'Исход':      [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg&width=800', cap:'Казни Египетские, иллюстрация XIX в.'},{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg&width=800', cap:'Фредерик Черч «Моисей взирает на Землю Обетованную»'}],
-                'Псалтирь':   [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg&width=800', cap:'Давид играет на арфе. Тикхиллская Псалтирь (ок. 1310)'}],
-                'Иов':        [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg&width=800', cap:'Уильям Блейк «Сатана поражает Иова» (1826)'}],
-                'Исайя':      [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Isaiah_from_the_Sistine_Chapel_ceiling.jpg&width=800', cap:'Микеланджело «Исайя» (1508–1512), Сикстинская капелла'}],
-                'Откровение': [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Apocalypse_vasnetsov.jpg&width=800', cap:'Васнецов «Апокалипсис» (1887)'},{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Durer_Revelation_Four_Riders.jpg&width=800', cap:'Альбрехт Дюрер «Четыре всадника Апокалипсиса» (1498)'}],
-                'От Иоанна':  [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg&width=800', cap:'Эль Греко «Крещение Христа»'}],
-                'От Луки':    [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/The_Annunciation%2C_by_Paolo_de_Matteis.jpg&width=800', cap:'«Благовещение» Паоло де Маттеис (1712)'}],
-                'Иезекииль':  [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg&width=800', cap:'Видение Иезекииля, иллюстрация Маттеуса Мериана (1630)'}],
-                'Даниил':     [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Daniel-in-the-lions-den.jpg&width=800', cap:'Питер Пауль Рубенс «Даниил во рву со львами» (1614–1616)'}],
+                'Бытие':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg', cap:'Рембрандт «Адам и Ева» (1638), Рейксмюзеум', license:'Public Domain / CC'},{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg', cap:'Микеланджело «Сотворение Адама» (1512), Сикстинская капелла', license:'Public Domain / CC'}],
+                'Исход':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg/800px-Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg', cap:'Казни Египетские, иллюстрация XIX в.', license:'Public Domain / CC'},{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg/800px-Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg', cap:'Фредерик Черч «Моисей взирает на Землю Обетованную»', license:'Public Domain / CC'}],
+                'Псалтирь':   [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg/800px-Tickhill_Psalter%2C_David_Playing_the_Harp.jpg', cap:'Давид играет на арфе. Тикхиллская Псалтирь (ок. 1310)', license:'Public Domain / CC'}],
+                'Иов':        [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg/800px-William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg', cap:'Уильям Блейк «Сатана поражает Иова» (1826)', license:'Public Domain / CC'}],
+                'Исайя':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Isaiah_from_the_Sistine_Chapel_ceiling.jpg/800px-Isaiah_from_the_Sistine_Chapel_ceiling.jpg', cap:'Микеланджело «Исайя» (1508–1512), Сикстинская капелла', license:'Public Domain / CC'}],
+                'Откровение': [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Apocalypse_vasnetsov.jpg/800px-Apocalypse_vasnetsov.jpg', cap:'Васнецов «Апокалипсис» (1887)', license:'Public Domain / CC'},{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Durer_Revelation_Four_Riders.jpg/800px-Durer_Revelation_Four_Riders.jpg', cap:'Альбрехт Дюрер «Четыре всадника Апокалипсиса» (1498)', license:'Public Domain / CC'}],
+                'От Иоанна':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg/800px-El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg', cap:'Эль Греко «Крещение Христа»', license:'Public Domain / CC'}],
+                'От Луки':    [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/The_Annunciation%2C_by_Paolo_de_Matteis.jpg/800px-The_Annunciation%2C_by_Paolo_de_Matteis.jpg', cap:'«Благовещение» Паоло де Маттеис (1712)', license:'Public Domain / CC'}],
+                'Иезекииль':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg/800px-Ezekiel%27s_vision_by_Matthaeus_Merian.jpg', cap:'Видение Иезекииля, иллюстрация Маттеуса Мериана (1630)', license:'Public Domain / CC'}],
+                'Даниил':     [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Daniel-in-the-lions-den.jpg/800px-Daniel-in-the-lions-den.jpg', cap:'Питер Пауль Рубенс «Даниил во рву со львами» (1614–1616)', license:'Public Domain / CC'}],
             };
             // Суры Корана — иллюстрации
             const SURAH_ILLUSTRATIONS = {
-                '1. Аль-Фатиха':  [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg&width=800', cap:'Мечеть аль-Харам — самая святая мечеть ислама, Мекка'}],
-                '2. Аль-Бакара':  [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Quran_al_Baqara_Ayat_al_Kursi.jpg&width=800', cap:'Аят аль-Курси (Коран 2:255) — каллиграфия'}],
-                '12. Йусуф':      [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg&width=800', cap:'Юсуф и Зулейха, персидская миниатюра (XVII в.)'}],
-                '19. Марьям':     [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Gentile_da_Fabriano_-_Madonna_and_Child.jpg&width=800', cap:'Марьям с младенцем Исой — общая традиция'}],
-                '36. Йа Син':     [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Quran_manuscript_Ilkhanate.jpg&width=800', cap:'Страница рукописного Корана, период Ильханата (XIV в.)'}],
-                '55. Ар-Рахман':  [{src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Garden_of_Paradise_miniature.jpg&width=800', cap:'Сад Рая — персидская миниатюра из «Хафт Авранг»'}],
+                '1. Аль-Фатиха':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg/800px-Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg', cap:'Мечеть аль-Харам — самая святая мечеть ислама, Мекка', license:'Public Domain / CC'}],
+                '2. Аль-Бакара':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Quran_al_Baqara_Ayat_al_Kursi.jpg/800px-Quran_al_Baqara_Ayat_al_Kursi.jpg', cap:'Аят аль-Курси (Коран 2:255) — каллиграфия', license:'Public Domain / CC'}],
+                '12. Йусуф':      [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg/800px-Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg', cap:'Юсуф и Зулейха, персидская миниатюра (XVII в.)', license:'Public Domain / CC'}],
+                '19. Марьям':     [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gentile_da_Fabriano_-_Madonna_and_Child.jpg/800px-Gentile_da_Fabriano_-_Madonna_and_Child.jpg', cap:'Марьям с младенцем Исой — общая традиция', license:'Public Domain / CC'}],
+                '36. Йа Син':     [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Quran_manuscript_Ilkhanate.jpg/800px-Quran_manuscript_Ilkhanate.jpg', cap:'Страница рукописного Корана, период Ильханата (XIV в.)', license:'Public Domain / CC'}],
+                '55. Ар-Рахман':  [{src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Garden_of_Paradise_miniature.jpg/800px-Garden_of_Paradise_miniature.jpg', cap:'Сад Рая — персидская миниатюра из «Хафт Авранг»', license:'Public Domain / CC'}],
             };
 
             let imgUrl = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=85";
@@ -134,7 +130,7 @@
                                 </h4>
                                 <div className="my-6">
                                     <div className="w-full h-56 md:h-72 rounded-xl overflow-hidden relative shadow-sm border border-stone-200/50 bg-stone-100 flex items-center justify-center">
-                                        <img crossOrigin="anonymous" 
+                                        <img loading="lazy" crossOrigin="anonymous" 
                                           src={imgUrl} 
                                           alt="Иллюстрация" 
                                           onError={(e) => { if(e.target.src !== imgFallback) e.target.src = imgFallback; }}
@@ -158,8 +154,8 @@
                                                 {ills.map((ill,ii)=>(
                                                     <div key={ii}
                                                         className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm"
-                                                        onClick={()=>setAiModal&&setAiModal({open:true,label:'Иллюстрация',html:`<img crossOrigin="anonymous" src="${ill.src}" style="max-width:100%;border-radius:8px"/><p style="margin-top:10px;color:#57534e;font-size:13px">${ill.cap}</p>`})||window._openLightbox&&window._openLightbox(ill.src,ill.cap)}>
-                                                        <img crossOrigin="anonymous" src={ill.src} alt={ill.cap}
+                                                        onClick={()=>setAiModal&&setAiModal({open:true,label:'Иллюстрация',html:`<img loading="lazy" crossOrigin="anonymous" src="${ill.src}" style="max-width:100%;border-radius:8px"onError={e=>{if(!e.target.src.includes('fallback')){e.target.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=70'}}} /><p style="margin-top:10px;color:#57534e;font-size:13px">${ill.cap}</p>`})||window._openLightbox&&window._openLightbox(ill.src,ill.cap)}>
+                                                        <img loading="lazy" crossOrigin="anonymous" src={ill.src} alt={ill.cap}
                                                             onError={e=>e.target.style.display='none'}
                                                             className="w-full object-cover group-hover:scale-105 transition-transform duration-300"
                                                             style={{maxHeight:200}}/>

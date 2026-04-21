@@ -1,8 +1,3 @@
-// ═══════════════════════════════════════════════════════════════
-// MODULES1.JS — PlainLanguageModule, DeepCommentaryModule,
-//               WorldReligionsModule, SplitPanel, SplitViewModule,
-//               ReligionReaderModule, MythologyModule
-// ═══════════════════════════════════════════════════════════════
         // =====================================================================
         // МОДУЛЬ 3: ПРОСТЫМ ЯЗЫКОМ — ПОЛНАЯ РАСШИРЕННАЯ ВЕРСИЯ
         // =====================================================================
@@ -784,43 +779,43 @@
         // ─── ИЛЛЮСТРАЦИИ: Сканы страниц и фотографии рукописей мировых библиотек ───
         var MYTH_ILLUSTRATIONS = {
             creation: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/800px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg',
                   cap:'Рождение Венеры (Боттичелли, ~1485). Галерея Уффици, Флоренция. Греческий миф о рождении богини из морской пены.', lib:'Galleria degli Uffizi / Google Art Project (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg',
                   cap:'Сотворение Адама (Микеланджело, 1512). Сикстинская капелла. Бог протягивает руку к Адаму — визуальный образ Быт 2:7.', lib:'Musei Vaticani / Wikimedia Commons (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg/800px-Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg',
                   cap:'Сотворение Евы. Нюрнбергские хроники (1493). Одна из первых печатных иллюстрированных Библий.', lib:'Bayerische Staatsbibliothek (Public Domain)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/EnumaElishTablet.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/EnumaElishTablet.jpg/800px-EnumaElishTablet.jpg',
                   cap:'Табличка с текстом «Энума Элиш» (Вавилонский эпос о творении, ~1100 до н.э.). Британский музей, Лондон.', lib:'British Museum (PD)' },
             ],
             flood: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg/800px-Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg',
                   cap:'Потоп (Микеланджело, 1509). Сикстинская капелла. Изображение спасающихся на горе людей из Быт 7–8.', lib:'Musei Vaticani (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Flood_tablet.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flood_tablet.jpg/800px-Flood_tablet.jpg',
                   cap:'«Таблица Потопа» — XI таблица Эпоса о Гильгамеше (~700 до н.э., Ниневия). История Утнапиштима. Британский музей.', lib:'British Museum (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/The_Deluge%2C_by_John_Martin.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/The_Deluge%2C_by_John_Martin.jpg/800px-The_Deluge%2C_by_John_Martin.jpg',
                   cap:'«Потоп» (Джон Мартин, 1834). Yale Center for British Art. Романтическое изображение библейской катастрофы.', lib:'Yale Center for British Art (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Weighing_of_the_heart3.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Weighing_of_the_heart3.jpg/800px-Weighing_of_the_heart3.jpg',
                   cap:'Ноев ковчег. Схема из «Arca Noë» Атанасиуса Кирхера (1675). Латинский трактат о размерах и устройстве ковчега.', lib:'Bibliothèque nationale de France (PD)' },
             ],
             afterlife: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Osiris-standing.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Osiris-standing.jpg/800px-Osiris-standing.jpg',
                   cap:'Взвешивание сердца умершего на весах Маат. Египетская «Книга Мёртвых», Папирус Хунефера (~1275 до н.э.). Британский музей.', lib:'British Museum, EA9901 (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg/800px-Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg',
                   cap:'Страшный суд (Фра Анджелико, ~1435). Музей Сан-Марко, Флоренция. Детали рая и ада в христианской традиции.', lib:'Museo di San Marco (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Dante_Domenico_di_Michelino_Duomo_Florence.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Dante_Domenico_di_Michelino_Duomo_Florence.jpg/800px-Dante_Domenico_di_Michelino_Duomo_Florence.jpg',
                   cap:'Данте с «Божественной Комедией» (Доменико ди Микелино, 1465). Дуомо Флоренции. Символическая карта ада, чистилища, рая.', lib:'Santa Maria del Fiore, Florence (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/ValhallaByDoepler.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ValhallaByDoepler.jpg/800px-ValhallaByDoepler.jpg',
                   cap:'Валхалла (Эмиль Дёплер, 1905). Зал Одина, где воины пируют после смерти. Скандинавский загробный мир.', lib:'Wikimedia Commons (PD)' },
             ],
             hero: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Prometheus_bound.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Prometheus_bound.jpg/800px-Prometheus_bound.jpg',
                   cap:'Прометей прикованный (Джозеф Хайнц Старший, ~1600). Прометей похитил огонь у богов — и вечно страдает за это. Галерея Уффици.', lib:'Galleria degli Uffizi (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg/800px-Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg',
                   cap:'Воскресение Христа (Джотто ди Бондоне, 1304–1306). Капелла Скровеньи, Падуя. Один из первых реалистических образов.', lib:'Cappella degli Scrovegni (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Odin%2C_the_Wanderer.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Odin%2C_the_Wanderer.jpg/800px-Odin%2C_the_Wanderer.jpg',
                   cap:'Один-странник (Георг фон Розен, 1886). Верховный бог скандинавов — пожертвовал собой ради мудрости рун.', lib:'Nationalmuseum, Stockholm (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg/800px-Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg',
                   cap:'Осирис — египетский бог воскресения (Папирус, ~1000 до н.э.). Убит Сетом, воскрешён Исидой. Прообраз умирающего и воскресающего бога.', lib:'Louvre Museum (PD)' },
             ],
         };
@@ -1036,7 +1031,7 @@
                                         {MYTH_ILLUSTRATIONS[selTheme.id].map((ill, idx) => (
                                             <div key={idx} className="bg-white border border-stone-200 rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
                                                 <div className="h-52 bg-stone-100 overflow-hidden">
-                                                    <img crossOrigin="anonymous" src={ill.src} alt={ill.cap}
+                                                    <img loading="lazy" crossOrigin="anonymous" src={ill.src} alt={ill.cap}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                         onError={e => { e.target.parentNode.style.display='none'; }}
                                                         loading="lazy"/>
@@ -1044,7 +1039,7 @@
                                                 <div className="p-4">
                                                     <p className="text-sm text-stone-700 leading-snug font-serif mb-2">{ill.cap}</p>
                                                     <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wide">
-                                                        📚 {ill.lib}
+                                                        📚 {ill.lib}{ill.license ? ' · ' + ill.license : ''}
                                                     </p>
                                                 </div>
                                             </div>
