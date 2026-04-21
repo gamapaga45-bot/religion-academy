@@ -3,43 +3,43 @@
         // ─── ИЛЛЮСТРАЦИИ: Сканы страниц и фотографии рукописей мировых библиотек ───
         var MYTH_ILLUSTRATIONS = {
             creation: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/2/26/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg',
                   cap:'Рождение Венеры (Боттичелли, ~1485). Галерея Уффици, Флоренция. Греческий миф о рождении богини из морской пены.', lib:'Galleria degli Uffizi / Google Art Project (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/6/6b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg',
                   cap:'Сотворение Адама (Микеланджело, 1512). Сикстинская капелла. Бог протягивает руку к Адаму — визуальный образ Быт 2:7.', lib:'Musei Vaticani / Wikimedia Commons (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/6/6b/Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg',
                   cap:'Сотворение Евы. Нюрнбергские хроники (1493). Одна из первых печатных иллюстрированных Библий.', lib:'Bayerische Staatsbibliothek (Public Domain)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/EnumaElishTablet.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/7/7e/EnumaElishTablet.jpg',
                   cap:'Табличка с текстом «Энума Элиш» (Вавилонский эпос о творении, ~1100 до н.э.). Британский музей, Лондон.', lib:'British Museum (PD)' },
             ],
             flood: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/9/9c/Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg',
                   cap:'Потоп (Микеланджело, 1509). Сикстинская капелла. Изображение спасающихся на горе людей из Быт 7–8.', lib:'Musei Vaticani (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Flood_tablet.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/2/2c/Flood_tablet.jpg',
                   cap:'«Таблица Потопа» — XI таблица Эпоса о Гильгамеше (~700 до н.э., Ниневия). История Утнапиштима. Британский музей.', lib:'British Museum (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/The_Deluge%2C_by_John_Martin.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/a/ac/The_Deluge%2C_by_John_Martin.jpg',
                   cap:'«Потоп» (Джон Мартин, 1834). Yale Center for British Art. Романтическое изображение библейской катастрофы.', lib:'Yale Center for British Art (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Weighing_of_the_heart3.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/4/4b/Weighing_of_the_heart3.jpg',
                   cap:'Ноев ковчег. Схема из «Arca Noë» Атанасиуса Кирхера (1675). Латинский трактат о размерах и устройстве ковчега.', lib:'Bibliothèque nationale de France (PD)' },
             ],
             afterlife: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Osiris-standing.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/e/e3/Osiris-standing.jpg',
                   cap:'Взвешивание сердца умершего на весах Маат. Египетская «Книга Мёртвых», Папирус Хунефера (~1275 до н.э.). Британский музей.', lib:'British Museum, EA9901 (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/1/12/Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg',
                   cap:'Страшный суд (Фра Анджелико, ~1435). Музей Сан-Марко, Флоренция. Детали рая и ада в христианской традиции.', lib:'Museo di San Marco (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Dante_Domenico_di_Michelino_Duomo_Florence.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/c/c1/Dante_Domenico_di_Michelino_Duomo_Florence.jpg',
                   cap:'Данте с «Божественной Комедией» (Доменико ди Микелино, 1465). Дуомо Флоренции. Символическая карта ада, чистилища, рая.', lib:'Santa Maria del Fiore, Florence (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/ValhallaByDoepler.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/7/7e/ValhallaByDoepler.jpg',
                   cap:'Валхалла (Эмиль Дёплер, 1905). Зал Одина, где воины пируют после смерти. Скандинавский загробный мир.', lib:'Wikimedia Commons (PD)' },
             ],
             hero: [
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Prometheus_bound.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/5/5c/Prometheus_bound.jpg',
                   cap:'Прометей прикованный (Джозеф Хайнц Старший, ~1600). Прометей похитил огонь у богов — и вечно страдает за это. Галерея Уффици.', lib:'Galleria degli Uffizi (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/d/d6/Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg',
                   cap:'Воскресение Христа (Джотто ди Бондоне, 1304–1306). Капелла Скровеньи, Падуя. Один из первых реалистических образов.', lib:'Cappella degli Scrovegni (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Odin%2C_the_Wanderer.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/c/c2/Odin%2C_the_Wanderer.jpg',
                   cap:'Один-странник (Георг фон Розен, 1886). Верховный бог скандинавов — пожертвовал собой ради мудрости рун.', lib:'Nationalmuseum, Stockholm (PD)' },
-                { src:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg&width=800',
+                { src:'https://upload.wikimedia.org/wikipedia/commons/f/f1/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg',
                   cap:'Осирис — египетский бог воскресения (Папирус, ~1000 до н.э.). Убит Сетом, воскрешён Исидой. Прообраз умирающего и воскресающего бога.', lib:'Louvre Museum (PD)' },
             ],
         };
@@ -377,7 +377,7 @@
                 id:'islam', emoji:'☪️', name:'Ислам', place:'Мечеть (Масджид)', color:'#065f46', bg:'#ecfdf5', border:'#6ee7b7',
                 img:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=900&q=85',
                 imgCap:'Намаз в мечети. Верующие выстраиваются рядами, обратившись в сторону Мекки.',
-                histImg:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Sultan_Ahmed_Mosque_interior.jpg&width=800',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/9/90/Sultan_Ahmed_Mosque_interior.jpg',
                 histCap:'Интерьер Голубой мечети (Стамбул, XVII в.). Михраб (ниша Киблы), минбар (кафедра).',
                 keyPrinciple:'Таухид — абсолютное единство Бога. Поклонение только Аллаху, без посредников.',
                 steps:[
@@ -395,7 +395,7 @@
                 id:'christianity', emoji:'✝️', name:'Христианство', place:'Церковь (Храм)', color:'#92400e', bg:'#fffbeb', border:'#fde68a',
                 img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85',
                 imgCap:'Литургия в православном храме. Хор, свечи, иконы — многовековая традиция богослужения.',
-                histImg:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Hagia_Sophia_Mars_2013.jpg&width=800',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/2/22/Hagia_Sophia_Mars_2013.jpg',
                 histCap:'Собор Святой Софии (Константинополь, 537 н.э.) — величайший христианский храм древности.',
                 keyPrinciple:'Поклонение Богу через Иисуса Христа. Триединый Бог: Отец, Сын, Святой Дух.',
                 steps:[
@@ -413,7 +413,7 @@
                 id:'judaism', emoji:'✡️', name:'Иудаизм', place:'Синагога (Бейт Кнессет)', color:'#1d4ed8', bg:'#eff6ff', border:'#bfdbfe',
                 img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
                 imgCap:'Молитва у Стены Плача (Иерусалим). Мужчины слева, женщины справа, разделены.',
-                histImg:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Synagogue_Erfurt_Innen.jpg&width=800',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/8/81/Synagogue_Erfurt_Innen.jpg',
                 histCap:'Ростовская синагога (XIV в.). Бима в центре, арон ха-кодеш у восточной стены.',
                 keyPrinciple:'Служение единому Богу через соблюдение Торы — 613 заповедей (мицвот).',
                 steps:[
@@ -431,7 +431,7 @@
                 id:'buddhism', emoji:'☸️', name:'Буддизм', place:'Храм / Вихара / Дзэнский сад', color:'#ca8a04', bg:'#fefce8', border:'#fde047',
                 img:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=900&q=85',
                 imgCap:'Медитация монахов в буддийском храме. Благовония, статуя Будды, лотосовые позиции.',
-                histImg:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Borobudur-Nothwest-view.jpg&width=800',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/9/9b/Borobudur-Nothwest-view.jpg',
                 histCap:'Боробудур (Индонезия, IX в.) — крупнейший буддийский храм мира. 2700 рельефов.',
                 keyPrinciple:'Нет Бога-Творца. Практика направлена на освобождение от страдания и достижение Нирваны.',
                 steps:[
@@ -447,7 +447,7 @@
             },
             {
                 id:'hinduism', emoji:'🕉️', name:'Индуизм', place:'Мандир (Храм)', color:'#ea580c', bg:'#fff7ed', border:'#fdba74',
-                img:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Angkor_Wat%2C_January_2009_%28crop%29.jpg&width=800',
+                img:'https://upload.wikimedia.org/wikipedia/commons/a/a4/Angkor_Wat%2C_January_2009_%28crop%29.jpg',
                 imgCap:'Пуджа — ритуальное подношение. Статуя Ганеши, цветы, благовония, огонь.',
                 histImg:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=800&q=80',
                 histCap:'Ангкор-Ват (Камбоджа, XII в.) — крупнейший религиозный комплекс мира. Посвящён Вишну.',
@@ -467,7 +467,7 @@
                 id:'shinto', emoji:'⛩️', name:'Синтоизм', place:'Дзиндзя (Святилище)', color:'#be185d', bg:'#fdf2f8', border:'#f0abfc',
                 img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
                 imgCap:'Тории (красные ворота) храма Фусими Инари, Киото. 10 000 тории образуют туннель.',
-                histImg:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Itsukushima_torii_angle.jpg&width=800',
+                histImg:'https://upload.wikimedia.org/wikipedia/commons/a/a4/Itsukushima_torii_angle.jpg',
                 histCap:'Святилище Ицукусима (XII в.). Тории стоит в море — символ соединения миров.',
                 keyPrinciple:'Уважение и контакт с ками — духами, населяющими природу. Чистота как путь к священному.',
                 steps:[
@@ -673,6 +673,7 @@
             const [aiText, setAiText]     = useState('');
             const [aiLoad, setAiLoad]     = useState(false);
             const [lightbox, setLightbox] = useState(null);
+            const [srcModal, setSrcModal] = useState(null);
 
             const openLightbox = (src, cap) => setLightbox({src, cap});
 
@@ -842,6 +843,45 @@
                         </div>
                     )}
 
+                    {/* Модальное окно для источников */}
+                    {srcModal && (
+                        <div onClick={()=>setSrcModal(null)}
+                            style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.75)',
+                                    backdropFilter:'blur(6px)',display:'flex',alignItems:'center',
+                                    justifyContent:'center',padding:16}}>
+                            <div onClick={e=>e.stopPropagation()}
+                                style={{background:'#fff',borderRadius:20,padding:28,maxWidth:480,
+                                        width:'100%',boxShadow:'0 25px 60px rgba(0,0,0,0.5)'}}>
+                                <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:16}}>
+                                    <p style={{fontFamily:'Georgia,serif',fontWeight:700,fontSize:15,
+                                               color:'#1c1917',margin:0,lineHeight:1.3}}>{srcModal.label}</p>
+                                    <button onClick={()=>setSrcModal(null)}
+                                        style={{width:30,height:30,borderRadius:15,border:'1px solid #e7e5e4',
+                                                background:'#f5f5f4',cursor:'pointer',fontSize:14,
+                                                display:'flex',alignItems:'center',justifyContent:'center',
+                                                flexShrink:0,marginLeft:8}}>✕</button>
+                                </div>
+                                <p style={{fontSize:12,color:'#78716c',marginBottom:20}}>
+                                    Официальный цифровой архив. Открывается в новой вкладке.
+                                </p>
+                                <a href={srcModal.url} target="_blank" rel="noopener noreferrer"
+                                    onClick={()=>setSrcModal(null)}
+                                    style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,
+                                            padding:'12px 24px',background:'#1c1b1d',color:'#fff',
+                                            borderRadius:12,textDecoration:'none',fontWeight:700,
+                                            fontSize:13,fontFamily:'sans-serif'}}>
+                                    Открыть в архиве →
+                                </a>
+                                <button onClick={()=>setSrcModal(null)}
+                                    style={{width:'100%',marginTop:10,padding:'10px',background:'transparent',
+                                            border:'1px solid #e7e5e4',borderRadius:12,cursor:'pointer',
+                                            fontSize:12,color:'#78716c',fontFamily:'sans-serif'}}>
+                                    Закрыть
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     {/* ШАПКА */}
                     <div style={{background:'linear-gradient(135deg,#1c1b1d 0%,#2d1a0e 40%,#1a0d1c 100%)'}}
                          className="text-white rounded-3xl p-6 md:p-10">
@@ -923,9 +963,9 @@
                                     </p>
                                     <div className="flex flex-col gap-1.5">
                                         {sel.sources.map((s,si)=>(
-                                            <a key={si} href={s.url} target="_blank" rel="noopener noreferrer"
-                                                className="flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition-all hover:shadow-sm"
-                                                style={{background:s.type==='manuscript'?'#fafaf9':'#fffbeb',borderColor:clr.border,color:clr.dark}}>
+                                            <button key={si} onClick={()=>setSrcModal({label:s.label,url:s.url})}
+                                                className="w-full flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-bold transition-all hover:shadow-sm text-left"
+                                                style={{background:s.type==='manuscript'?'#fafaf9':'#fffbeb',borderColor:clr.border,color:clr.dark,cursor:'pointer'}}>
                                                 <span>{s.type==='manuscript'?'📜':'🖼'}</span>
                                                 <span className="flex-1 leading-snug">{s.label}</span>
                                                 <span className="opacity-40">↗</span>

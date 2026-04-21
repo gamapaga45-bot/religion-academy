@@ -108,6 +108,48 @@
             };
 
             return (
+                <>
+                {/* Модальное окно для источников рукописей */}
+                {srcModal && (
+                    <div onClick={()=>setSrcModal(null)}
+                        style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.75)',
+                                backdropFilter:'blur(6px)',display:'flex',alignItems:'center',
+                                justifyContent:'center',padding:16}}>
+                        <div onClick={e=>e.stopPropagation()}
+                            style={{background:'#fff',borderRadius:20,padding:28,maxWidth:480,
+                                    width:'100%',boxShadow:'0 25px 60px rgba(0,0,0,0.5)'}}>
+                            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:16}}>
+                                <div style={{display:'flex',alignItems:'center',gap:10}}>
+                                    <span style={{fontSize:24}}>📜</span>
+                                    <p style={{fontFamily:'Georgia,serif',fontWeight:700,fontSize:16,
+                                               color:'#1c1917',margin:0,lineHeight:1.3}}>{srcModal.label}</p>
+                                </div>
+                                <button onClick={()=>setSrcModal(null)}
+                                    style={{width:32,height:32,borderRadius:16,border:'1px solid #e7e5e4',
+                                            background:'#f5f5f4',cursor:'pointer',fontSize:16,fontWeight:700,
+                                            display:'flex',alignItems:'center',justifyContent:'center',
+                                            flexShrink:0,marginLeft:8}}>✕</button>
+                            </div>
+                            <p style={{fontSize:12,color:'#78716c',marginBottom:20,lineHeight:1.5}}>
+                                Это оцифрованная рукопись в официальном хранилище. Открывается в новой вкладке.
+                            </p>
+                            <a href={srcModal.url} target="_blank" rel="noopener noreferrer"
+                                onClick={()=>setSrcModal(null)}
+                                style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,
+                                        padding:'12px 24px',background:'#1c1b1d',color:'#fff',
+                                        borderRadius:12,textDecoration:'none',fontWeight:700,
+                                        fontSize:13,fontFamily:'sans-serif'}}>
+                                Открыть в архиве →
+                            </a>
+                            <button onClick={()=>setSrcModal(null)}
+                                style={{width:'100%',marginTop:10,padding:'10px',background:'transparent',
+                                        border:'1px solid #e7e5e4',borderRadius:12,cursor:'pointer',
+                                        fontSize:12,color:'#78716c',fontFamily:'sans-serif'}}>
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                )}
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
                     <div className="bg-white border-b p-4 md:p-6 flex flex-col xl:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
                         <div className="flex-1 w-full flex gap-4">
@@ -162,12 +204,12 @@
                                             </p>
                                             <div className="flex flex-col gap-1.5">
                                                 {srcs.map((s,si)=>(
-                                                    <a key={si} href={s.url} target="_blank" rel="noopener noreferrer"
-                                                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-bold transition-all hover:shadow-sm ${isBible?'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100':'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'}`}>
-                                                        <span>📖</span>
+                                                    <button key={si} onClick={()=>setSrcModal({label:s.label,url:s.url})}
+                                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-bold transition-all hover:shadow-sm text-left ${isBible?'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100':'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'}`}>
+                                                        <span>📜</span>
                                                         <span className="flex-1 leading-snug">{s.label}</span>
-                                                        <span className="opacity-40">↗</span>
-                                                    </a>
+                                                        <span className="opacity-40">🔍</span>
+                                                    </button>
                                                 ))}
                                             </div>
                                         </div>
@@ -209,6 +251,7 @@
                         </div>
                     </div>
                 </div>
+                </>
             );
         }
 
@@ -429,6 +472,7 @@
             const [hasSearched, setHasSearched] = useState(false);
             const [expandedTerms, setExpandedTerms] = useState([]);
             const [fuzzyMode, setFuzzyMode] = useState(false);
+            const [srcModal, setSrcModal] = useState(null); // {label, url, desc}
 
             const PAIRS = [
                 ['bible',        'quran'],
