@@ -907,7 +907,7 @@
                             <img
 crossOrigin="anonymous"                                 src={lightbox.src}
                                 alt={lightbox.alt}
-                                onClick={e=onError={e=>{if(!e.target.src.includes('fallback')){e.target.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=70'}}} >e.stopPropagation()}
+                                onError={e=>{if(!e.target.src.includes('fallback'))e.target.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=70';}} onClick={e=>e.stopPropagation()}
                                 style={{maxWidth:'90vw', maxHeight:'80vh', objectFit:'contain',
                                         borderRadius:12, boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
                             {lightbox.caption && (
