@@ -969,7 +969,7 @@
                                                 <span>{s.type==='manuscript'?'📜':'🖼'}</span>
                                                 <span className="flex-1 leading-snug">{s.label}</span>
                                                 <span className="opacity-40">↗</span>
-                                            </a>
+                                            </button>
                                         ))}
                                     </div>
                                 </div>
