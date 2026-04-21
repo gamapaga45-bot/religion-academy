@@ -421,9 +421,7 @@
             }
             return { matched: false, term: null };
         }
-        </script>
 
-        <script type="text/babel">
 
         // --- ГЛОБАЛЬНЫЙ ПОИСК ---
         function SearchModule({ db }) {

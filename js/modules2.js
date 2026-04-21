@@ -294,9 +294,7 @@
             );
         }
 
-        </script>
 
-        <script type="text/babel">
 
         // =====================================================================
         // МОДУЛЬ: АНГЕЛЫ И ДЕМОНЫ — Священные писания, иллюстрации, манускрипты
@@ -701,11 +699,8 @@
                 </div>
             );
         }
-        </script>
 
-        <script type="text/babel">
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-        </script>
 </body>
 </html>
