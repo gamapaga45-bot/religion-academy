@@ -6,7 +6,7 @@
                 id:'islam', emoji:'☪️', name:'Ислам', place:'Мечеть (Масджид)', color:'#065f46', bg:'#ecfdf5', border:'#6ee7b7',
                 img:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=900&q=85',
                 imgCap:'Намаз в мечети. Верующие выстраиваются рядами, обратившись в сторону Мекки.',
-                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Sultan_Ahmed_Mosque_interior.jpg/800px-Sultan_Ahmed_Mosque_interior.jpg',
+                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Sultan_Ahmed_Mosque_interior.jpg/800px-Sultan_Ahmed_Mosque_interior.jpg',
                 histCap:'Интерьер Голубой мечети (Стамбул, XVII в.). Михраб (ниша Киблы), минбар (кафедра).',
                 keyPrinciple:'Таухид — абсолютное единство Бога. Поклонение только Аллаху, без посредников.',
                 steps:[
@@ -24,7 +24,7 @@
                 id:'christianity', emoji:'✝️', name:'Христианство', place:'Церковь (Храм)', color:'#92400e', bg:'#fffbeb', border:'#fde68a',
                 img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85',
                 imgCap:'Литургия в православном храме. Хор, свечи, иконы — многовековая традиция богослужения.',
-                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Hagia_Sophia_Mars_2013.jpg/800px-Hagia_Sophia_Mars_2013.jpg',
+                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Hagia_Sophia_Mars_2013.jpg/800px-Hagia_Sophia_Mars_2013.jpg',
                 histCap:'Собор Святой Софии (Константинополь, 537 н.э.) — величайший христианский храм древности.',
                 keyPrinciple:'Поклонение Богу через Иисуса Христа. Триединый Бог: Отец, Сын, Святой Дух.',
                 steps:[
@@ -42,7 +42,7 @@
                 id:'judaism', emoji:'✡️', name:'Иудаизм', place:'Синагога (Бейт Кнессет)', color:'#1d4ed8', bg:'#eff6ff', border:'#bfdbfe',
                 img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
                 imgCap:'Молитва у Стены Плача (Иерусалим). Мужчины слева, женщины справа, разделены.',
-                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Synagogue_Erfurt_Innen.jpg/800px-Synagogue_Erfurt_Innen.jpg',
+                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/04/Synagogue_Erfurt_Innen.jpg/800px-Synagogue_Erfurt_Innen.jpg',
                 histCap:'Ростовская синагога (XIV в.). Бима в центре, арон ха-кодеш у восточной стены.',
                 keyPrinciple:'Служение единому Богу через соблюдение Торы — 613 заповедей (мицвот).',
                 steps:[
@@ -60,7 +60,7 @@
                 id:'buddhism', emoji:'☸️', name:'Буддизм', place:'Храм / Вихара / Дзэнский сад', color:'#ca8a04', bg:'#fefce8', border:'#fde047',
                 img:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=900&q=85',
                 imgCap:'Медитация монахов в буддийском храме. Благовония, статуя Будды, лотосовые позиции.',
-                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Borobudur-Nothwest-view.jpg/800px-Borobudur-Nothwest-view.jpg',
+                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Borobudur-Nothwest-view.jpg/800px-Borobudur-Nothwest-view.jpg',
                 histCap:'Боробудур (Индонезия, IX в.) — крупнейший буддийский храм мира. 2700 рельефов.',
                 keyPrinciple:'Нет Бога-Творца. Практика направлена на освобождение от страдания и достижение Нирваны.',
                 steps:[
@@ -76,7 +76,7 @@
             },
             {
                 id:'hinduism', emoji:'🕉️', name:'Индуизм', place:'Мандир (Храм)', color:'#ea580c', bg:'#fff7ed', border:'#fdba74',
-                img:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Angkor_Wat%2C_January_2009_%28crop%29.jpg/800px-Angkor_Wat%2C_January_2009_%28crop%29.jpg',
+                img:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Angkor_Wat%2C_January_2009_%28crop%29.jpg/800px-Angkor_Wat%2C_January_2009_%28crop%29.jpg',
                 imgCap:'Пуджа — ритуальное подношение. Статуя Ганеши, цветы, благовония, огонь.',
                 histImg:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=800&q=80',
                 histCap:'Ангкор-Ват (Камбоджа, XII в.) — крупнейший религиозный комплекс мира. Посвящён Вишну.',
@@ -96,7 +96,7 @@
                 id:'shinto', emoji:'⛩️', name:'Синтоизм', place:'Дзиндзя (Святилище)', color:'#be185d', bg:'#fdf2f8', border:'#f0abfc',
                 img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
                 imgCap:'Тории (красные ворота) храма Фусими Инари, Киото. 10 000 тории образуют туннель.',
-                histImg:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Itsukushima_torii_angle.jpg/800px-Itsukushima_torii_angle.jpg',
+                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Itsukushima_torii_angle.jpg/800px-Itsukushima_torii_angle.jpg',
                 histCap:'Святилище Ицукусима (XII в.). Тории стоит в море — символ соединения миров.',
                 keyPrinciple:'Уважение и контакт с ками — духами, населяющими природу. Чистота как путь к священному.',
                 steps:[
@@ -317,13 +317,13 @@
                     desc:'Гавриил — главный вестник Бога в трёх авраамических традициях. В иудаизме — один из четырёх архангелов. В христианстве явился Марии. В исламе через него передан весь Коран Мухаммеду за 23 года.',
                     significance:'Именно Джибриль принёс первое откровение Мухаммеду в пещере Хира (610 н.э.). Он же возвестил Марии о рождении Исы. Единственный ангел, названный по имени в Коране.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg/800px-Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', cap:'Фра Анджелико «Благовещение» — Гавриил и Мария (ок. 1440), Музей Сан-Марко, Флоренция', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg/800px-Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg', cap:'Леонардо да Винчи «Благовещение» (1472–1475) — Гавриил с лилией', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg', cap:'Рембрандт «Явление ангела пастухам» (1634)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg/800px-Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', cap:'Фра Анджелико «Благовещение» — Гавриил и Мария (ок. 1440), Музей Сан-Марко, Флоренция', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/7/74/Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg/800px-Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg', cap:'Леонардо да Винчи «Благовещение» (1472–1475) — Гавриил с лилией', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/50/Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg', cap:'Рембрандт «Явление ангела пастухам» (1634)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg/800px-Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg', cap:'Симоне Мартини «Благовещение» (1333), манускрипт-образ, Уффици', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg/800px-Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg', cap:'«Часослов» — иллюминированный манускрипт с Гавриилом (XV в.)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg/800px-Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg', cap:'Симоне Мартини «Благовещение» (1333), манускрипт-образ, Уффици', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg/800px-Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg', cap:'«Часослов» — иллюминированный манускрипт с Гавриилом (XV в.)', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -336,13 +336,13 @@
                     desc:'Михаил — единственный ангел, названный в Библии «архангелом». Главнокомандующий небесным воинством. В книге Откровения побеждает сатану-дракона. В Свитках Мёртвого моря — полководец Сынов Света против Сынов Тьмы.',
                     significance:'Особо почитается в исламе как ангел провидения и милости. В православии — «чиноначальник ангелов». День Михаила (Михайлов день) — 21 ноября. Покровитель воинов, полицейских, врачей.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg/800px-Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg', cap:'Гвидо Рени «Архангел Михаил» (1636) — попирает сатану', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg/800px-Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg', cap:'Рафаэль «Святой Михаил, победивший демона» (1518), Лувр', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg/800px-Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg', cap:'Лука Джордано «Падение ангелов» (1666)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg/800px-Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg', cap:'Гвидо Рени «Архангел Михаил» (1636) — попирает сатану', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg/800px-Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg', cap:'Рафаэль «Святой Михаил, победивший демона» (1518), Лувр', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/14/Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg/800px-Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg', cap:'Лука Джордано «Падение ангелов» (1666)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Michael_D%C3%BCrer.jpg/800px-Michael_D%C3%BCrer.jpg', cap:'Альбрехт Дюрер «Михаил» из Апокалипсиса (1498) — гравюра на дереве', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Apocalypse_Michael.jpg/800px-Apocalypse_Michael.jpg', cap:'Михаил в Апокалипсисе — иллюминированный манускрипт (XIII в.)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/91/Michael_D%C3%BCrer.jpg/800px-Michael_D%C3%BCrer.jpg', cap:'Альбрехт Дюрер «Михаил» из Апокалипсиса (1498) — гравюра на дереве', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Apocalypse_Michael.jpg/800px-Apocalypse_Michael.jpg', cap:'Михаил в Апокалипсисе — иллюминированный манускрипт (XIII в.)', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -355,11 +355,11 @@
                     desc:'Рафаил — архангел исцеления. В Книге Товита он путешествует с Товией в человеческом облике под именем «Азария» и исцеляет Товита от слепоты. Его имя означает «Бог исцелил».',
                     significance:'Покровитель врачей, фармацевтов и паломников. В эпоху Возрождения — популярнейший образ. Часто изображается с рыбой (из истории Товита) и посохом паломника.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Raffael_-_Tobias_und_der_Engel.jpg/800px-Raffael_-_Tobias_und_der_Engel.jpg', cap:'Рафаэль (школа) «Товия и ангел Рафаил» (ок. 1512)', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Titian_Tobias_angel.jpg/800px-Titian_Tobias_angel.jpg', cap:'Тициан «Товия и ангел» (1544), Галерея Академии, Венеция', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Raffael_-_Tobias_und_der_Engel.jpg/800px-Raffael_-_Tobias_und_der_Engel.jpg', cap:'Рафаэль (школа) «Товия и ангел Рафаил» (ок. 1512)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/41/Titian_Tobias_angel.jpg/800px-Titian_Tobias_angel.jpg', cap:'Тициан «Товия и ангел» (1544), Галерея Академии, Венеция', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg/800px-Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg', cap:'Верроккьо «Товия и ангел» (деталь, 1470–1480), Национальная галерея, Лондон', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg/800px-Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg', cap:'Верроккьо «Товия и ангел» (деталь, 1470–1480), Национальная галерея, Лондон', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -372,11 +372,11 @@
                     desc:'Серафимы — высший чин в христианской ангельской иерархии. Единственное упоминание — Исайя 6. Шесть крыл: два закрывают лицо (не смеют видеть Бога), два — ноги (смирение), двумя летят. Они кричат: «Кадош, Кадош, Кадош» — Свят, Свят, Свят.',
                     significance:'Видение Исайи стало основой для христианской литургии (Трисвятое, Санктус). В иконографии изображаются красными — цвет огня и любви.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg/800px-Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg', cap:'Серафимы — «Малый часослов Жана Беррийского» (ок. 1385–1390)', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg/800px-Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg', cap:'Джотто «Видение серафима» (ок. 1295–1300)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/3/33/Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg/800px-Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg', cap:'Серафимы — «Малый часослов Жана Беррийского» (ок. 1385–1390)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg/800px-Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg', cap:'Джотто «Видение серафима» (ок. 1295–1300)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg/800px-Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg', cap:'Видение Исайи с серафимами — Библия Кенникотта (1476), иллюминированный манускрипт', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg/800px-Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg', cap:'Видение Исайи с серафимами — Библия Кенникотта (1476), иллюминированный манускрипт', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -389,11 +389,11 @@
                     desc:'В Библии херувимы — вовсе не пухлые младенцы. Это грозные четырёхликие существа с четырьмя крыльями, сверкающие как раскалённый металл. Иезекииль описывает их как «Меркаву» — небесную колесницу Бога с огненными колёсами.',
                     significance:'Образ херувима из Иезекииля — один из самых загадочных в Библии. Иудейский мистицизм (Меркава) строился вокруг созерцания этого видения. В искусстве Ренессанса херувимы превратились в пухлых купидонов — полная противоположность оригиналу.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg/800px-Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg', cap:'Иезекииль видит Меркаву (Колесницу) — иллюстрация к Библии (1670)', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Raphael_School_of_Athens_fragment.jpg/800px-Raphael_School_of_Athens_fragment.jpg', cap:'Херувимы Рафаэля из Сикстинской Мадонны (1512) — известнейшее изображение', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg/800px-Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg', cap:'Иезекииль видит Меркаву (Колесницу) — иллюстрация к Библии (1670)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Raphael_School_of_Athens_fragment.jpg/800px-Raphael_School_of_Athens_fragment.jpg', cap:'Херувимы Рафаэля из Сикстинской Мадонны (1512) — известнейшее изображение', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Burney_Relief_Babylon_-2000-1700.jpg/800px-Burney_Relief_Babylon_-2000-1700.jpg', cap:'Видение Иезекииля — «Bible Historiale» (1372), манускрипт', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Burney_Relief_Babylon_-2000-1700.jpg/800px-Burney_Relief_Babylon_-2000-1700.jpg', cap:'Видение Иезекииля — «Bible Historiale» (1372), манускрипт', license:'Public Domain / CC'},
                     ]
                 },
             ];
@@ -410,13 +410,13 @@
                     desc:'«Сатана» по-еврейски — «противник, обвинитель». В ранней Библии это должность в Небесном Суде (Иов 1–2), а не злой бог. Только в позднейших текстах он становится олицетворением зла. В исламе Иблис — сотворён из огня, гордыня не позволила поклониться Адаму из глины.',
                     significance:'Концепция персонифицированного зла революционна. До Библии — нет единого источника зла в большинстве религий. Через зороастрийское влияние (Ангра-Майнью) идея злого духа вошла в иудаизм, оттуда — в христианство и ислам.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Guercino-temptation.jpg/800px-Guercino-temptation.jpg', cap:'Джованни Франческо Барбьери «Искушение Христа» (1620)', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg/800px-William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', cap:'Уильям Блейк «Великий Красный Дракон» (1805) — Откр 12', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg/800px-Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg', cap:'Сатана в доспехах — иллюстрация к «Потерянному Раю» Мильтона (1866)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Guercino-temptation.jpg/800px-Guercino-temptation.jpg', cap:'Джованни Франческо Барбьери «Искушение Христа» (1620)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg/800px-William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', cap:'Уильям Блейк «Великий Красный Дракон» (1805) — Откр 12', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/50/Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg/800px-Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg', cap:'Сатана в доспехах — иллюстрация к «Потерянному Раю» Мильтона (1866)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Job_and_Satan_%281825%29_Blake.jpg/800px-Job_and_Satan_%281825%29_Blake.jpg', cap:'Уильям Блейк «Иов и Сатана» (1825) — гравюра из «Книги Иова»', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Devil_codex_Gigas.jpg/800px-Devil_codex_Gigas.jpg', cap:'Дьявол из «Codex Gigas» («Библия Дьявола», XIII в., Стокгольм)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/7/72/Job_and_Satan_%281825%29_Blake.jpg/800px-Job_and_Satan_%281825%29_Blake.jpg', cap:'Уильям Блейк «Иов и Сатана» (1825) — гравюра из «Книги Иова»', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Devil_codex_Gigas.jpg/800px-Devil_codex_Gigas.jpg', cap:'Дьявол из «Codex Gigas» («Библия Дьявола», XIII в., Стокгольм)', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -429,11 +429,11 @@
                     desc:'В каноне Библии Лилит упомянута лишь раз — Исайя 34:14. Вся её история — в позднейших мидрашах. По «Алфавиту Бен-Сиры»: Адам и Лилит созданы одновременно из земли, но Лилит отказывалась подчиняться. Улетела, стала демоницей, опасной для новорождённых.',
                     significance:'Лилит — символ непокорности и независимости в иудейской мистике. Оберег «рука Хамса» и амулеты с именами трёх ангелов (Санои, Сансанои, Семангелоф) — защита от Лилит. В современной культуре — феминистский символ.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/John_Collier_Lilith.jpg/800px-John_Collier_Lilith.jpg', cap:'Джон Коллиер «Лилит» (1892) — прерафаэлитская интерпретация', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg/800px-Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg', cap:'«Рельеф Бёрни» — возможно, Лилит или Инанна, Вавилон (~1800 до н.э.)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/c/c5/John_Collier_Lilith.jpg/800px-John_Collier_Lilith.jpg', cap:'Джон Коллиер «Лилит» (1892) — прерафаэлитская интерпретация', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg/800px-Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg', cap:'«Рельеф Бёрни» — возможно, Лилит или Инанна, Вавилон (~1800 до н.э.)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Lilith_%28John_Collier_painting%29.jpg/800px-Lilith_%28John_Collier_painting%29.jpg', cap:'Средневековый амулет против Лилит с именами охранных ангелов', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Lilith_%28John_Collier_painting%29.jpg/800px-Lilith_%28John_Collier_painting%29.jpg', cap:'Средневековый амулет против Лилит с именами охранных ангелов', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -446,11 +446,11 @@
                     desc:'В Книге Левит Азазел — таинственная сущность пустыни, которой отсылается козёл с грехами Израиля. В Книге Еноха — один из «Стражей» (Бней ха-Элохим), спустившихся на гору Хермон. Он научил людей войне, магии и блуду.',
                     significance:'«Козёл отпущения» (scapegoat) вошёл во все языки мира. Современное слово «scapegoat» из перевода Лев 16 — козёл для Азазела. Концепция ритуального очищения через перенос вины — основа многих религий.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/William_Holman_Hunt_-_The_Scapegoat.jpg/800px-William_Holman_Hunt_-_The_Scapegoat.jpg', cap:'Уильям Холман Хант «Козёл отпущения» (1856) — буквальная иллюстрация Лев 16', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Fallen_angel.jpg/800px-Fallen_angel.jpg', cap:'«Падший Ангел» — Алессандро Бонвичино (Моретто да Брешиа, XVI в.)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/16/William_Holman_Hunt_-_The_Scapegoat.jpg/800px-William_Holman_Hunt_-_The_Scapegoat.jpg', cap:'Уильям Холман Хант «Козёл отпущения» (1856) — буквальная иллюстрация Лев 16', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Fallen_angel.jpg/800px-Fallen_angel.jpg', cap:'«Падший Ангел» — Алессандро Бонвичино (Моретто да Брешиа, XVI в.)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Fallen_Angels_in_Tartarus.jpg/800px-Fallen_Angels_in_Tartarus.jpg', cap:'Падшие ангелы — иллюстрация к «Потерянному Раю» Мильтона (Джон Мартин, 1825)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/50/Fallen_Angels_in_Tartarus.jpg/800px-Fallen_Angels_in_Tartarus.jpg', cap:'Падшие ангелы — иллюстрация к «Потерянному Раю» Мильтона (Джон Мартин, 1825)', license:'Public Domain / CC'},
                     ]
                 },
                 {
@@ -463,7 +463,7 @@
                     desc:'Изначально — Баал-Зебуб («Повелитель Принца», или «Высокий дом») — филистимский бог Аккарона. В еврейской полемике имя намеренно искажено в «Баал-Зевув» — «повелитель мух». В Новом Завете — синоним сатаны или его заместитель.',
                     significance:'«Вельзевул» — одно из самых используемых имён дьявола в западной литературе. В Средневековье считался повелителем зависти. Мухи — символ разложения и нечистоты.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg/800px-Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg', cap:'Вельзевул — «Словарь Инфернале» Кол. де Планси (1863)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/60/Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg/800px-Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg', cap:'Вельзевул — «Словарь Инфернале» Кол. де Планси (1863)', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
                         {src:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80', cap:'«Dictionnaire Infernal» (1863) — энциклопедия демонологии', license:'Unsplash License'},
@@ -479,12 +479,12 @@
                     desc:'Нефилим — загадочнейшее место Библии (Быт 6:1–4). «Бней ха-Элохим» берут в жёны дочерей людских. Книга Еноха развивает эту историю: 200 ангелов под предводительством Шемхазая спустились на гору Хермон, взяли жён и научили людей запретным знаниям. Их дети — великаны-рефаимы.',
                     significance:'Эта история — объяснение происхождения зла в мире перед Потопом. Книга Еноха была канонической для ранних христиан (цитируется в Послании Иуды). Обнаружена в Кумране (7 рукописей). Мотив «падших ангелов» лёг в основу всей западной демонологии.',
                     images:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg/800px-Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg', cap:'Ари Шеффер «Искушение» (1854)', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg/800px-Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg', cap:'Гюстав Моро «Падший Ангел» (XIX в.), Музей Уолтерс', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg/800px-Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg', cap:'Ари Шеффер «Искушение» (1854)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg/800px-Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg', cap:'Гюстав Моро «Падший Ангел» (XIX в.), Музей Уолтерс', license:'Public Domain / CC'},
                     ],
                     manuscripts:[
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Book_of_Enoch_Ethiopic_MS.jpg/800px-Book_of_Enoch_Ethiopic_MS.jpg', cap:'Книга Еноха — эфиопская рукопись (XVIII в.), основной источник о Стражах', license:'Public Domain / CC'},
-                        {src:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg/800px-Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg', cap:'Свитки Мёртвого моря — «Книга Гигантов» (фрагменты, Кумран, II в. до н.э.)', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Book_of_Enoch_Ethiopic_MS.jpg/800px-Book_of_Enoch_Ethiopic_MS.jpg', cap:'Книга Еноха — эфиопская рукопись (XVIII в.), основной источник о Стражах', license:'Public Domain / CC'},
+                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg/800px-Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg', cap:'Свитки Мёртвого моря — «Книга Гигантов» (фрагменты, Кумран, II в. до н.э.)', license:'Public Domain / CC'},
                     ]
                 },
             ];
