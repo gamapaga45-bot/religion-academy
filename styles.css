@@ -10,6 +10,9 @@ body { font-family: 'Open Sans', sans-serif; background: #f5f5f4; }
 .font-serif { font-family: 'Merriweather', serif; }
 
 /* ── Скроллбар ───────────────────────────────────────── */
+/* Standard (Firefox) */
+* { scrollbar-width: thin; scrollbar-color: #d6d3d1 transparent; }
+/* Webkit (Chrome/Safari/Edge) */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 10px; }

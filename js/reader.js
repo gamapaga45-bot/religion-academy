@@ -53,7 +53,6 @@
                 '55. Ар-Рахман':  [{label:'Ар-Рахман — Corpus Coranicum corpuscoranicum.de', url:'https://corpuscoranicum.de/'}],
                 '96. Аль-Аляк':   [{label:'Первое откровение — Корпус Коранических рукописей', url:'https://corpuscoranicum.de/'}],
             };
-            };
 
             let imgUrl = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=85";
             let imgFallback = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=80";
