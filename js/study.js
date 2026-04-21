@@ -1,38 +1,3 @@
-                                </select>
-                                <select value={bChap} onChange={e=>setBChap(e.target.value)} className="w-24 p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 transition-all">
-                                    {bChaps.map(c => <option key={c} value={c}>Гл {c}</option>)}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="md:pl-4 space-y-2 p-2">
-                            <label className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest block">Коран</label>
-                            <select value={qSurah} onChange={e=>setQSurah(e.target.value)} className="w-full p-3 border border-emerald-100 rounded-xl text-sm font-bold bg-emerald-50/50 outline-none text-emerald-900 cursor-pointer focus:ring-2 focus:ring-emerald-500 transition-all">
-                                {db.order.quran.map(s => <option key={s} value={s}>{s}</option>)}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="flex-1 overflow-y-auto flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x border-stone-200">
-                        <div className="flex-1 p-8 md:p-10 font-serif leading-loose text-lg text-stone-800 bg-[#fdfbf7]">
-                            <h3 className="text-stone-400 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-stone-200">{bBook}, Глава {bChap}</h3>
-                            {Object.entries(db.texts.bible[bBook]?.[bChap] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className="mb-6 group relative pr-8">
-                                    <sup className="text-[10px] font-sans font-bold text-amber-600 mr-3">{v}</sup>{t}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex-1 p-8 md:p-10 font-serif leading-loose text-lg text-emerald-900 bg-[#f4faf7]">
-                            <h3 className="text-emerald-500 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-emerald-200">{qSurah}</h3>
-                            {Object.entries(db.texts.quran[qSurah]?.["1"] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className="mb-6 group relative pr-8">
-                                    <sup className="text-[10px] font-sans font-bold text-emerald-600 mr-3">{v}</sup>{t}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
 
         // =====================================================================
         // МОДУЛЬ 1: ПОШАГОВОЕ ИЗУЧЕНИЕ СО СРАВНЕНИЕМ
@@ -602,8 +567,8 @@
                 id:'codex-sinaiticus', cat:'bible', title:'Кодекс Синайский', short:'Синайский кодекс',
                 date:'~ 330–360 н.э.', lang:'Греческий (койне)', place:'Монастырь Св. Екатерины, Синай',
                 location:'Британский музей, Лондон', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
-                imgFb:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Codex_Sinaiticus_Matthew_6_22-7_21.JPG&width=800',
+                imgFb:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Codex_Alexandrinus_f41v_-_Luke_12.jpg&width=800',
                 original:'ΠΑΤΕΡ ΗΜΩΝ Ο ΕΝ ΤΟΙΣ ΟΥΡΑΝΟΙΣ · ΑΓΙΑΣΘΗΤΩ ΤΟ ΟΝΟΜΑ ΣΟΥ · ΕΛΘΕΤΩ Η ΒΑΣΙΛΕΙΑ ΣΟΥ',
                 translation:'Отче наш, сущий на небесах, да святится имя Твоё, да придёт Царствие Твоё (Мф 6:9–10)',
                 script:'Унциальное (маюскульное) греческое письмо без пробелов — скриптио континуа',
@@ -616,7 +581,7 @@
                 id:'codex-vaticanus', cat:'bible', title:'Кодекс Ватиканский', short:'Codex Vaticanus',
                 date:'~ 300–325 н.э.', lang:'Греческий (койне)', place:'Александрия (предположительно)',
                 location:'Ватиканская апостольская библиотека, Рим', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Codex_Vaticanus_B%2C_2Thess._3%2C11-18%2C_Hebr._1%2C1-2%2C2.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800',
                 original:'ΕΝ ΑΡΧΗ ΗΝ Ο ΛΟΓΟΣ ΚΑΙ Ο ΛΟΓΟΣ ΗΝ ΠΡΟΣ ΤΟΝ ΘΕΟΝ ΚΑΙ ΘΕΟΣ ΗΝ Ο ΛΟΓΟΣ',
                 translation:'В начале было Слово, и Слово было у Бога, и Слово было Бог (Иоанн 1:1)',
@@ -630,7 +595,7 @@
                 id:'codex-alexandrinus', cat:'bible', title:'Кодекс Александрийский', short:'Codex Alexandrinus',
                 date:'~ 400–440 н.э.', lang:'Греческий', place:'Александрия или Константинополь',
                 location:'Британская библиотека, Лондон', signal:'★★★★☆',
-                imgUrl:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/JohnRylands.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800',
                 original:'ΚΥΡΙΟΣ ΠΟΙΜΑΙΝΕΙ ΜΕ ΚΑΙ ΟΥΔΕΝ ΜΕ ΥΣΤΕΡΗΣΕΙ · ΕΙΣ ΤΟΠΟΝ ΧΛΟΗΣ ΕΚΕΙ ΜΕ ΚΑΤΕΣΚΗΝΩΣΕΝ',
                 translation:'Господь — Пастырь мой, я ни в чём не буду нуждаться, на злачных пажитях покоит меня (Пс 22:1-2)',
@@ -644,7 +609,7 @@
                 id:'dead-sea', cat:'bible', title:'Свитки Мёртвого моря', short:'Кумранские свитки',
                 date:'250 до н.э. — 68 н.э.', lang:'Иврит, арамейский, греческий', place:'Пещеры Кумрана у Мёртвого моря',
                 location:'Музей Израиля («Храм Книги»), Иерусалим', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Great_Isaiah_Scroll.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800',
                 original:'בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ',
                 translation:'В начале сотворил Бог небо и землю (Бытие 1:1)',
@@ -658,7 +623,7 @@
                 id:'leningrad', cat:'bible', title:'Ленинградский кодекс', short:'Codex Leningradensis',
                 date:'1008–1009 н.э.', lang:'Иврит (масоретский текст)', place:'Каир, ешива бен Ашера',
                 location:'Российская национальная библиотека, СПб', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Leningrad_codex_whole_book.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800',
                 original:'שְׁמַע יִשְׂרָאֵל יְהוָה אֱלֹהֵינוּ יְהוָה אֶחָד',
                 translation:'Слушай, Израиль: Господь Бог наш, Господь один (Второзаконие 6:4)',
@@ -672,7 +637,7 @@
                 id:'aleppo', cat:'bible', title:'Алеппский кодекс', short:'Keter Aram Tzova',
                 date:'~ 920–930 н.э.', lang:'Иврит (масоретский)', place:'Тиберия — Алеппо — Иерусалим',
                 location:'Институт Бен-Цви, Иерусалим', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Aleppo_Codex_-_Joshua.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800',
                 original:'בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם',
                 translation:'В начале сотворил Бог небо...',
@@ -686,7 +651,7 @@
                 id:'p52', cat:'bible', title:'Папирус Рилэндс P52', short:'P52 / P.Ryl.457',
                 date:'~ 117–138 н.э.', lang:'Греческий', place:'Египет (предположительно Оксиринх)',
                 location:'Библиотека Джона Рилэндса, Манчестер', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/DiamondSutra.jpeg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800',
                 original:'ΗΡΩΤΗΣΑΝ ΑΥΤΟΝ · ΕΙΠ[ΩΝ ΑΥΤΩ] · ΤΙΝΑ ΚΑΤΗΓΟΡΙΑΝ [ΦΕΡΕΤΕ] · ΚΑΤΑ ΤΟΥ ΑΝΘΡΩΠΟΥ ΤΟΥΤΟΥ',
                 translation:'Спросили его: какое обвинение выдвигаете против этого человека? (Иоанн 18:29)',
@@ -700,7 +665,7 @@
                 id:'bodmer2', cat:'bible', title:'Папирус Бодмер P66', short:'Bodmer Papyrus P66',
                 date:'~ 200 н.э.', lang:'Греческий', place:'Египет (Наг-Хаммади?)',
                 location:'Biblioteca Bodmeriana, Женева', signal:'★★★★☆',
-                imgUrl:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/P66.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',
                 original:'ΕΝ ΑΡΧΗ ΗΝ Ο ΛΟΓΟΣ ΚΑΙ Ο ΛΟΓΟΣ ΗΝ ΠΡΟΣ ΤΟΝ ΘΕΟΝ',
                 translation:'В начале было Слово, и Слово было у Бога (Иоанн 1:1)',
@@ -714,7 +679,7 @@
                 id:'nash', cat:'bible', title:'Папирус Нэша', short:'Nash Papyrus',
                 date:'150–100 до н.э.', lang:'Иврит', place:'Фаюм, Египет',
                 location:'Кембриджская университетская библиотека', signal:'★★★★☆',
-                imgUrl:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/NashPapyrus.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800',
                 original:'שְׁמַע יִשְׂרָאֵל יְהוָה אֱלֹהֵֽינוּ יְהוָה׀ אֶחָֽד',
                 translation:'Слушай, Израиль: Господь Бог наш, Господь один (Втор 6:4)',
@@ -729,7 +694,7 @@
                 id:'sanaa', cat:'quran', title:'Рукопись Саны', short:'Sana\'a Palimpsest',
                 date:'~ 645–690 н.э.', lang:'Арабский (хиджазское письмо)', place:'Большая мечеть Саны, Йемен',
                 location:'Дом рукописей, Сана, Йемен', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Quran_manuscript.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800',
                 original:'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ · إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ',
                 translation:'Во имя Аллаха Милостивого Милосердного. Поистине, Мы ниспослали его в Ночь Предопределения (Сура 97:1)',
@@ -743,7 +708,7 @@
                 id:'birmingham', cat:'quran', title:'Бирмингемский Коран', short:'Birmingham Quran',
                 date:'568–645 н.э.', lang:'Арабский (хиджазское письмо)', place:'Хиджаз (Аравия)',
                 location:'Университет Бирмингема, Великобритания', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Birmingham_Quran_manuscript.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1547623641-d2c56c03e2a7?w=800',
                 original:'وَالنَّجْمِ إِذَا هَوَىٰ · مَا ضَلَّ صَاحِبُكُمْ وَمَا غَوَىٰ',
                 translation:'Клянусь звездой, когда она падает! Ваш товарищ не заблудился и не впал в заблуждение (Сура 53:1-2)',
@@ -786,7 +751,7 @@
                 id:'nag-hammadi', cat:'other', title:'Библиотека Наг-Хаммади', short:'Гностические кодексы',
                 date:'~ 350–400 н.э.', lang:'Коптский (саидский диалект)', place:'Наг-Хаммади, Верхний Египет',
                 location:'Коптский музей, Каир, Египет', signal:'★★★★☆',
-                imgUrl:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Nag_Hammadi_books.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',
                 original:'ⲡⲉϫⲉ ⲓⲥ ϫⲉ ⲡⲉⲧⲁϣⲉ ⲡⲱⲱⲛⲉ ⲛⲁⲩ ⲉⲃⲟⲗ · ⲙⲁⲣⲉϥⲣ ⲡⲉⲧϣⲟⲟⲡ',
                 translation:'Иисус сказал: пусть тот, кто ищет, не перестанет искать, пока не найдёт (Евангелие Фомы 2)',
@@ -800,7 +765,7 @@
                 id:'diamond-sutra', cat:'buddhism', title:'Алмазная сутра', short:'Diamond Sutra / 金剛般若波羅蜜經',
                 date:'868 н.э.', lang:'Китайский (вэньянь)', place:'Дуньхуан, Китай',
                 location:'Британская библиотека, Лондон', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Arca_de_Noe-Athanasius_Kircher.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',
                 original:'如是我聞。一時佛在舍衛國。祇樹給孤獨園。與大比丘衆千二百五十人俱。',
                 translation:'Так я слышал. Однажды Будда пребывал в Шравасти, в роще Джеты... (начало Алмазной сутры)',
@@ -814,7 +779,7 @@
                 id:'book-kells', cat:'bible', title:'Книга Келлс', short:'Book of Kells / Leabhar Cheanannais',
                 date:'~ 800 н.э.', lang:'Латинский', place:'Остров Иона, Шотландия или Ирландия',
                 location:'Библиотека Тринити-колледжа, Дублин', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/KellsFol032vChristEnthroned.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800',
                 original:'IN PRINCIPIO ERAT VERBUM · ET VERBUM ERAT APUD DEUM · ET DEUS ERAT VERBUM',
                 translation:'В начале было Слово, и Слово было у Бога, и Слово было Бог (Иоанн 1:1 по-латински)',
@@ -828,7 +793,7 @@
                 id:'lindisfarne', cat:'bible', title:'Евангелие Линдисфарна', short:'Lindisfarne Gospels',
                 date:'~ 715–720 н.э.', lang:'Латинский + древнеанглийский', place:'Линдисфарн (Святой остров), Нортумбрия',
                 location:'Британская библиотека, Лондон', signal:'★★★★★',
-                imgUrl:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
+                imgUrl:'https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Lindisfarne_Gospels_cross_carpet_page.jpg&width=800',
                 imgFb:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800',
                 original:'INITIUM EVANGELII IESU CHRISTI FILII DEI · SICUT SCRIPTUM EST IN ESAIA PROPHETA',
                 translation:'Начало Евангелия Иисуса Христа, Сына Божия, как написано у пророка Исаии (Марк 1:1)',
@@ -942,7 +907,7 @@
                             <img
 crossOrigin="anonymous"                                 src={lightbox.src}
                                 alt={lightbox.alt}
-                                onError={e=>{if(!e.target.src.includes('fallback'))e.target.src='https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=70';}} onClick={e=>e.stopPropagation()}
+                                onClick={e=>e.stopPropagation()}
                                 style={{maxWidth:'90vw', maxHeight:'80vh', objectFit:'contain',
                                         borderRadius:12, boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
                             {lightbox.caption && (
@@ -994,7 +959,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                     {/* Изображение — клик открывает лайтбокс */}
                                     <div className="h-36 overflow-hidden bg-stone-100 relative group cursor-zoom-in"
                                          onClick={()=>openLightbox(m.imgUrl, m.title, m.title + ' · ' + m.date)}>
-                                        <img loading="lazy" crossOrigin="anonymous" src={m.imgUrl} alt={m.title}
+                                        <img crossOrigin="anonymous" src={m.imgUrl} alt={m.title}
                                             onError={e=>{if(e.target.src!==m.imgFb)e.target.src=m.imgFb;}}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
@@ -1026,7 +991,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                             {/* Главное фото — кликабельное */}
                             <div className="relative h-72 md:h-96 bg-stone-900 cursor-zoom-in group"
                                  onClick={()=>openLightbox(selected.imgUrl, selected.title, selected.title + ' · ' + selected.date + ' · ' + selected.location)}>
-                                <img loading="lazy" crossOrigin="anonymous" src={selected.imgUrl} alt={selected.title}
+                                <img crossOrigin="anonymous" src={selected.imgUrl} alt={selected.title}
                                     onError={e=>{if(e.target.src!==selected.imgFb)e.target.src=selected.imgFb;}}
                                     className="w-full h-full object-cover opacity-80 group-hover:opacity-90 transition-opacity"/>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-10">
@@ -1059,7 +1024,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                                      className="rounded-xl overflow-hidden cursor-zoom-in relative group"
                                                      style={{aspectRatio:'4/3', background:'#e7e5e4'}}
                                                      onClick={()=>openLightbox(img.src, img.cap, img.cap)}>
-                                                    <img loading="lazy" crossOrigin="anonymous" src={img.src} alt={img.cap||''}
+                                                    <img crossOrigin="anonymous" src={img.src} alt={img.cap||''}
                                                         onError={e=>{e.target.style.display='none';}}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
@@ -1098,3 +1063,40 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                     <p className="text-[10px] font-bold uppercase tracking-widest mb-2" style={{color:clr.dot}}>
                                         🎓 Научное значение
                                     </p>
+                                    <p className="font-bold text-base" style={{color:clr.txt}}>{selected.significance}</p>
+                                </div>
+
+                                {/* Факты */}
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📋 Ключевые факты</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {selected.facts.map((f,i)=>(
+                                            <div key={i} className="flex gap-3 bg-stone-50 border border-stone-200 rounded-xl p-3">
+                                                <span style={{color:clr.dot}} className="font-bold flex-shrink-0">#{i+1}</span>
+                                                <span className="text-stone-700 text-sm">{f}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Хранение */}
+                                <div className="flex flex-wrap gap-4 text-sm">
+                                    <div><span className="text-stone-400 font-bold uppercase text-[10px]">Место находки</span><br/><span className="font-bold">{selected.place}</span></div>
+                                    <div><span className="text-stone-400 font-bold uppercase text-[10px]">Хранится сейчас</span><br/><span className="font-bold">{selected.location}</span></div>
+                                </div>
+
+                                {/* AI анализ */}
+                                <div className="border-t border-stone-100 pt-6">
+                                    <button onClick={analyze} disabled={aiLoad}
+                                        className="flex items-center gap-2 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50"
+                                        style={{background: aiLoad ? '#78716c' : '#1c1917'}}>
+                                        {aiLoad ? <><Icons.Loader c="w-4 h-4"/>Анализирую рукопись...</> : <>✨ Глубокий AI-анализ манускрипта</>}
+                                    </button>
+                                    {aiText && <div className="mt-5 ai-content p-6 bg-stone-50 rounded-2xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiText}}/>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }

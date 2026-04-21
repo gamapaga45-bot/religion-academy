@@ -1,0 +1,112 @@
+/* =========================================================
+   Академия Религиоведения — стили
+   Nikolai Rogozin · 8-950-827-22-27
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@400;600;700&display=swap');
+
+/* ── Базовые ──────────────────────────────────────────── */
+body { font-family: 'Open Sans', sans-serif; background: #f5f5f4; }
+.font-serif { font-family: 'Merriweather', serif; }
+
+/* ── Скроллбар ───────────────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+
+/* ── Анимации ────────────────────────────────────────── */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(15px);
+}
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.accordion-body { animation: accordionOpen 0.18s ease-out; }
+@keyframes accordionOpen {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Модальное окно ──────────────────────────────────── */
+.modal-overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+/* ── AI-контент (рендер ответов нейросети) ───────────── */
+.ai-content p              { margin-bottom: 0.55em; line-height: 1.55; }
+.ai-content strong         { color: #78350f; font-weight: 700; }
+.ai-content em             { font-style: italic; color: #57534e; }
+.ai-content h1,
+.ai-content h2,
+.ai-content h3             { font-family: 'Merriweather', serif; font-weight: 700; margin: 1em 0 0.4em; color: #1c1917; }
+.ai-content h2             { font-size: 1.05em; border-bottom: 1px solid #e7e5e4; padding-bottom: 0.25em; }
+.ai-content h3             { font-size: 0.97em; color: #78350f; }
+.ai-content ul,
+.ai-content ol             { padding-left: 1.3em; margin-bottom: 0.9em; }
+.ai-content li             { margin-bottom: 0.2em; line-height: 1.5; }
+.ai-content ul li          { list-style-type: disc; }
+.ai-content ol li          { list-style-type: decimal; }
+.ai-content code           { background: #fef3c7; padding: 0.1em 0.35em; border-radius: 4px; font-family: monospace; font-size: 0.88em; color: #92400e; }
+.ai-content blockquote     { border-left: 3px solid #d97706; margin: 0.8em 0; padding: 0.4em 0.9em; background: #fffbeb; color: #78350f; font-style: italic; border-radius: 0 8px 8px 0; }
+.ai-content p:last-child   { margin-bottom: 0; }
+
+/* ── Мобильная шапка ─────────────────────────────────── */
+.mobile-header {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 30;
+    background: #0f0f11;
+    height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 1px solid #27272a;
+}
+
+/* ── Мобильная нижняя навигация ──────────────────────── */
+.mobile-nav {
+    display: none;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 30;
+    background: #0f0f11;
+    border-top: 1px solid #27272a;
+    justify-content: space-around;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+}
+.mobile-nav-item {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px; padding: 4px 8px; border-radius: 8px; cursor: pointer;
+    color: #78716c; font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    min-width: 52px; transition: color 0.15s;
+    border: none; background: transparent;
+}
+.mobile-nav-item.active { color: #f59e0b; }
+.mobile-nav-item svg { width: 22px; height: 22px; }
+
+/* ── Мобильный drawer ────────────────────────────────── */
+.mobile-drawer       { position: fixed; inset: 0; z-index: 40; display: flex; }
+.mobile-drawer-bg    { position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+.mobile-drawer-panel { position: relative; width: 280px; background: #0f0f11; display: flex; flex-direction: column; overflow-y: auto; }
+
+/* ── Адаптив ─────────────────────────────────────────── */
+@media (max-width: 767px) {
+    .sidebar-desktop { display: none !important; }
+    .mobile-header   { display: flex !important; }
+    .mobile-nav      { display: flex !important; }
+    .content-pad     { padding: 12px !important; }
+    .hide-mobile     { display: none !important; }
+}
+@media (min-width: 768px) {
+    .mobile-header { display: none !important; }
+    .mobile-nav    { display: none !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+    .sidebar-desktop { width: 200px !important; }
+    .main-tablet     { margin-left: 200px !important; }
+}

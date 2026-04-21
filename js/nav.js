@@ -336,7 +336,7 @@
                             <div className="flex items-start justify-between gap-4">
                                 <div>
                                     <p className="text-amber-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">Академия Религиоведения</p>
-                                    <h1 className="text-white drop-shadow-lg font-serif text-2xl md:text-4xl font-bold leading-tight mb-3">
+                                    <h1 className="text-white font-serif text-2xl md:text-4xl font-bold leading-tight mb-3">
                                         Изучайте мировые<br/>религии шаг за шагом
                                     </h1>
                                     <p className="text-stone-400 text-sm md:text-base max-w-lg">
@@ -442,7 +442,7 @@
                     {/* БИБЛИЯ */}
                     <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
                         <div className="w-full h-64 md:h-96 relative bg-stone-100">
-                             <img loading="lazy" crossOrigin="anonymous" 
+                             <img crossOrigin="anonymous" 
                                src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=85" 
                                alt="Библия Гутенберга"
                                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1024&q=80"; }}
@@ -518,7 +518,7 @@
                     {/* КОРАН */}
                     <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
                         <div className="w-full h-64 md:h-96 relative bg-stone-100">
-                             <img loading="lazy" crossOrigin="anonymous" 
+                             <img crossOrigin="anonymous" 
                                src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1200&q=85" 
                                alt="Древний Коран"
                                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1024&q=80"; }}

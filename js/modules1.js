@@ -1,38 +1,3 @@
-                                {/* Факты */}
-                                <div>
-                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📋 Ключевые факты</p>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        {selected.facts.map((f,i)=>(
-                                            <div key={i} className="flex gap-3 bg-stone-50 border border-stone-200 rounded-xl p-3">
-                                                <span style={{color:clr.dot}} className="font-bold flex-shrink-0">#{i+1}</span>
-                                                <span className="text-stone-700 text-sm">{f}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Хранение */}
-                                <div className="flex flex-wrap gap-4 text-sm">
-                                    <div><span className="text-stone-400 font-bold uppercase text-[10px]">Место находки</span><br/><span className="font-bold">{selected.place}</span></div>
-                                    <div><span className="text-stone-400 font-bold uppercase text-[10px]">Хранится сейчас</span><br/><span className="font-bold">{selected.location}</span></div>
-                                </div>
-
-                                {/* AI анализ */}
-                                <div className="border-t border-stone-100 pt-6">
-                                    <button onClick={analyze} disabled={aiLoad}
-                                        className="flex items-center gap-2 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50"
-                                        style={{background: aiLoad ? '#78716c' : '#1c1917'}}>
-                                        {aiLoad ? <><Icons.Loader c="w-4 h-4"/>Анализирую рукопись...</> : <>✨ Глубокий AI-анализ манускрипта</>}
-                                    </button>
-                                    {aiText && <div className="mt-5 ai-content p-6 bg-stone-50 rounded-2xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiText}}/>}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
-        }
-
         // =====================================================================
         // МОДУЛЬ 3: ПРОСТЫМ ЯЗЫКОМ — ПОЛНАЯ РАСШИРЕННАЯ ВЕРСИЯ
         // =====================================================================
@@ -332,6 +297,7 @@
             const [aiText, setAiText] = useState('');
             const [aiLoad, setAiLoad] = useState(false);
             const [tab, setTab] = useState('overview'); // overview | texts | compare
+            const [mapRelig, setMapRelig] = useState(null);
 
             const colors = {
                 amber:'bg-amber-50 border-amber-200 text-amber-800',
@@ -358,167 +324,81 @@
                         <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">🌍 Мировые Религии</h2>
                         <p className="text-stone-400 text-sm md:text-lg">Полные священные тексты, AI-анализ и сравнение 10 великих духовных традиций человечества</p>
                     </div>
+                    {/* Interactive World Map */}
+                    <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
+                        <div className="px-4 py-3 border-b border-stone-100 flex items-center justify-between bg-stone-50">
+                            <p className="text-xs font-bold uppercase tracking-widest text-stone-500">🗺️ Карта распространения религий</p>
+                            {mapRelig && <button onClick={()=>setMapRelig(null)} className="text-xs text-stone-400 hover:text-stone-600 font-bold">✕ сбросить</button>}
+                        </div>
+                        <div className="flex flex-wrap gap-2 px-4 pt-3 pb-2">
+                            {[
+                                {id:'christianity', label:'Христианство', color:'#92400e'},
+                                {id:'islam',        label:'Ислам',        color:'#065f46'},
+                                {id:'hinduism',     label:'Индуизм',      color:'#ea580c'},
+                                {id:'buddhism',     label:'Буддизм',      color:'#ca8a04'},
+                                {id:'taoism',       label:'Даосизм',      color:'#374151'},
+                            ].map(r=>(
+                                <button key={r.id} onClick={()=>setMapRelig(mapRelig===r.id?null:r.id)}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all"
+                                    style={{borderColor:r.color, background:mapRelig===r.id?r.color:r.color+'18', color:mapRelig===r.id?'#fff':r.color}}>
+                                    <span style={{width:8,height:8,borderRadius:'50%',background:r.color,display:'inline-block'}}/>
+                                    {r.label}
+                                </button>
+                            ))}
+                        </div>
+                        <div className="px-4 pb-4">
+                            <svg viewBox="0 0 800 400" style={{width:'100%',height:'auto',display:'block'}} xmlns="http://www.w3.org/2000/svg">
+                                <rect width="800" height="400" fill="#bfdbfe" rx="6"/>
+                                {/* North America */}
+                                <path d="M 50 55 L 195 45 L 215 75 L 225 160 L 185 215 L 135 245 L 95 225 L 55 175 L 40 115 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* South America */}
+                                <path d="M 150 280 L 225 265 L 260 305 L 250 385 L 195 405 L 150 385 L 125 335 L 135 295 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Europe */}
+                                <path d="M 345 50 L 425 43 L 440 75 L 445 115 L 415 130 L 375 125 L 350 95 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Russia */}
+                                <path d="M 445 43 L 670 35 L 685 95 L 665 130 L 590 140 L 535 135 L 475 125 L 445 90 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Africa */}
+                                <path d="M 355 128 L 455 122 L 475 155 L 485 235 L 455 315 L 405 340 L 365 325 L 335 265 L 335 185 L 345 152 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='islam'?'#065f46':mapRelig==='christianity'?'#d97706':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* North Africa / Middle East - Islam */}
+                                <path d="M 355 128 L 455 122 L 475 155 L 485 190 L 545 188 L 550 150 L 575 142 L 580 190 L 490 210 L 380 220 L 350 198 Z"
+                                    fill={!mapRelig?'#b5a898':mapRelig==='islam'?'#065f46':'#d1d5db'} stroke="#fff" strokeWidth="0.5" opacity="0.85"/>
+                                {/* Central Asia - Islam */}
+                                <path d="M 535 88 L 615 82 L 625 130 L 590 140 L 535 135 Z"
+                                    fill={!mapRelig?'#b8aa94':mapRelig==='islam'?'#065f46':'#d1d5db'} stroke="#fff" strokeWidth="0.5" opacity="0.8"/>
+                                {/* South Asia - India */}
+                                <path d="M 575 140 L 645 133 L 655 170 L 635 215 L 605 230 L 580 210 L 570 175 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='hinduism'?'#ea580c':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* SE Asia + East Asia - Buddhism */}
+                                <path d="M 655 133 L 775 125 L 785 185 L 755 215 L 680 220 L 655 195 L 650 168 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='buddhism'?'#ca8a04':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* China */}
+                                <path d="M 665 35 L 770 32 L 775 95 L 755 140 L 720 150 L 690 140 L 685 95 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='buddhism'||mapRelig==='taoism'?mapRelig==='taoism'?'#374151':'#ca8a04':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Australia */}
+                                <path d="M 660 260 L 765 253 L 780 315 L 755 355 L 695 365 L 655 335 L 640 290 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Japan */}
+                                <path d="M 772 60 L 792 55 L 797 90 L 778 93 Z"
+                                    fill={!mapRelig?'#c8b8a0':mapRelig==='buddhism'?'#ca8a04':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Legend */}
+                                {!mapRelig && (<>
+                                    <text x="125" y="135" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">✝</text>
+                                    <text x="430" y="170" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">☪</text>
+                                    <text x="610" y="185" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">🕉</text>
+                                    <text x="720" y="90" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">☸</text>
+                                    <text x="720" y="75" fontSize="7" fill="#6b7280" textAnchor="middle">Буддизм/Даосизм</text>
+                                </>)}
+                            </svg>
+                        </div>
+                        <p className="text-[10px] text-stone-400 px-4 pb-3">
+                            Упрощённая схема доминирующих религий. Нажмите кнопку религии для выделения.
+                        </p>
                     </div>
-
-                    {/* ── КАРТА МИРА ── */}
-                    {(() => {
-                        const MAP_REGIONS = [
-                            {id:'christianity', label:'Христианство', color:'#92400e', regions:[
-                                'M 230 95 L 310 85 L 320 130 L 230 135 Z',
-                                'M 315 85 L 370 80 L 380 140 L 320 135 Z',
-                                'M 100 100 L 230 90 L 230 140 L 100 145 Z',
-                                'M 100 145 L 310 140 L 320 200 L 100 205 Z',
-                            ]},
-                            {id:'islam', label:'Ислам', color:'#065f46', regions:[
-                                'M 370 80 L 480 75 L 490 135 L 380 140 Z',
-                                'M 480 75 L 560 80 L 565 140 L 490 135 Z',
-                                'M 310 130 L 390 125 L 395 175 L 310 180 Z',
-                                'M 430 140 L 560 135 L 565 185 L 430 190 Z',
-                            ]},
-                            {id:'hinduism', label:'Индуизм', color:'#ea580c', regions:[
-                                'M 560 130 L 620 125 L 625 185 L 560 185 Z',
-                            ]},
-                            {id:'buddhism', label:'Буддизм', color:'#ca8a04', regions:[
-                                'M 620 100 L 720 90 L 725 155 L 620 160 Z',
-                                'M 620 155 L 720 150 L 725 205 L 620 210 Z',
-                            ]},
-                            {id:'bible', label:'Иудаизм', color:'#1d4ed8', regions:[
-                                'M 385 118 L 400 115 L 402 130 L 385 132 Z',
-                            ]},
-                        ];
-                        const [hovered, setHovered] = React.useState(null);
-                        const [mapRelig, setMapRelig] = React.useState(null);
-
-                        const REL_COLORS_MAP = {
-                            christianity:'#92400e', islam:'#065f46', hinduism:'#ea580c',
-                            buddhism:'#ca8a04', bible:'#1d4ed8',
-                        };
-
-                        return (
-                            <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
-                                <div className="px-5 py-3 border-b border-stone-100 flex items-center justify-between">
-                                    <p className="text-xs font-bold uppercase tracking-widest text-stone-500">
-                                        🗺️ Карта распространения религий — нажмите на регион
-                                    </p>
-                                    {mapRelig && (
-                                        <button onClick={()=>setMapRelig(null)}
-                                            className="text-xs text-stone-400 hover:text-stone-600">
-                                            × сбросить
-                                        </button>
-                                    )}
-                                </div>
-
-                                {/* Легенда */}
-                                <div className="flex flex-wrap gap-2 px-5 pt-3">
-                                    {MAP_REGIONS.map(r=>(
-                                        <button key={r.id}
-                                            onClick={()=>setMapRelig(mapRelig===r.id?null:r.id)}
-                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all"
-                                            style={{
-                                                borderColor: r.color,
-                                                background: mapRelig===r.id ? r.color : r.color+'18',
-                                                color: mapRelig===r.id ? '#fff' : r.color,
-                                            }}>
-                                            <span style={{width:8,height:8,borderRadius:'50%',background:r.color,display:'inline-block'}}/>
-                                            {r.label}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                {/* Simplified world map using SVG */}
-                                <div className="relative p-2" style={{background:'#e8f4fd'}}>
-                                    <svg viewBox="0 0 820 420" style={{width:'100%',height:'auto'}}
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        {/* Ocean background */}
-                                        <rect width="820" height="420" fill="#bfdbfe" rx="8"/>
-
-                                        {/* Continents - simplified shapes */}
-                                        {/* North America */}
-                                        <path d="M 55 60 L 200 50 L 220 80 L 230 160 L 190 220 L 140 250 L 100 230 L 60 180 L 45 120 Z"
-                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* Central America */}
-                                        <path d="M 140 250 L 190 220 L 200 270 L 160 285 Z"
-                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* South America */}
-                                        <path d="M 155 285 L 230 270 L 265 310 L 255 390 L 200 410 L 155 390 L 130 340 L 140 300 Z"
-                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* Europe */}
-                                        <path d="M 350 55 L 430 48 L 445 80 L 450 120 L 420 135 L 380 130 L 355 100 Z"
-                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* UK/Ireland */}
-                                        <path d="M 335 55 L 355 52 L 360 78 L 340 80 Z"
-                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* Africa */}
-                                        <path d="M 360 135 L 460 128 L 480 160 L 490 240 L 460 320 L 410 345 L 370 330 L 340 270 L 340 190 L 350 155 Z"
-                                            fill={(() => {
-                                                if (!mapRelig) return '#c8b8a0';
-                                                if (mapRelig==='christianity') return '#92400e';
-                                                if (mapRelig==='islam') return '#065f46';
-                                                return '#d6d3d1';
-                                            })()} opacity="0.85"/>
-                                        {/* North Africa / Middle East overlay */}
-                                        <path d="M 360 135 L 460 128 L 480 160 L 490 195 L 550 195 L 555 155 L 580 148 L 585 195 L 560 210 L 490 215 L 460 230 L 380 225 L 355 200 Z"
-                                            fill={mapRelig==='islam' ? '#065f46' : mapRelig ? '#d6d3d1' : '#b5a898'} opacity="0.7"/>
-                                        {/* Russia / Central Asia */}
-                                        <path d="M 450 48 L 680 40 L 700 100 L 680 135 L 600 145 L 540 140 L 480 130 L 450 95 Z"
-                                            fill={(() => {
-                                                if (!mapRelig) return '#c8b8a0';
-                                                if (mapRelig==='christianity') return '#92400e';
-                                                if (mapRelig==='islam') return '#065f46';
-                                                return '#d6d3d1';
-                                            })()} opacity="0.85"/>
-                                        {/* Central Asia (Islam) overlay */}
-                                        <path d="M 540 95 L 620 88 L 630 135 L 600 145 L 540 140 Z"
-                                            fill={mapRelig==='islam' ? '#065f46' : mapRelig ? '#d6d3d1' : '#b8aa94'} opacity="0.75"/>
-                                        {/* South Asia (India) */}
-                                        <path d="M 580 145 L 650 138 L 660 175 L 640 220 L 610 235 L 585 215 L 575 180 Z"
-                                            fill={mapRelig==='hinduism' ? '#ea580c' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* Southeast Asia */}
-                                        <path d="M 660 138 L 730 130 L 745 180 L 720 210 L 690 205 L 665 185 Z"
-                                            fill={mapRelig==='buddhism' ? '#ca8a04' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* China / East Asia */}
-                                        <path d="M 680 40 L 775 38 L 780 100 L 760 145 L 730 155 L 700 145 L 700 100 L 680 90 Z"
-                                            fill={mapRelig==='buddhism' ? '#ca8a04' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* Japan */}
-                                        <path d="M 775 65 L 795 60 L 800 95 L 780 98 Z"
-                                            fill={mapRelig==='buddhism' ? '#ca8a04' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-                                        {/* Australia */}
-                                        <path d="M 670 265 L 770 258 L 785 320 L 760 360 L 700 370 L 660 340 L 645 295 Z"
-                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
-
-                                        {/* Israel - small dot */}
-                                        <circle cx="491" cy="155" r="4"
-                                            fill={mapRelig==='bible' ? '#1d4ed8' : mapRelig ? '#d6d3d1' : '#1d4ed8'} opacity="0.9"/>
-
-                                        {/* Region labels */}
-                                        {!mapRelig && (<>
-                                            <text x="120" y="155" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Христ.</text>
-                                            <text x="500" y="165" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Ислам</text>
-                                            <text x="615" y="195" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Индуизм</text>
-                                            <text x="700" y="100" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Буддизм</text>
-                                            <text x="200" y="345" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Христ.</text>
-                                            <text x="720" y="310" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Христ.</text>
-                                        </>)}
-
-                                        {/* Selected region label */}
-                                        {mapRelig && (() => {
-                                            const r = MAP_REGIONS.find(x=>x.id===mapRelig);
-                                            return r ? (
-                                                <text x="410" y="20" fontSize="13" fill={r.color}
-                                                    textAnchor="middle" fontWeight="bold">
-                                                    {r.label} — выбрана на карте
-                                                </text>
-                                            ) : null;
-                                        })()}
-                                    </svg>
-                                </div>
-
-                                <p className="text-[10px] text-stone-400 px-5 py-2 border-t border-stone-100">
-                                    Упрощённая схема — отображает основное распространение. Нажмите на кнопку религии выше.
-                                </p>
-                            </div>
-                        );
-                    })()}
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {WORLD_RELIGIONS.map(r => (
@@ -970,175 +850,3 @@
         }
 
         // ════════════════════════════════════════════════════════════════════
-
-        // МОДУЛЬ: МИФОЛОГИЯ — СРАВНИТЕЛЬНЫЙ АНАЛИЗ С РЕЛИГИЯМИ
-        // ════════════════════════════════════════════════════════════════════
-        // ─── ИЛЛЮСТРАЦИИ: Сканы страниц и фотографии рукописей мировых библиотек ───
-        var MYTH_ILLUSTRATIONS = {
-            creation: [
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Рождение Венеры (Боттичелли, ~1485). Галерея Уффици, Флоренция. Греческий миф о рождении богини из морской пены.', lib:'Galleria degli Uffizi / Google Art Project (PD)' },
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Сотворение Адама (Микеланджело, 1512). Сикстинская капелла. Бог протягивает руку к Адаму — визуальный образ Быт 2:7.', lib:'Musei Vaticani / Wikimedia Commons (PD)' },
-                { src:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
-                  cap:'Сотворение Евы. Нюрнбергские хроники (1493). Одна из первых печатных иллюстрированных Библий.', lib:'Bayerische Staatsbibliothek (Public Domain)' },
-                { src:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
-                  cap:'Табличка с текстом «Энума Элиш» (Вавилонский эпос о творении, ~1100 до н.э.). Британский музей, Лондон.', lib:'British Museum (PD)' },
-            ],
-            flood: [
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Потоп (Микеланджело, 1509). Сикстинская капелла. Изображение спасающихся на горе людей из Быт 7–8.', lib:'Musei Vaticani (PD)' },
-                { src:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
-                  cap:'«Таблица Потопа» — XI таблица Эпоса о Гильгамеше (~700 до н.э., Ниневия). История Утнапиштима. Британский музей.', lib:'British Museum (PD)' },
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'«Потоп» (Джон Мартин, 1834). Yale Center for British Art. Романтическое изображение библейской катастрофы.', lib:'Yale Center for British Art (PD)' },
-                { src:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
-                  cap:'Ноев ковчег. Схема из «Arca Noë» Атанасиуса Кирхера (1675). Латинский трактат о размерах и устройстве ковчега.', lib:'Bibliothèque nationale de France (PD)' },
-            ],
-            afterlife: [
-                { src:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
-                  cap:'Взвешивание сердца умершего на весах Маат. Египетская «Книга Мёртвых», Папирус Хунефера (~1275 до н.э.). Британский музей.', lib:'British Museum, EA9901 (PD)' },
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Страшный суд (Фра Анджелико, ~1435). Музей Сан-Марко, Флоренция. Детали рая и ада в христианской традиции.', lib:'Museo di San Marco (PD)' },
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Данте с «Божественной Комедией» (Доменико ди Микелино, 1465). Дуомо Флоренции. Символическая карта ада, чистилища, рая.', lib:'Santa Maria del Fiore, Florence (PD)' },
-                { src:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
-                  cap:'Валхалла (Эмиль Дёплер, 1905). Зал Одина, где воины пируют после смерти. Скандинавский загробный мир.', lib:'Wikimedia Commons (PD)' },
-            ],
-            hero: [
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Прометей прикованный (Джозеф Хайнц Старший, ~1600). Прометей похитил огонь у богов — и вечно страдает за это. Галерея Уффици.', lib:'Galleria degli Uffizi (PD)' },
-                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
-                  cap:'Воскресение Христа (Джотто ди Бондоне, 1304–1306). Капелла Скровеньи, Падуя. Один из первых реалистических образов.', lib:'Cappella degli Scrovegni (PD)' },
-                { src:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
-                  cap:'Один-странник (Георг фон Розен, 1886). Верховный бог скандинавов — пожертвовал собой ради мудрости рун.', lib:'Nationalmuseum, Stockholm (PD)' },
-                { src:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
-                  cap:'Осирис — египетский бог воскресения (Папирус, ~1000 до н.э.). Убит Сетом, воскрешён Исидой. Прообраз умирающего и воскресающего бога.', lib:'Louvre Museum (PD)' },
-            ],
-        };
-
-        var MYTH_DATA = {
-            cultures: [
-                {id:'greek',      name:'Греческая',   emoji:'🏛️', period:'VIII до н.э. — V в. н.э.',  region:'Средиземноморье'},
-                {id:'norse',      name:'Скандинавская',emoji:'⚡', period:'~200 — 1200 н.э.',            region:'Северная Европа'},
-                {id:'egyptian',   name:'Египетская',   emoji:'𓂀', period:'3100 до н.э. — 400 н.э.',    region:'Долина Нила'},
-                {id:'mesopotamia',name:'Месопотамская', emoji:'𒀭', period:'3500 — 500 до н.э.',         region:'Ирак/Сирия'},
-                {id:'hindu',      name:'Ведическая',   emoji:'🕉️', period:'~1500 до н.э. — н.э.',       region:'Индия'},
-                {id:'celtic',     name:'Кельтская',    emoji:'🍀', period:'~700 до н.э. — 400 н.э.',    region:'Западная Европа'},
-                {id:'slavic',     name:'Славянская',   emoji:'⚡', period:'~V — XIII вв. н.э.',          region:'Восточная Европа'},
-                {id:'japanese',   name:'Японская',     emoji:'⛩️', period:'~700 н.э. — н.э.',           region:'Японский архипелаг'},
-            ],
-            themes: [
-                {
-                    id:'creation', icon:'🌍', title:'Сотворение мира',
-                    desc:'Как разные культуры объясняли возникновение вселенной',
-                    data:{
-                        greek:      {text:'Хаос — первобытная бездна. Из него возникли Эреб (тьма) и Никта (ночь). Затем Гея (Земля), Уран (Небо). Боги-олимпийцы — третье поколение. В «Теогонии» Гесиода: Прометей лепит человека из глины. Создание — борьба поколений богов.', key:'Хаос → Гея → Уран → Олимпийцы', src:'Гесиод, Теогония (~700 до н.э.)'},
-                        norse:      {text:'Мировая бездна Гинунгагап. На севере — лёд Нифльхейм, на юге — огонь Муспельхейм. Их слияние породило великана Имира. Из его тела боги создали мир: кости — горы, кровь — моря, череп — небосвод, волосы — лес.', key:'Гинунгагап + лёд + огонь → Имир → Мир', src:'Старшая Эдда, Прорицание Вёльвы'},
-                        egyptian:   {text:'Нун — первобытный океан хаоса. Из него возник Атум (или Ра) — самосозданный бог. Он выплюнул из себя Шу (воздух) и Тефнут (влагу). Те породили Геба (земля) и Нут (небо). Осирис, Исида, Сет, Нефтида — дети земли и неба.', key:'Нун → Атум → Шу/Тефнут → Геб/Нут', src:'Тексты Пирамид (2400 до н.э.)'},
-                        mesopotamia:{text:'«Энума Элиш» (Вавилонский эпос): первичные воды — Апсу (пресные) и Тиамат (солёные). Их смешение породило богов. Молодой бог Мардук убивает Тиамат и из её тела создаёт небо и землю. Человек создан из крови убитого бога Кингу.', key:'Апсу + Тиамат → Мардук → Мир из Тиамат', src:'Энума Элиш (~1100 до н.э.)'},
-                        hindu:      {text:'Ригведа: «Насадия-сукта» — гимн о творении. Ни небытия, ни бытия не было. Была тёмная бездна. Из тепла (тапас) возникло первое желание. Брахма создаёт мир, Вишну поддерживает, Шива разрушает. Пуруша — первочеловек, из частей которого создан мир.', key:'Тапас → Пуруша → Жертвоприношение → Мир', src:'Ригведа X.129, Пуруша-сукта'},
-                        celtic:     {text:'Кельты не оставили систематического космогонического мифа. Мир делится на три сферы: небо, земля, подземный мир (Аннун/Тир-на-Ног). Острова блаженных на западе — вечная земля богов и героев. Дуб — ось мира. Боги-Туата де Дананн пришли с небес.', key:'Три сферы + Мировой дуб + Туата де Дананн', src:'Лейнстерская книга, Mabinogion'},
-                        slavic:     {text:'Мировое яйцо или первичные воды. Сварог (небо-кузнец) — верховный бог. Земля лежит на трёх китах или на утке. Часть мифов: мир создан совместно Богом и дьяволом из песка морского дна — дуалистическое творение.', key:'Рожаницы → Сварог → дуализм Бог/Дьявол', src:'Велесова книга, народные предания'},
-                        japanese:   {text:'«Кодзики» (712 н.э.): В начале — хаос (камэ). Из него возникли Три Незримых Бога (Дзингосан-тин). Затем семь поколений богов. Последние — Идзанаги и Идзанами. Стоя на «Плавучем мосту Небес», они помешали копьём море — из капель возник остров Оногоро.', key:'Хаос → Идзанаги+Идзанами → капли → острова', src:'Кодзики (712 н.э.), Нихонги (720 н.э.)'},
-                        bible:      {text:'Бытие 1: Бог творит из ничего (creatio ex nihilo) шесть дней. День 1: свет. День 2: небо. День 3: суша и растения. День 4: светила. День 5: рыбы и птицы. День 6: животные и человек по образу Бога. День 7: покой — установление субботы.', key:'Creatio ex nihilo, 6 дней, образ Бога', src:'Бытие 1–2 (Тора/ВЗ)'},
-                        quran:      {text:'Коран: Аллах создаёт мир «Кун фаякун» — «Будь! — и оно бывает» (2:117). Шесть «дней» (периодов). Небеса и земля были единым целым (21:30) — учёные видят намёк на Большой взрыв. Человек из глины, в него вдохнули Дух Аллаха (15:29).', key:'Кун фаякун, 6 периодов, единство неба и земли', src:'Сура 2:117, 21:30, 7:54, 15:26-29'},
-                    },
-                    compare:'Все мифологии объединяет: первичный хаос/бездна → упорядочивание → создание человека. Различие: религии авраамической традиции утверждают creatio ex nihilo (творение из ничего), тогда как большинство мифологий описывают творение из уже существующей материи. Интересно: шумерский «Энума Элиш» (1700 до н.э.) предшествует Книге Бытия — и обе используют образ разделения вод. Учёные спорят: влияние или параллельное развитие?',
-                    parallel:'Потоп (Ной/Гильгамеш), Тиамат и Левиафан, Мардук и Яхве — библейские образы находят параллели в шумерских мифах. Это либо доказательство заимствования, либо ответы на вечные вопросы, которые люди задают независимо друг от друга.',
-                },
-                {
-                    id:'flood', icon:'🌊', title:'Великий Потоп',
-                    desc:'Универсальный миф о гибели и возрождении человечества',
-                    data:{
-                        greek:      {text:'Девкалион (греческий Ной) — сын Прометея. Зевс решает уничтожить человечество потопом за нечестие. Прометей предупреждает сына. Девкалион строит ящик, 9 дней плывёт, садится на гору Парнас (или Отрис). Выжившие бросают «кости матери» (камни) — из них возникают новые люди.', key:'Девкалион + ящик → Парнас → камни-люди', src:'Пиндар, Аполлодор, Гигин'},
-                        norse:      {text:'Берги и Бёстла спасаются от потопа крови, хлынувшего из тела убитого Имира. Остальные ётуны (великаны) тонут в этой крови. Скандинавский потоп — кровь первичного существа, а не вода. Аналогия: хаос уничтожается через смерть первопредка.', key:'Кровь Имира = потоп → гибель ётунов', src:'Старшая Эдда, Прорицание Вёльвы'},
-                        egyptian:   {text:'Богиня Хатхор (воплощение Сехмет) была послана Ра уничтожить людей за неверие. Она начала истреблять человечество. Ра передумал: окрасил пиво красным цветом (имитация крови). Сехмет опьянела и остановилась. Это не потоп, но миф о Наказании и Спасении человечества.', key:'Сехмет-разрушительница → пиво → спасение', src:'«Книга небесной коровы» (Гробница Тутанхамона)'},
-                        mesopotamia:{text:'ЭПОС О ГИЛЬГАМЕШЕ (таблица XI, ~2100 до н.э.) — самая ранняя версия потопа. Бог Энлиль решает уничтожить людей за шум. Бог Эа предупреждает Утнапиштима. Тот строит куб (60×60×60 локтей), берёт «семя всех живых существ». 6 дней потоп. Птицы ищут землю (ворон, голубь, ласточка). Корабль садится на гору Нисир.', key:'Утнапиштим + куб → Нисир → птицы', src:'Эпос о Гильгамеше, таблица XI (~2100 до н.э.)'},
-                        hindu:      {text:'Ману (первочеловек, как Адам и Ной одновременно) спасает маленькую рыбку. Та вырастает и говорит: будет потоп. Ману строит корабль. Рыба (воплощение Вишну — Матсья-аватара) ведёт корабль за свой рог. Корабль садится на гору Гималаи. Ману становится прародителем нового человечества.', key:'Ману + рыба-Вишну → Гималаи → новое человечество', src:'Шатапатха-брахмана, Махабхарата'},
-                        celtic:     {text:'Кельтской традиции не известен глобальный потоп. Однако Ирландская мифология описывает гибель первых людей — спутников Кесэр — в потопе. Финтан мак Бохра пережил потоп, превратившись в лосося, орла и ястреба. Тема трансформации, а не спасения в ковчеге.', key:'Финтан → трансформация в животных → выживание', src:'Книга Захватов Ирландии (Лебор Габала Эренн)'},
-                        slavic:     {text:'Славянские мифы о потопе сохранились фрагментарно. В некоторых версиях — бог посылает потоп на злых людей, а правведный Ной (уже христианская наслойка) спасается. Архаичные версии: Земля скрывается под водой, утка ныряет и достаёт ил — начало Земли (дуалистический миф).', key:'Утка-ныряльщица → ил → новая земля', src:'Народные предания, богомильские апокрифы'},
-                        japanese:   {text:'В японской мифологии нет глобального потопа. Есть миф о Ямасати — бог-рыбак опускается в морское царство. Сюжет о воде скорее связан с морем как источником жизни, нежели разрушения. Богиня Бэндзайтэн — владычица воды — несёт благо, а не гибель.', key:'Ямасати + морское царство — позитивный контакт с водой', src:'Кодзики, книга 1'},
-                        bible:      {text:'Бытие 6–9: Ной — единственный праведник. Бог решает уничтожить человечество за грех. Ной строит ковчег 300×50×30 локтей. Берёт по паре каждого животного. 40 дней потопа + 150 дней воды. Птицы (ворон, голубь) ищут сушу. Гора Арарат. Завет (радуга) — Бог обещает больше не уничтожать мир водой.', key:'Ной + ковчег + 40 дней → Арарат → завет-радуга', src:'Бытие 6–9, Коран 11:25-48'},
-                        quran:      {text:'Коран (суры 7, 10, 11, 23, 26, 71): Нух (Ной) — пророк, призывавший свой народ 950 лет. Аллах повелевает построить корабль. Сын Нуха отказывается войти и тонет. «Не было между ними никого, кто уверовал, кроме немногих» (11:40). Нух просит спасти сына — Аллах отказывает: неверующий не входит в семью пророка.', key:'Нух + 950 лет + тонущий сын + спасение немногих', src:'Суры 7:59, 10:71, 11:25-48, 71'},
-                    },
-                    compare:'Потоп — самый универсальный миф человечества. Независимые потопные предания обнаружены у 200+ народов на всех континентах. Шумерский «Атрахасис» (~1700 до н.э.) предшествует библейскому Ною на 1000 лет и имеет те же детали: ковчег, птицы, гора, жертвоприношение после потопа. Вопрос: было ли реальное катастрофическое наводнение в Месопотамии (~5500 до н.э. — затопление Чёрного моря)? Или это архетипический образ очищения и нового начала?',
-                    parallel:'Самое поразительное: в шумерском эпосе Утнапиштим посылает ворона, ласточку и голубя — точно так же, как Ной в Бытии. Это не совпадение. Либо библейский текст заимствован из шумерской традиции, либо оба восходят к общему источнику. Исследователи спорят уже 150 лет.',
-                },
-                {
-                    id:'afterlife', icon:'⚰️', title:'Загробная жизнь',
-                    desc:'Куда уходит душа после смерти — взгляды разных традиций',
-                    data:{
-                        greek:      {text:'Аид — подземный мир, разделённый на части. Элизиум (острова блаженных) — для героев и праведников. Тартар — бездна для нечестивцев. Поля Асфодела — для обычных душ. Река Лета — забвение. Харон перевозит души. Судьи: Минос, Радамант, Эак. Орфей спускался в Аид за Эвридикой.', key:'Аид, Элизиум, Тартар, река Лета', src:'Гомер, Одиссея XI; Платон, Федр'},
-                        norse:      {text:'Вальхалла — дворец Одина для воинов, павших в битве. 9 миров. Хель — царство мёртвых для тех, кто умер от болезни и старости. Нифльхейм — ледяная бездна. Вальгринды встречают павших воинов. На Рагнарёк мёртвые воины выйдут сражаться. Мост Биврёст ведёт к богам.', key:'Вальхалла (воины) / Хель (остальные) / Рагнарёк', src:'Старшая Эдда, Речи Высокого'},
-                        egyptian:   {text:'После смерти душа (Ба) путешествует в Дуат (подземный мир). Сердце взвешивается на весах Маат (богиня справедливости) против пера Маат. Если сердце легче — рай (Поля Тростника, Иару). Если тяжелее — чудовище Амат пожирает душу. Анубис (с головой шакала) сопровождает мёртвых. «Книга Мёртвых» — путеводитель.', key:'Дуат → весы Маат → Поля Тростника или Амат', src:'Книга Мёртвых (1550–50 до н.э.), Тексты Пирамид'},
-                        mesopotamia:{text:'Подземный мир — Кур (Иркалла) — мрачное место без различия добра и зла. Все умершие идут туда — воины и цари, злодеи и праведники. «Никто не вернётся оттуда». Это крайний пессимизм: именно он движет Гильгамешем в поисках бессмертия. Единственное исключение — Утнапиштим, спасённый богами.', key:'Кур — одинаково для всех, без воздаяния', src:'Эпос о Гильгамеше, Сошествие Инанны в подземный мир'},
-                        hindu:      {text:'Реинкарнация (пунарджанма) — душа (атман) переселяется в новое тело. Карма определяет качество следующего рождения. Сансара — колесо перерождений. Мокша — окончательное освобождение от сансары, слияние атмана с Брахманом. Рай Индры (Сварга) — временное место для хороших людей перед следующим рождением.', key:'Атман → карма → реинкарнация → мокша', src:'Бхагавад-гита 2:19-27, Упанишады'},
-                        celtic:     {text:'Тир-на-Ног («Земля юности») — вечный остров на западе, куда уходят герои. Нет смерти, нет болезней. Кухулин переходит туда. Друиды верили в переселение душ (Цезарь упоминает это). Смерть — не конец, а переход в другой мир или другое тело. Каldn и Cauldron — котёл возрождения мёртвых воинов.', key:'Тир-на-Ног + переселение душ + котёл возрождения', src:'Книга Захватов, Mabinogion, Цезарь «О Галльской войне»'},
-                        slavic:     {text:'Навь — мир мёртвых, противоположный миру живых (Явь). Вий — владыка подземного мира. Мёртвые превращаются в навей, берегинь, упырей. Предки-покровители защищают живых потомков. Поминание усопших (тризна, Радуница) — важнейший обряд. Чур (дух предка) охраняет границы рода.', key:'Навь + Явь + мёртвые предки-защитники + Вий', src:'Народные верования, летописи, Афанасьев'},
-                        japanese:   {text:'Ёми — подземный мир смерти. Идзанами умерла и ушла в Ёми. Идзанаги спустился за ней, увидел её разложившееся тело и бежал. Ёми — место нечистоты, ужаса. Буддийское влияние добавило рай Дзёдо (Чистую землю) и ад Дзигоку. Синтоизм: смерть — нечистота (кэгарэ), требующая очищения.', key:'Ёми (нечистота) + Чистая земля (буддизм) + предки', src:'Кодзики I, буддийские сутры'},
-                        bible:      {text:'Шеол (ВЗ) — мрачное место всех умерших, без чёткого воздаяния. Воскресение (Иов 19:25-27, Ис 26:19, Дан 12:2) — надежда на телесное восстановление. НЗ: Небеса (Царство Небесное) для спасённых. Геенна — место наказания нечестивых. Апокалипсис: Новое небо и новая земля. Промежуточное состояние — рай / гадес.', key:'Шеол → воскресение → небеса/геенна → Новый Иерусалим', src:'Бытие 25:8; Ин 14:2-3; Откр 21–22'},
-                        quran:      {text:'Барзах — промежуточное состояние после смерти (до Судного дня). Джанна (рай) — вечный сад с реками, плодами, покоем для верующих. Джаханнам — ад с огнём для неверующих. Судный день (Яум аль-Кийама): все воскресают, каждому вручается «книга деяний». Весы (мизан): добрые дела против злых. Мост Сират — тонкий, как лезвие.', key:'Барзах → Судный день → Джанна или Джаханнам', src:'Суры 2:154, 39:42, 56:10-40, 78:21-30'},
-                    },
-                    compare:'Концепция воздаяния после смерти (рай/ад) появляется в Египте (~2400 до н.э.), персидском зороастризме (~1000 до н.э.) и входит в иудаизм лишь в поздний период. Новый Завет и Коран придали ей центральное место. Реинкарнация (Индия, Греция, кельты) — альтернативная парадигма. Мрачный подземный мир без воздаяния (Месопотамия, ранний Аид) — пессимистическая традиция, от которой люди постепенно отказывались.',
-                    parallel:'Платон в «Государстве» (Миф об Эре) описывает суд над душами, рай и ад — за 400 лет до Иисуса. Некоторые исследователи считают, что раннее христианство испытало влияние платонизма в описании загробного мира.',
-                },
-                {
-                    id:'hero', icon:'⚔️', title:'Герой и Спаситель',
-                    desc:'Архетип богочеловека, принесшего себя в жертву ради людей',
-                    data:{
-                        greek:      {text:'Геракл (12 подвигов, искупление) — полубог, сын Зевса и смертной. Страдания → очищение → обожествление. Прометей — похитил огонь у богов, дал людям знание, вечно страдает. Дионис — бог, умирающий и воскресающий (разорван титанами, воскрешён). Орфей — нисходит в ад за возлюбленной.', key:'Смертный отец/небесная мать → страдания → победа', src:'Гесиод, Пиндар, Аполлодор'},
-                        norse:      {text:'Один (Вотан) — повесился на Мировом дереве Иггдрасиль 9 дней и ночей, пронзённый копьём, без еды и воды — чтобы получить руны (мудрость). Самопожертвование для обретения знания. Бальдр — прекраснейший из богов, убит омелой, воскреснет после Рагнарёка. Тор жертвует собой в битве со змеем.', key:'Один на дереве = самопожертвование ради мудрости', src:'Старшая Эдда, Речи Высокого 138-139'},
-                        egyptian:   {text:'Осирис — бог плодородия и загробного мира. Убит братом Сетом, расчленён. Исида (сестра-жена) собирает части тела, воскрешает его. Гор (сын Осириса) побеждает Сета. Смерть и воскресение Осириса — сезонный цикл природы. Каждый фараон — живой Гор, умерший фараон — Осирис.', key:'Осирис убит → воскрешён Исидой → Гор мстит', src:'Тексты Пирамид; Плутарх «Об Исиде и Осирисе»'},
-                        mesopotamia:{text:'Думузи (Таммуз) — бог растительности, муж Инанны/Иштар. Инанна спустилась в подземный мир, её задержали. Чтобы выйти, она отдала Думузи. Он проводит 6 месяцев в подземном мире — смена сезонов. Его страдания оплакивают. Параллель: умирающий и воскресающий бог природы.', key:'Думузи/Таммуз — умирающий бог природы', src:'«Сошествие Инанны», «Сон Думузи» (~2100 до н.э.)'},
-                        hindu:      {text:'Вишну-аватары: Бог сходит на землю в разных воплощениях для спасения мира. Рама — 7-й аватар: герой, изгнанный в лес, побеждает демонов, спасает жену Ситу. Кришна — 8-й аватар: сражается с демоном Кансой, открывает истину Арджуне. Калки — будущий аватар, придёт уничтожить зло в конце эпохи.', key:'Аватары Вишну = нисхождение Бога для спасения мира', src:'Рамаяна, Махабхарата, Бхагавата-пурана'},
-                        celtic:     {text:'Кухулин — ирландский герой, сын бога Луга и смертной. «Ирландский Геракл»: сверхъестественная сила, неукротимость в битве. Умирает привязанным к столбу — мертвый, но стоящий. Кинг Артур (бриттский цикл) — возможно, кельтский прообраз: раненый уходит на Аваллон и вернётся.', key:'Кухулин + Артур = умирающий-возвращающийся герой', src:'Ulster Cycle, Mabinogion, Historia Regum Britanniae'},
-                        slavic:     {text:'Иван-Царевич — архетипический герой, проходящий испытания, спускающийся в иной мир, победитель Кощея (смерти). Добрыня Никитич, Илья Муромец — богатыри, защищающие Русь от сил хаоса. Перун победил змея Велеса — космогоническая битва света и тьмы, устанавливающая порядок мира.', key:'Иван + нисхождение + победа над смертью', src:'Народные сказки, Добрыня, Слово о полку Игореве'},
-                        japanese:   {text:'Ямато Такэру — герой, сын императора, победитель великанов и демонов. Трагически одинок, умирает вдали от дома — превращается в белую птицу. Сусаноо — бог бурь, изгнан с небес, убивает восьмиголового змея Ямата-но Ороти. Герой в японской традиции — жертва и победитель одновременно.', key:'Сусаноо + змей; Ямато Такэру → белая птица', src:'Кодзики II–III, Нихонги'},
-                        bible:      {text:'Иисус Христос — центральная фигура: Сын Бога, воплотившийся в человеке. Крест — добровольное искупительное жертвоприношение за грехи человечества. Воскресение на 3-й день — победа над смертью. Вознесение. Второе пришествие. Паттерн: небесное происхождение → воплощение → страдание → смерть → воскресение.', key:'Бог → человек → смерть → воскресение → вознесение', src:'Мф 16:16; Ин 3:16; 1 Кор 15; Флп 2:6-11'},
-                        quran:      {text:'В исламе нет концепции искупления. Иса (Иисус) — великий пророк и посланник, рождённый от девы Марьям, творивший чудеса. Но он не был распят (4:157) — это «представилось» людям. Аллах вознёс его живым. Мухаммад — Последний Пророк (Хатам ан-Набийин), «Печать пророков». Прообраз героя — пророк, несущий Слово вопреки враждебности.', key:'Иса — пророк без распятия; Мухаммад — последний посланник', src:'Сура 4:157, 3:45-55, 33:40'},
-                    },
-                    compare:'Паттерн «умирающего и воскресающего бога» (Осирис, Думузи, Бальдр, Дионис) существовал за тысячи лет до христианства. Это факт. Был ли он «прообразом» Христа или независимым архетипом — главный вопрос сравнительного религиоведения. Христианские апологеты II века (Юстин Философ) сами признавали сходство, но объясняли его «подражанием дьявола». Современные учёные (Кэмпбелл, Элиаде) видят в этом универсальный мифологический архетип.',
-                    parallel:'Джозеф Кэмпбелл в «Тысячеликом герое» (1949) описал «мономиф»: зов → отправление → испытания → победа → возвращение с даром. Этот путь прослеживается в историях Прометея, Будды, Моисея, Иисуса, Мухаммада (исра и мирадж), Геракла, Кухулина.',
-                },
-            ],
-        };
-
-        function MythologyModule({ apiKey }) {
-            const [selTheme, setSelTheme] = useState(MYTH_DATA.themes[0]);
-            const [selCulture, setSelCulture] = useState(null);
-            const [tab, setTab] = useState('compare'); // compare | detail | parallel
-            const [aiText, setAiText] = useState('');
-            const [aiLoad, setAiLoad] = useState(false);
-
-            const ALL_KEYS = ['greek','norse','egyptian','mesopotamia','hindu','celtic','slavic','japanese','bible','quran'];
-
-            const askAI = async (q) => {
-                setAiLoad(true); setAiText('');
-                const r = await fetchZvenoAIAnalysis(q, 'Сравнительная мифология и религиоведение', apiKey);
-                setAiText(r); setAiLoad(false);
-            };
-
-            const CULTURE_META = {
-                greek:      {label:'🏛️ Греческая',  bg:'#fefce8', border:'#fde047', txt:'#713f12'},
-                norse:      {label:'⚡ Скандинавская',bg:'#f0f9ff', border:'#7dd3fc', txt:'#075985'},
-                egyptian:   {label:'𓂀 Египетская',  bg:'#fff7ed', border:'#fdba74', txt:'#7c2d12'},
-                mesopotamia:{label:'𒀭 Месопотамская',bg:'#fdf4ff', border:'#e879f9', txt:'#701a75'},
-                hindu:      {label:'🕉️ Ведическая',  bg:'#fff1f2', border:'#fb7185', txt:'#881337'},
-                celtic:     {label:'🍀 Кельтская',   bg:'#f0fdf4', border:'#4ade80', txt:'#14532d'},
-                slavic:     {label:'⚡ Славянская',  bg:'#eff6ff', border:'#93c5fd', txt:'#1e3a5f'},
-                japanese:   {label:'⛩️ Японская',    bg:'#fdf2f8', border:'#f0abfc', txt:'#500724'},
-                bible:      {label:'✝️ Библия',       bg:'#fffbeb', border:'#fde68a', txt:'#92400e'},
-                quran:      {label:'☪️ Коран',         bg:'#ecfdf5', border:'#6ee7b7', txt:'#065f46'},
-            };
-
-            return (
-                <div className="fade-in-up space-y-6 pb-20 md:pb-6">
-                    {/* Заголовок */}
-                    <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
-                        <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">⚡ Мифология и Религии</h2>
-                        <p className="text-stone-400 text-sm md:text-lg">Сравнительный анализ 8 мифологий + Библия + Коран · {MYTH_DATA.themes.length} темы · Для студентов-религиоведов</p>
-                        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-                            {[['Культур','10','Греция, Египет, Скандинавия...'],['Тем','4','Потоп, Герой, Творение...'],['Параллелей','50+','Между мифами и религией'],['Лет истории','5000+','Древнейшие до наших дней']].map(([l,v,n])=>(
-                                <div key={l} className="bg-white/5 rounded-2xl p-3 text-center">
-                                    <div className="text-amber-400 font-bold text-sm">{v}</div>
