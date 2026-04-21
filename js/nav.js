@@ -331,12 +331,12 @@
             return (
                 <div className="space-y-6 pb-20 md:pb-6 fade-in-up">
                     {/* Приветствие */}
-                    <div className="rounded-3xl overflow-hidden" style={{background:'linear-gradient(135deg,#1c1b1d 0%,#2d1f0e 50%,#0d1f17 100%)'}}>
+                    <div className="rounded-3xl overflow-hidden" style={{background:'linear-gradient(135deg,#1a1200 0%,#2d1a00 40%,#0a1a0a 100%)'}}>
                         <div className="p-6 md:p-10">
                             <div className="flex items-start justify-between gap-4">
                                 <div>
                                     <p className="text-amber-500 text-xs font-bold uppercase tracking-[0.2em] mb-2">Академия Религиоведения</p>
-                                    <h1 className="text-white font-serif text-2xl md:text-4xl font-bold leading-tight mb-3">
+                                    <h1 className="text-white drop-shadow-lg font-serif text-2xl md:text-4xl font-bold leading-tight mb-3">
                                         Изучайте мировые<br/>религии шаг за шагом
                                     </h1>
                                     <p className="text-stone-400 text-sm md:text-base max-w-lg">
@@ -443,7 +443,7 @@
                     <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
                         <div className="w-full h-64 md:h-96 relative bg-stone-100">
                              <img loading="lazy" crossOrigin="anonymous" 
-                               src="https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Bible.gutenberg.jpg/1200px-Bible.gutenberg.jpg" 
+                               src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=85" 
                                alt="Библия Гутенберга"
                                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1024&q=80"; }}
                                className="absolute inset-0 w-full h-full object-cover" />
@@ -519,7 +519,7 @@
                     <div className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col">
                         <div className="w-full h-64 md:h-96 relative bg-stone-100">
                              <img loading="lazy" crossOrigin="anonymous" 
-                               src="https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Birmingham_Quran_manuscript.jpg/1200px-Birmingham_Quran_manuscript.jpg" 
+                               src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1200&q=85" 
                                alt="Древний Коран"
                                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?w=1024&q=80"; }}
                                className="absolute inset-0 w-full h-full object-cover" />

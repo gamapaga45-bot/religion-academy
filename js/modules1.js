@@ -1,3 +1,38 @@
+                                {/* Факты */}
+                                <div>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📋 Ключевые факты</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {selected.facts.map((f,i)=>(
+                                            <div key={i} className="flex gap-3 bg-stone-50 border border-stone-200 rounded-xl p-3">
+                                                <span style={{color:clr.dot}} className="font-bold flex-shrink-0">#{i+1}</span>
+                                                <span className="text-stone-700 text-sm">{f}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Хранение */}
+                                <div className="flex flex-wrap gap-4 text-sm">
+                                    <div><span className="text-stone-400 font-bold uppercase text-[10px]">Место находки</span><br/><span className="font-bold">{selected.place}</span></div>
+                                    <div><span className="text-stone-400 font-bold uppercase text-[10px]">Хранится сейчас</span><br/><span className="font-bold">{selected.location}</span></div>
+                                </div>
+
+                                {/* AI анализ */}
+                                <div className="border-t border-stone-100 pt-6">
+                                    <button onClick={analyze} disabled={aiLoad}
+                                        className="flex items-center gap-2 text-white px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50"
+                                        style={{background: aiLoad ? '#78716c' : '#1c1917'}}>
+                                        {aiLoad ? <><Icons.Loader c="w-4 h-4"/>Анализирую рукопись...</> : <>✨ Глубокий AI-анализ манускрипта</>}
+                                    </button>
+                                    {aiText && <div className="mt-5 ai-content p-6 bg-stone-50 rounded-2xl border border-stone-200" dangerouslySetInnerHTML={{__html: aiText}}/>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         // =====================================================================
         // МОДУЛЬ 3: ПРОСТЫМ ЯЗЫКОМ — ПОЛНАЯ РАСШИРЕННАЯ ВЕРСИЯ
         // =====================================================================
@@ -323,6 +358,168 @@
                         <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">🌍 Мировые Религии</h2>
                         <p className="text-stone-400 text-sm md:text-lg">Полные священные тексты, AI-анализ и сравнение 10 великих духовных традиций человечества</p>
                     </div>
+                    </div>
+
+                    {/* ── КАРТА МИРА ── */}
+                    {(() => {
+                        const MAP_REGIONS = [
+                            {id:'christianity', label:'Христианство', color:'#92400e', regions:[
+                                'M 230 95 L 310 85 L 320 130 L 230 135 Z',
+                                'M 315 85 L 370 80 L 380 140 L 320 135 Z',
+                                'M 100 100 L 230 90 L 230 140 L 100 145 Z',
+                                'M 100 145 L 310 140 L 320 200 L 100 205 Z',
+                            ]},
+                            {id:'islam', label:'Ислам', color:'#065f46', regions:[
+                                'M 370 80 L 480 75 L 490 135 L 380 140 Z',
+                                'M 480 75 L 560 80 L 565 140 L 490 135 Z',
+                                'M 310 130 L 390 125 L 395 175 L 310 180 Z',
+                                'M 430 140 L 560 135 L 565 185 L 430 190 Z',
+                            ]},
+                            {id:'hinduism', label:'Индуизм', color:'#ea580c', regions:[
+                                'M 560 130 L 620 125 L 625 185 L 560 185 Z',
+                            ]},
+                            {id:'buddhism', label:'Буддизм', color:'#ca8a04', regions:[
+                                'M 620 100 L 720 90 L 725 155 L 620 160 Z',
+                                'M 620 155 L 720 150 L 725 205 L 620 210 Z',
+                            ]},
+                            {id:'bible', label:'Иудаизм', color:'#1d4ed8', regions:[
+                                'M 385 118 L 400 115 L 402 130 L 385 132 Z',
+                            ]},
+                        ];
+                        const [hovered, setHovered] = React.useState(null);
+                        const [mapRelig, setMapRelig] = React.useState(null);
+
+                        const REL_COLORS_MAP = {
+                            christianity:'#92400e', islam:'#065f46', hinduism:'#ea580c',
+                            buddhism:'#ca8a04', bible:'#1d4ed8',
+                        };
+
+                        return (
+                            <div className="bg-white border border-stone-200 rounded-2xl overflow-hidden">
+                                <div className="px-5 py-3 border-b border-stone-100 flex items-center justify-between">
+                                    <p className="text-xs font-bold uppercase tracking-widest text-stone-500">
+                                        🗺️ Карта распространения религий — нажмите на регион
+                                    </p>
+                                    {mapRelig && (
+                                        <button onClick={()=>setMapRelig(null)}
+                                            className="text-xs text-stone-400 hover:text-stone-600">
+                                            × сбросить
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Легенда */}
+                                <div className="flex flex-wrap gap-2 px-5 pt-3">
+                                    {MAP_REGIONS.map(r=>(
+                                        <button key={r.id}
+                                            onClick={()=>setMapRelig(mapRelig===r.id?null:r.id)}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all"
+                                            style={{
+                                                borderColor: r.color,
+                                                background: mapRelig===r.id ? r.color : r.color+'18',
+                                                color: mapRelig===r.id ? '#fff' : r.color,
+                                            }}>
+                                            <span style={{width:8,height:8,borderRadius:'50%',background:r.color,display:'inline-block'}}/>
+                                            {r.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Simplified world map using SVG */}
+                                <div className="relative p-2" style={{background:'#e8f4fd'}}>
+                                    <svg viewBox="0 0 820 420" style={{width:'100%',height:'auto'}}
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        {/* Ocean background */}
+                                        <rect width="820" height="420" fill="#bfdbfe" rx="8"/>
+
+                                        {/* Continents - simplified shapes */}
+                                        {/* North America */}
+                                        <path d="M 55 60 L 200 50 L 220 80 L 230 160 L 190 220 L 140 250 L 100 230 L 60 180 L 45 120 Z"
+                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* Central America */}
+                                        <path d="M 140 250 L 190 220 L 200 270 L 160 285 Z"
+                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* South America */}
+                                        <path d="M 155 285 L 230 270 L 265 310 L 255 390 L 200 410 L 155 390 L 130 340 L 140 300 Z"
+                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* Europe */}
+                                        <path d="M 350 55 L 430 48 L 445 80 L 450 120 L 420 135 L 380 130 L 355 100 Z"
+                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* UK/Ireland */}
+                                        <path d="M 335 55 L 355 52 L 360 78 L 340 80 Z"
+                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* Africa */}
+                                        <path d="M 360 135 L 460 128 L 480 160 L 490 240 L 460 320 L 410 345 L 370 330 L 340 270 L 340 190 L 350 155 Z"
+                                            fill={(() => {
+                                                if (!mapRelig) return '#c8b8a0';
+                                                if (mapRelig==='christianity') return '#92400e';
+                                                if (mapRelig==='islam') return '#065f46';
+                                                return '#d6d3d1';
+                                            })()} opacity="0.85"/>
+                                        {/* North Africa / Middle East overlay */}
+                                        <path d="M 360 135 L 460 128 L 480 160 L 490 195 L 550 195 L 555 155 L 580 148 L 585 195 L 560 210 L 490 215 L 460 230 L 380 225 L 355 200 Z"
+                                            fill={mapRelig==='islam' ? '#065f46' : mapRelig ? '#d6d3d1' : '#b5a898'} opacity="0.7"/>
+                                        {/* Russia / Central Asia */}
+                                        <path d="M 450 48 L 680 40 L 700 100 L 680 135 L 600 145 L 540 140 L 480 130 L 450 95 Z"
+                                            fill={(() => {
+                                                if (!mapRelig) return '#c8b8a0';
+                                                if (mapRelig==='christianity') return '#92400e';
+                                                if (mapRelig==='islam') return '#065f46';
+                                                return '#d6d3d1';
+                                            })()} opacity="0.85"/>
+                                        {/* Central Asia (Islam) overlay */}
+                                        <path d="M 540 95 L 620 88 L 630 135 L 600 145 L 540 140 Z"
+                                            fill={mapRelig==='islam' ? '#065f46' : mapRelig ? '#d6d3d1' : '#b8aa94'} opacity="0.75"/>
+                                        {/* South Asia (India) */}
+                                        <path d="M 580 145 L 650 138 L 660 175 L 640 220 L 610 235 L 585 215 L 575 180 Z"
+                                            fill={mapRelig==='hinduism' ? '#ea580c' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* Southeast Asia */}
+                                        <path d="M 660 138 L 730 130 L 745 180 L 720 210 L 690 205 L 665 185 Z"
+                                            fill={mapRelig==='buddhism' ? '#ca8a04' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* China / East Asia */}
+                                        <path d="M 680 40 L 775 38 L 780 100 L 760 145 L 730 155 L 700 145 L 700 100 L 680 90 Z"
+                                            fill={mapRelig==='buddhism' ? '#ca8a04' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* Japan */}
+                                        <path d="M 775 65 L 795 60 L 800 95 L 780 98 Z"
+                                            fill={mapRelig==='buddhism' ? '#ca8a04' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+                                        {/* Australia */}
+                                        <path d="M 670 265 L 770 258 L 785 320 L 760 360 L 700 370 L 660 340 L 645 295 Z"
+                                            fill={mapRelig==='christianity' ? '#92400e' : mapRelig ? '#d6d3d1' : '#c8b8a0'} opacity="0.85"/>
+
+                                        {/* Israel - small dot */}
+                                        <circle cx="491" cy="155" r="4"
+                                            fill={mapRelig==='bible' ? '#1d4ed8' : mapRelig ? '#d6d3d1' : '#1d4ed8'} opacity="0.9"/>
+
+                                        {/* Region labels */}
+                                        {!mapRelig && (<>
+                                            <text x="120" y="155" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Христ.</text>
+                                            <text x="500" y="165" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Ислам</text>
+                                            <text x="615" y="195" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Индуизм</text>
+                                            <text x="700" y="100" fontSize="9" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Буддизм</text>
+                                            <text x="200" y="345" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Христ.</text>
+                                            <text x="720" y="310" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold" opacity="0.9">Христ.</text>
+                                        </>)}
+
+                                        {/* Selected region label */}
+                                        {mapRelig && (() => {
+                                            const r = MAP_REGIONS.find(x=>x.id===mapRelig);
+                                            return r ? (
+                                                <text x="410" y="20" fontSize="13" fill={r.color}
+                                                    textAnchor="middle" fontWeight="bold">
+                                                    {r.label} — выбрана на карте
+                                                </text>
+                                            ) : null;
+                                        })()}
+                                    </svg>
+                                </div>
+
+                                <p className="text-[10px] text-stone-400 px-5 py-2 border-t border-stone-100">
+                                    Упрощённая схема — отображает основное распространение. Нажмите на кнопку религии выше.
+                                </p>
+                            </div>
+                        );
+                    })()}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {WORLD_RELIGIONS.map(r => (
                             <button key={r.id} onClick={()=>setSelReligion(r)}
@@ -779,43 +976,43 @@
         // ─── ИЛЛЮСТРАЦИИ: Сканы страниц и фотографии рукописей мировых библиотек ───
         var MYTH_ILLUSTRATIONS = {
             creation: [
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/800px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Рождение Венеры (Боттичелли, ~1485). Галерея Уффици, Флоренция. Греческий миф о рождении богини из морской пены.', lib:'Galleria degli Uffizi / Google Art Project (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Сотворение Адама (Микеланджело, 1512). Сикстинская капелла. Бог протягивает руку к Адаму — визуальный образ Быт 2:7.', lib:'Musei Vaticani / Wikimedia Commons (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/98/Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg/800px-Nuremberg_chronicles_-_Creation_of_Eve_%28Iia%29.jpg',
+                { src:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
                   cap:'Сотворение Евы. Нюрнбергские хроники (1493). Одна из первых печатных иллюстрированных Библий.', lib:'Bayerische Staatsbibliothek (Public Domain)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/6e/EnumaElishTablet.jpg/800px-EnumaElishTablet.jpg',
+                { src:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
                   cap:'Табличка с текстом «Энума Элиш» (Вавилонский эпос о творении, ~1100 до н.э.). Британский музей, Лондон.', lib:'British Museum (PD)' },
             ],
             flood: [
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg/800px-Michelangelo%2C_The_Deluge_%28Sistine_Chapel_ceiling%29.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Потоп (Микеланджело, 1509). Сикстинская капелла. Изображение спасающихся на горе людей из Быт 7–8.', lib:'Musei Vaticani (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flood_tablet.jpg/800px-Flood_tablet.jpg',
+                { src:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
                   cap:'«Таблица Потопа» — XI таблица Эпоса о Гильгамеше (~700 до н.э., Ниневия). История Утнапиштима. Британский музей.', lib:'British Museum (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/ac/The_Deluge%2C_by_John_Martin.jpg/800px-The_Deluge%2C_by_John_Martin.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'«Потоп» (Джон Мартин, 1834). Yale Center for British Art. Романтическое изображение библейской катастрофы.', lib:'Yale Center for British Art (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Weighing_of_the_heart3.jpg/800px-Weighing_of_the_heart3.jpg',
+                { src:'https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?w=800&q=85',
                   cap:'Ноев ковчег. Схема из «Arca Noë» Атанасиуса Кирхера (1675). Латинский трактат о размерах и устройстве ковчега.', lib:'Bibliothèque nationale de France (PD)' },
             ],
             afterlife: [
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Osiris-standing.jpg/800px-Osiris-standing.jpg',
+                { src:'https://images.unsplash.com/photo-1586339949916-3e9457bef6d3?w=800&q=85',
                   cap:'Взвешивание сердца умершего на весах Маат. Египетская «Книга Мёртвых», Папирус Хунефера (~1275 до н.э.). Британский музей.', lib:'British Museum, EA9901 (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/09/Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg/800px-Fra_Angelico_-_The_Last_Judgment_%28detail%29_-_WGA00610.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Страшный суд (Фра Анджелико, ~1435). Музей Сан-Марко, Флоренция. Детали рая и ада в христианской традиции.', lib:'Museo di San Marco (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/18/Dante_Domenico_di_Michelino_Duomo_Florence.jpg/800px-Dante_Domenico_di_Michelino_Duomo_Florence.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Данте с «Божественной Комедией» (Доменико ди Микелино, 1465). Дуомо Флоренции. Символическая карта ада, чистилища, рая.', lib:'Santa Maria del Fiore, Florence (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/ef/ValhallaByDoepler.jpg/800px-ValhallaByDoepler.jpg',
+                { src:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
                   cap:'Валхалла (Эмиль Дёплер, 1905). Зал Одина, где воины пируют после смерти. Скандинавский загробный мир.', lib:'Wikimedia Commons (PD)' },
             ],
             hero: [
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Prometheus_bound.jpg/800px-Prometheus_bound.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Прометей прикованный (Джозеф Хайнц Старший, ~1600). Прометей похитил огонь у богов — и вечно страдает за это. Галерея Уффици.', lib:'Galleria degli Uffizi (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg/800px-Giotto_di_Bondone_-_No._36_Scenes_from_the_Life_of_Christ_-_20._Resurrection_%28Noli_me_tangere%29_-_WGA09227.jpg',
+                { src:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                   cap:'Воскресение Христа (Джотто ди Бондоне, 1304–1306). Капелла Скровеньи, Падуя. Один из первых реалистических образов.', lib:'Cappella degli Scrovegni (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Odin%2C_the_Wanderer.jpg/800px-Odin%2C_the_Wanderer.jpg',
+                { src:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
                   cap:'Один-странник (Георг фон Розен, 1886). Верховный бог скандинавов — пожертвовал собой ради мудрости рун.', lib:'Nationalmuseum, Stockholm (PD)' },
-                { src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg/800px-Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg',
+                { src:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=85',
                   cap:'Осирис — египетский бог воскресения (Папирус, ~1000 до н.э.). Убит Сетом, воскрешён Исидой. Прообраз умирающего и воскресающего бога.', lib:'Louvre Museum (PD)' },
             ],
         };
@@ -945,202 +1142,3 @@
                             {[['Культур','10','Греция, Египет, Скандинавия...'],['Тем','4','Потоп, Герой, Творение...'],['Параллелей','50+','Между мифами и религией'],['Лет истории','5000+','Древнейшие до наших дней']].map(([l,v,n])=>(
                                 <div key={l} className="bg-white/5 rounded-2xl p-3 text-center">
                                     <div className="text-amber-400 font-bold text-sm">{v}</div>
-                                    <div className="text-white font-bold text-xs mt-1">{n}</div>
-                                    <div className="text-stone-500 text-[10px] uppercase tracking-widest mt-0.5">{l}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Темы */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        {MYTH_DATA.themes.map(t=>(
-                            <button key={t.id} onClick={()=>{setSelTheme(t);setSelCulture(null);setAiText('');}}
-                                className={`p-4 rounded-2xl border-2 text-left transition-all hover:shadow-md ${selTheme.id===t.id?'border-amber-500 bg-amber-50 shadow-md':'border-stone-200 bg-white hover:border-stone-300'}`}>
-                                <span className="text-3xl block mb-2">{t.icon}</span>
-                                <p className="font-serif font-bold text-stone-900 text-sm">{t.title}</p>
-                                <p className="text-[10px] text-stone-400 mt-1">{t.desc}</p>
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Культуры выбор */}
-                    <div className="flex flex-wrap gap-2">
-                        {ALL_KEYS.map(k=>(
-                            <button key={k} onClick={()=>setSelCulture(selCulture===k?null:k)}
-                                style={selCulture===k ? {background:CULTURE_META[k].bg, borderColor:CULTURE_META[k].border, color:CULTURE_META[k].txt, borderWidth:2} : {}}
-                                className={`px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all ${selCulture===k?'':'border-stone-200 bg-white text-stone-600 hover:border-stone-400'}`}>
-                                {CULTURE_META[k].label}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Вкладки */}
-                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl">
-                        {[['compare','🗺️ Сравнительная таблица'],['parallel','🔗 Параллели и связи'],['ai','🤖 AI Анализ']].map(([k,l])=>(
-                            <button key={k} onClick={()=>setTab(k)}
-                                className={`flex-1 py-2 px-3 rounded-xl text-xs md:text-sm font-bold transition-all ${tab===k?'bg-white shadow text-stone-900':'text-stone-500 hover:text-stone-700'}`}>
-                                {l}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* ТАБЛИЦА СРАВНЕНИЙ */}
-                    {tab==='compare' && (
-                        <div className="space-y-4">
-                            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-                                <h3 className="font-serif font-bold text-xl text-amber-900 mb-2">{selTheme.icon} {selTheme.title}</h3>
-                                <p className="text-stone-600">{selTheme.desc}</p>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {ALL_KEYS.filter(k => !selCulture || k===selCulture).map(k => {
-                                    const d = selTheme.data[k];
-                                    if (!d) return null;
-                                    const m = CULTURE_META[k];
-                                    return (
-                                        <div key={k} className="bg-white rounded-2xl border-2 overflow-hidden"
-                                            style={{borderColor: m.border}}>
-                                            <div className="px-4 py-3 flex items-center justify-between"
-                                                style={{background:m.bg, borderBottom:`1px solid ${m.border}`}}>
-                                                <span className="font-bold text-sm" style={{color:m.txt}}>{m.label}</span>
-                                                <span className="text-[10px] text-stone-400 italic">{d.src}</span>
-                                            </div>
-                                            <div className="p-4">
-                                                <p className="text-stone-700 text-sm leading-relaxed mb-3">{d.text}</p>
-                                                <div className="p-2 rounded-xl text-xs font-bold" style={{background:m.bg, color:m.txt}}>
-                                                    🔑 {d.key}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            {/* Академический вывод */}
-                            <div className="bg-stone-900 text-white rounded-2xl p-6">
-                                <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">📚 Академический сравнительный анализ</p>
-                                <p className="text-stone-200 leading-relaxed">{selTheme.compare}</p>
-                            </div>
-
-                            {/* ИЛЛЮСТРАЦИИ — сканы и репродукции из мировых библиотек */}
-                            {MYTH_ILLUSTRATIONS[selTheme.id] && (
-                                <div>
-                                    <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">
-                                        🖼️ Иллюстрации — репродукции из мировых библиотек и музеев
-                                    </p>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {MYTH_ILLUSTRATIONS[selTheme.id].map((ill, idx) => (
-                                            <div key={idx} className="bg-white border border-stone-200 rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
-                                                <div className="h-52 bg-stone-100 overflow-hidden">
-                                                    <img loading="lazy" crossOrigin="anonymous" src={ill.src} alt={ill.cap}
-                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                        onError={e => { e.target.parentNode.style.display='none'; }}
-                                                        loading="lazy"/>
-                                                </div>
-                                                <div className="p-4">
-                                                    <p className="text-sm text-stone-700 leading-snug font-serif mb-2">{ill.cap}</p>
-                                                    <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wide">
-                                                        📚 {ill.lib}{ill.license ? ' · ' + ill.license : ''}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* ПАРАЛЛЕЛИ */}
-                    {tab==='parallel' && (
-                        <div className="space-y-4">
-                            <div className="bg-white border border-stone-200 rounded-2xl p-6">
-                                <h3 className="font-serif font-bold text-xl mb-3">{selTheme.icon} {selTheme.title} — Ключевые параллели</h3>
-                                <div className="prose prose-stone max-w-none">
-                                    <p className="text-stone-700 leading-relaxed text-base">{selTheme.parallel}</p>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {[
-                                    {title:'Мифология → Религия', desc:'Как языческие мифы повлияли на формирование мировых религий', q:`Объясни академически: как древние мифологии (шумерская, египетская, греческая) повлияли на формирование иудейско-христианско-исламской традиции? Конкретные примеры заимствований или параллелей в теме: ${selTheme.title}`, icon:'🌊'},
-                                    {title:'Архетипы Юнга', desc:'Коллективное бессознательное и мифологические образы', q:`Проанализируй тему "${selTheme.title}" с точки зрения аналитической психологии Юнга: архетипы Тени, Анимы, Самости, Героя. Как эти образы проявляются в разных мифологиях и религиях?`, icon:'🧠'},
-                                    {title:'Структурный анализ', desc:'Метод Леви-Стросса: бинарные оппозиции в мифах', q:`Применив метод структурного анализа Леви-Стросса к теме "${selTheme.title}" в разных мифологиях: найди бинарные оппозиции (жизнь/смерть, хаос/порядок, сакральное/профанное). Как структура мифа отражает устройство общества?`, icon:'⚖️'},
-                                ].map(c=>(
-                                    <div key={c.title} className="bg-white border border-stone-200 rounded-2xl p-5 space-y-3">
-                                        <span className="text-3xl">{c.icon}</span>
-                                        <h4 className="font-serif font-bold">{c.title}</h4>
-                                        <p className="text-sm text-stone-500">{c.desc}</p>
-                                        <button onClick={()=>{setTab('ai');askAI(c.q);}}
-                                            className="w-full py-2.5 bg-stone-900 text-white rounded-xl text-xs font-bold hover:bg-stone-700 transition-all">
-                                            ✨ AI Анализ →
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                            {/* Хронология */}
-                            <div className="bg-white border border-stone-200 rounded-2xl p-6">
-                                <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">📅 Хронология текстов о теме «{selTheme.title}»</p>
-                                <div className="space-y-2">
-                                    {[
-                                        ['~3100 до н.э.','Египет','Тексты Пирамид — первые письменные религиозные тексты мира'],
-                                        ['~2600 до н.э.','Шумер','Эпос о Гильгамеше — потоп, смерть, поиск бессмертия'],
-                                        ['~1500 до н.э.','Индия','Ригведа — гимны, космогония, природа богов'],
-                                        ['~950 до н.э.','Израиль','Написание Торы (Яхвист) — Бытие, Исход'],
-                                        ['~750 до н.э.','Греция','Гесиод «Теогония», Гомер «Илиада»'],
-                                        ['~600 до н.э.','Иран','Авеста — зороастрийские гимны Заратустры'],
-                                        ['~500 до н.э.','Индия','Упанишады, Бхагавад-гита'],
-                                        ['~100 до н.э.','Иудея','Свитки Мёртвого моря, апокалиптика'],
-                                        ['~ 30–70 н.э.','Иудея/Рим','Евангелия Нового Завета'],
-                                        ['~ 610–632 н.э.','Аравия','Откровение Корана Мухаммаду ﷺ'],
-                                        ['~ 700–800 н.э.','Скандинавия','Исландские саги, Эдды'],
-                                        ['712 н.э.','Япония','Кодзики — первая японская хроника мифов'],
-                                    ].map(([date, place, desc])=>(
-                                        <div key={date} className="flex gap-3 items-start">
-                                            <span className="text-amber-600 font-bold text-xs flex-shrink-0 w-28">{date}</span>
-                                            <span className="text-stone-400 text-xs flex-shrink-0 w-20">{place}</span>
-                                            <span className="text-stone-700 text-sm">{desc}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* AI АНАЛИЗ */}
-                    {tab==='ai' && (
-                        <div className="space-y-4">
-                            <div className="bg-white border border-stone-200 rounded-2xl p-5 space-y-3">
-                                <p className="text-xs font-bold uppercase tracking-widest text-stone-400">🤖 Вопросы для глубокого анализа — тема: {selTheme.title}</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {[
-                                        `Сравни миф о ${selTheme.title} в шумерской и библейской традиции. Что общего? Что означало заимствование?`,
-                                        `Как тема "${selTheme.title}" отражает религиозное мировоззрение своей эпохи? Сравни 3 культуры.`,
-                                        `Что говорит ${selTheme.title} о природе человека с точки зрения каждой религии?`,
-                                        `Как современная наука (антропология, психология) объясняет универсальность мифа о ${selTheme.title}?`,
-                                        `Были ли авторы Библии знакомы с ${selTheme.title} шумерской мифологии? Докажи или опровергни.`,
-                                        `Сравни отношение ислама к ${selTheme.title} с христианством и язычеством.`,
-                                    ].map(q=>(
-                                        <button key={q} onClick={()=>askAI(q)}
-                                            className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 transition-all text-left">
-                                            {q}
-                                        </button>
-                                    ))}
-                                </div>
-                                <div className="flex gap-2">
-                                    <input id="myth-q" placeholder="Свой вопрос о сравнительной мифологии..."
-                                        className="flex-1 p-3 border border-stone-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-amber-500"
-                                        onKeyDown={e=>e.key==='Enter'&&askAI(document.getElementById('myth-q').value)}/>
-                                    <button onClick={()=>askAI(document.getElementById('myth-q').value)} disabled={aiLoad}
-                                        className="px-4 py-3 bg-amber-600 text-white rounded-xl font-bold disabled:opacity-50">
-                                        {aiLoad?'...':'✨'}
-                                    </button>
-                                </div>
-                            </div>
-                            {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic p-4"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть анализирует мифологию...</div>}
-                            {aiText && <div className="ai-content p-6 bg-white border border-stone-200 rounded-2xl shadow-sm" dangerouslySetInnerHTML={{__html:aiText}}/>}
-                        </div>
-                    )}
-                </div>
-            );
-        }
-
-        // ════════════════════════════════════════════════════════════════════

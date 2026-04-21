@@ -22,26 +22,45 @@
             const content = isBible ? (chaptersObj[selectedChapter] || {}) : (db.texts.quran[selectedBook]?.["1"] || {});
 
             // ── Иллюстрации к книгам Библии и сурам Корана ──────────────────
-            const BOOK_ILLUSTRATIONS = {
-                'Бытие':      [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/51/Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_Adam_and_Eve_-_Google_Art_Project.jpg', cap:'Рембрандт «Адам и Ева» (1638), Рейксмюзеум', license:'Public Domain / CC'},{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/800px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg', cap:'Микеланджело «Сотворение Адама» (1512), Сикстинская капелла', license:'Public Domain / CC'}],
-                'Исход':      [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/00/Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg/800px-Gebhard_Fugel_Über_allen_Häusern_Ägyptens_war_Finsternis.jpg', cap:'Казни Египетские, иллюстрация XIX в.', license:'Public Domain / CC'},{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg/800px-Frederic_Edwin_Church_-_Moses_Viewing_the_Promised_Land.jpg', cap:'Фредерик Черч «Моисей взирает на Землю Обетованную»', license:'Public Domain / CC'}],
-                'Псалтирь':   [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg/800px-Tickhill_Psalter%2C_David_Playing_the_Harp.jpg', cap:'Давид играет на арфе. Тикхиллская Псалтирь (ок. 1310)', license:'Public Domain / CC'}],
-                'Иов':        [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4b/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg/800px-William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg', cap:'Уильям Блейк «Сатана поражает Иова» (1826)', license:'Public Domain / CC'}],
-                'Исайя':      [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Isaiah_from_the_Sistine_Chapel_ceiling.jpg/800px-Isaiah_from_the_Sistine_Chapel_ceiling.jpg', cap:'Микеланджело «Исайя» (1508–1512), Сикстинская капелла', license:'Public Domain / CC'}],
-                'Откровение': [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Apocalypse_vasnetsov.jpg/800px-Apocalypse_vasnetsov.jpg', cap:'Васнецов «Апокалипсис» (1887)', license:'Public Domain / CC'},{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Durer_Revelation_Four_Riders.jpg/800px-Durer_Revelation_Four_Riders.jpg', cap:'Альбрехт Дюрер «Четыре всадника Апокалипсиса» (1498)', license:'Public Domain / CC'}],
-                'От Иоанна':  [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/18/El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg/800px-El_Greco_-_The_Baptism_of_Christ_-_Google_Art_Project.jpg', cap:'Эль Греко «Крещение Христа»', license:'Public Domain / CC'}],
-                'От Луки':    [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/48/The_Annunciation%2C_by_Paolo_de_Matteis.jpg/800px-The_Annunciation%2C_by_Paolo_de_Matteis.jpg', cap:'«Благовещение» Паоло де Маттеис (1712)', license:'Public Domain / CC'}],
-                'Иезекииль':  [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg/800px-Ezekiel%27s_vision_by_Matthaeus_Merian.jpg', cap:'Видение Иезекииля, иллюстрация Маттеуса Мериана (1630)', license:'Public Domain / CC'}],
-                'Даниил':     [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/8/84/Daniel-in-the-lions-den.jpg/800px-Daniel-in-the-lions-den.jpg', cap:'Питер Пауль Рубенс «Даниил во рву со львами» (1614–1616)', license:'Public Domain / CC'}],
+            // ── Ссылки на оцифрованные источники вместо ненадёжных img ──
+            const BOOK_SOURCES = {
+                'Бытие':     [{label:'Синайский кодекс (Быт 1) — codexsinaiticus.org', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=3&lid=en&side=R&zoomSlider=0'},
+                              {label:'Свитки Мёртвого моря — dss.collections.imj.org.il', url:'https://dss.collections.imj.org.il/'}],
+                'Исход':     [{label:'Папирус Кёльна — Исход 1 (II в. до н.э.)', url:'https://papyri.info/ddbdp/p.koeln;4;171'},
+                              {label:'Синайский кодекс — Исход, полный текст', url:'https://codexsinaiticus.org/en/manuscript.aspx'}],
+                'Псалтирь':  [{label:'Псалтирь Давида — British Library Digitised MSS', url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_37517'},
+                              {label:'Тикхиллская Псалтирь (1310) — Британская библиотека', url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_42130'}],
+                'Иов':       [{label:'Иов — Лейпцигский фрагмент Синайского кодекса', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=30'},
+                              {label:'Иов из Кумрана (4Q99) — Leon Levy DSS Digital Library', url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q99-1'}],
+                'Исайя':     [{label:'Великий Свиток Исайи (1QIsa-a) — дигитальная библиотека Свитков', url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QIsa-a-1'},
+                              {label:'Исайя в Синайском кодексе (IV в.)', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=45'}],
+                'Откровение':[{label:'Апокалипсис — Ватиканский кодекс (IV в.) Vat.gr.1209', url:'https://digi.vatlib.it/mss/Vat.gr.1209'},
+                              {label:'Линдисфарнское Евангелие — British Library', url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Cotton_MS_Nero_D_IV'}],
+                'От Иоанна': [{label:'Папирус P66 (200 н.э.) — Иоанн 1:1 — Bodmer Library', url:'https://www.csntm.org/manuscript/view/ga_p66'},
+                              {label:'Папирус P52 (125 н.э.) — старейший фрагмент НЗ', url:'https://www.csntm.org/manuscript/view/ga_p52'}],
+                'От Луки':   [{label:'Синайский кодекс — Евангелие от Луки', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=51'},
+                              {label:'Ватиканский кодекс — Лука, IV в.', url:'https://digi.vatlib.it/mss/Vat.gr.1209'}],
+                'Иезекииль': [{label:'4QEzekiel (Свиток Иезекииля из Кумрана)', url:'https://www.deadseascrolls.org.il/explore-the-archive/search#q=ezekiel'},
+                              {label:'Ватиканский кодекс — Иезекииль', url:'https://digi.vatlib.it/mss/Vat.gr.1209'}],
+                'Даниил':    [{label:'Свитки Мёртвого моря — Даниил (4Q112-116)', url:'https://www.deadseascrolls.org.il/explore-the-archive/search#q=daniel'},
+                              {label:'Синайский кодекс — Даниил', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=45'}],
             };
-            // Суры Корана — иллюстрации
-            const SURAH_ILLUSTRATIONS = {
-                '1. Аль-Фатиха':  [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/7/79/Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg/800px-Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg', cap:'Мечеть аль-Харам — самая святая мечеть ислама, Мекка', license:'Public Domain / CC'}],
-                '2. Аль-Бакара':  [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/10/Quran_al_Baqara_Ayat_al_Kursi.jpg/800px-Quran_al_Baqara_Ayat_al_Kursi.jpg', cap:'Аят аль-Курси (Коран 2:255) — каллиграфия', license:'Public Domain / CC'}],
-                '12. Йусуф':      [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg/800px-Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg', cap:'Юсуф и Зулейха, персидская миниатюра (XVII в.)', license:'Public Domain / CC'}],
-                '19. Марьям':     [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/55/Gentile_da_Fabriano_-_Madonna_and_Child.jpg/800px-Gentile_da_Fabriano_-_Madonna_and_Child.jpg', cap:'Марьям с младенцем Исой — общая традиция', license:'Public Domain / CC'}],
-                '36. Йа Син':     [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Quran_manuscript_Ilkhanate.jpg/800px-Quran_manuscript_Ilkhanate.jpg', cap:'Страница рукописного Корана, период Ильханата (XIV в.)', license:'Public Domain / CC'}],
-                '55. Ар-Рахман':  [{src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Garden_of_Paradise_miniature.jpg/800px-Garden_of_Paradise_miniature.jpg', cap:'Сад Рая — персидская миниатюра из «Хафт Авранг»', license:'Public Domain / CC'}],
+            const SURAH_SOURCES = {
+                '1. Аль-Фатиха':  [{label:'Бирмингемский Коран (645–645 н.э.) — University of Birmingham', url:'https://www.birmingham.ac.uk/facilities/cadbury/collections/birmingham-quran-manuscript'},
+                                   {label:'Саудовская рукопись — ранний куфический текст Корана', url:'https://manuscripts.library.jhu.edu/collections/islamic'}],
+                '2. Аль-Бакара':  [{label:'Рукопись Топкапы — дворец Топкапы, Стамбул', url:'https://topkapisarayi.gov.tr/en/content/topkapi-palace-museum-library'},
+                                   {label:'Аят аль-Курси — ранняя рукопись, Islamic Manuscript Association', url:'https://www.islamicmanuscript.org/'}],
+                '12. Йусуф':      [{label:'Иллюминированный Коран XIV в. — Chester Beatty Library', url:'https://viewer.cbl.ie/viewer/object/Is_1431/1/'},
+                                   {label:'Рукопись Ильханата (Иран, XIV в.) — The Metropolitan Museum', url:'https://www.metmuseum.org/art/the-collection/search?q=quran+manuscript'}],
+                '19. Марьям':     [{label:'Марьям в Коране — British Library Islamic Manuscripts', url:'https://www.bl.uk/islamic-manuscripts'},
+                                   {label:'Персидская миниатюра — Благовещение Марьям, Walters Art Museum', url:'https://thewalters.org/'}],
+                '36. Йа Син':     [{label:'Сура Йа Син — Chester Beatty Library, манускрипт', url:'https://viewer.cbl.ie/viewer/object/Is_1431/1/'},
+                                   {label:'Ранний куфический Коран — Khalili Collection', url:'https://khalilicollections.org/collections/the-arts-of-the-islamic-world/'}],
+                '55. Ар-Рахман':  [{label:'Ар-Рахман — National Library of Medicine, исламские манускрипты', url:'https://www.nlm.nih.gov/exhibition/islamic_medical/index.html'},
+                                   {label:'Персидская миниатюра «Сад Рая» — Freer Gallery', url:'https://www.si.edu/spotlight/freer-gallery'}],
+                '96. Аль-Аляк':   [{label:'Первое откровение — Бирмингемский Коран, UAB Digital Library', url:'https://www.birmingham.ac.uk/facilities/cadbury/collections/birmingham-quran-manuscript'},
+                                   {label:'Рукопись Саны (палимпсест VII в.) — Corpus Coranicum', url:'https://corpuscoranicum.de/'}],
+            };
             };
 
             let imgUrl = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=85";
@@ -139,15 +158,33 @@
                                     <p className={`text-[11px] mt-3 text-center uppercase tracking-widest font-bold font-sans ${isBible ? 'text-amber-700' : 'text-emerald-700'}`}>{imgCap}</p>
                                 </div>
 
-                                {/* ── Иллюстрации к книге/суре ──────────────────── */}
+                                {/* ── Цифровые источники — ссылки на оцифрованные рукописи ──────── */}
                                 {(() => {
-                                    const ills = isBible
-                                        ? (BOOK_ILLUSTRATIONS[selectedBook] || [])
-                                        : (SURAH_ILLUSTRATIONS[selectedBook] || []);
-                                    if (!ills.length) return null;
+                                    const srcs = isBible
+                                        ? (BOOK_SOURCES[selectedBook] || [])
+                                        : (SURAH_SOURCES[selectedBook] || []);
+                                    if (!srcs.length) return null;
                                     return (
                                         <div className="mt-6">
-                                            <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${isBible?'text-amber-700':'text-emerald-700'}`}>
+                                            <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 flex items-center gap-2 ${isBible?'text-amber-700':'text-emerald-700'}`}>
+                                                📜 Оцифрованные рукописи и первоисточники
+                                            </p>
+                                            <div className="flex flex-col gap-2">
+                                                {srcs.map((s,si)=>(
+                                                    <a key={si} href={s.url} target="_blank" rel="noopener noreferrer"
+                                                        className={`flex items-start gap-2 px-4 py-3 rounded-xl border text-sm font-bold transition-all hover:shadow-md ${isBible?'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100':'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'}`}>
+                                                        <span className="flex-shrink-0 mt-0.5">🔗</span>
+                                                        <span className="leading-snug">{s.label}</span>
+                                                        <span className="ml-auto flex-shrink-0 opacity-50 text-xs">↗</span>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                            <p className={`text-[10px] mt-2 ${isBible?'text-amber-500':'text-emerald-500'}`}>
+                                                Открываются в новой вкладке — официальные цифровые архивы
+                                            </p>
+                                        </div>
+                                    );
+                                })()}3 ${isBible?'text-amber-700':'text-emerald-700'}`}>
                                                 🖼 Иллюстрации к {isBible ? selectedBook : selectedBook}
                                             </p>
                                             <div className={`grid gap-3 ${ills.length===1?'grid-cols-1':'grid-cols-2'}`}>
@@ -705,40 +742,3 @@
                     <div className="bg-white border-b p-4 grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x border-stone-200 shadow-sm z-10 gap-4 md:gap-0">
                         <div className="md:pr-4 space-y-2 p-2">
                             <label className="text-[10px] font-bold text-stone-400 uppercase tracking-widest block">Библия</label>
-                            <div className="flex gap-2">
-                                <select value={bBook} onChange={e=>{setBBook(e.target.value); setBChap("1");}} className="flex-1 p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 transition-all">
-                                    {db.order.bible.map(b => <option key={b} value={b}>{b}</option>)}
-                                </select>
-                                <select value={bChap} onChange={e=>setBChap(e.target.value)} className="w-24 p-3 border border-stone-200 rounded-xl text-sm font-bold bg-stone-50 outline-none cursor-pointer focus:ring-2 focus:ring-amber-500 transition-all">
-                                    {bChaps.map(c => <option key={c} value={c}>Гл {c}</option>)}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="md:pl-4 space-y-2 p-2">
-                            <label className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest block">Коран</label>
-                            <select value={qSurah} onChange={e=>setQSurah(e.target.value)} className="w-full p-3 border border-emerald-100 rounded-xl text-sm font-bold bg-emerald-50/50 outline-none text-emerald-900 cursor-pointer focus:ring-2 focus:ring-emerald-500 transition-all">
-                                {db.order.quran.map(s => <option key={s} value={s}>{s}</option>)}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="flex-1 overflow-y-auto flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x border-stone-200">
-                        <div className="flex-1 p-8 md:p-10 font-serif leading-loose text-lg text-stone-800 bg-[#fdfbf7]">
-                            <h3 className="text-stone-400 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-stone-200">{bBook}, Глава {bChap}</h3>
-                            {Object.entries(db.texts.bible[bBook]?.[bChap] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className="mb-6 group relative pr-8">
-                                    <sup className="text-[10px] font-sans font-bold text-amber-600 mr-3">{v}</sup>{t}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex-1 p-8 md:p-10 font-serif leading-loose text-lg text-emerald-900 bg-[#f4faf7]">
-                            <h3 className="text-emerald-500 font-sans font-bold text-xs uppercase mb-8 pb-4 border-b border-emerald-200">{qSurah}</h3>
-                            {Object.entries(db.texts.quran[qSurah]?.["1"] || {}).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
-                                <div key={v} className="mb-6 group relative pr-8">
-                                    <sup className="text-[10px] font-sans font-bold text-emerald-600 mr-3">{v}</sup>{t}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            );
-        }

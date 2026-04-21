@@ -1,3 +1,200 @@
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Темы */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {MYTH_DATA.themes.map(t=>(
+                            <button key={t.id} onClick={()=>{setSelTheme(t);setSelCulture(null);setAiText('');}}
+                                className={`p-4 rounded-2xl border-2 text-left transition-all hover:shadow-md ${selTheme.id===t.id?'border-amber-500 bg-amber-50 shadow-md':'border-stone-200 bg-white hover:border-stone-300'}`}>
+                                <span className="text-3xl block mb-2">{t.icon}</span>
+                                <p className="font-serif font-bold text-stone-900 text-sm">{t.title}</p>
+                                <p className="text-[10px] text-stone-400 mt-1">{t.desc}</p>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Культуры выбор */}
+                    <div className="flex flex-wrap gap-2">
+                        {ALL_KEYS.map(k=>(
+                            <button key={k} onClick={()=>setSelCulture(selCulture===k?null:k)}
+                                style={selCulture===k ? {background:CULTURE_META[k].bg, borderColor:CULTURE_META[k].border, color:CULTURE_META[k].txt, borderWidth:2} : {}}
+                                className={`px-3 py-1.5 rounded-xl text-xs font-bold border-2 transition-all ${selCulture===k?'':'border-stone-200 bg-white text-stone-600 hover:border-stone-400'}`}>
+                                {CULTURE_META[k].label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Вкладки */}
+                    <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl">
+                        {[['compare','🗺️ Сравнительная таблица'],['parallel','🔗 Параллели и связи'],['ai','🤖 AI Анализ']].map(([k,l])=>(
+                            <button key={k} onClick={()=>setTab(k)}
+                                className={`flex-1 py-2 px-3 rounded-xl text-xs md:text-sm font-bold transition-all ${tab===k?'bg-white shadow text-stone-900':'text-stone-500 hover:text-stone-700'}`}>
+                                {l}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* ТАБЛИЦА СРАВНЕНИЙ */}
+                    {tab==='compare' && (
+                        <div className="space-y-4">
+                            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                                <h3 className="font-serif font-bold text-xl text-amber-900 mb-2">{selTheme.icon} {selTheme.title}</h3>
+                                <p className="text-stone-600">{selTheme.desc}</p>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {ALL_KEYS.filter(k => !selCulture || k===selCulture).map(k => {
+                                    const d = selTheme.data[k];
+                                    if (!d) return null;
+                                    const m = CULTURE_META[k];
+                                    return (
+                                        <div key={k} className="bg-white rounded-2xl border-2 overflow-hidden"
+                                            style={{borderColor: m.border}}>
+                                            <div className="px-4 py-3 flex items-center justify-between"
+                                                style={{background:m.bg, borderBottom:`1px solid ${m.border}`}}>
+                                                <span className="font-bold text-sm" style={{color:m.txt}}>{m.label}</span>
+                                                <span className="text-[10px] text-stone-400 italic">{d.src}</span>
+                                            </div>
+                                            <div className="p-4">
+                                                <p className="text-stone-700 text-sm leading-relaxed mb-3">{d.text}</p>
+                                                <div className="p-2 rounded-xl text-xs font-bold" style={{background:m.bg, color:m.txt}}>
+                                                    🔑 {d.key}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                            {/* Академический вывод */}
+                            <div className="bg-stone-900 text-white rounded-2xl p-6">
+                                <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-3">📚 Академический сравнительный анализ</p>
+                                <p className="text-stone-200 leading-relaxed">{selTheme.compare}</p>
+                            </div>
+
+                            {/* ИЛЛЮСТРАЦИИ — сканы и репродукции из мировых библиотек */}
+                            {MYTH_ILLUSTRATIONS[selTheme.id] && (
+                                <div>
+                                    <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-3">
+                                        🖼️ Иллюстрации — репродукции из мировых библиотек и музеев
+                                    </p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {MYTH_ILLUSTRATIONS[selTheme.id].map((ill, idx) => (
+                                            <div key={idx} className="bg-white border border-stone-200 rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
+                                                <div className="h-52 bg-stone-100 overflow-hidden">
+                                                    <img loading="lazy" crossOrigin="anonymous" src={ill.src} alt={ill.cap}
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        onError={e => { e.target.parentNode.style.display='none'; }}
+                                                        loading="lazy"/>
+                                                </div>
+                                                <div className="p-4">
+                                                    <p className="text-sm text-stone-700 leading-snug font-serif mb-2">{ill.cap}</p>
+                                                    <p className="text-[10px] text-stone-400 font-bold uppercase tracking-wide">
+                                                        📚 {ill.lib}{ill.license ? ' · ' + ill.license : ''}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* ПАРАЛЛЕЛИ */}
+                    {tab==='parallel' && (
+                        <div className="space-y-4">
+                            <div className="bg-white border border-stone-200 rounded-2xl p-6">
+                                <h3 className="font-serif font-bold text-xl mb-3">{selTheme.icon} {selTheme.title} — Ключевые параллели</h3>
+                                <div className="prose prose-stone max-w-none">
+                                    <p className="text-stone-700 leading-relaxed text-base">{selTheme.parallel}</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {[
+                                    {title:'Мифология → Религия', desc:'Как языческие мифы повлияли на формирование мировых религий', q:`Объясни академически: как древние мифологии (шумерская, египетская, греческая) повлияли на формирование иудейско-христианско-исламской традиции? Конкретные примеры заимствований или параллелей в теме: ${selTheme.title}`, icon:'🌊'},
+                                    {title:'Архетипы Юнга', desc:'Коллективное бессознательное и мифологические образы', q:`Проанализируй тему "${selTheme.title}" с точки зрения аналитической психологии Юнга: архетипы Тени, Анимы, Самости, Героя. Как эти образы проявляются в разных мифологиях и религиях?`, icon:'🧠'},
+                                    {title:'Структурный анализ', desc:'Метод Леви-Стросса: бинарные оппозиции в мифах', q:`Применив метод структурного анализа Леви-Стросса к теме "${selTheme.title}" в разных мифологиях: найди бинарные оппозиции (жизнь/смерть, хаос/порядок, сакральное/профанное). Как структура мифа отражает устройство общества?`, icon:'⚖️'},
+                                ].map(c=>(
+                                    <div key={c.title} className="bg-white border border-stone-200 rounded-2xl p-5 space-y-3">
+                                        <span className="text-3xl">{c.icon}</span>
+                                        <h4 className="font-serif font-bold">{c.title}</h4>
+                                        <p className="text-sm text-stone-500">{c.desc}</p>
+                                        <button onClick={()=>{setTab('ai');askAI(c.q);}}
+                                            className="w-full py-2.5 bg-stone-900 text-white rounded-xl text-xs font-bold hover:bg-stone-700 transition-all">
+                                            ✨ AI Анализ →
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Хронология */}
+                            <div className="bg-white border border-stone-200 rounded-2xl p-6">
+                                <p className="text-xs font-bold uppercase tracking-widest text-stone-400 mb-4">📅 Хронология текстов о теме «{selTheme.title}»</p>
+                                <div className="space-y-2">
+                                    {[
+                                        ['~3100 до н.э.','Египет','Тексты Пирамид — первые письменные религиозные тексты мира'],
+                                        ['~2600 до н.э.','Шумер','Эпос о Гильгамеше — потоп, смерть, поиск бессмертия'],
+                                        ['~1500 до н.э.','Индия','Ригведа — гимны, космогония, природа богов'],
+                                        ['~950 до н.э.','Израиль','Написание Торы (Яхвист) — Бытие, Исход'],
+                                        ['~750 до н.э.','Греция','Гесиод «Теогония», Гомер «Илиада»'],
+                                        ['~600 до н.э.','Иран','Авеста — зороастрийские гимны Заратустры'],
+                                        ['~500 до н.э.','Индия','Упанишады, Бхагавад-гита'],
+                                        ['~100 до н.э.','Иудея','Свитки Мёртвого моря, апокалиптика'],
+                                        ['~ 30–70 н.э.','Иудея/Рим','Евангелия Нового Завета'],
+                                        ['~ 610–632 н.э.','Аравия','Откровение Корана Мухаммаду ﷺ'],
+                                        ['~ 700–800 н.э.','Скандинавия','Исландские саги, Эдды'],
+                                        ['712 н.э.','Япония','Кодзики — первая японская хроника мифов'],
+                                    ].map(([date, place, desc])=>(
+                                        <div key={date} className="flex gap-3 items-start">
+                                            <span className="text-amber-600 font-bold text-xs flex-shrink-0 w-28">{date}</span>
+                                            <span className="text-stone-400 text-xs flex-shrink-0 w-20">{place}</span>
+                                            <span className="text-stone-700 text-sm">{desc}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* AI АНАЛИЗ */}
+                    {tab==='ai' && (
+                        <div className="space-y-4">
+                            <div className="bg-white border border-stone-200 rounded-2xl p-5 space-y-3">
+                                <p className="text-xs font-bold uppercase tracking-widest text-stone-400">🤖 Вопросы для глубокого анализа — тема: {selTheme.title}</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {[
+                                        `Сравни миф о ${selTheme.title} в шумерской и библейской традиции. Что общего? Что означало заимствование?`,
+                                        `Как тема "${selTheme.title}" отражает религиозное мировоззрение своей эпохи? Сравни 3 культуры.`,
+                                        `Что говорит ${selTheme.title} о природе человека с точки зрения каждой религии?`,
+                                        `Как современная наука (антропология, психология) объясняет универсальность мифа о ${selTheme.title}?`,
+                                        `Были ли авторы Библии знакомы с ${selTheme.title} шумерской мифологии? Докажи или опровергни.`,
+                                        `Сравни отношение ислама к ${selTheme.title} с христианством и язычеством.`,
+                                    ].map(q=>(
+                                        <button key={q} onClick={()=>askAI(q)}
+                                            className="text-xs bg-stone-100 hover:bg-amber-50 border border-stone-200 hover:border-amber-300 rounded-xl px-3 py-2 text-stone-700 transition-all text-left">
+                                            {q}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="flex gap-2">
+                                    <input id="myth-q" placeholder="Свой вопрос о сравнительной мифологии..."
+                                        className="flex-1 p-3 border border-stone-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-amber-500"
+                                        onKeyDown={e=>e.key==='Enter'&&askAI(document.getElementById('myth-q').value)}/>
+                                    <button onClick={()=>askAI(document.getElementById('myth-q').value)} disabled={aiLoad}
+                                        className="px-4 py-3 bg-amber-600 text-white rounded-xl font-bold disabled:opacity-50">
+                                        {aiLoad?'...':'✨'}
+                                    </button>
+                                </div>
+                            </div>
+                            {aiLoad && <div className="flex items-center gap-2 text-stone-400 italic p-4"><Icons.Loader c="w-4 h-4 text-amber-500"/> Нейросеть анализирует мифологию...</div>}
+                            {aiText && <div className="ai-content p-6 bg-white border border-stone-200 rounded-2xl shadow-sm" dangerouslySetInnerHTML={{__html:aiText}}/>}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // ════════════════════════════════════════════════════════════════════
+
 
         // МОДУЛЬ: ПОКЛОНЕНИЕ — Практики богослужения в мировых религиях
         // ════════════════════════════════════════════════════════════════════
@@ -6,7 +203,7 @@
                 id:'islam', emoji:'☪️', name:'Ислам', place:'Мечеть (Масджид)', color:'#065f46', bg:'#ecfdf5', border:'#6ee7b7',
                 img:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=900&q=85',
                 imgCap:'Намаз в мечети. Верующие выстраиваются рядами, обратившись в сторону Мекки.',
-                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Sultan_Ahmed_Mosque_interior.jpg/800px-Sultan_Ahmed_Mosque_interior.jpg',
+                histImg:'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800&q=85',
                 histCap:'Интерьер Голубой мечети (Стамбул, XVII в.). Михраб (ниша Киблы), минбар (кафедра).',
                 keyPrinciple:'Таухид — абсолютное единство Бога. Поклонение только Аллаху, без посредников.',
                 steps:[
@@ -24,7 +221,7 @@
                 id:'christianity', emoji:'✝️', name:'Христианство', place:'Церковь (Храм)', color:'#92400e', bg:'#fffbeb', border:'#fde68a',
                 img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85',
                 imgCap:'Литургия в православном храме. Хор, свечи, иконы — многовековая традиция богослужения.',
-                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Hagia_Sophia_Mars_2013.jpg/800px-Hagia_Sophia_Mars_2013.jpg',
+                histImg:'https://images.unsplash.com/photo-1548786811-dd6e453ccca7?w=800&q=85',
                 histCap:'Собор Святой Софии (Константинополь, 537 н.э.) — величайший христианский храм древности.',
                 keyPrinciple:'Поклонение Богу через Иисуса Христа. Триединый Бог: Отец, Сын, Святой Дух.',
                 steps:[
@@ -40,9 +237,9 @@
             },
             {
                 id:'judaism', emoji:'✡️', name:'Иудаизм', place:'Синагога (Бейт Кнессет)', color:'#1d4ed8', bg:'#eff6ff', border:'#bfdbfe',
-                img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
+                img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
                 imgCap:'Молитва у Стены Плача (Иерусалим). Мужчины слева, женщины справа, разделены.',
-                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/04/Synagogue_Erfurt_Innen.jpg/800px-Synagogue_Erfurt_Innen.jpg',
+                histImg:'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&q=85',
                 histCap:'Ростовская синагога (XIV в.). Бима в центре, арон ха-кодеш у восточной стены.',
                 keyPrinciple:'Служение единому Богу через соблюдение Торы — 613 заповедей (мицвот).',
                 steps:[
@@ -58,9 +255,9 @@
             },
             {
                 id:'buddhism', emoji:'☸️', name:'Буддизм', place:'Храм / Вихара / Дзэнский сад', color:'#ca8a04', bg:'#fefce8', border:'#fde047',
-                img:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=900&q=85',
+                img:'https://images.unsplash.com/photo-1538797965759-ed4d74d40c42?w=900&q=85',
                 imgCap:'Медитация монахов в буддийском храме. Благовония, статуя Будды, лотосовые позиции.',
-                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Borobudur-Nothwest-view.jpg/800px-Borobudur-Nothwest-view.jpg',
+                histImg:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=800&q=85',
                 histCap:'Боробудур (Индонезия, IX в.) — крупнейший буддийский храм мира. 2700 рельефов.',
                 keyPrinciple:'Нет Бога-Творца. Практика направлена на освобождение от страдания и достижение Нирваны.',
                 steps:[
@@ -76,7 +273,7 @@
             },
             {
                 id:'hinduism', emoji:'🕉️', name:'Индуизм', place:'Мандир (Храм)', color:'#ea580c', bg:'#fff7ed', border:'#fdba74',
-                img:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Angkor_Wat%2C_January_2009_%28crop%29.jpg/800px-Angkor_Wat%2C_January_2009_%28crop%29.jpg',
+                img:'https://images.unsplash.com/photo-1561414927-6d86591d0c4f?w=900&q=85',
                 imgCap:'Пуджа — ритуальное подношение. Статуя Ганеши, цветы, благовония, огонь.',
                 histImg:'https://images.unsplash.com/photo-1545579133-99bb5e7dcc2f?w=800&q=80',
                 histCap:'Ангкор-Ват (Камбоджа, XII в.) — крупнейший религиозный комплекс мира. Посвящён Вишну.',
@@ -96,7 +293,7 @@
                 id:'shinto', emoji:'⛩️', name:'Синтоизм', place:'Дзиндзя (Святилище)', color:'#be185d', bg:'#fdf2f8', border:'#f0abfc',
                 img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85',
                 imgCap:'Тории (красные ворота) храма Фусими Инари, Киото. 10 000 тории образуют туннель.',
-                histImg:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Itsukushima_torii_angle.jpg/800px-Itsukushima_torii_angle.jpg',
+                histImg:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=85',
                 histCap:'Святилище Ицукусима (XII в.). Тории стоит в море — символ соединения миров.',
                 keyPrinciple:'Уважение и контакт с ками — духами, населяющими природу. Чистота как путь к священному.',
                 steps:[
@@ -316,15 +513,7 @@
                     texts:['Енох I 9:1 — Гавриил обратился к Господу за погибших','Тов 12:15 — один из семи ангелов, предстоящих Господу','Пс Соломона 8:14 — ангел света'],
                     desc:'Гавриил — главный вестник Бога в трёх авраамических традициях. В иудаизме — один из четырёх архангелов. В христианстве явился Марии. В исламе через него передан весь Коран Мухаммеду за 23 года.',
                     significance:'Именно Джибриль принёс первое откровение Мухаммеду в пещере Хира (610 н.э.). Он же возвестил Марии о рождении Исы. Единственный ангел, названный по имени в Коране.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg/800px-Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', cap:'Фра Анджелико «Благовещение» — Гавриил и Мария (ок. 1440), Музей Сан-Марко, Флоренция', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/7/74/Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg/800px-Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg', cap:'Леонардо да Винчи «Благовещение» (1472–1475) — Гавриил с лилией', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/50/Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg/800px-Rembrandt_Harmensz._van_Rijn_-_The_Angel_Appearing_to_the_Shepherds.jpg', cap:'Рембрандт «Явление ангела пастухам» (1634)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg/800px-Annunciation_by_Simone_Martini_and_Lippo_Memmi_%28Uffizi%29.jpg', cap:'Симоне Мартини «Благовещение» (1333), манускрипт-образ, Уффици', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg/800px-Book_of_Hours_-_KW_76_F_5_-_folio_026v.jpg', cap:'«Часослов» — иллюминированный манускрипт с Гавриилом (XV в.)', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Фра Анджелико «Благовещение» (1440) — Museo di San Marco | Google Arts',url:'https://artsandculture.google.com/asset/the-annunciation/IQFYba8CwFsIWg',type:'painting'},{label:'Симоне Мартини «Благовещение» (1333) — Уффици | Google Arts',url:'https://artsandculture.google.com/asset/the-annunciation/kgGCj9K4v3nPaA',type:'painting'},{label:'Часослов XV в. с Гавриилом — British Library Add MS 18850',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_18850',type:'manuscript'},{label:'Бирмингемский Коран (568–645 н.э.) — University of Birmingham',url:'https://www.birmingham.ac.uk/facilities/cadbury/collections/birmingham-quran-manuscript',type:'manuscript'}]
                 },
                 {
                     id:'michael', name:'Михаил / Микаиль', emoji:'⚔️',
@@ -335,15 +524,7 @@
                     texts:['Енох I 20:5 — надзирает за раем', 'Свитки Мёртвого моря (1QM) — предводитель Сынов Света','Завещание Соломона — Михаил даёт Соломону кольцо власти'],
                     desc:'Михаил — единственный ангел, названный в Библии «архангелом». Главнокомандующий небесным воинством. В книге Откровения побеждает сатану-дракона. В Свитках Мёртвого моря — полководец Сынов Света против Сынов Тьмы.',
                     significance:'Особо почитается в исламе как ангел провидения и милости. В православии — «чиноначальник ангелов». День Михаила (Михайлов день) — 21 ноября. Покровитель воинов, полицейских, врачей.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg/800px-Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg', cap:'Гвидо Рени «Архангел Михаил» (1636) — попирает сатану', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg/800px-Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg', cap:'Рафаэль «Святой Михаил, победивший демона» (1518), Лувр', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/14/Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg/800px-Luca_Giordano_-_Fall_of_the_Rebel_Angels_-_WGA09013.jpg', cap:'Лука Джордано «Падение ангелов» (1666)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/91/Michael_D%C3%BCrer.jpg/800px-Michael_D%C3%BCrer.jpg', cap:'Альбрехт Дюрер «Михаил» из Апокалипсиса (1498) — гравюра на дереве', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Apocalypse_Michael.jpg/800px-Apocalypse_Michael.jpg', cap:'Михаил в Апокалипсисе — иллюминированный манускрипт (XIII в.)', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Гвидо Рени «Архангел Михаил» (1636) — WGA онлайн галерея',url:'https://www.wga.hu/html_m/r/reni/michael.html',type:'painting'},{label:'Рафаэль «Михаил» (1518) — Лувр, коллекция онлайн',url:'https://collections.louvre.fr/en/ark:/53355/cl010065609',type:'painting'},{label:'Дюрер «Михаил» из Апокалипсиса (1498) — Metropolitan Museum',url:'https://www.metmuseum.org/art/collection/search/336217',type:'manuscript'},{label:'«Война сынов света» (1QM) — Свитки Мёртвого моря, цифровая библиотека',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QM-1',type:'manuscript'}]
                 },
                 {
                     id:'raphael', name:'Рафаил / Рафаэль', emoji:'🌿',
@@ -354,13 +535,7 @@
                     texts:['Книга Еноха I 20 — один из четырёх архангелов','Завещание Соломона — правит духами болезней','Мидраш — сопровождал Авраама после обрезания'],
                     desc:'Рафаил — архангел исцеления. В Книге Товита он путешествует с Товией в человеческом облике под именем «Азария» и исцеляет Товита от слепоты. Его имя означает «Бог исцелил».',
                     significance:'Покровитель врачей, фармацевтов и паломников. В эпоху Возрождения — популярнейший образ. Часто изображается с рыбой (из истории Товита) и посохом паломника.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Raffael_-_Tobias_und_der_Engel.jpg/800px-Raffael_-_Tobias_und_der_Engel.jpg', cap:'Рафаэль (школа) «Товия и ангел Рафаил» (ок. 1512)', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/41/Titian_Tobias_angel.jpg/800px-Titian_Tobias_angel.jpg', cap:'Тициан «Товия и ангел» (1544), Галерея Академии, Венеция', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg/800px-Tobias_and_the_angel_detail%2C_by_Andrea_del_Verrocchio.jpg', cap:'Верроккьо «Товия и ангел» (деталь, 1470–1480), Национальная галерея, Лондон', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Верроккьо «Товия и ангел» (1470–1480) — National Gallery London',url:'https://www.nationalgallery.org.uk/paintings/andrea-del-verrocchio-and-workshop-tobias-and-the-angel',type:'painting'},{label:'Тициан «Товия и ангел» (1544) — Gallerie Accademia | Google Arts',url:'https://artsandculture.google.com/asset/tobias-and-the-angel/xQHMwcqQUwnFFA',type:'painting'},{label:'Книга Товита — Вульгата, British Library Add MS 10546',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_10546',type:'manuscript'}]
                 },
                 {
                     id:'seraphim', name:'Серафимы', emoji:'🔥',
@@ -371,13 +546,7 @@
                     texts:['3 Енох (Сефер Хехалот) — Метатрон описывает серафимов','Псевдо-Дионисий «О небесной иерархии» — высший чин'],
                     desc:'Серафимы — высший чин в христианской ангельской иерархии. Единственное упоминание — Исайя 6. Шесть крыл: два закрывают лицо (не смеют видеть Бога), два — ноги (смирение), двумя летят. Они кричат: «Кадош, Кадош, Кадош» — Свят, Свят, Свят.',
                     significance:'Видение Исайи стало основой для христианской литургии (Трисвятое, Санктус). В иконографии изображаются красными — цвет огня и любви.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/3/33/Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg/800px-Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg', cap:'Серафимы — «Малый часослов Жана Беррийского» (ок. 1385–1390)', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg/800px-Giotto_di_Bondone_-_Legend_of_St_Francis_-_19._Apparition_at_Arles_-_WGA09175.jpg', cap:'Джотто «Видение серафима» (ок. 1295–1300)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg/800px-Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg', cap:'Видение Исайи с серафимами — Библия Кенникотта (1476), иллюминированный манускрипт', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Серафимы — «Малый часослов Жана Беррийского» (1385–1390), Bibliothèque nationale de France',url:'https://gallica.bnf.fr/ark:/12148/btv1b55008392q',type:'manuscript'},{label:'Видение Исайи — Библия Кенникотта (1476), Bodleian Library Oxford',url:'https://digital.bodleian.ox.ac.uk/objects/542965b6-b3a0-44e2-b4ac-f2b87dc71b40/',type:'manuscript'},{label:'Серафимы в Книге Исайи — Великий Свиток Исайи, Dead Sea Scrolls Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QIsa-a-1',type:'manuscript'}]
                 },
                 {
                     id:'cherubim', name:'Херувимы', emoji:'👁️',
@@ -388,13 +557,7 @@
                     texts:['Иезекииль 1 — Меркава (Колесница): четыре существа с ликами льва, быка, человека, орла','3 Енох — Хайот ха-Кодеш','Дионисий Ареопагит — второй чин ангелов'],
                     desc:'В Библии херувимы — вовсе не пухлые младенцы. Это грозные четырёхликие существа с четырьмя крыльями, сверкающие как раскалённый металл. Иезекииль описывает их как «Меркаву» — небесную колесницу Бога с огненными колёсами.',
                     significance:'Образ херувима из Иезекииля — один из самых загадочных в Библии. Иудейский мистицизм (Меркава) строился вокруг созерцания этого видения. В искусстве Ренессанса херувимы превратились в пухлых купидонов — полная противоположность оригиналу.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg/800px-Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg', cap:'Иезекииль видит Меркаву (Колесницу) — иллюстрация к Библии (1670)', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Raphael_School_of_Athens_fragment.jpg/800px-Raphael_School_of_Athens_fragment.jpg', cap:'Херувимы Рафаэля из Сикстинской Мадонны (1512) — известнейшее изображение', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Burney_Relief_Babylon_-2000-1700.jpg/800px-Burney_Relief_Babylon_-2000-1700.jpg', cap:'Видение Иезекииля — «Bible Historiale» (1372), манускрипт', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Иезекиль видит Меркаву (Колесницу) — Bible Historiale (1372), National Library Netherlands',url:'https://manuscripts.kb.nl/search?q=bible+historiale&lang=en',type:'manuscript'},{label:'Херувимы — иллюминированная Библия, Morgan Library & Museum New York',url:'https://www.themorgan.org/collection/illuminated-manuscripts',type:'manuscript'},{label:'Рафаэль «Сикстинская Мадонна» с херувимами (1512) — Gemäldegalerie Dresden. Google Arts',url:'https://artsandculture.google.com/asset/sistine-madonna/iQE9kVMqSqSSGg',type:'painting'}]
                 },
             ];
 
@@ -409,15 +572,7 @@
                     texts:['Книга Еноха I 6 — Шемхазай, предводитель падших ангелов','Свитки Мёртвого моря — Велиал, князь тьмы','3 Енох — Самаэль, ангел-обвинитель'],
                     desc:'«Сатана» по-еврейски — «противник, обвинитель». В ранней Библии это должность в Небесном Суде (Иов 1–2), а не злой бог. Только в позднейших текстах он становится олицетворением зла. В исламе Иблис — сотворён из огня, гордыня не позволила поклониться Адаму из глины.',
                     significance:'Концепция персонифицированного зла революционна. До Библии — нет единого источника зла в большинстве религий. Через зороастрийское влияние (Ангра-Майнью) идея злого духа вошла в иудаизм, оттуда — в христианство и ислам.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Guercino-temptation.jpg/800px-Guercino-temptation.jpg', cap:'Джованни Франческо Барбьери «Искушение Христа» (1620)', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg/800px-William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', cap:'Уильям Блейк «Великий Красный Дракон» (1805) — Откр 12', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/50/Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg/800px-Sintesi_del_paradiso_perduto_%28Satan_in_full_panoply%29.jpg', cap:'Сатана в доспехах — иллюстрация к «Потерянному Раю» Мильтона (1866)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/7/72/Job_and_Satan_%281825%29_Blake.jpg/800px-Job_and_Satan_%281825%29_Blake.jpg', cap:'Уильям Блейк «Иов и Сатана» (1825) — гравюра из «Книги Иова»', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Devil_codex_Gigas.jpg/800px-Devil_codex_Gigas.jpg', cap:'Дьявол из «Codex Gigas» («Библия Дьявола», XIII в., Стокгольм)', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Уильям Блейк «Иов и Сатана» (1825) — Metropolitan Museum of Art',url:'https://www.metmuseum.org/art/collection/search/339992',type:'painting'},{label:'Блейк «Великий Красный Дракон» (1805) — National Gallery of Art Washington',url:'https://www.nga.gov/collection/art-object-page.36428.html',type:'painting'},{label:'Кодекс Гигас «Библия Дьявола» XIII в. — Национальная библиотека Швеции',url:'https://www.kb.se/samlingarna/digitala-samlingar/codex-gigas.html',type:'manuscript'},{label:'Книга Иова (4Q99) — Dead Sea Scrolls Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q99-1',type:'manuscript'}]
                 },
                 {
                     id:'lilith', name:'Лилит', emoji:'🌙',
@@ -428,13 +583,7 @@
                     texts:['Алфавит Бен-Сиры (IX в.) — полная история Лилит как первой жены Адама','Вавилонский Талмуд — лилин (ночные духи)','Зогар (XIII в.) — Лилит как «Другая Сторона»'],
                     desc:'В каноне Библии Лилит упомянута лишь раз — Исайя 34:14. Вся её история — в позднейших мидрашах. По «Алфавиту Бен-Сиры»: Адам и Лилит созданы одновременно из земли, но Лилит отказывалась подчиняться. Улетела, стала демоницей, опасной для новорождённых.',
                     significance:'Лилит — символ непокорности и независимости в иудейской мистике. Оберег «рука Хамса» и амулеты с именами трёх ангелов (Санои, Сансанои, Семангелоф) — защита от Лилит. В современной культуре — феминистский символ.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/c/c5/John_Collier_Lilith.jpg/800px-John_Collier_Lilith.jpg', cap:'Джон Коллиер «Лилит» (1892) — прерафаэлитская интерпретация', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg/800px-Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg', cap:'«Рельеф Бёрни» — возможно, Лилит или Инанна, Вавилон (~1800 до н.э.)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Lilith_%28John_Collier_painting%29.jpg/800px-Lilith_%28John_Collier_painting%29.jpg', cap:'Средневековый амулет против Лилит с именами охранных ангелов', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Джон Коллиер «Лилит» (1892) — Atkinson Gallery Southport. ArtUK',url:'https://artuk.org/discover/artworks/lilith-152163',type:'painting'},{label:'«Рельеф Бёрни» (~1800 до н.э.) — British Museum, BM 2003,0718.1',url:'https://www.britishmuseum.org/collection/object/W_2003-0718-1',type:'manuscript'},{label:'Лилит в Алфавите Бен Сиры — еврейский манускрипт, Национальная библиотека Израиля',url:'https://www.nli.org.il/en/',type:'manuscript'}]
                 },
                 {
                     id:'azazel', name:'Азазель / Азазел', emoji:'🐐',
@@ -445,13 +594,7 @@
                     texts:['Книга Еноха I 8 — «Азазел научил людей делать мечи и ножи»','Книга Еноха I 10 — «Всели вину за всё зло на Азазела»','Апокалипсис Авраама — Азазел как противник Бога'],
                     desc:'В Книге Левит Азазел — таинственная сущность пустыни, которой отсылается козёл с грехами Израиля. В Книге Еноха — один из «Стражей» (Бней ха-Элохим), спустившихся на гору Хермон. Он научил людей войне, магии и блуду.',
                     significance:'«Козёл отпущения» (scapegoat) вошёл во все языки мира. Современное слово «scapegoat» из перевода Лев 16 — козёл для Азазела. Концепция ритуального очищения через перенос вины — основа многих религий.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/1/16/William_Holman_Hunt_-_The_Scapegoat.jpg/800px-William_Holman_Hunt_-_The_Scapegoat.jpg', cap:'Уильям Холман Хант «Козёл отпущения» (1856) — буквальная иллюстрация Лев 16', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Fallen_angel.jpg/800px-Fallen_angel.jpg', cap:'«Падший Ангел» — Алессандро Бонвичино (Моретто да Брешиа, XVI в.)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/5/50/Fallen_Angels_in_Tartarus.jpg/800px-Fallen_Angels_in_Tartarus.jpg', cap:'Падшие ангелы — иллюстрация к «Потерянному Раю» Мильтона (Джон Мартин, 1825)', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Уильям Холман Хант «Козёл отпущения» (1856) — Lady Lever Art Gallery, ArtUK',url:'https://artuk.org/discover/artworks/the-scapegoat-5835',type:'painting'},{label:'Книга Еноха (эфиопская рукопись) — British Library Or.509',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Or_509',type:'manuscript'},{label:'Свиток Азазеля (4Q180) из Кумрана — DSS Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q180-1',type:'manuscript'}]
                 },
                 {
                     id:'beelzebub', name:'Вельзевул', emoji:'🪰',
@@ -462,12 +605,7 @@
                     texts:['Завещание Соломона — Вельзевул как второй по рангу после сатаны','Гримуар «Лемегетон» (XVII в.) — один из 72 духов','Мильтон «Потерянный Рай» — заместитель Сатаны'],
                     desc:'Изначально — Баал-Зебуб («Повелитель Принца», или «Высокий дом») — филистимский бог Аккарона. В еврейской полемике имя намеренно искажено в «Баал-Зевув» — «повелитель мух». В Новом Завете — синоним сатаны или его заместитель.',
                     significance:'«Вельзевул» — одно из самых используемых имён дьявола в западной литературе. В Средневековье считался повелителем зависти. Мухи — символ разложения и нечистоты.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/6/60/Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg/800px-Dictionnaire_Infernal_-_Collin_de_Plancy_%281863%29_p_595.jpg', cap:'Вельзевул — «Словарь Инфернале» Кол. де Планси (1863)', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80', cap:'«Dictionnaire Infernal» (1863) — энциклопедия демонологии', license:'Unsplash License'},
-                    ]
+                    sources:[{label:'Вельзевул — Dictionnaire Infernal, Collin de Plancy (1863). Bibliothèque nationale de France',url:'https://gallica.bnf.fr/ark:/12148/bpt6k57256b/f1',type:'painting'},{label:'Завещание Соломона (о Вельзевуле) — греческий манускрипт, BNF',url:'https://gallica.bnf.fr/Search?adv=1&q=testament+solomon+manuscript',type:'manuscript'}]
                 },
                 {
                     id:'nephilim', name:'Нефилим / Стражи', emoji:'⚡',
@@ -478,14 +616,7 @@
                     texts:['Книга Еноха I 6–16 — 200 Стражей спускаются на Хермон','«Книга Гигантов» (Кумран) — дети Стражей-гиганты','Юбилеев книга — Стражи посланы обучать людей, но пали'],
                     desc:'Нефилим — загадочнейшее место Библии (Быт 6:1–4). «Бней ха-Элохим» берут в жёны дочерей людских. Книга Еноха развивает эту историю: 200 ангелов под предводительством Шемхазая спустились на гору Хермон, взяли жён и научили людей запретным знаниям. Их дети — великаны-рефаимы.',
                     significance:'Эта история — объяснение происхождения зла в мире перед Потопом. Книга Еноха была канонической для ранних христиан (цитируется в Послании Иуды). Обнаружена в Кумране (7 рукописей). Мотив «падших ангелов» лёг в основу всей западной демонологии.',
-                    images:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg/800px-Ary_Scheffer_-_The_Temptation_of_Christ_%281854%29.jpg', cap:'Ари Шеффер «Искушение» (1854)', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg/800px-Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg', cap:'Гюстав Моро «Падший Ангел» (XIX в.), Музей Уолтерс', license:'Public Domain / CC'},
-                    ],
-                    manuscripts:[
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Book_of_Enoch_Ethiopic_MS.jpg/800px-Book_of_Enoch_Ethiopic_MS.jpg', cap:'Книга Еноха — эфиопская рукопись (XVIII в.), основной источник о Стражах', license:'Public Domain / CC'},
-                        {src:'https://cdn.statically.io/img/upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg/800px-Dead_Sea_Scrolls_-_The_Israel_Museum%2C_Jerusalem1.jpg', cap:'Свитки Мёртвого моря — «Книга Гигантов» (фрагменты, Кумран, II в. до н.э.)', license:'Public Domain / CC'},
-                    ]
+                    sources:[{label:'Ари Шеффер «Искушение» (1854) — Walters Art Museum Baltimore',url:'https://art.thewalters.org/detail/2811/the-temptation-of-christ/',type:'painting'},{label:'Книга Еноха (1 Енох 6–16) — British Library Or.509 эфиопская рукопись',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Or_509',type:'manuscript'},{label:'«Книга Гигантов» (4Q531) о Нефилим — DSS Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/search#q=giants',type:'manuscript'}]
                 },
             ];
 
@@ -610,10 +741,31 @@
                                 <p className="mt-4 text-stone-700 leading-relaxed text-sm">{sel.desc}</p>
                             </div>
 
-                            {/* Иллюстрации */}
-                            {sel.images && sel.images.length > 0 && (
+                            {/* Источники — ссылки на цифровые архивы */}
+                            {sel.sources && sel.sources.length > 0 && (
                                 <div>
-                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">🖼 Иллюстрации из мирового искусства</p>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest mb-3 flex items-center gap-2" style={{color:clr.main}}>
+                                        📚 Иллюстрации и рукописи — цифровые архивы
+                                    </p>
+                                    <div className="flex flex-col gap-2">
+                                        {sel.sources.map((s,si)=>(
+                                            <a key={si} href={s.url} target="_blank" rel="noopener noreferrer"
+                                                className="flex items-start gap-2 px-4 py-3 rounded-xl border text-xs font-bold transition-all hover:shadow-md"
+                                                style={{background: s.type==='manuscript' ? '#fafaf9' : '#fffbeb',
+                                                        borderColor: clr.border, color: clr.dark}}>
+                                                <span className="flex-shrink-0 mt-0.5">
+                                                    {s.type==='manuscript' ? '📜' : '🖼'}
+                                                </span>
+                                                <span className="leading-snug flex-1">{s.label}</span>
+                                                <span className="flex-shrink-0 opacity-40 text-xs ml-1">↗</span>
+                                            </a>
+                                        ))}
+                                    </div>
+                                    <p className="text-[10px] mt-2 opacity-60" style={{color:clr.main}}>
+                                        Открываются в новой вкладке — официальные музеи и цифровые библиотеки
+                                    </p>
+                                </div>
+                            )}xt-stone-400 mb-3">🖼 Иллюстрации из мирового искусства</p>
                                     <div className={`grid gap-3 ${sel.images.length===1?'grid-cols-1':'grid-cols-2 md:grid-cols-3'}`}>
                                         {sel.images.map((img,ii)=>(
                                             <div key={ii} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm"
@@ -634,10 +786,8 @@
                                 </div>
                             )}
 
-                            {/* Фото рукописей */}
-                            {sel.manuscripts && sel.manuscripts.length > 0 && (
-                                <div>
-                                    <p className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">📜 Древние рукописи и тексты</p>
+
+                            {/* Цитаты из Писания */}xt-stone-400 mb-3">📜 Древние рукописи и тексты</p>
                                     <div className="grid grid-cols-2 gap-3">
                                         {sel.manuscripts.map((ms,mi)=>(
                                             <div key={mi} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm border border-stone-200"
