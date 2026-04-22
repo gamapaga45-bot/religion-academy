@@ -842,6 +842,7 @@
             const [aiText, setAiText]     = useState('');
             const [aiLoad, setAiLoad]     = useState(false);
             const [view, setView]         = useState('gallery');
+            const [expanded, setExpanded] = useState(null); // id of expanded card
             // Лайтбокс для увеличения изображения
             const [lightbox, setLightbox] = useState(null); // {src, alt, caption}
 
@@ -966,25 +967,66 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                             <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-2xl drop-shadow-lg">🔍</span>
                                         </div>
                                     </div>
-                                    {/* Инфо + кнопка детали */}
-                                    <div className="p-3 cursor-pointer" onClick={()=>{setSelected(m);setAiText('');setView('detail');}}>
-                                        <div className="flex items-center gap-1.5 mb-1.5">
-                                            <span style={{background:c.badge, color:c.txt}}
-                                                className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">
-                                                {m.date}
-                                            </span>
-                                            <span className="text-[10px] text-amber-500">{m.signal}</span>
+                                    {/* Инфо + кнопка развернуть */}
+                                    <div className="p-3 cursor-pointer"
+                                         onClick={()=>{setSelected(m);setAiText('');setExpanded(expanded===m.id?null:m.id);}}>
+                                        <div className="flex items-center justify-between gap-1.5 mb-1.5">
+                                            <div className="flex items-center gap-1.5">
+                                                <span style={{background:c.badge, color:c.txt}}
+                                                    className="text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">
+                                                    {m.date}
+                                                </span>
+                                                <span className="text-[10px] text-amber-500">{m.signal}</span>
+                                            </div>
+                                            <span className="text-stone-400 text-sm transition-transform duration-200"
+                                                  style={{transform: expanded===m.id ? 'rotate(180deg)' : 'rotate(0deg)'}}>▾</span>
                                         </div>
                                         <p className="font-serif font-bold text-sm text-stone-900 leading-tight">{m.title}</p>
                                         <p className="text-[10px] text-stone-400 mt-1 font-bold uppercase tracking-wide">{m.lang}</p>
-                                        <p className="text-[10px] text-amber-600 mt-1.5 font-bold">Нажмите для подробностей →</p>
                                     </div>
+                                {/* Развёрнутая статья — инлайн аккордеон */}
+                                {expanded === m.id && (
+                                    <div className="border-t-2 border-dashed"
+                                         style={{borderColor:c.border, background:c.bg}}>
+                                        {/* Изображение с лайтбоксом */}
+                                        <div className="cursor-zoom-in relative group overflow-hidden"
+                                             style={{height:200, background:'#1c1b1d'}}
+                                             onClick={()=>openLightbox(m.imgUrl, m.title, m.desc)}>
+                                            <img crossOrigin="anonymous" src={m.imgUrl} alt={m.title}
+                                                onError={e=>{if(e.target.src!==m.imgFb)e.target.src=m.imgFb;}}
+                                                className="w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-105 transition-all duration-300"/>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                                                <p className="text-white text-[10px] font-bold leading-tight">{m.title} · {m.date}</p>
+                                            </div>
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <span className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-3xl drop-shadow-lg">🔍</span>
+                                            </div>
+                                        </div>
+                                        {/* Текст статьи */}
+                                        <div className="p-4 space-y-3">
+                                            <p className="text-sm leading-relaxed" style={{color:c.txt}}>{m.desc}</p>
+                                            <div className="p-3 rounded-xl border" style={{background:'rgba(255,255,255,0.6)', borderColor:c.border}}>
+                                                <p className="text-[9px] font-bold uppercase tracking-widest mb-1.5" style={{color:c.dot}}>Оригинальный текст</p>
+                                                <p className="font-serif text-sm leading-relaxed" style={{color:c.txt, direction:m.cat==='quran'?'rtl':'ltr'}}>{m.original}</p>
+                                                <p className="text-xs italic mt-2 text-stone-600">«{m.translation}»</p>
+                                            </div>
+                                            <p className="text-xs font-bold" style={{color:c.dot}}>🎓 {m.significance}</p>
+                                            {m.url && (
+                                                <a href={m.url} target="_blank" rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg border transition-all hover:opacity-80"
+                                                    style={{background:'rgba(255,255,255,0.8)', borderColor:c.border, color:c.dot}}>
+                                                    🌐 Открыть оцифрованную рукопись →
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
                                 </div>
                             );
                         })}
                     </div>
 
-                    {/* Детальный просмотр */}
+                    {/* Детальный просмотр — AI анализ */}
                     {view === 'detail' && (
                         <div className="bg-white rounded-3xl border border-stone-200 overflow-hidden" style={{borderTop:`4px solid ${clr.dot}`}}>
 

@@ -733,8 +733,8 @@
                             {view === 'mythology' && <MythologyModule apiKey={apiKey} />}
                             {view === 'search' && <SearchModule db={db} />}
                             {view === 'reader' && <ParallelReaderModule db={db} />}
-                            {view === 'bible' && <SingleReaderModule type="bible" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
-                            {view === 'quran' && <SingleReaderModule type="quran" db={db} apiKey={apiKey} setAiModal={setAiModal} />}
+                            {view === 'bible' && <SingleReaderModule type="bible" db={db} apiKey={apiKey} setAiModal={setAiModal} loading={loading} />}
+                            {view === 'quran' && <SingleReaderModule type="quran" db={db} apiKey={apiKey} setAiModal={setAiModal} loading={loading} />}
                             {view === 'religions' && <WorldReligionsModule apiKey={apiKey} setAiModal={setAiModal} setView={setView} />}
                             {view === 'worship' && <WorshipModule apiKey={apiKey} />}
                             {view === 'angels' && <AngelsDemonsModule apiKey={apiKey} />}

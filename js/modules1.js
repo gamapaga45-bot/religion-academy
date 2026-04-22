@@ -347,51 +347,100 @@
                             ))}
                         </div>
                         <div className="px-4 pb-4">
-                            <svg viewBox="0 0 800 400" style={{width:'100%',height:'auto',display:'block'}} xmlns="http://www.w3.org/2000/svg">
-                                <rect width="800" height="400" fill="#bfdbfe" rx="6"/>
-                                {/* North America */}
-                                <path d="M 50 55 L 195 45 L 215 75 L 225 160 L 185 215 L 135 245 L 95 225 L 55 175 L 40 115 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* South America */}
-                                <path d="M 150 280 L 225 265 L 260 305 L 250 385 L 195 405 L 150 385 L 125 335 L 135 295 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* Europe */}
-                                <path d="M 345 50 L 425 43 L 440 75 L 445 115 L 415 130 L 375 125 L 350 95 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* Russia */}
-                                <path d="M 445 43 L 670 35 L 685 95 L 665 130 L 590 140 L 535 135 L 475 125 L 445 90 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* Africa */}
-                                <path d="M 355 128 L 455 122 L 475 155 L 485 235 L 455 315 L 405 340 L 365 325 L 335 265 L 335 185 L 345 152 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='islam'?'#065f46':mapRelig==='christianity'?'#d97706':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* North Africa / Middle East - Islam */}
-                                <path d="M 355 128 L 455 122 L 475 155 L 485 190 L 545 188 L 550 150 L 575 142 L 580 190 L 490 210 L 380 220 L 350 198 Z"
-                                    fill={!mapRelig?'#b5a898':mapRelig==='islam'?'#065f46':'#d1d5db'} stroke="#fff" strokeWidth="0.5" opacity="0.85"/>
-                                {/* Central Asia - Islam */}
-                                <path d="M 535 88 L 615 82 L 625 130 L 590 140 L 535 135 Z"
-                                    fill={!mapRelig?'#b8aa94':mapRelig==='islam'?'#065f46':'#d1d5db'} stroke="#fff" strokeWidth="0.5" opacity="0.8"/>
-                                {/* South Asia - India */}
-                                <path d="M 575 140 L 645 133 L 655 170 L 635 215 L 605 230 L 580 210 L 570 175 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='hinduism'?'#ea580c':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* SE Asia + East Asia - Buddhism */}
-                                <path d="M 655 133 L 775 125 L 785 185 L 755 215 L 680 220 L 655 195 L 650 168 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='buddhism'?'#ca8a04':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* China */}
-                                <path d="M 665 35 L 770 32 L 775 95 L 755 140 L 720 150 L 690 140 L 685 95 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='buddhism'||mapRelig==='taoism'?mapRelig==='taoism'?'#374151':'#ca8a04':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* Australia */}
-                                <path d="M 660 260 L 765 253 L 780 315 L 755 355 L 695 365 L 655 335 L 640 290 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='christianity'?'#92400e':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* Japan */}
-                                <path d="M 772 60 L 792 55 L 797 90 L 778 93 Z"
-                                    fill={!mapRelig?'#c8b8a0':mapRelig==='buddhism'?'#ca8a04':'#d1d5db'} stroke="#fff" strokeWidth="0.5"/>
-                                {/* Legend */}
+                            <svg viewBox="0 0 1000 500" style={{width:'100%',height:'auto',display:'block',borderRadius:8}} xmlns="http://www.w3.org/2000/svg">
+                                {/* Ocean background */}
+                                <rect width="1000" height="500" fill="#93c5fd" rx="8"/>
+
+                                {/* ── СЕВЕРНАЯ АМЕРИКА (Христианство) ── */}
+                                <path d="M 130,60 L 190,50 L 235,55 L 255,75 L 265,100 L 260,130 L 245,155 L 250,175 L 235,195 L 215,220 L 190,240 L 165,255 L 140,250 L 115,235 L 95,210 L 80,185 L 75,160 L 80,135 L 90,110 L 95,85 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+                                {/* Аляска */}
+                                <path d="M 75,60 L 125,55 L 130,60 L 95,85 L 80,85 L 65,75 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Центральная Америка */}
+                                <path d="M 165,255 L 185,260 L 200,275 L 190,285 L 175,280 L 160,268 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── ЮЖНАЯ АМЕРИКА (Христианство) ── */}
+                                <path d="M 190,290 L 255,280 L 285,300 L 300,330 L 295,370 L 275,410 L 245,440 L 210,445 L 185,425 L 170,395 L 165,360 L 170,330 L 180,310 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+
+                                {/* ── ЗАПАДНАЯ ЕВРОПА (Христианство) ── */}
+                                <path d="M 440,60 L 490,55 L 510,70 L 520,90 L 515,115 L 500,130 L 480,135 L 460,125 L 445,105 L 438,85 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+                                {/* Скандинавия */}
+                                <path d="M 475,30 L 510,25 L 520,45 L 510,55 L 490,55 L 475,45 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Великобритания */}
+                                <path d="M 425,65 L 445,60 L 445,80 L 435,85 L 422,78 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── РОССИЯ (Христианство) ── */}
+                                <path d="M 525,40 L 700,30 L 730,50 L 740,80 L 730,115 L 700,130 L 650,140 L 590,138 L 545,130 L 520,110 L 515,80 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+
+                                {/* ── СЕВЕРНАЯ АФРИКА + БЛИЖНИЙ ВОСТОК (Ислам) ── */}
+                                <path d="M 445,140 L 560,135 L 600,145 L 610,175 L 600,210 L 580,225 L 555,220 L 530,210 L 515,195 L 475,200 L 450,185 L 440,165 Z"
+                                    fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+                                {/* Марокко/Алжир/Ливия */}
+                                <path d="M 430,140 L 520,135 L 520,175 L 480,185 L 440,175 L 425,158 Z"
+                                    fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Аравийский полуостров */}
+                                <path d="M 555,190 L 620,185 L 640,210 L 635,245 L 610,255 L 580,248 L 560,228 L 552,210 Z"
+                                    fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+                                {/* Иран/Пакистан */}
+                                <path d="M 580,140 L 660,133 L 670,165 L 655,190 L 625,200 L 600,195 L 580,175 Z"
+                                    fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── СУБСАХАРСКАЯ АФРИКА (Смешанная) ── */}
+                                <path d="M 430,195 L 530,190 L 545,225 L 550,280 L 535,330 L 510,360 L 475,370 L 440,360 L 415,330 L 405,285 L 410,240 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='islam'?'#065f46':mapRelig==='christianity'?'#b45309':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+
+                                {/* ── ИНДИЯ (Индуизм) ── */}
+                                <path d="M 655,145 L 720,138 L 735,165 L 730,205 L 710,240 L 685,255 L 660,245 L 645,215 L 640,180 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='hinduism'?'#ea580c':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+
+                                {/* ── ЮГО-ВОСТОЧНАЯ АЗИЯ (Буддизм) ── */}
+                                <path d="M 730,165 L 810,155 L 830,180 L 820,215 L 795,235 L 760,240 L 735,225 L 725,200 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='buddhism'?'#ca8a04':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+                                {/* Индонезия (Ислам) */}
+                                <path d="M 740,255 L 800,248 L 820,258 L 815,272 L 780,275 L 748,268 Z"
+                                    fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── КИТАЙ (Буддизм/Даосизм) ── */}
+                                <path d="M 700,65 L 820,58 L 840,90 L 845,125 L 820,150 L 780,160 L 740,160 L 710,148 L 695,120 L 693,90 Z"
+                                    fill={!mapRelig?'#d6c9b0':(mapRelig==='buddhism'||mapRelig==='taoism')?(mapRelig==='taoism'?'#374151':'#ca8a04'):'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+
+                                {/* ── ЯПОНИЯ/КОРЕЯ (Буддизм) ── */}
+                                <path d="M 845,70 L 875,65 L 880,95 L 870,112 L 848,108 L 840,88 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='buddhism'?'#ca8a04':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── ЦЕНТРАЛЬНАЯ АЗИЯ (Ислам) ── */}
+                                <path d="M 590,90 L 700,82 L 705,118 L 680,132 L 640,135 L 600,128 L 582,110 Z"
+                                    fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#e5e7eb'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── АВСТРАЛИЯ (Христианство) ── */}
+                                <path d="M 740,330 L 870,322 L 895,360 L 890,405 L 855,430 L 800,435 L 755,415 L 730,375 Z"
+                                    fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#e5e7eb'} stroke="#fff" strokeWidth="1"/>
+
+                                {/* ── ГРЕНЛАНДИЯ ── */}
+                                <path d="M 280,20 L 340,15 L 360,35 L 345,60 L 305,65 L 278,45 Z"
+                                    fill={!mapRelig?'#e2ddd6':mapRelig==='christianity'?'#b45309':'#e5e7eb'} stroke="#fff" strokeWidth="0.5" opacity="0.7"/>
+
+                                {/* ── ИКОНКИ РЕЛИГИЙ (без выбора) ── */}
                                 {!mapRelig && (<>
-                                    <text x="125" y="135" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">✝</text>
-                                    <text x="430" y="170" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">☪</text>
-                                    <text x="610" y="185" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">🕉</text>
-                                    <text x="720" y="90" fontSize="8" fill="#fff" textAnchor="middle" fontWeight="bold">☸</text>
-                                    <text x="720" y="75" fontSize="7" fill="#6b7280" textAnchor="middle">Буддизм/Даосизм</text>
+                                    {/* Христианство - Европа */}
+                                    <text x="475" y="105" fontSize="12" fill="#fff" textAnchor="middle" fontWeight="bold">✝</text>
+                                    {/* Христианство - Америка */}
+                                    <text x="170" y="160" fontSize="12" fill="#fff" textAnchor="middle" fontWeight="bold">✝</text>
+                                    {/* Ислам - Ближний Восток */}
+                                    <text x="530" y="180" fontSize="12" fill="#fff" textAnchor="middle" fontWeight="bold">☪</text>
+                                    {/* Индуизм - Индия */}
+                                    <text x="685" y="200" fontSize="12" fill="#fff" textAnchor="middle" fontWeight="bold">🕉</text>
+                                    {/* Буддизм - Китай/ЮВА */}
+                                    <text x="770" y="110" fontSize="12" fill="#fff" textAnchor="middle" fontWeight="bold">☸</text>
+                                    {/* Ислам - Африка */}
+                                    <text x="480" y="270" fontSize="10" fill="#ddd" textAnchor="middle">☪</text>
                                 </>)}
                             </svg>
                         </div>

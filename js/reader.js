@@ -1,6 +1,6 @@
 
         // --- МОДУЛЬ ЧТЕНИЯ С ИНТЕГРАЦИЕЙ ZVENO AI ---
-        function SingleReaderModule({ type, db, apiKey, setAiModal }) {
+        function SingleReaderModule({ type, db, apiKey, setAiModal, loading }) {
             const isBible = type === 'bible';
             const order = isBible ? db.order.bible : db.order.quran;
             
@@ -8,6 +8,8 @@
             const chaptersObj = isBible && selectedBook ? db.texts.bible[selectedBook] : {};
             const chapters = Object.keys(chaptersObj).sort((a,b)=>Number(a)-Number(b));
             const [selectedChapter, setSelectedChapter] = useState(chapters[0] || "");
+            const [fuzzyMode, setFuzzyMode] = useState(false);
+            const [lightbox, setLightbox] = useState(null); // {src, label, desc}
             
             // aiModal и setAiModal получены из App (глобальные)
 
@@ -23,35 +25,62 @@
 
             // ── Иллюстрации к книгам Библии и сурам Корана ──────────────────
             const BOOK_SOURCES = {
-                'Бытие':     [{label:'Синайский кодекс (Бытие) — codexsinaiticus.org', url:'https://codexsinaiticus.org/en/manuscript.aspx'},
-                              {label:'Свитки Мёртвого моря — deadseascrolls.org.il', url:'https://www.deadseascrolls.org.il/'}],
-                'Исход':     [{label:'Свитки Мёртвого моря — Исход', url:'https://www.deadseascrolls.org.il/'},
-                              {label:'Синайский кодекс — полный текст', url:'https://codexsinaiticus.org/en/manuscript.aspx'}],
-                'Псалтирь':  [{label:'Великий Свиток Исайи (DSS) — deadseascrolls.org.il', url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QIsa-a-1'},
-                              {label:'Псалтирь — British Library Add MS 42130', url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_42130'}],
-                'Иов':       [{label:'Книга Иова (4Q99) — Dead Sea Scrolls Digital Library', url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q99-1'},
-                              {label:'Иов — Ватиканский кодекс digi.vatlib.it', url:'https://digi.vatlib.it/mss/Vat.gr.1209'}],
-                'Исайя':     [{label:'Великий Свиток Исайи (1QIsa-a) — DSS Digital Library', url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QIsa-a-1'},
-                              {label:'Исайя — Синайский кодекс', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=45'}],
-                'Откровение':[{label:'Апокалипсис — Ватиканский кодекс Vat.gr.1209', url:'https://digi.vatlib.it/mss/Vat.gr.1209'},
-                              {label:'Линдисфарнское Евангелие — British Library', url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Cotton_MS_Nero_D_IV'}],
-                'От Иоанна': [{label:'Папирус P66 (200 н.э.) — csntm.org', url:'https://www.csntm.org/manuscript/view/ga_p66'},
-                              {label:'Папирус P52 (125 н.э.) — старейший фрагмент НЗ', url:'https://www.csntm.org/manuscript/view/ga_p52'}],
-                'От Луки':   [{label:'Синайский кодекс — Лука codexsinaiticus.org', url:'https://codexsinaiticus.org/en/manuscript.aspx?book=51'}],
-                'Иезекииль': [{label:'Иезекиль (4Q73) — Dead Sea Scrolls Digital Library', url:'https://www.deadseascrolls.org.il/explore-the-archive/search#q=ezekiel'}],
-                'Даниил':    [{label:'Даниил (4Q112) — Dead Sea Scrolls Digital Library', url:'https://www.deadseascrolls.org.il/explore-the-archive/search#q=daniel'}],
+                'Бытие':     [
+                    {label:'Создание Адама — Микеланджело (1512)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/6/6b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg', desc:'Сикстинская капелла. Бытие 2:7 — «И создал Господь Бог человека из праха земного».'},
+                    {label:'Кодекс Синайский — страница Бытия (IV в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a3/Codex_Sinaiticus_Matthew_6_22-7_21.JPG', desc:'Древнейшая полная рукопись Библии ~350 н.э. Хранится в Британском музее. codexsinaiticus.org'},
+                ],
+                'Исход':     [
+                    {label:'Великий Свиток Исайи из Кумрана (125 до н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e4/Great_Isaiah_Scroll.jpg', desc:'Свитки Мёртвого моря — старейшие рукописи Ветхого Завета. deadseascrolls.org.il'},
+                    {label:'Моисей со скрижалями — Рембрандт (1659)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/2/2e/Rembrandt_Harmensz._van_Rijn_-_Moses_Breaking_the_Tablets_of_the_Law_-_Google_Art_Project.jpg', desc:'Исход 32:19 — Моисей разбивает скрижали закона, увидев золотого тельца.'},
+                ],
+                'Псалтирь':  [
+                    {label:'Давид, играющий на арфе — Тикхиллская Псалтирь (1310)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/42/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg', desc:'Иллюминированная Псалтирь начала XIV в. Британская библиотека, Add MS 42130.'},
+                ],
+                'Иов':       [
+                    {label:'Сатана поражает Иова — Уильям Блейк (1826)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4b/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg', desc:'Иов 2:7 — «И поразил Иов проказою лютою». Серия гравюр Блейка к Книге Иова.'},
+                ],
+                'Исайя':     [
+                    {label:'Великий Свиток Исайи (1QIsa-a) — II в. до н.э.', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e4/Great_Isaiah_Scroll.jpg', desc:'Кумранская рукопись — полный текст Исайи. Старейший известный список пророческой книги. Музей Израиля, Иерусалим.'},
+                ],
+                'Откровение':[
+                    {label:'Четыре всадника — Альбрехт Дюрер (1498)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/d/d3/Durer_Revelation_Four_Riders.jpg', desc:'Откр 6:1–8. Серия гравюр «Апокалипсис» Дюрера — шедевр немецкого Ренессанса.'},
+                    {label:'Великий красный дракон — Уильям Блейк (1805)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', desc:'Откр 12:1–4. «И явилось на небе великое знамение: жена, облечённая в солнце».'},
+                ],
+                'От Иоанна': [
+                    {label:'Папирус P52 — старейший фрагмент НЗ (~125 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e5/P66.jpg', desc:'Папирус Рилэндса (P52) — Иоанн 18:31–33. Библиотека Рилэндса, Манчестер.'},
+                ],
+                'От Луки':   [
+                    {label:'Благовещение — Фра Анджелико (1440)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', desc:'Лк 1:26–38. «Ангел вошёл к ней и сказал: радуйся, Благодатная!». Музей Сан-Марко, Флоренция.'},
+                ],
+                'Иезекииль': [
+                    {label:'Видение колесницы Иезекииля — Маттеус Мериан (1630)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/9/9b/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg', desc:'Иез 1 — Меркава (Колесница Бога): четыре херувима с ликами льва, быка, человека и орла.'},
+                ],
+                'Даниил':    [
+                    {label:'Даниил во рву со львами — Рубенс (1614)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/84/Daniel-in-the-lions-den.jpg', desc:'Дан 6:16–23. «Бог мой послал Ангела Своего и заградил уста львов». Национальная галерея, Вашингтон.'},
+                ],
             };
             const SURAH_SOURCES = {
-                '1. Аль-Фатиха':  [{label:'Бирмингемский Коран (568–645 н.э.) — University of Birmingham', url:'https://www.birmingham.ac.uk/facilities/cadbury/collections/birmingham-quran-manuscript'},
-                                   {label:'Рукопись Топкапы — topkapisarayi.gov.tr', url:'https://topkapisarayi.gov.tr/en/content/topkapi-palace-museum-library'}],
-                '2. Аль-Бакара':  [{label:'Аят аль-Курси — Islamic Manuscript Association', url:'https://www.islamicmanuscript.org/'},
-                                   {label:'Ранний куфический Коран — Khalili Collection', url:'https://khalilicollections.org/collections/the-arts-of-the-islamic-world/'}],
-                '12. Йусуф':      [{label:'Иллюминированный Коран XIV в. — Chester Beatty Library', url:'https://viewer.cbl.ie/viewer/object/Is_1431/1/'},
-                                   {label:'Коран Ильханата (XIV в.) — Metropolitan Museum', url:'https://www.metmuseum.org/art/the-collection/search?q=quran+manuscript'}],
-                '19. Марьям':     [{label:'Бирмингемский Коран (Марьям) — University of Birmingham', url:'https://www.birmingham.ac.uk/facilities/cadbury/collections/birmingham-quran-manuscript'}],
-                '36. Йа Син':     [{label:'Сура Йа Син — Chester Beatty Library', url:'https://viewer.cbl.ie/viewer/object/Is_1431/1/'}],
-                '55. Ар-Рахман':  [{label:'Ар-Рахман — Corpus Coranicum corpuscoranicum.de', url:'https://corpuscoranicum.de/'}],
-                '96. Аль-Аляк':   [{label:'Первое откровение — Корпус Коранических рукописей', url:'https://corpuscoranicum.de/'}],
+                '1. Аль-Фатиха':  [
+                    {label:'Бирмингемский Коран (568–645 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Старейший фрагмент Корана, написан при жизни Пророка. Университет Бирмингема.'},
+                ],
+                '2. Аль-Бакара':  [
+                    {label:'Коран куфическим письмом (VIII–IX вв.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'Ранняя рукопись на пергаменте. Аят аль-Курси (2:255) — «Аллах — нет божества, кроме Него».'},
+                ],
+                '12. Йусуф':      [
+                    {label:'Юсуф и Зулейха — персидская миниатюра (XVII в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a3/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg', desc:'Риза Аббаси (1630). Сура 12 — «Мы расскажем тебе наилучший рассказ».'},
+                ],
+                '19. Марьям':     [
+                    {label:'Бирмингемский Коран — страница с сурой Марьям', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Сура 19:16–34 — история Марьям и рождения Исы.'},
+                ],
+                '36. Йа Син':     [
+                    {label:'Рукопись Корана — Ильханат (XIV в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/0/0a/Quran_manuscript_Ilkhanate.jpg', desc:'Изысканный иллюминированный Коран эпохи монгольского Ильханата. Музей Метрополитен, Нью-Йорк.'},
+                ],
+                '55. Ар-Рахман':  [
+                    {label:'Страница Корана — Северная Африка (IX в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'«Милостивый» — сура о благодатях Аллаха. Золотая каллиграфия на синем пергаменте.'},
+                ],
+                '96. Аль-Аляк':   [
+                    {label:'Бирмингемский Коран — первое откровение', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Аль-Аляк (96:1–5) — первые аяты, открытые Пророку в пещере Хира в 610 г.'},
+                ],
             };
 
             let imgUrl = "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=900&q=85";
@@ -109,47 +138,37 @@
 
             return (
                 <>
-                {/* Модальное окно для источников рукописей */}
-                {srcModal && (
-                    <div onClick={()=>setSrcModal(null)}
-                        style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.75)',
-                                backdropFilter:'blur(6px)',display:'flex',alignItems:'center',
-                                justifyContent:'center',padding:16}}>
-                        <div onClick={e=>e.stopPropagation()}
-                            style={{background:'#fff',borderRadius:20,padding:28,maxWidth:480,
-                                    width:'100%',boxShadow:'0 25px 60px rgba(0,0,0,0.5)'}}>
-                            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:16}}>
-                                <div style={{display:'flex',alignItems:'center',gap:10}}>
-                                    <span style={{fontSize:24}}>📜</span>
-                                    <p style={{fontFamily:'Georgia,serif',fontWeight:700,fontSize:16,
-                                               color:'#1c1917',margin:0,lineHeight:1.3}}>{srcModal.label}</p>
-                                </div>
-                                <button onClick={()=>setSrcModal(null)}
-                                    style={{width:32,height:32,borderRadius:16,border:'1px solid #e7e5e4',
-                                            background:'#f5f5f4',cursor:'pointer',fontSize:16,fontWeight:700,
-                                            display:'flex',alignItems:'center',justifyContent:'center',
-                                            flexShrink:0,marginLeft:8}}>✕</button>
-                            </div>
-                            <p style={{fontSize:12,color:'#78716c',marginBottom:20,lineHeight:1.5}}>
-                                Это оцифрованная рукопись в официальном хранилище. Открывается в новой вкладке.
-                            </p>
-                            <a href={srcModal.url} target="_blank" rel="noopener noreferrer"
-                                onClick={()=>setSrcModal(null)}
-                                style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,
-                                        padding:'12px 24px',background:'#1c1b1d',color:'#fff',
-                                        borderRadius:12,textDecoration:'none',fontWeight:700,
-                                        fontSize:13,fontFamily:'sans-serif'}}>
-                                Открыть в архиве →
-                            </a>
-                            <button onClick={()=>setSrcModal(null)}
-                                style={{width:'100%',marginTop:10,padding:'10px',background:'transparent',
-                                        border:'1px solid #e7e5e4',borderRadius:12,cursor:'pointer',
-                                        fontSize:12,color:'#78716c',fontFamily:'sans-serif'}}>
-                                Закрыть
-                            </button>
-                        </div>
+                {/* Загрузка текстов */}
+                {loading && order.length <= 1 && (
+                    <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col items-center justify-center gap-4">
+                        <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-500 rounded-full animate-spin"/>
+                        <p className="text-stone-500 font-bold text-sm">Загрузка {type === 'bible' ? 'Библии' : 'Корана'}…</p>
+                        <p className="text-stone-400 text-xs">Полный текст загружается (~3 МБ)</p>
                     </div>
                 )}
+                {/* Лайтбокс для иллюстраций */}
+                {lightbox && (
+                    <div onClick={()=>setLightbox(null)}
+                        style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.92)',
+                                backdropFilter:'blur(8px)',display:'flex',flexDirection:'column',
+                                alignItems:'center',justifyContent:'center',padding:16}}>
+                        <button onClick={()=>setLightbox(null)}
+                            style={{position:'absolute',top:16,right:16,width:40,height:40,
+                                    borderRadius:20,background:'rgba(255,255,255,0.15)',border:'none',
+                                    color:'#fff',fontSize:20,cursor:'pointer',fontWeight:700}}>✕</button>
+                        <img src={lightbox.src} alt={lightbox.label}
+                            onClick={e=>e.stopPropagation()}
+                            style={{maxWidth:'90vw',maxHeight:'75vh',objectFit:'contain',
+                                    borderRadius:12,boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
+                        <div onClick={e=>e.stopPropagation()}
+                            style={{marginTop:12,textAlign:'center',maxWidth:600}}>
+                            <p style={{color:'#f5f5f4',fontWeight:700,fontSize:14,marginBottom:4}}>{lightbox.label}</p>
+                            {lightbox.desc && <p style={{color:'#a8a29e',fontSize:12,lineHeight:1.5}}>{lightbox.desc}</p>}
+                        </div>
+                        <p style={{color:'#57534e',fontSize:11,marginTop:10}}>Нажмите за пределами для закрытия</p>
+                    </div>
+                )}
+                {(!loading || order.length > 1) && (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
                     <div className="bg-white border-b p-4 md:p-6 flex flex-col xl:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
                         <div className="flex-1 w-full flex gap-4">
@@ -200,16 +219,24 @@
                                     return (
                                         <div className="mt-4">
                                             <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${isBible?'text-amber-700':'text-emerald-700'}`}>
-                                                📜 Оцифрованные рукописи
+                                                🖼 Иллюстрации и рукописи
                                             </p>
-                                            <div className="flex flex-col gap-1.5">
+                                            <div className={`grid gap-2 ${srcs.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
                                                 {srcs.map((s,si)=>(
-                                                    <button key={si} onClick={()=>setSrcModal({label:s.label,url:s.url})}
-                                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg border text-xs font-bold transition-all hover:shadow-sm text-left ${isBible?'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100':'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'}`}>
-                                                        <span>📜</span>
-                                                        <span className="flex-1 leading-snug">{s.label}</span>
-                                                        <span className="opacity-40">🔍</span>
-                                                    </button>
+                                                    <div key={si}
+                                                        className={`relative rounded-xl overflow-hidden cursor-zoom-in group border ${isBible?'border-amber-100':'border-emerald-100'}`}
+                                                        style={{aspectRatio:'4/3',background:'#f5f5f4'}}
+                                                        onClick={()=>setLightbox({src:s.imgUrl,label:s.label,desc:s.desc})}>
+                                                        <img src={s.imgUrl} alt={s.label}
+                                                            onError={e=>e.target.style.display='none'}
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
+                                                            <span className="opacity-0 group-hover:opacity-100 text-white text-2xl drop-shadow-lg">🔍</span>
+                                                        </div>
+                                                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                                                            <p className="text-white text-[10px] leading-tight font-bold">{s.label}</p>
+                                                        </div>
+                                                    </div>
                                                 ))}
                                             </div>
                                         </div>
@@ -472,7 +499,7 @@
             const [hasSearched, setHasSearched] = useState(false);
             const [expandedTerms, setExpandedTerms] = useState([]);
             const [fuzzyMode, setFuzzyMode] = useState(false);
-            const [srcModal, setSrcModal] = useState(null); // {label, url, desc}
+
 
             const PAIRS = [
                 ['bible',        'quran'],
@@ -786,5 +813,6 @@
                         </div>
                     </div>
                 </div>
+                )}
             );
         }
