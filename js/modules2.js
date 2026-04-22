@@ -137,6 +137,7 @@
             const [tab, setTab] = useState('compare'); // compare | detail | parallel
             const [aiText, setAiText] = useState('');
             const [aiLoad, setAiLoad] = useState(false);
+            const [lightbox, setLightbox] = useState(null);
 
             const ALL_KEYS = ['greek','norse','egyptian','mesopotamia','hindu','celtic','slavic','japanese','bible','quran'];
 
@@ -161,6 +162,24 @@
 
             return (
                 <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+                    {/* Лайтбокс */}
+                    {lightbox && (
+                        <div onClick={()=>setLightbox(null)}
+                            style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.92)',
+                                    backdropFilter:'blur(8px)',display:'flex',flexDirection:'column',
+                                    alignItems:'center',justifyContent:'center',padding:16}}>
+                            <button onClick={()=>setLightbox(null)}
+                                style={{position:'absolute',top:16,right:16,width:40,height:40,
+                                        borderRadius:20,background:'rgba(255,255,255,0.15)',border:'none',
+                                        color:'#fff',fontSize:20,cursor:'pointer',fontWeight:700}}>✕</button>
+                            <img src={lightbox.src} alt={lightbox.cap||''}
+                                onClick={e=>e.stopPropagation()}
+                                style={{maxWidth:'90vw',maxHeight:'80vh',objectFit:'contain',
+                                        borderRadius:12,boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
+                            {lightbox.cap && <p style={{color:'#d6d3d1',fontSize:13,marginTop:12,
+                                textAlign:'center',maxWidth:600,lineHeight:1.5}}>{lightbox.cap}</p>}
+                        </div>
+                    )}
                     {/* Заголовок */}
                     <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
                         <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3">⚡ Мифология и Религии</h2>
@@ -254,8 +273,9 @@
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {MYTH_ILLUSTRATIONS[selTheme.id].map((ill, idx) => (
                                             <div key={idx} className="bg-white border border-stone-200 rounded-2xl overflow-hidden group hover:shadow-lg transition-all">
-                                                <div className="h-52 bg-stone-100 overflow-hidden">
-                                                    <img crossOrigin="anonymous" src={ill.src} alt={ill.cap}
+                                                <div className="h-52 bg-stone-100 overflow-hidden relative cursor-zoom-in"
+                                                         onClick={()=>setLightbox({src:ill.src,cap:ill.cap})}>
+                                                    <img src={ill.src} alt={ill.cap}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                         onError={e => { e.target.parentNode.style.display='none'; }}
                                                         loading="lazy"/>
@@ -488,6 +508,7 @@
             const [tab, setTab]   = useState('practice'); // practice | history | ai
             const [aiText, setAiText] = useState('');
             const [aiLoad, setAiLoad] = useState(false);
+            const [lightbox, setLightbox] = useState(null);
 
             const askAI = async (q) => {
                 setAiLoad(true); setAiText('');
@@ -497,6 +518,25 @@
 
             return (
                 <div className="fade-in-up space-y-6 pb-20 md:pb-6">
+
+                    {/* Лайтбокс */}
+                    {lightbox && (
+                        <div onClick={()=>setLightbox(null)}
+                            style={{position:'fixed',inset:0,zIndex:99999,background:'rgba(0,0,0,0.92)',
+                                    backdropFilter:'blur(8px)',display:'flex',flexDirection:'column',
+                                    alignItems:'center',justifyContent:'center',padding:16}}>
+                            <button onClick={()=>setLightbox(null)}
+                                style={{position:'absolute',top:16,right:16,width:40,height:40,
+                                        borderRadius:20,background:'rgba(255,255,255,0.15)',border:'none',
+                                        color:'#fff',fontSize:20,cursor:'pointer',fontWeight:700}}>✕</button>
+                            <img src={lightbox.src} alt={lightbox.cap||''}
+                                onClick={e=>e.stopPropagation()}
+                                style={{maxWidth:'90vw',maxHeight:'80vh',objectFit:'contain',
+                                        borderRadius:12,boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
+                            {lightbox.cap && <p style={{color:'#d6d3d1',fontSize:13,marginTop:12,
+                                textAlign:'center',maxWidth:600}}>{lightbox.cap}</p>}
+                        </div>
+                    )}
                     {/* Шапка */}
                     <div className="bg-[#1c1b1d] text-white rounded-3xl p-6 md:p-10">
                         <h2 className="text-2xl md:text-4xl font-serif font-bold mb-2">🙏 Поклонение в мировых религиях</h2>
@@ -516,8 +556,8 @@
 
                     {/* Изображение + название */}
                     <div className="bg-white rounded-3xl border-2 overflow-hidden" style={{borderColor:sel.border}}>
-                        <div className="relative h-56 md:h-72">
-                            <img crossOrigin="anonymous" src={sel.img} alt={sel.name} className="w-full h-full object-cover"
+                        <div className="relative h-56 md:h-72 cursor-zoom-in" onClick={()=>setLightbox({src:sel.img,cap:sel.name})}>
+                            <img src={sel.img} alt={sel.name} className="w-full h-full object-cover"
                                 onError={e=>{e.target.style.display='none';}}/>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                                 <div>
@@ -570,7 +610,7 @@
                             {/* Историческое изображение */}
                             <div className="bg-white rounded-2xl border overflow-hidden" style={{borderColor:sel.border}}>
                                 <div className="h-52 bg-stone-100 overflow-hidden">
-                                    <img crossOrigin="anonymous" src={sel.histImg} alt="Исторический вид" className="w-full h-full object-cover"
+                                    <img src={sel.histImg} alt="Исторический вид" className="w-full h-full object-cover"
                                         onError={e=>{e.target.parentNode.style.background='#f5f5f4';}}/>
                                 </div>
                                 <div className="p-4" style={{background:sel.bg}}>
@@ -831,7 +871,7 @@
                                         background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.2)',
                                         color:'#fff',fontSize:18,fontWeight:700,cursor:'pointer',
                                         display:'flex',alignItems:'center',justifyContent:'center'}}>✕</button>
-                            <img crossOrigin="anonymous" src={lightbox.src} alt={lightbox.cap||''}
+                            <img src={lightbox.src} alt={lightbox.cap||''}
                                 onClick={e=>e.stopPropagation()}
                                 style={{maxWidth:'90vw',maxHeight:'78vh',objectFit:'contain',
                                         borderRadius:12,boxShadow:'0 25px 60px rgba(0,0,0,0.8)'}}/>
@@ -982,7 +1022,7 @@
                                             <div key={ii} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm"
                                                  style={{aspectRatio:'4/3',background:'#e7e5e4'}}
                                                  onClick={()=>openLightbox(img.src,img.cap)}>
-                                                <img crossOrigin="anonymous" src={img.src} alt={img.cap||''}
+                                                <img src={img.src} alt={img.cap||''}
                                                     onError={e=>e.target.style.display='none'}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
@@ -1006,7 +1046,7 @@
                                             <div key={mi} className="rounded-xl overflow-hidden cursor-zoom-in relative group shadow-sm border border-stone-200"
                                                  style={{aspectRatio:'4/3',background:'#f5f5f4'}}
                                                  onClick={()=>openLightbox(ms.src,ms.cap)}>
-                                                <img crossOrigin="anonymous" src={ms.src} alt={ms.cap||''}
+                                                <img src={ms.src} alt={ms.cap||''}
                                                     onError={e=>e.target.style.display='none'}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">

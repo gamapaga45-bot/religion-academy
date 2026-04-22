@@ -215,7 +215,7 @@
                         </div>
                     </div>
                     
-                    <div className={`flex-1 overflow-y-auto p-8 md:p-16 font-serif leading-loose text-lg ${isBible ? "bg-[#fcfbf9] text-stone-800" : "bg-[#f5fbf8] text-emerald-950"}`}>
+                    <div className={`flex-1 overflow-y-auto p-6 md:p-10 font-serif leading-snug text-base ${isBible ? "bg-[#fcfbf9] text-stone-800" : "bg-[#f5fbf8] text-emerald-950"}`}>
                         <div className="max-w-3xl mx-auto">
                             
                             <div className={`mb-12 p-8 rounded-3xl border shadow-sm fade-in-up ${isBible ? 'bg-amber-50/50 border-amber-200' : 'bg-emerald-50/50 border-emerald-200'}`}>
@@ -280,7 +280,7 @@
                             {Object.entries(content).sort((a,b)=>Number(a[0])-Number(b[0])).map(([v, t]) => (
                                 <div key={v} className="mb-3 flex items-start gap-3 group hover:bg-stone-50/80 rounded-xl p-2 transition-all">
                                     <sup className={`text-xs font-sans font-bold mt-2.5 flex-shrink-0 w-5 text-right ${isBible ? 'text-amber-500' : 'text-emerald-500'}`}>{v}</sup>
-                                    <span className="flex-1 text-xl leading-relaxed">{t}</span>
+                                    <span className="flex-1 text-base leading-snug">{t}</span>
                                     <div className="flex-shrink-0 flex gap-1.5 ml-1">
                                         <button
                                             onClick={() => copyToClipboard(t)}
