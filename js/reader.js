@@ -224,8 +224,7 @@
                                 </h4>
                                 <div className="my-6">
                                     <div className="w-full h-56 md:h-72 rounded-xl overflow-hidden relative shadow-sm border border-stone-200/50 bg-stone-100 flex items-center justify-center">
-                                        <img crossOrigin="anonymous" 
-                                          src={imgUrl} 
+                                        <img src={imgUrl} 
                                           alt="Иллюстрация" 
                                           onError={(e) => { if(e.target.src !== imgFallback) e.target.src = imgFallback; }}
                                           className="object-cover w-full h-full" />

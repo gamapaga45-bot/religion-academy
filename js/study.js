@@ -960,7 +960,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                     {/* Изображение — клик открывает лайтбокс */}
                                     <div className="h-36 overflow-hidden bg-stone-100 relative group cursor-zoom-in"
                                          onClick={()=>openLightbox(m.imgUrl, m.title, m.title + ' · ' + m.date)}>
-                                        <img crossOrigin="anonymous" src={m.imgUrl} alt={m.title}
+                                        <img src={m.imgUrl} alt={m.title}
                                             onError={e=>{if(e.target.src!==m.imgFb)e.target.src=m.imgFb;}}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
@@ -992,7 +992,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                         <div className="cursor-zoom-in relative group overflow-hidden"
                                              style={{height:200, background:'#1c1b1d'}}
                                              onClick={()=>openLightbox(m.imgUrl, m.title, m.desc)}>
-                                            <img crossOrigin="anonymous" src={m.imgUrl} alt={m.title}
+                                            <img src={m.imgUrl} alt={m.title}
                                                 onError={e=>{if(e.target.src!==m.imgFb)e.target.src=m.imgFb;}}
                                                 className="w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-105 transition-all duration-300"/>
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
@@ -1033,7 +1033,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                             {/* Главное фото — кликабельное */}
                             <div className="relative h-72 md:h-96 bg-stone-900 cursor-zoom-in group"
                                  onClick={()=>openLightbox(selected.imgUrl, selected.title, selected.title + ' · ' + selected.date + ' · ' + selected.location)}>
-                                <img crossOrigin="anonymous" src={selected.imgUrl} alt={selected.title}
+                                <img src={selected.imgUrl} alt={selected.title}
                                     onError={e=>{if(e.target.src!==selected.imgFb)e.target.src=selected.imgFb;}}
                                     className="w-full h-full object-cover opacity-80 group-hover:opacity-90 transition-opacity"/>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-10">
@@ -1066,7 +1066,7 @@ crossOrigin="anonymous"                                 src={lightbox.src}
                                                      className="rounded-xl overflow-hidden cursor-zoom-in relative group"
                                                      style={{aspectRatio:'4/3', background:'#e7e5e4'}}
                                                      onClick={()=>openLightbox(img.src, img.cap, img.cap)}>
-                                                    <img crossOrigin="anonymous" src={img.src} alt={img.cap||''}
+                                                    <img src={img.src} alt={img.cap||''}
                                                         onError={e=>{e.target.style.display='none';}}
                                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all flex items-center justify-center">
