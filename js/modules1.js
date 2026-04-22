@@ -310,6 +310,8 @@
                 rose:'bg-rose-50 border-rose-200 text-rose-800',
                 purple:'bg-purple-50 border-purple-200 text-purple-800',
                 pink:'bg-pink-50 border-pink-200 text-pink-800',
+                lime:'bg-lime-50 border-lime-200 text-lime-800',
+                cyan:'bg-cyan-50 border-cyan-200 text-cyan-800',
             };
 
             const askAI = async (q) => {
