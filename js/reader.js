@@ -25,61 +25,85 @@
 
             // ── Иллюстрации к книгам Библии и сурам Корана ──────────────────
             const BOOK_SOURCES = {
-                'Бытие':     [
-                    {label:'Создание Адама — Микеланджело (1512)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/6/6b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg', desc:'Сикстинская капелла. Бытие 2:7 — «И создал Господь Бог человека из праха земного».'},
-                    {label:'Кодекс Синайский — страница Бытия (IV в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a3/Codex_Sinaiticus_Matthew_6_22-7_21.JPG', desc:'Древнейшая полная рукопись Библии ~350 н.э. Хранится в Британском музее. codexsinaiticus.org'},
+                'Бытие':       [
+                    {label:'Сотворение Адама — Микеланджело (1512)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/6/6b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg', desc:'Сикстинская капелла. Бытие 2:7 — «И создал Господь Бог человека из праха земного». Ватикан.'},
+                    {label:'Кодекс Синайский — страница (IV в. н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a3/Codex_Sinaiticus_Matthew_6_22-7_21.JPG', desc:'Древнейшая почти полная Библия ~350 н.э. 4 писца, 347 листов пергамента. Британский музей.'},
                 ],
-                'Исход':     [
-                    {label:'Великий Свиток Исайи из Кумрана (125 до н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e4/Great_Isaiah_Scroll.jpg', desc:'Свитки Мёртвого моря — старейшие рукописи Ветхого Завета. deadseascrolls.org.il'},
-                    {label:'Моисей со скрижалями — Рембрандт (1659)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/2/2e/Rembrandt_Harmensz._van_Rijn_-_Moses_Breaking_the_Tablets_of_the_Law_-_Google_Art_Project.jpg', desc:'Исход 32:19 — Моисей разбивает скрижали закона, увидев золотого тельца.'},
+                'Исход':       [
+                    {label:'Великий Свиток Исайи (II в. до н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e4/Great_Isaiah_Scroll.jpg', desc:'Кумранские свитки. Старейшая сохранившаяся рукопись Ветхого Завета. Музей Израиля, Иерусалим.'},
+                    {label:'Моисей разбивает скрижали — Рембрандт (1659)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/2/2e/Rembrandt_Harmensz._van_Rijn_-_Moses_Breaking_the_Tablets_of_the_Law_-_Google_Art_Project.jpg', desc:'Исход 32:19 — Моисей видит золотого тельца и разбивает Скрижали Завета. Берлинская галерея.'},
                 ],
-                'Псалтирь':  [
-                    {label:'Давид, играющий на арфе — Тикхиллская Псалтирь (1310)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/42/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg', desc:'Иллюминированная Псалтирь начала XIV в. Британская библиотека, Add MS 42130.'},
+                'Числа':       [
+                    {label:'Кодекс Ватиканский Vat.gr.1209 (IV в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/52/Codex_Vaticanus_B%2C_2Thess._3%2C11-18%2C_Hebr._1%2C1-2%2C2.jpg', desc:'Один из древнейших и авторитетнейших манускриптов Библии. Апостольская библиотека Ватикана.'},
                 ],
-                'Иов':       [
-                    {label:'Сатана поражает Иова — Уильям Блейк (1826)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4b/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg', desc:'Иов 2:7 — «И поразил Иов проказою лютою». Серия гравюр Блейка к Книге Иова.'},
+                'Псалтирь':    [
+                    {label:'Давид, играющий на арфе — Псалтирь (1310)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/42/Tickhill_Psalter%2C_David_Playing_the_Harp.jpg', desc:'Тикхиллская Псалтирь, нач. XIV в. Король Давид — автор большинства псалмов. Британская библиотека.'},
+                    {label:'Нашская папирус — X заповедей (II в. до н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/83/NashPapyrus.jpg', desc:'Старейший фрагмент Торы вне Кумрана. Декалог (Десять заповедей) + Шма Исраэль. Кембридж.'},
                 ],
-                'Исайя':     [
-                    {label:'Великий Свиток Исайи (1QIsa-a) — II в. до н.э.', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e4/Great_Isaiah_Scroll.jpg', desc:'Кумранская рукопись — полный текст Исайи. Старейший известный список пророческой книги. Музей Израиля, Иерусалим.'},
+                'Иов':         [
+                    {label:'Сатана поражает Иова — Уильям Блейк (1826)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4b/William_Blake_-_Satan_smiting_Job_with_Sore_Boils.jpg', desc:'Иов 2:7 — «И поразил Иов проказою лютою». Гравюрная серия Блейка по Книге Иова.'},
                 ],
-                'Откровение':[
-                    {label:'Четыре всадника — Альбрехт Дюрер (1498)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/d/d3/Durer_Revelation_Four_Riders.jpg', desc:'Откр 6:1–8. Серия гравюр «Апокалипсис» Дюрера — шедевр немецкого Ренессанса.'},
-                    {label:'Великий красный дракон — Уильям Блейк (1805)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', desc:'Откр 12:1–4. «И явилось на небе великое знамение: жена, облечённая в солнце».'},
+                'Исайя':       [
+                    {label:'Великий Свиток Исайи 1QIsa-a (II в. до н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e4/Great_Isaiah_Scroll.jpg', desc:'Полный текст всех 66 глав Исайи. Кумранская пещера 1, 1947 г. Музей Израиля, Иерусалим.'},
                 ],
-                'От Иоанна': [
-                    {label:'Папирус P52 — старейший фрагмент НЗ (~125 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e5/P66.jpg', desc:'Папирус Рилэндса (P52) — Иоанн 18:31–33. Библиотека Рилэндса, Манчестер.'},
+                'Иезекииль':   [
+                    {label:'Видение колесницы Иезекииля — Мериан (1630)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/9/9b/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg', desc:'Иез 1 — Меркава (Колесница): четыре херувима с ликами льва, быка, человека и орла.'},
                 ],
-                'От Луки':   [
-                    {label:'Благовещение — Фра Анджелико (1440)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', desc:'Лк 1:26–38. «Ангел вошёл к ней и сказал: радуйся, Благодатная!». Музей Сан-Марко, Флоренция.'},
+                'Даниил':      [
+                    {label:'Даниил во рву со львами — Рубенс (1614)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/84/Daniel-in-the-lions-den.jpg', desc:'Дан 6:22 — «Бог мой послал Ангела Своего и заградил уста львов». Национальная галерея, Вашингтон.'},
                 ],
-                'Иезекииль': [
-                    {label:'Видение колесницы Иезекииля — Маттеус Мериан (1630)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/9/9b/Ezekiel%27s_vision_by_Matthaeus_Merian.jpg', desc:'Иез 1 — Меркава (Колесница Бога): четыре херувима с ликами льва, быка, человека и орла.'},
+                'Откровение':  [
+                    {label:'Четыре всадника — Альбрехт Дюрер (1498)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/d/d3/Durer_Revelation_Four_Riders.jpg', desc:'Откр 6:1–8. Серия гравюр «Апокалипсис» Дюрера — 15 листов, 1498 г. Германский Национальный музей.'},
+                    {label:'Великий красный дракон — У. Блейк (1805)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg', desc:'Откр 12:1–4. «Жена, облечённая в солнце». Национальная галерея, Вашингтон.'},
                 ],
-                'Даниил':    [
-                    {label:'Даниил во рву со львами — Рубенс (1614)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/84/Daniel-in-the-lions-den.jpg', desc:'Дан 6:16–23. «Бог мой послал Ангела Своего и заградил уста львов». Национальная галерея, Вашингтон.'},
+                'От Матфея':   [
+                    {label:'Линдисфарнское Евангелие — страница (715 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e5/Lindisfarne_Gospels_cross_carpet_page.jpg', desc:'Один из красивейших иллюминированных манускриптов. Остров Линдисфарн, Нортумбрия. Британская библиотека.'},
+                ],
+                'От Марка':    [
+                    {label:'Евангелие от Марка — Книга Келлса (800 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/b/b4/KellsFol032vChristEnthroned.jpg', desc:'Книга Келлса — ирландский иллюминированный манускрипт. Тринити-колледж, Дублин.'},
+                ],
+                'От Луки':     [
+                    {label:'Благовещение — Фра Анджелико (1440)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg', desc:'Лк 1:28–38. «Радуйся, Благодатная!» Музей Сан-Марко, Флоренция. Фресковая живопись.'},
+                ],
+                'От Иоанна':   [
+                    {label:'Папирус P52 — старейший фрагмент НЗ (~125 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/e/e5/P66.jpg', desc:'Ин 18:31–33. Рукопись P52 (Папирус Рилэндса) — старейший фрагмент Нового Завета. Манчестер.'},
+                ],
+                'Деяния':      [
+                    {label:'Кодекс Александрийский — Деяния (V в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/4/42/Codex_Alexandrinus_f41v_-_Luke_12.jpg', desc:'Codex Alexandrinus — греческий манускрипт V века. Один из 4 великих кодексов. Британская библиотека.'},
                 ],
             };
             const SURAH_SOURCES = {
                 '1. Аль-Фатиха':  [
-                    {label:'Бирмингемский Коран (568–645 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Старейший фрагмент Корана, написан при жизни Пророка. Университет Бирмингема.'},
+                    {label:'Бирмингемский Коран (568–645 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Старейший фрагмент Корана: написан при жизни Пророка Мухаммада. Университет Бирмингема.'},
                 ],
                 '2. Аль-Бакара':  [
-                    {label:'Коран куфическим письмом (VIII–IX вв.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'Ранняя рукопись на пергаменте. Аят аль-Курси (2:255) — «Аллах — нет божества, кроме Него».'},
+                    {label:'Ранний куфический Коран (VIII–IX вв.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'Аят аль-Курси (2:255) — «Аллах — нет божества, кроме Него, Живого, Вечного». Ранняя куфическая каллиграфия.'},
+                    {label:'Рукопись Топкапы — лист Корана (VII в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Одна из старейших рукописей Корана. Дворец Топкапы, Стамбул, Турция.'},
+                ],
+                '3. Аль Имран':   [
+                    {label:'Мечеть аль-Харам — сердце ислама (Мекка)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/7/79/Masjid_Al_Haram_Mecca_Saudi_Arabia.jpg', desc:'Аль Имран 3:96 — «Воистину, первым домом, установленным для людей, является тот, что в Бекке». Мекка, Саудовская Аравия.'},
                 ],
                 '12. Йусуф':      [
-                    {label:'Юсуф и Зулейха — персидская миниатюра (XVII в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a3/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg', desc:'Риза Аббаси (1630). Сура 12 — «Мы расскажем тебе наилучший рассказ».'},
+                    {label:'Юсуф и Зулейха — Риза Аббаси (1630)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/a/a3/Yusuf_and_Zulaikha_by_Reza_Abbasi.jpg', desc:'Персидская миниатюра. Сура 12:23–24 — история целомудрия Юсуфа. Музей Тегерана.'},
+                    {label:'Иллюминированный Коран XIV в. — Ильханат', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/0/0a/Quran_manuscript_Ilkhanate.jpg', desc:'Роскошный Коран эпохи монгольского Ильханата. Золотая каллиграфия. Музей Метрополитен, Нью-Йорк.'},
                 ],
                 '19. Марьям':     [
-                    {label:'Бирмингемский Коран — страница с сурой Марьям', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Сура 19:16–34 — история Марьям и рождения Исы.'},
+                    {label:'Бирмингемский Коран — страница с Марьям', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Сура 19:16–34. История Марьям и рождения Исы. Древнейший фрагмент Корана. Бирмингем.'},
+                ],
+                '24. Ан-Нур':     [
+                    {label:'Персидский Коран XVI в. — каллиграфия', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'Сура 24:35 — «Аллах — свет небес и земли. Его свет подобен нише, в которой находится светильник».'},
                 ],
                 '36. Йа Син':     [
-                    {label:'Рукопись Корана — Ильханат (XIV в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/0/0a/Quran_manuscript_Ilkhanate.jpg', desc:'Изысканный иллюминированный Коран эпохи монгольского Ильханата. Музей Метрополитен, Нью-Йорк.'},
+                    {label:'Рукопись Корана — Ильханат (XIV в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/0/0a/Quran_manuscript_Ilkhanate.jpg', desc:'«Йа Син» — сердце Корана. Средневековый иллюминированный манускрипт. Музей Метрополитен.'},
                 ],
                 '55. Ар-Рахман':  [
-                    {label:'Страница Корана — Северная Африка (IX в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'«Милостивый» — сура о благодатях Аллаха. Золотая каллиграфия на синем пергаменте.'},
+                    {label:'Страница Корана — ранняя каллиграфия', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/5/5f/Quran_manuscript.jpg', desc:'«Милостивый». Сура 55:13 — «Какое из благодеяний Господа вашего вы оба отвергнете?»'},
+                ],
+                '67. Аль-Мульк':  [
+                    {label:'Бирмингемский Коран (VII в.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'«Власть». Сура 67:1 — «Благословен Тот, в Чьей Руке власть!» Защитная сура от мучений могилы.'},
                 ],
                 '96. Аль-Аляк':   [
-                    {label:'Бирмингемский Коран — первое откровение', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Аль-Аляк (96:1–5) — первые аяты, открытые Пророку в пещере Хира в 610 г.'},
+                    {label:'Пещера Хира — первое откровение (610 н.э.)', imgUrl:'https://upload.wikimedia.org/wikipedia/commons/8/8a/Birmingham_Quran_manuscript.jpg', desc:'Аль-Аляк 96:1 — «Читай! Во имя твоего Господа». Первые аяты, открытые Мухаммаду в пещере Хира.'},
                 ],
             };
 
@@ -168,7 +192,6 @@
                         <p style={{color:'#57534e',fontSize:11,marginTop:10}}>Нажмите за пределами для закрытия</p>
                     </div>
                 )}
-                {(!loading || order.length > 1) && (
                 <div className="bg-white rounded-3xl shadow-sm border border-stone-200 h-[calc(100vh-6rem)] flex flex-col overflow-hidden">
                     <div className="bg-white border-b p-4 md:p-6 flex flex-col xl:flex-row gap-4 items-center justify-between border-stone-200 shadow-sm z-10">
                         <div className="flex-1 w-full flex gap-4">
@@ -813,6 +836,5 @@
                         </div>
                     </div>
                 </div>
-                )}
             );
         }
