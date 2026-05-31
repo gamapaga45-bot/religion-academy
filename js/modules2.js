@@ -728,6 +728,10 @@
                     texts:['Енох I 9:1 — Гавриил обратился к Господу за погибших','Тов 12:15 — один из семи ангелов, предстоящих Господу','Пс Соломона 8:14 — ангел света'],
                     desc:'Гавриил — главный вестник Бога в трёх авраамических традициях. В иудаизме — один из четырёх архангелов. В христианстве явился Марии. В исламе через него передан весь Коран Мухаммеду за 23 года.',
                     significance:'Именно Джибриль принёс первое откровение Мухаммеду в пещере Хира (610 н.э.). Он же возвестил Марии о рождении Исы. Единственный ангел, названный по имени в Коране.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/4/4b/Fra_Angelico_-_The_Annunciation_%28detail%29_-_WGA00611.jpg',cap:'Фра Анджелико «Благовещение» (ок. 1440)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/7/74/Leonardo_da_Vinci_-_Annunciation_%28detail%29.jpg',cap:'Леонардо да Винчи «Благовещение» (1472–1475)'},
+                    ],
                     sources:[{label:'Фра Анджелико «Благовещение» — Google Arts & Culture',url:'https://artsandculture.google.com/asset/the-annunciation/IQFYba8CwFsIWg',type:'painting'},{label:'Часослов XV в. с Гавриилом — British Library Add MS 18850',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_18850',type:'manuscript'},{label:'Бирмингемский Коран (568–645 н.э.) — University of Birmingham',url:'https://www.birmingham.ac.uk/facilities/cadbury/collections/birmingham-quran-manuscript',type:'manuscript'}]
                 },
                 {
@@ -739,6 +743,10 @@
                     texts:['Енох I 20:5 — надзирает за раем', 'Свитки Мёртвого моря (1QM) — предводитель Сынов Света','Завещание Соломона — Михаил даёт Соломону кольцо власти'],
                     desc:'Михаил — единственный ангел, названный в Библии «архангелом». Главнокомандующий небесным воинством. В книге Откровения побеждает сатану-дракона. В Свитках Мёртвого моря — полководец Сынов Света против Сынов Тьмы.',
                     significance:'Особо почитается в исламе как ангел провидения и милости. В православии — «чиноначальник ангелов». День Михаила (Михайлов день) — 21 ноября. Покровитель воинов, полицейских, врачей.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/a/a2/Guido_Reni_-_St_Michael_-_Google_Art_Project.jpg',cap:'Гвидо Рени «Архангел Михаил» (1636)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/8/8f/Raphael_-_Saint_Michael_Overwhelming_the_Demon_-_WGA18932.jpg',cap:'Рафаэль «Михаил победил демона» (1518)'},
+                    ],
                     sources:[{label:'Гвидо Рени «Архангел Михаил» (1636) — Web Gallery of Art',url:'https://www.wga.hu/html_m/r/reni/michael.html',type:'painting'},{label:'Рафаэль «Михаил» (1518) — Лувр, Paris Collections',url:'https://collections.louvre.fr/en/ark:/53355/cl010065609',type:'painting'},{label:'«Война сынов света» (1QM) — Dead Sea Scrolls Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QM-1',type:'manuscript'}]
                 },
                 {
@@ -750,6 +758,9 @@
                     texts:['Книга Еноха I 20 — один из четырёх архангелов','Завещание Соломона — правит духами болезней','Мидраш — сопровождал Авраама после обрезания'],
                     desc:'Рафаил — архангел исцеления. В Книге Товита он путешествует с Товией в человеческом облике под именем «Азария» и исцеляет Товита от слепоты. Его имя означает «Бог исцелил».',
                     significance:'Покровитель врачей, фармацевтов и паломников. В эпоху Возрождения — популярнейший образ. Часто изображается с рыбой (из истории Товита) и посохом паломника.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/9/9c/Raffael_-_Tobias_und_der_Engel.jpg',cap:'Рафаэль «Товия и ангел Рафаил» (ок. 1512)'},
+                    ],
                     sources:[{label:'Верроккьо «Товия и ангел» (1470) — National Gallery London',url:'https://www.nationalgallery.org.uk/paintings/andrea-del-verrocchio-and-workshop-tobias-and-the-angel',type:'painting'},{label:'Книга Товита — British Library Add MS 10546',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Add_MS_10546',type:'manuscript'}]
                 },
                 {
@@ -761,6 +772,10 @@
                     texts:['3 Енох (Сефер Хехалот) — Метатрон описывает серафимов','Псевдо-Дионисий «О небесной иерархии» — высший чин'],
                     desc:'Серафимы — высший чин в христианской ангельской иерархии. Единственное упоминание — Исайя 6. Шесть крыл: два закрывают лицо (не смеют видеть Бога), два — ноги (смирение), двумя летят. Они кричат: «Кадош, Кадош, Кадош» — Свят, Свят, Свят.',
                     significance:'Видение Исайи стало основой для христианской литургии (Трисвятое, Санктус). В иконографии изображаются красными — цвет огня и любви.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/f/f1/Seraphim_-_Petites_Heures_de_Jean_de_Berry.jpg',cap:'Серафимы — «Малый часослов Жана Беррийского» (ок. 1385)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/3/33/Isaiah%27s_vision_Isaiah_6%2C_from_the_Kennicott_Bible_1476.jpg',cap:'Видение Исайи с серафимами — Библия Кенникотта (1476)'},
+                    ],
                     sources:[{label:'Серафимы — «Малый часослов Беррийского» — Bibliothèque nationale de France',url:'https://gallica.bnf.fr/ark:/12148/btv1b55008392q',type:'manuscript'},{label:'Великий Свиток Исайи (Ис 6) — Dead Sea Scrolls',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/1QIsa-a-1',type:'manuscript'}]
                 },
                 {
@@ -772,6 +787,10 @@
                     texts:['Иезекииль 1 — Меркава (Колесница): четыре существа с ликами льва, быка, человека, орла','3 Енох — Хайот ха-Кодеш','Дионисий Ареопагит — второй чин ангелов'],
                     desc:'В Библии херувимы — вовсе не пухлые младенцы. Это грозные четырёхликие существа с четырьмя крыльями, сверкающие как раскалённый металл. Иезекииль описывает их как «Меркаву» — небесную колесницу Бога с огненными колёсами.',
                     significance:'Образ херувима из Иезекииля — один из самых загадочных в Библии. Иудейский мистицизм (Меркава) строился вокруг созерцания этого видения. В искусстве Ренессанса херувимы превратились в пухлых купидонов — полная противоположность оригиналу.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/d/d6/Ezekiel_sees_the_Divine_Chariot_from_a_1670_Bible_illustration.jpg',cap:'Иезекииль видит Меркаву — иллюстрация к Библии (1670)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/0/0b/Ezekiel%27s_vision_%28Bible_Historiale%2C_1372%29.jpg',cap:'Видение Иезекииля — Bible Historiale (1372)'},
+                    ],
                     sources:[{label:'Bible Historiale (1372) — Национальная библиотека Нидерландов',url:'https://manuscripts.kb.nl/search?q=bible+historiale',type:'manuscript'},{label:'Рафаэль «Сикстинская Мадонна» — Google Arts & Culture',url:'https://artsandculture.google.com/asset/sistine-madonna/iQE9kVMqSqSSGg',type:'painting'}]
                 },
             ];
@@ -787,6 +806,11 @@
                     texts:['Книга Еноха I 6 — Шемхазай, предводитель падших ангелов','Свитки Мёртвого моря — Велиал, князь тьмы','3 Енох — Самаэль, ангел-обвинитель'],
                     desc:'«Сатана» по-еврейски — «противник, обвинитель». В ранней Библии это должность в Небесном Суде (Иов 1–2), а не злой бог. Только в позднейших текстах он становится олицетворением зла. В исламе Иблис — сотворён из огня, гордыня не позволила поклониться Адаму из глины.',
                     significance:'Концепция персонифицированного зла революционна. До Библии — нет единого источника зла в большинстве религий. Через зороастрийское влияние (Ангра-Майнью) идея злого духа вошла в иудаизм, оттуда — в христианство и ислам.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/3/3e/William_Blake_-_The_Great_Red_Dragon_and_the_Woman_Clothed_with_the_Sun.jpg',cap:'Уильям Блейк «Великий Красный Дракон» (1805)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/7/72/Job_and_Satan_%281825%29_Blake.jpg',cap:'Уильям Блейк «Иов и Сатана» (1825)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/a/a4/Devil_codex_Gigas.jpg',cap:'Дьявол из «Codex Gigas» (XIII в.)'},
+                    ],
                     sources:[{label:'Блейк «Иов и Сатана» (1825) — Metropolitan Museum of Art',url:'https://www.metmuseum.org/art/collection/search/339992',type:'painting'},{label:'Кодекс Гигас XIII в. — Национальная библиотека Швеции',url:'https://www.kb.se/samlingarna/digitala-samlingar/codex-gigas.html',type:'manuscript'},{label:'Книга Иова (4Q99) — Dead Sea Scrolls Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q99-1',type:'manuscript'}]
                 },
                 {
@@ -798,6 +822,10 @@
                     texts:['Алфавит Бен-Сиры (IX в.) — полная история Лилит как первой жены Адама','Вавилонский Талмуд — лилин (ночные духи)','Зогар (XIII в.) — Лилит как «Другая Сторона»'],
                     desc:'В каноне Библии Лилит упомянута лишь раз — Исайя 34:14. Вся её история — в позднейших мидрашах. По «Алфавиту Бен-Сиры»: Адам и Лилит созданы одновременно из земли, но Лилит отказывалась подчиняться. Улетела, стала демоницей, опасной для новорождённых.',
                     significance:'Лилит — символ непокорности и независимости в иудейской мистике. Оберег «рука Хамса» и амулеты с именами трёх ангелов (Санои, Сансанои, Семангелоф) — защита от Лилит. В современной культуре — феминистский символ.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/c/c5/John_Collier_Lilith.jpg',cap:'Джон Коллиер «Лилит» (1892)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/1/1d/Burney_Relief_Babylon_-2000-1700.jpg',cap:'«Рельеф Бёрни» — возможно Лилит, Вавилон (~1800 до н.э.)'},
+                    ],
                     sources:[{label:'Джон Коллиер «Лилит» (1892) — ArtUK',url:'https://artuk.org/discover/artworks/lilith-152163',type:'painting'},{label:'Рельеф Бёрни (~1800 до н.э.) — British Museum BM 2003,0718.1',url:'https://www.britishmuseum.org/collection/object/W_2003-0718-1',type:'manuscript'}]
                 },
                 {
@@ -809,6 +837,9 @@
                     texts:['Книга Еноха I 8 — «Азазел научил людей делать мечи и ножи»','Книга Еноха I 10 — «Всели вину за всё зло на Азазела»','Апокалипсис Авраама — Азазел как противник Бога'],
                     desc:'В Книге Левит Азазел — таинственная сущность пустыни, которой отсылается козёл с грехами Израиля. В Книге Еноха — один из «Стражей» (Бней ха-Элохим), спустившихся на гору Хермон. Он научил людей войне, магии и блуду.',
                     significance:'«Козёл отпущения» (scapegoat) вошёл во все языки мира. Современное слово «scapegoat» из перевода Лев 16 — козёл для Азазела. Концепция ритуального очищения через перенос вины — основа многих религий.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/1/16/William_Holman_Hunt_-_The_Scapegoat.jpg',cap:'Уильям Холман Хант «Козёл отпущения» (1856)'},
+                    ],
                     sources:[{label:'Книга Еноха (эфиопская рукопись) — British Library Or.509',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Or_509',type:'manuscript'},{label:'Свиток Азазеля (4Q180) — Dead Sea Scrolls',url:'https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q180-1',type:'manuscript'}]
                 },
                 {
@@ -820,6 +851,9 @@
                     texts:['Завещание Соломона — Вельзевул как второй по рангу после сатаны','Гримуар «Лемегетон» (XVII в.) — один из 72 духов','Мильтон «Потерянный Рай» — заместитель Сатаны'],
                     desc:'Изначально — Баал-Зебуб («Повелитель Принца», или «Высокий дом») — филистимский бог Аккарона. В еврейской полемике имя намеренно искажено в «Баал-Зевув» — «повелитель мух». В Новом Завете — синоним сатаны или его заместитель.',
                     significance:'«Вельзевул» — одно из самых используемых имён дьявола в западной литературе. В Средневековье считался повелителем зависти. Мухи — символ разложения и нечистоты.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/2/2e/Collin_de_Plancy_-_Dictionnaire_Infernal_-_Beelzebub.jpg',cap:'Вельзевул — «Словарь Инфернале» Кол. де Планси (1863)'},
+                    ],
                     sources:[{label:'Dictionnaire Infernal (1863) — Bibliothèque nationale de France',url:'https://gallica.bnf.fr/ark:/12148/bpt6k57256b/f1',type:'painting'}]
                 },
                 {
@@ -831,6 +865,10 @@
                     texts:['Книга Еноха I 6–16 — 200 Стражей спускаются на Хермон','«Книга Гигантов» (Кумран) — дети Стражей-гиганты','Юбилеев книга — Стражи посланы обучать людей, но пали'],
                     desc:'Нефилим — загадочнейшее место Библии (Быт 6:1–4). «Бней ха-Элохим» берут в жёны дочерей людских. Книга Еноха развивает эту историю: 200 ангелов под предводительством Шемхазая спустились на гору Хермон, взяли жён и научили людей запретным знаниям. Их дети — великаны-рефаимы.',
                     significance:'Эта история — объяснение происхождения зла в мире перед Потопом. Книга Еноха была канонической для ранних христиан (цитируется в Послании Иуды). Обнаружена в Кумране (7 рукописей). Мотив «падших ангелов» лёг в основу всей западной демонологии.',
+                    images:[
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/a/ab/Book_of_Enoch_Ethiopic_MS.jpg',cap:'Книга Еноха — эфиопская рукопись (XVIII в.)'},
+                        {src:'https://upload.wikimedia.org/wikipedia/commons/e/e0/Gustave_Moreau_-_The_Fallen_Angel_-_The_Walters_Art_Museum.jpg',cap:'Гюстав Моро «Падший Ангел» (XIX в.)'},
+                    ],
                     sources:[{label:'Книга Еноха I 6–16 (эфиопская рукопись) — British Library Or.509',url:'https://www.bl.uk/manuscripts/FullDisplay.aspx?ref=Or_509',type:'manuscript'},{label:'«Книга Гигантов» (4Q531) — Dead Sea Scrolls Digital Library',url:'https://www.deadseascrolls.org.il/explore-the-archive/search#q=giants',type:'manuscript'}]
                 },
             ];

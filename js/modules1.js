@@ -350,38 +350,153 @@
                         </div>
                         <div className="px-4 pb-4">
                             <svg viewBox="0 0 1000 500" style={{width:'100%',height:'auto',display:'block',borderRadius:8}} xmlns="http://www.w3.org/2000/svg">
-                                {/* Океан */}
-                                <rect width="1000" height="500" fill="#93c5fd" rx="8"/>
-                                <path d="M 33.3,52.8 L 108.3,55.6 L 138.9,94.4 L 155.6,113.9 L 155.6,147.2 L 175.0,161.1 L 230.6,177.8 L 258.3,205.6 L 269.4,222.2 L 286.1,227.8 L 286.1,180.6 L 275.0,161.1 L 291.7,152.8 L 316.7,125.0 L 333.3,122.2 L 352.8,119.4 L 341.7,108.3 L 325.0,88.9 L 319.4,75.0 L 269.4,75.0 L 241.7,47.2 L 166.7,44.4 L 111.1,55.6 L 69.4,83.3 L 41.7,77.8 L 33.3,52.8 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 275.0,227.8 L 291.7,244.4 L 361.1,263.9 L 402.8,263.9 L 402.8,277.8 L 391.7,294.4 L 388.9,305.6 L 366.7,327.8 L 338.9,344.4 L 319.4,366.7 L 311.1,402.8 L 294.4,391.7 L 300.0,375.0 L 305.6,355.6 L 297.2,333.3 L 305.6,300.0 L 288.9,272.2 L 277.8,255.6 L 286.1,247.2 L 275.0,227.8 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 472.2,150.0 L 475.0,141.7 L 475.0,127.8 L 486.1,127.8 L 497.2,127.8 L 508.3,130.6 L 513.9,127.8 L 522.2,127.8 L 541.7,138.9 L 544.4,122.2 L 538.9,122.2 L 533.3,119.4 L 536.1,116.7 L 550.0,111.1 L 555.6,100.0 L 566.7,88.9 L 569.4,69.4 L 577.8,55.6 L 550.0,55.6 L 527.8,75.0 L 513.9,88.9 L 513.9,100.0 L 505.6,108.3 L 494.4,105.6 L 486.1,100.0 L 477.8,105.6 L 472.2,116.7 L 472.2,150.0 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 513.9,88.9 L 522.2,91.7 L 527.8,88.9 L 533.3,94.4 L 550.0,88.9 L 566.7,77.8 L 577.8,55.6 L 550.0,55.6 L 527.8,75.0 L 513.9,88.9 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 588.9,55.6 L 577.8,50.0 L 588.9,41.7 L 638.9,27.8 L 722.2,27.8 L 777.8,33.3 L 861.1,50.0 L 888.9,61.1 L 944.4,77.8 L 966.7,97.2 L 944.4,102.8 L 888.9,116.7 L 875.0,125.0 L 888.9,133.3 L 861.1,133.3 L 833.3,111.1 L 800.0,105.6 L 777.8,105.6 L 750.0,102.8 L 722.2,97.2 L 688.9,97.2 L 666.7,105.6 L 652.8,111.1 L 638.9,119.4 L 616.7,119.4 L 605.6,116.7 L 605.6,105.6 L 597.2,88.9 L 588.9,72.2 L 588.9,55.6 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 816.7,311.1 L 838.9,300.0 L 861.1,283.3 L 877.8,283.3 L 877.8,294.4 L 866.7,286.1 L 861.1,277.8 L 883.3,305.6 L 861.1,316.7 L 844.4,322.2 L 819.4,333.3 L 819.4,350.0 L 833.3,355.6 L 861.1,355.6 L 877.8,355.6 L 900.0,355.6 L 911.1,361.1 L 916.7,355.6 L 927.8,327.8 L 916.7,311.1 L 905.6,300.0 L 877.8,288.9 L 861.1,277.8 L 847.2,291.7 L 816.7,311.1 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 347.2,16.7 L 430.6,16.7 L 450.0,33.3 L 444.4,50.0 L 416.7,61.1 L 375.0,83.3 L 347.2,72.2 L 319.4,55.6 L 347.2,16.7 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="0.75"/>
-                                <path d="M 541.7,216.7 L 555.6,236.1 L 569.4,238.9 L 583.3,236.1 L 597.2,238.9 L 616.7,238.9 L 638.9,227.8 L 616.7,250.0 L 611.1,277.8 L 588.9,277.8 L 577.8,263.9 L 569.4,291.7 L 577.8,311.1 L 588.9,333.3 L 572.2,344.4 L 550.0,344.4 L 538.9,327.8 L 533.3,305.6 L 527.8,283.3 L 522.2,255.6 L 505.6,233.3 L 486.1,236.1 L 458.3,222.2 L 541.7,216.7 Z" fill={!mapRelig?'#c4b49a':mapRelig==='islam'?'#065f46':mapRelig==='christianity'?'#b45309':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 452.8,208.3 L 486.1,152.8 L 494.4,152.8 L 513.9,147.2 L 527.8,144.4 L 533.3,158.3 L 541.7,166.7 L 555.6,166.7 L 569.4,161.1 L 583.3,161.1 L 597.2,166.7 L 602.8,188.9 L 616.7,216.7 L 638.9,216.7 L 638.9,227.8 L 616.7,238.9 L 597.2,238.9 L 583.3,236.1 L 569.4,238.9 L 555.6,236.1 L 541.7,216.7 L 527.8,211.1 L 513.9,211.1 L 486.1,208.3 L 452.8,208.3 Z" fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 600.0,147.2 L 616.7,147.2 L 633.3,166.7 L 661.1,188.9 L 666.7,188.9 L 661.1,211.1 L 638.9,216.7 L 622.2,216.7 L 616.7,216.7 L 602.8,188.9 L 597.2,166.7 L 600.0,147.2 Z" fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 622.2,138.9 L 644.4,138.9 L 661.1,144.4 L 672.2,152.8 L 694.4,152.8 L 702.8,172.2 L 686.1,188.9 L 672.2,194.4 L 661.1,188.9 L 633.3,166.7 L 622.2,147.2 L 622.2,138.9 Z" fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 644.4,105.6 L 688.9,97.2 L 722.2,97.2 L 722.2,116.7 L 700.0,133.3 L 672.2,152.8 L 661.1,144.4 L 644.4,138.9 L 644.4,105.6 Z" fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 763.9,236.1 L 777.8,244.4 L 788.9,255.6 L 800.0,261.1 L 811.1,266.7 L 827.8,266.7 L 838.9,272.2 L 855.6,272.2 L 850.0,266.7 L 833.3,266.7 L 816.7,261.1 L 800.0,255.6 L 788.9,244.4 L 777.8,244.4 L 763.9,236.1 Z" fill={!mapRelig?'#c8b59a':mapRelig==='islam'?'#065f46':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 686.1,152.8 L 702.8,172.2 L 722.2,172.2 L 736.1,180.6 L 744.4,188.9 L 722.2,227.8 L 711.1,227.8 L 700.0,200.0 L 688.9,188.9 L 672.2,194.4 L 686.1,172.2 L 686.1,152.8 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='hinduism'?'#ea580c':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 755.6,172.2 L 777.8,172.2 L 791.7,188.9 L 800.0,208.3 L 786.1,244.4 L 777.8,255.6 L 788.9,272.2 L 811.1,272.2 L 833.3,272.2 L 838.9,263.9 L 827.8,238.9 L 811.1,227.8 L 800.0,211.1 L 791.7,188.9 L 777.8,194.4 L 766.7,200.0 L 755.6,188.9 L 755.6,172.2 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='buddhism'?'#ca8a04':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 722.2,116.7 L 755.6,116.7 L 777.8,125.0 L 833.3,116.7 L 861.1,133.3 L 861.1,152.8 L 833.3,172.2 L 800.0,188.9 L 783.3,188.9 L 777.8,172.2 L 755.6,172.2 L 744.4,177.8 L 722.2,172.2 L 702.8,172.2 L 702.8,152.8 L 722.2,138.9 L 722.2,116.7 Z" fill={!mapRelig?'#d6c9b0':(mapRelig==='buddhism'||mapRelig==='taoism')?(mapRelig==='taoism'?'#374151':'#ca8a04'):'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                <path d="M 861.1,125.0 L 869.4,152.8 L 863.9,163.9 L 861.1,155.6 L 858.3,152.8 L 852.8,158.3 L 858.3,166.7 L 863.9,163.9 L 875.0,155.6 L 880.6,144.4 L 888.9,144.4 L 891.7,133.3 L 875.0,130.6 L 861.1,125.0 Z" fill={!mapRelig?'#d6c9b0':mapRelig==='buddhism'?'#ca8a04':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="1"/>
-                                    <text x="236.1" y="125.0" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'✝':(mapRelig==='christianity'?'✝':'')}</text>
-                                    <text x="333.3" y="291.7" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'✝':(mapRelig==='christianity'?'✝':'')}</text>
-                                    <text x="527.8" y="111.1" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'✝':(mapRelig==='christianity'?'✝':'')}</text>
-                                    <text x="736.1" y="77.8" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'✝':(mapRelig==='christianity'?'✝':'')}</text>
-                                    <text x="875.0" y="327.8" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'✝':(mapRelig==='christianity'?'✝':'')}</text>
-                                    <text x="555.6" y="180.6" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☪':(mapRelig==='islam'?'☪':'')}</text>
-                                    <text x="638.9" y="177.8" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☪':(mapRelig==='islam'?'☪':'')}</text>
-                                    <text x="666.7" y="125.0" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☪':(mapRelig==='islam'?'☪':'')}</text>
-                                    <text x="811.1" y="261.1" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☪':(mapRelig==='islam'?'☪':'')}</text>
-                                    <text x="716.7" y="188.9" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'🕉':(mapRelig==='hinduism'?'🕉':'')}</text>
-                                    <text x="777.8" y="150.0" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☸':(mapRelig==='buddhism'?'☸':'')}</text>
-                                    <text x="794.4" y="208.3" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☸':(mapRelig==='buddhism'?'☸':'')}</text>
-                                    <text x="877.8" y="144.4" fontSize="11" fill="#fff" textAnchor="middle" fontWeight="bold" style={{filter:'drop-shadow(0 1px 2px rgba(0,0,0,0.8))'}}>{!mapRelig?'☸':(mapRelig==='buddhism'?'☸':'')}</text>
+                                {/* Ocean */}
+                                <rect width="1000" height="500" fill="#bfdbfe" rx="6"/>
+
+                                {/* ── NORTH AMERICA (Христианство) ─────────────────────── */}
+                                <path d="M 72,52 L 108,45 L 140,48 L 165,58 L 188,62 L 215,55 L 235,62 L 248,75 L 258,95 L 262,115 L 255,138 L 248,158 L 258,175 L 248,195 L 230,215 L 208,232 L 185,245 L 160,248 L 132,240 L 108,225 L 88,205 L 78,182 L 72,158 L 75,132 L 82,108 L 80,85 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="0.95"/>
+                                {/* Alaska */}
+                                <path d="M 42,55 L 72,48 L 80,52 L 80,68 L 62,72 L 42,65 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Central America */}
+                                <path d="M 175,252 L 195,258 L 205,272 L 198,282 L 182,278 L 168,265 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Caribbean */}
+                                <path d="M 215,242 L 232,240 L 238,248 L 228,255 L 215,252 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Greenland */}
+                                <path d="M 268,18 L 325,12 L 348,28 L 340,52 L 310,58 L 278,52 L 262,35 Z"
+                                    fill={!mapRelig?'#ddd8cf':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5" opacity="0.8"/>
+
+                                {/* ── SOUTH AMERICA (Христианство) ────────────────────── */}
+                                <path d="M 190,288 L 258,278 L 290,295 L 308,322 L 312,355 L 305,388 L 288,415 L 262,438 L 232,445 L 205,432 L 182,412 L 170,385 L 168,355 L 175,325 L 182,308 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.8" opacity="0.95"/>
+
+                                {/* ── WESTERN EUROPE (Христианство) ───────────────────── */}
+                                <path d="M 435,62 L 485,55 L 510,68 L 522,85 L 518,108 L 505,125 L 488,132 L 465,128 L 448,115 L 438,95 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Scandinavia */}
+                                <path d="M 468,28 L 510,22 L 525,42 L 515,58 L 490,58 L 472,45 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* UK & Ireland */}
+                                <path d="M 418,65 L 440,60 L 442,78 L 432,85 L 418,78 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Iberian */}
+                                <path d="M 430,108 L 458,105 L 462,128 L 448,138 L 430,130 L 425,118 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── RUSSIA (Христианство) ───────────────────────────── */}
+                                <path d="M 522,38 L 648,28 L 715,32 L 752,42 L 762,58 L 758,78 L 742,95 L 712,108 L 672,118 L 625,122 L 578,118 L 542,108 L 522,88 L 518,65 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+
+                                {/* ── EAST EUROPE / BALKANS (Христианство) ────────────── */}
+                                <path d="M 508,88 L 540,82 L 545,108 L 532,128 L 512,132 L 500,118 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── AUSTRALIA (Христианство) ────────────────────────── */}
+                                <path d="M 748,335 L 868,325 L 895,355 L 892,398 L 868,428 L 822,440 L 775,432 L 745,408 L 732,375 L 738,348 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* New Zealand */}
+                                <path d="M 918,398 L 932,388 L 938,402 L 930,415 L 918,410 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── NORTH AFRICA (Ислам) ─────────────────────────────── */}
+                                <path d="M 428,148 L 548,138 L 572,145 L 578,162 L 572,182 L 552,195 L 525,198 L 495,192 L 465,195 L 438,185 L 425,168 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+
+                                {/* ── MIDDLE EAST (Ислам) ──────────────────────────────── */}
+                                <path d="M 552,138 L 622,132 L 645,148 L 648,168 L 638,188 L 618,198 L 595,198 L 575,185 L 558,168 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Arabian Peninsula */}
+                                <path d="M 558,198 L 618,192 L 645,208 L 645,248 L 625,265 L 598,265 L 572,248 L 558,228 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Turkey */}
+                                <path d="M 522,112 L 572,108 L 578,128 L 558,142 L 530,138 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── IRAN / CENTRAL ASIA (Ислам) ─────────────────────── */}
+                                <path d="M 592,118 L 672,112 L 682,132 L 672,155 L 645,165 L 618,162 L 598,148 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Kazakhstan/Uzbekistan */}
+                                <path d="M 605,85 L 715,78 L 728,108 L 712,125 L 678,132 L 645,128 L 618,118 L 602,102 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Pakistan */}
+                                <path d="M 648,148 L 698,138 L 712,162 L 705,188 L 682,198 L 658,192 L 645,172 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── INDONESIA (Ислам) ─────────────────────────────────── */}
+                                <path d="M 755,268 L 812,260 L 832,272 L 828,285 L 795,290 L 762,282 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                <path d="M 838,268 L 868,262 L 878,275 L 868,285 L 842,282 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Malaysia */}
+                                <path d="M 728,248 L 755,242 L 760,258 L 748,268 L 728,262 Z"
+                                    fill={!mapRelig?'#c4ad8a':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── SUB-SAHARAN AFRICA (Христианство + Ислам) ─────────── */}
+                                <path d="M 428,198 L 552,195 L 562,232 L 558,278 L 542,322 L 518,358 L 492,372 L 462,372 L 432,355 L 415,322 L 408,285 L 412,248 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#78350f':mapRelig==='islam'?'#064e3b':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Madagascar */}
+                                <path d="M 562,312 L 578,302 L 585,328 L 578,355 L 562,360 L 552,338 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='christianity'?'#92400e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── INDIA (Индуизм) ───────────────────────────────────── */}
+                                <path d="M 658,148 L 728,138 L 748,162 L 748,202 L 738,242 L 718,262 L 692,272 L 665,262 L 645,235 L 638,202 L 645,172 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='hinduism'?'#c2410c':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Sri Lanka */}
+                                <path d="M 708,272 L 718,268 L 722,280 L 715,288 L 705,282 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='hinduism'?'#c2410c':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── CHINA (Буддизм/Даосизм) ──────────────────────────── */}
+                                <path d="M 718,62 L 848,55 L 872,72 L 878,98 L 872,128 L 848,148 L 815,162 L 778,168 L 748,162 L 728,142 L 712,118 L 712,88 Z"
+                                    fill={!mapRelig?'#c8b99a':(mapRelig==='buddhism'||mapRelig==='taoism')?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+
+                                {/* ── SE ASIA / THAILAND / VIETNAM (Буддизм) ───────────── */}
+                                <path d="M 748,162 L 818,155 L 838,175 L 832,208 L 808,228 L 778,235 L 755,225 L 738,205 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.8"/>
+                                {/* Myanmar */}
+                                <path d="M 728,145 L 752,142 L 755,168 L 748,188 L 728,182 L 718,162 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── JAPAN (Буддизм/Синтоизм) ─────────────────────────── */}
+                                <path d="M 862,78 L 885,72 L 892,92 L 882,112 L 862,108 L 852,92 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                <path d="M 878,62 L 895,58 L 900,72 L 890,80 L 878,75 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+                                {/* Korea */}
+                                <path d="M 845,85 L 862,82 L 862,98 L 852,108 L 840,102 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── Mongolia (Буддизм) ───────────────────────────────── */}
+                                <path d="M 715,38 L 845,32 L 858,55 L 848,72 L 792,78 L 728,75 L 715,58 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── TIBET / NEPAL (Буддизм) ──────────────────────────── */}
+                                <path d="M 698,128 L 748,122 L 758,142 L 748,155 L 718,155 L 698,145 Z"
+                                    fill={!mapRelig?'#c8b99a':mapRelig==='buddhism'?'#854d0e':'#d4d4d4'} stroke="#fff" strokeWidth="0.5"/>
+
+                                {/* ── ICONS when no religion selected ──────────────────── */}
+                                {!mapRelig && (<>
+                                    <text x="172" y="162" fontSize="14" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>✝</text>
+                                    <text x="232" y="365" fontSize="12" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>✝</text>
+                                    <text x="478" y="92" fontSize="12" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>✝</text>
+                                    <text x="612" y="178" fontSize="12" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>☪</text>
+                                    <text x="600" y="232" fontSize="11" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>☪</text>
+                                    <text x="695" y="212" fontSize="13" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>🕉</text>
+                                    <text x="795" y="108" fontSize="12" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>☸</text>
+                                    <text x="872" y="92" fontSize="11" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>⛩</text>
+                                    <text x="480" y="295" fontSize="10" fill="#fff" textAnchor="middle" style={{pointerEvents:'none'}}>☪/✝</text>
+                                </>)}
+                                {/* Legend */}
+                                {mapRelig && (
+                                    <g transform="translate(10,470)">
+                                        <rect x="0" y="-14" width="180" height="18" fill="rgba(0,0,0,0.35)" rx="4"/>
+                                        <text x="5" y="0" fontSize="9" fill="#fff" fontWeight="bold" style={{pointerEvents:'none'}}>
+                                            {mapRelig==='christianity'?'✝ Христианство':mapRelig==='islam'?'☪ Ислам':mapRelig==='hinduism'?'🕉 Индуизм':mapRelig==='buddhism'?'☸ Буддизм':'☯ Даосизм'} — выделены доминирующие регионы
+                                        </text>
+                                    </g>
+                                )}
                             </svg>
                         </div>
 
@@ -444,7 +559,7 @@
                     </div>
 
                     <div className="flex gap-2 bg-stone-100 p-1.5 rounded-2xl overflow-x-auto">
-                        {[['overview','📖 Обзор'],['texts','📜 Тексты'],['analysis','🔬 AI Анализ'],['compare','⚖️ Сравнение']].map(([k,l])=>(
+                        {[['overview','📖 Обзор'],['texts','📜 Тексты'],['tree','🌳 Древо'],['analysis','🔬 AI Анализ'],['compare','⚖️ Сравнение']].map(([k,l])=>(
                             <button key={k} onClick={()=>setTab(k)}
                                 className={`flex-shrink-0 py-2 px-3 md:px-4 rounded-xl text-xs md:text-sm font-bold transition-all ${tab===k?'bg-white shadow-sm text-stone-900':'text-stone-500 hover:text-stone-700'}`}>
                                 {l}
@@ -530,6 +645,227 @@
                                     </div>
                                 ))
                             ) : <div className="bg-white rounded-2xl p-8 text-center text-stone-400">Тексты загружаются...</div>}
+                        </div>
+                    )}
+
+                    {tab==='tree' && (
+                        <div className="fade-in-up">
+                            <div className="bg-white rounded-2xl border border-stone-200 p-5 mb-4">
+                                <h3 className="font-serif font-bold text-xl text-stone-900 mb-1">🌳 Древо мировых религий</h3>
+                                <p className="text-stone-500 text-sm">Хронология возникновения и разветвления традиций — от первобытных верований до современных</p>
+                            </div>
+
+                            {/* TIMELINE SVG */}
+                            <div className="bg-white rounded-2xl border border-stone-200 overflow-x-auto p-4">
+                                <svg viewBox="0 0 1100 680" style={{width:'100%',minWidth:700,height:'auto'}} xmlns="http://www.w3.org/2000/svg">
+                                    {/* Background */}
+                                    <rect width="1100" height="680" fill="#fafaf9" rx="8"/>
+
+                                    {/* ERA BANDS */}
+                                    <rect x="0"   y="0" width="1100" height="680" fill="#f5f4f0"/>
+                                    <rect x="0"   y="0" width="145"  height="680" fill="#fef3c7" opacity="0.6"/>
+                                    <rect x="145" y="0" width="155"  height="680" fill="#dcfce7" opacity="0.5"/>
+                                    <rect x="300" y="0" width="200"  height="680" fill="#dbeafe" opacity="0.4"/>
+                                    <rect x="500" y="0" width="200"  height="680" fill="#fce7f3" opacity="0.4"/>
+                                    <rect x="700" y="0" width="200"  height="680" fill="#e0e7ff" opacity="0.4"/>
+                                    <rect x="900" y="0" width="200"  height="680" fill="#f0fdf4" opacity="0.4"/>
+
+                                    {/* ERA LABELS */}
+                                    <text x="72"  y="22" fontSize="9" fill="#92400e" fontWeight="bold" textAnchor="middle">2000+ до н.э.</text>
+                                    <text x="222" y="22" fontSize="9" fill="#065f46" fontWeight="bold" textAnchor="middle">1500–500 до н.э.</text>
+                                    <text x="400" y="22" fontSize="9" fill="#1d4ed8" fontWeight="bold" textAnchor="middle">500 до н.э. – 0</text>
+                                    <text x="600" y="22" fontSize="9" fill="#9d174d" fontWeight="bold" textAnchor="middle">I–VII в. н.э.</text>
+                                    <text x="800" y="22" fontSize="9" fill="#4338ca" fontWeight="bold" textAnchor="middle">VIII–XV в. н.э.</text>
+                                    <text x="1000" y="22" fontSize="9" fill="#065f46" fontWeight="bold" textAnchor="middle">XVI–XXI в. н.э.</text>
+
+                                    {/* HORIZONTAL TIME AXIS */}
+                                    <line x1="30" y1="650" x2="1080" y2="650" stroke="#d6d3d1" strokeWidth="1.5"/>
+                                    {[['30','~3000\nдо н.э.'],['145','2000'],['300','1000'],['500','0'],['700','700'],['900','1500'],['1080','2000+']].map(([x,label])=>(
+                                        <g key={x}>
+                                            <line x1={x} y1="645" x2={x} y2="655" stroke="#a8a29e" strokeWidth="1.5"/>
+                                            <text x={x} y="668" fontSize="8" fill="#78716c" textAnchor="middle">{label.split('\n')[0]}</text>
+                                        </g>
+                                    ))}
+
+                                    {/* ─────────── ANIMISM / ШАМАНИЗМ (корень) ─────────── */}
+                                    <rect x="20" y="55" width="105" height="32" rx="8" fill="#d97706" opacity="0.9"/>
+                                    <text x="72" y="74" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">🌿 Анимизм</text>
+                                    <text x="72" y="83" fontSize="7.5" fill="#fef3c7" textAnchor="middle">~50 000 до н.э.</text>
+
+                                    {/* Main trunk line from Animism */}
+                                    <line x1="72" y1="87" x2="72" y2="115" stroke="#d97706" strokeWidth="2.5" strokeDasharray="4,2"/>
+
+                                    {/* ─────────── ПОЛИТЕИЗМ / РЕЛИГИИ ПРИРОДЫ ─────────── */}
+                                    <rect x="20" y="115" width="105" height="32" rx="8" fill="#b45309" opacity="0.85"/>
+                                    <text x="72" y="134" fontSize="9.5" fill="#fff" fontWeight="bold" textAnchor="middle">⚡ Политеизм</text>
+                                    <text x="72" y="143" fontSize="7" fill="#fef3c7" textAnchor="middle">Египет, Шумер ~3500</text>
+
+                                    {/* ─────────── ЗОРОАСТРИЗМ ─────────────────────────── */}
+                                    <line x1="72" y1="147" x2="195" y2="182" stroke="#ef4444" strokeWidth="1.8"/>
+                                    <rect x="148" y="170" width="110" height="32" rx="8" fill="#dc2626" opacity="0.9"/>
+                                    <text x="203" y="189" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">🔥 Зороастризм</text>
+                                    <text x="203" y="199" fontSize="7.5" fill="#fee2e2" textAnchor="middle">~1500 до н.э. · Заратустра</text>
+
+                                    {/* ─────────── ИУДАИЗМ ─────────────────────────────── */}
+                                    <line x1="72" y1="147" x2="220" y2="255" stroke="#1d4ed8" strokeWidth="2"/>
+                                    <rect x="175" y="244" width="90" height="32" rx="8" fill="#1e40af" opacity="0.9"/>
+                                    <text x="220" y="263" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">✡️ Иудаизм</text>
+                                    <text x="220" y="273" fontSize="7.5" fill="#bfdbfe" textAnchor="middle">~2000 до н.э. · Авраам</text>
+
+                                    {/* ─────────── ИНДУИЗМ ─────────────────────────────── */}
+                                    <line x1="72" y1="147" x2="225" y2="340" stroke="#ea580c" strokeWidth="2"/>
+                                    <rect x="178" y="329" width="95" height="32" rx="8" fill="#c2410c" opacity="0.9"/>
+                                    <text x="225" y="348" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">🕉️ Индуизм</text>
+                                    <text x="225" y="358" fontSize="7.5" fill="#ffedd5" textAnchor="middle">~1500 до н.э. · Веды</text>
+
+                                    {/* ─────────── БУДДИЗМ (ветвь от Индуизма) ─────────── */}
+                                    <line x1="273" y1="345" x2="390" y2="380" stroke="#ca8a04" strokeWidth="1.8"/>
+                                    <rect x="345" y="369" width="90" height="32" rx="8" fill="#a16207" opacity="0.9"/>
+                                    <text x="390" y="388" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">☸️ Буддизм</text>
+                                    <text x="390" y="398" fontSize="7.5" fill="#fef9c3" textAnchor="middle">~500 до н.э. · Будда</text>
+
+                                    {/* Theravada ветвь */}
+                                    <line x1="435" y1="385" x2="530" y2="418" stroke="#ca8a04" strokeWidth="1.2" strokeDasharray="3,2"/>
+                                    <rect x="490" y="408" width="82" height="24" rx="6" fill="#ca8a04" opacity="0.75"/>
+                                    <text x="531" y="423" fontSize="8.5" fill="#fff" fontWeight="bold" textAnchor="middle">Тхеравада</text>
+                                    <text x="531" y="432" fontSize="7" fill="#fef9c3" textAnchor="middle">Шри-Ланка, ЮВА</text>
+
+                                    {/* Mahayana ветвь */}
+                                    <line x1="435" y1="385" x2="530" y2="450" stroke="#ca8a04" strokeWidth="1.2" strokeDasharray="3,2"/>
+                                    <rect x="490" y="440" width="82" height="24" rx="6" fill="#854d0e" opacity="0.75"/>
+                                    <text x="531" y="455" fontSize="8.5" fill="#fff" fontWeight="bold" textAnchor="middle">Махаяна</text>
+                                    <text x="531" y="464" fontSize="7" fill="#fef9c3" textAnchor="middle">Китай, Япония</text>
+
+                                    {/* Vajrayana */}
+                                    <line x1="435" y1="385" x2="530" y2="480" stroke="#ca8a04" strokeWidth="1.2" strokeDasharray="3,2"/>
+                                    <rect x="490" y="470" width="82" height="24" rx="6" fill="#713f12" opacity="0.75"/>
+                                    <text x="531" y="485" fontSize="8.5" fill="#fff" fontWeight="bold" textAnchor="middle">Ваджраяна</text>
+                                    <text x="531" y="494" fontSize="7" fill="#fef9c3" textAnchor="middle">Тибет, Монголия</text>
+
+                                    {/* ─────────── ДАОСИЗМ / КОНФУЦИАНСТВО ─────────────── */}
+                                    <rect x="345" y="305" width="98" height="32" rx="8" fill="#374151" opacity="0.9"/>
+                                    <text x="394" y="324" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">☯️ Даосизм</text>
+                                    <text x="394" y="334" fontSize="7.5" fill="#e5e7eb" textAnchor="middle">~500 до н.э. · Лао-цзы</text>
+                                    <line x1="72" y1="147" x2="350" y2="318" stroke="#374151" strokeWidth="1.5" strokeDasharray="5,3"/>
+
+                                    <rect x="345" y="270" width="105" height="28" rx="7" fill="#881337" opacity="0.85"/>
+                                    <text x="397" y="287" fontSize="9.5" fill="#fff" fontWeight="bold" textAnchor="middle">🏮 Конфуцианство</text>
+                                    <text x="397" y="297" fontSize="7" fill="#ffe4e6" textAnchor="middle">~500 до н.э. · Конфуций</text>
+                                    <line x1="72" y1="147" x2="345" y2="282" stroke="#881337" strokeWidth="1.5" strokeDasharray="5,3"/>
+
+                                    {/* ─────────── СИНТОИЗМ ────────────────────────────── */}
+                                    <rect x="345" y="235" width="90" height="28" rx="7" fill="#be185d" opacity="0.85"/>
+                                    <text x="390" y="252" fontSize="9.5" fill="#fff" fontWeight="bold" textAnchor="middle">⛩️ Синтоизм</text>
+                                    <text x="390" y="262" fontSize="7" fill="#fce7f3" textAnchor="middle">~660 до н.э. · Япония</text>
+                                    <line x1="72" y1="147" x2="345" y2="248" stroke="#be185d" strokeWidth="1.5" strokeDasharray="5,3"/>
+
+                                    {/* ─────────── ИУДАИЗМ → ХРИСТИАНСТВО ─────────────── */}
+                                    <line x1="265" y1="260" x2="548" y2="172" stroke="#7c3aed" strokeWidth="2.2"/>
+                                    <rect x="500" y="160" width="110" height="34" rx="8" fill="#6d28d9" opacity="0.9"/>
+                                    <text x="555" y="180" fontSize="10.5" fill="#fff" fontWeight="bold" textAnchor="middle">✝️ Христианство</text>
+                                    <text x="555" y="191" fontSize="7.5" fill="#ede9fe" textAnchor="middle">~30 н.э. · Иисус Христос</text>
+
+                                    {/* Ветви христианства */}
+                                    {/* Католицизм */}
+                                    <line x1="610" y1="177" x2="715" y2="145" stroke="#7c3aed" strokeWidth="1.3" strokeDasharray="4,2"/>
+                                    <rect x="675" y="133" width="88" height="24" rx="6" fill="#5b21b6" opacity="0.8"/>
+                                    <text x="719" y="148" fontSize="9" fill="#fff" fontWeight="bold" textAnchor="middle">⛪ Католицизм</text>
+                                    <text x="719" y="158" fontSize="7" fill="#ede9fe" textAnchor="middle">1054 · Рим</text>
+
+                                    {/* Православие */}
+                                    <line x1="610" y1="177" x2="715" y2="178" stroke="#7c3aed" strokeWidth="1.3" strokeDasharray="4,2"/>
+                                    <rect x="675" y="166" width="90" height="24" rx="6" fill="#4c1d95" opacity="0.8"/>
+                                    <text x="720" y="181" fontSize="9" fill="#fff" fontWeight="bold" textAnchor="middle">☦️ Православие</text>
+                                    <text x="720" y="191" fontSize="7" fill="#ede9fe" textAnchor="middle">1054 · Константинополь</text>
+
+                                    {/* Протестантизм */}
+                                    <line x1="610" y1="177" x2="715" y2="210" stroke="#7c3aed" strokeWidth="1.3" strokeDasharray="4,2"/>
+                                    <rect x="670" y="200" width="100" height="24" rx="6" fill="#3b0764" opacity="0.8"/>
+                                    <text x="720" y="215" fontSize="9" fill="#fff" fontWeight="bold" textAnchor="middle">✟ Протестантизм</text>
+                                    <text x="720" y="225" fontSize="7" fill="#ede9fe" textAnchor="middle">1517 · Лютер</text>
+
+                                    {/* ─────────── ИСЛАМ (от Иудаизма + Христ.) ────────── */}
+                                    <line x1="265" y1="260" x2="548" y2="290" stroke="#065f46" strokeWidth="2.2"/>
+                                    <line x1="610" y1="177" x2="548" y2="290" stroke="#065f46" strokeWidth="1.2" strokeDasharray="3,2"/>
+                                    <rect x="500" y="279" width="100" height="34" rx="8" fill="#065f46" opacity="0.9"/>
+                                    <text x="550" y="299" fontSize="10.5" fill="#fff" fontWeight="bold" textAnchor="middle">☪️ Ислам</text>
+                                    <text x="550" y="311" fontSize="7.5" fill="#a7f3d0" textAnchor="middle">610 н.э. · Мухаммад ﷺ</text>
+
+                                    {/* Ветви ислама */}
+                                    {/* Суннизм */}
+                                    <line x1="600" y1="296" x2="710" y2="270" stroke="#065f46" strokeWidth="1.3" strokeDasharray="4,2"/>
+                                    <rect x="670" y="258" width="85" height="24" rx="6" fill="#064e3b" opacity="0.85"/>
+                                    <text x="712" y="273" fontSize="9" fill="#fff" fontWeight="bold" textAnchor="middle">☪ Суннизм</text>
+                                    <text x="712" y="283" fontSize="7" fill="#a7f3d0" textAnchor="middle">~85% мусульман</text>
+
+                                    {/* Шиизм */}
+                                    <line x1="600" y1="296" x2="710" y2="302" stroke="#065f46" strokeWidth="1.3" strokeDasharray="4,2"/>
+                                    <rect x="670" y="290" width="80" height="24" rx="6" fill="#022c22" opacity="0.85"/>
+                                    <text x="710" y="305" fontSize="9" fill="#fff" fontWeight="bold" textAnchor="middle">☪ Шиизм</text>
+                                    <text x="710" y="315" fontSize="7" fill="#a7f3d0" textAnchor="middle">~15% · Иран, Ирак</text>
+
+                                    {/* Суфизм */}
+                                    <line x1="600" y1="296" x2="710" y2="332" stroke="#065f46" strokeWidth="1.3" strokeDasharray="4,2"/>
+                                    <rect x="670" y="320" width="82" height="24" rx="6" fill="#134e4a" opacity="0.8"/>
+                                    <text x="711" y="335" fontSize="9" fill="#fff" fontWeight="bold" textAnchor="middle">🌀 Суфизм</text>
+                                    <text x="711" y="345" fontSize="7" fill="#a7f3d0" textAnchor="middle">VIII в. · мистика</text>
+
+                                    {/* ─────────── СИКХИЗМ (от Индуизм + Ислам) ─────────── */}
+                                    <line x1="273" y1="345" x2="715" y2="420" stroke="#7e22ce" strokeWidth="1.5"/>
+                                    <line x1="600" y1="296" x2="715" y2="420" stroke="#7e22ce" strokeWidth="1.2" strokeDasharray="3,2"/>
+                                    <rect x="672" y="408" width="90" height="28" rx="7" fill="#6b21a8" opacity="0.9"/>
+                                    <text x="717" y="425" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">🪯 Сикхизм</text>
+                                    <text x="717" y="435" fontSize="7.5" fill="#e9d5ff" textAnchor="middle">1499 н.э. · Гуру Нанак</text>
+
+                                    {/* ─────────── БАХАИ (от Ислама) ───────────────────── */}
+                                    <line x1="600" y1="296" x2="920" y2="220" stroke="#0891b2" strokeWidth="1.5"/>
+                                    <rect x="878" y="208" width="82" height="28" rx="7" fill="#0e7490" opacity="0.9"/>
+                                    <text x="919" y="225" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">⭐ Бахаи</text>
+                                    <text x="919" y="235" fontSize="7.5" fill="#cffafe" textAnchor="middle">1844 · Бахаулла</text>
+
+                                    {/* ─────────── ДЖАЙНИЗМ (от Индуизм) ─────────────── */}
+                                    <line x1="273" y1="345" x2="390" y2="458" stroke="#65a30d" strokeWidth="1.5"/>
+                                    <rect x="348" y="447" width="85" height="28" rx="7" fill="#4d7c0f" opacity="0.9"/>
+                                    <text x="390" y="464" fontSize="10" fill="#fff" fontWeight="bold" textAnchor="middle">🖐️ Джайнизм</text>
+                                    <text x="390" y="474" fontSize="7.5" fill="#d9f99d" textAnchor="middle">~500 до н.э. · Махавира</text>
+
+                                    {/* ─────────── ЛЕГЕНДА ─────────────────────────────── */}
+                                    <rect x="10" y="598" width="560" height="72" rx="8" fill="rgba(255,255,255,0.9)" stroke="#e7e5e4" strokeWidth="1"/>
+                                    <text x="20" y="614" fontSize="9" fill="#78716c" fontWeight="bold">ЛЕГЕНДА:</text>
+                                    <line x1="20" y1="625" x2="55" y2="625" stroke="#d97706" strokeWidth="2"/>
+                                    <text x="58" y="629" fontSize="8" fill="#57534e">Прямое происхождение</text>
+                                    <line x1="20" y1="640" x2="55" y2="640" stroke="#374151" strokeWidth="2" strokeDasharray="5,3"/>
+                                    <text x="58" y="644" fontSize="8" fill="#57534e">Параллельное развитие</text>
+                                    <line x1="130" y1="625" x2="165" y2="625" stroke="#7c3aed" strokeWidth="2"/>
+                                    <text x="168" y="629" fontSize="8" fill="#57534e">Авраамическая ветвь</text>
+                                    <line x1="130" y1="640" x2="165" y2="640" stroke="#065f46" strokeWidth="2"/>
+                                    <text x="168" y="644" fontSize="8" fill="#57534e">Исламская ветвь</text>
+                                    <line x1="250" y1="625" x2="285" y2="625" stroke="#ea580c" strokeWidth="2"/>
+                                    <text x="288" y="629" fontSize="8" fill="#57534e">Индийские традиции</text>
+                                    <line x1="250" y1="640" x2="285" y2="640" stroke="#374151" strokeWidth="2"/>
+                                    <text x="288" y="644" fontSize="8" fill="#57534e">Дальневосточные</text>
+                                    <text x="400" y="626" fontSize="8" fill="#57534e">Рамки — эпохи возникновения</text>
+                                    <text x="400" y="640" fontSize="8" fill="#57534e">→ Стрелки — направление влияния</text>
+                                </svg>
+                            </div>
+
+                            {/* TEXT EXPLAINER */}
+                            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {[
+                                    {emoji:'🌿', title:'Общий корень', color:'#92400e', bg:'#fffbeb', text:'Все религии выросли из первобытного анимизма (~50 000 лет назад) — веры в духов природы, магии и шаманства. Первые «организованные» религии появились в Египте и Шумере (~3500 до н.э.) в форме политеизма.'},
+                                    {emoji:'✝️☪️✡️', title:'Авраамическая ветвь', color:'#1d4ed8', bg:'#eff6ff', text:'Три религии вышли из одного корня: Иудаизм (~2000 до н.э.) → Христианство (~30 н.э.) → Ислам (~610 н.э.). Ключевой момент разделения: 1054 год — Великая схизма. 1517 год — Реформация Лютера.'},
+                                    {emoji:'🕉️☸️', title:'Индийская ветвь', color:'#c2410c', bg:'#fff7ed', text:'Индуизм (~1500 до н.э.) стал основой для Буддизма (~500 до н.э.) и Джайнизма. Будда Гаутама вырос в брахманской среде и отверг кастовость. Сикхизм (XV в.) синтезировал индуизм и ислам.'},
+                                    {emoji:'☯️🏮', title:'Дальневосточная ветвь', color:'#374151', bg:'#f5f5f4', text:'Даосизм и Конфуцианство развились независимо в Китае (~500 до н.э.), параллельно с греческой философией. Синтоизм возник в Японии (~660 до н.э.) как автохтонная традиция.'},
+                                ].map((item,i)=>(
+                                    <div key={i} className="rounded-2xl p-4 border-2" style={{background:item.bg,borderColor:item.color+'40'}}>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <span className="text-xl">{item.emoji}</span>
+                                            <span className="font-bold text-sm" style={{color:item.color}}>{item.title}</span>
+                                        </div>
+                                        <p className="text-stone-600 text-sm leading-relaxed">{item.text}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
